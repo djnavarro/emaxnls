@@ -1,0 +1,22 @@
+Package: emaxnls
+Title: Nonlinear Least Squares Estimation for Emax Regression Models 
+Version: 0.0.0.9000
+Authors@R: 
+    person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre", "cph"))
+Description:
+    Provides estimation and covariate selection tools for Emax regression models 
+    using nonlinear least squares methods.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    dplyr,
+    mvtnorm,
+    nlstools,
+    purrr,
+    rlang,
+    scales,
+    stringr,
+    tibble,
+    tidyr
