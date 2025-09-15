@@ -2,24 +2,24 @@
 
 # model comparison functions ----------------------------------------------
 
-anova_p <- function(obj1, obj2) {
-  a <- anova(obj1$result, obj2$result)
+.anova_p <- function(obj1, obj2) {
+  a <- stats::anova(obj1$result, obj2$result)
   return(a$`Pr(>F)`[2])
 }
 
-aic_diff <- function(obj1, obj2) {
-  aic1 <- AIC(obj1$result)
-  aic2 <- AIC(obj2$result)
+.aic_diff <- function(obj1, obj2) {
+  aic1 <- stats::AIC(obj1$result)
+  aic2 <- stats::AIC(obj2$result)
   return(aic1 - aic2)
 }
 
-show_p <- scales::label_pvalue()
+.show_p <- scales::label_pvalue()
 
 # stepwise add/remove functions -------------------------------------------
 
 
 # list of all possible terms that could be considered
-emax_extract_terms <- function(candidates) {
+.emax_extract_terms <- function(candidates) {
   candidates |>
     purrr::imap(\(x, l) paste(l, x, sep = "~")) |>
     unlist() |>
@@ -27,7 +27,7 @@ emax_extract_terms <- function(candidates) {
     unname()
 }
 
-emax_history <- function(mod) {
+.emax_history <- function(mod) {
   history <- attr(mod, "history")
   if (is.null(history)) {
     history <- tibble::tibble(
@@ -41,7 +41,7 @@ emax_history <- function(mod) {
   return(history)
 }
 
-emax_once_forward <- function(mod,
+.emax_once_forward <- function(mod,
                               candidates,
                               threshold = .01,
                               quiet = FALSE,
@@ -50,12 +50,12 @@ emax_once_forward <- function(mod,
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
   # vice versa
-  assert(inherits(mod, "emax_fit"))
-  validate_candidate_list(candidates, names(mod$data))
-  terms <- emax_extract_terms(candidates)
+  .assert(inherits(mod, "emax_fit"))
+  .validate_candidate_list(candidates, names(mod$data))
+  terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
-  if (history) scm_history <- emax_history(mod)
+  if (history) scm_history <- .emax_history(mod)
 
   # note for future development: this implementation hard-codes the
   # assumption that selection is based on p-values
@@ -63,11 +63,11 @@ emax_once_forward <- function(mod,
   best_mod <- mod
   new_term <- NULL
   for(t in terms) {
-    candidate_mod <- emax_add_term(mod, formula = t, quiet = TRUE)
-    if (!emax_identical(mod, candidate_mod)) { # don't compare to self
+    candidate_mod <- .emax_add_term(mod, formula = t, quiet = TRUE)
+    if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
       if (!quiet) message("try add: ", deparse(t))
       if (!is.null(candidate_mod$result)) {  # skip if nls() fails
-        p <- anova_p(mod, candidate_mod)
+        p <- .anova_p(mod, candidate_mod)
         if (p < lowest_p) {
           best_mod <- candidate_mod
           new_term <- t
@@ -78,7 +78,7 @@ emax_once_forward <- function(mod,
   }
 
   if (!quiet & !is.null(new_term)) {
-    message("addition: ", deparse(new_term), " p: ", show_p(lowest_p))
+    message("addition: ", deparse(new_term), " p: ", .show_p(lowest_p))
   }
   if (!quiet & is.null(new_term)) {
     message("no improvements found")
@@ -100,7 +100,7 @@ emax_once_forward <- function(mod,
   return(best_mod)
 }
 
-emax_once_backward <- function(mod,
+.emax_once_backward <- function(mod,
                                candidates,
                                threshold = .001,
                                quiet = FALSE,
@@ -109,12 +109,12 @@ emax_once_backward <- function(mod,
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
   # vice versa
-  assert(inherits(mod, "emax_fit"))
-  validate_candidate_list(candidates, names(mod$data))
-  terms <- emax_extract_terms(candidates)
+  .assert(inherits(mod, "emax_fit"))
+  .validate_candidate_list(candidates, names(mod$data))
+  terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
-  if (history) scm_history <- emax_history(mod)
+  if (history) scm_history <- .emax_history(mod)
 
   # note for future development: this implementation hard-codes the
   # assumption that selection is based on p-values
@@ -122,11 +122,11 @@ emax_once_backward <- function(mod,
   best_mod <- mod
   new_term <- NULL
   for(t in terms) {
-    candidate_mod <- emax_remove_term(mod, formula = t, quiet = TRUE)
-    if (!emax_identical(mod, candidate_mod)) { # don't compare to self
+    candidate_mod <- .emax_remove_term(mod, formula = t, quiet = TRUE)
+    if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
       nls_fail <- is.null(candidate_mod$result)
       if (!nls_fail) {  # skip if nls() fails
-        p <- anova_p(candidate_mod, mod)
+        p <- .anova_p(candidate_mod, mod)
         if (p > highest_p) {
           best_mod <- candidate_mod
           new_term <- t
@@ -137,13 +137,13 @@ emax_once_backward <- function(mod,
         message("try remove: ", deparse(t), " [nls fail]")
       }
       if (!quiet & !nls_fail) {
-        message("try remove: ", deparse(t), " p: ", show_p(p))
+        message("try remove: ", deparse(t), " p: ", .show_p(p))
       }
     }
   }
 
   if (!quiet & !is.null(new_term)) {
-    message("removal: ", deparse(new_term), " p: ", show_p(highest_p))
+    message("removal: ", deparse(new_term), " p: ", .show_p(highest_p))
   }
   if (!quiet & is.null(new_term)) {
     message("no improvements found")
@@ -165,7 +165,7 @@ emax_once_backward <- function(mod,
   return(best_mod)
 }
 
-emax_forward <- function(mod,
+.emax_forward <- function(mod,
                          candidates,
                          threshold = .01,
                          quiet = FALSE,
@@ -177,15 +177,15 @@ emax_forward <- function(mod,
   while(!finished) {
 
     old_mod <- mod
-    mod <- emax_once_forward(mod, candidates, threshold, quiet, history)
-    if (emax_identical(mod, old_mod)) finished <- TRUE
+    mod <- .emax_once_forward(mod, candidates, threshold, quiet, history)
+    if (.emax_identical(mod, old_mod)) finished <- TRUE
 
   }
 
   return(mod)
 }
 
-emax_backward <- function(mod,
+.emax_backward <- function(mod,
                           candidates,
                           threshold = .001,
                           quiet = FALSE,
@@ -197,8 +197,8 @@ emax_backward <- function(mod,
   while(!finished) {
 
     old_mod <- mod
-    mod <- emax_once_backward(mod, candidates, threshold, quiet, history)
-    if (emax_identical(mod, old_mod)) finished <- TRUE
+    mod <- .emax_once_backward(mod, candidates, threshold, quiet, history)
+    if (.emax_identical(mod, old_mod)) finished <- TRUE
 
   }
 

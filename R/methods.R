@@ -80,7 +80,7 @@ print.emax_fit <- function(x, ...) {
     cat("Model does not converge\n")
   } else {
     cat("Coefficient table:\n\n")
-    ccc <- capture.output(print(coef(x)))
+    ccc <- utils::capture.output(print(coef(x)))
     ccc <- ccc[c(-1, -3)]
     cat(ccc, sep = "\n")
     cat("\n")

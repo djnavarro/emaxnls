@@ -1,6 +1,6 @@
 
 # convert coefficient names into table
-as_coefficient_table <- function(coefficients) {
+.as_coefficient_table <- function(coefficients) {
   coefficients |>
     tibble::tibble() |>
     tidyr::separate(
@@ -14,9 +14,9 @@ as_coefficient_table <- function(coefficients) {
 
 # initial values and boundaries for model parameters; these
 # are currently hard coded, and somewhat arbitrarily at that
-get_coefficient_settings <- function(coefficients) {
+.get_coefficient_settings <- function(coefficients) {
   coefficients |>
-    as_coefficient_table() |>
+    .as_coefficient_table() |>
     dplyr::mutate(
       start = dplyr::case_when(
         covariate != "Intercept" ~ 0,

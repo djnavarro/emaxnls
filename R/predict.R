@@ -4,7 +4,7 @@
 
 # safely construct a prediction function for emax model mod, with
 # user-customisable parameter values
-emax_fn <- function(mod, data = mod$data) {
+.emax_fn <- function(mod, data = mod$data) {
   function(param = NULL) {
     if(is.null(param)) {
       param <- coef(mod)$estimate
@@ -16,7 +16,7 @@ emax_fn <- function(mod, data = mod$data) {
   }
 }
 
-emax_resample <- function(mod, n = 100, seed = NULL) {
+.emax_resample <- function(mod, n = 100, seed = NULL) {
 
   if (!is.null(seed)) set.seed(seed)
 
@@ -33,15 +33,15 @@ emax_resample <- function(mod, n = 100, seed = NULL) {
   par <- mvtnorm::rmvnorm(n, mean = est, sigma = cov)
   colnames(par) <- lbl
 
-  f <- emax_fn(mod)
+  .f <- .emax_fn(mod)
 
   sim <- list()
   for (ss in 1L:n) {
     sim[[ss]] <- tibble::tibble(
       dat_id = 1L:nr,
       sim_id = ss,
-      mu = f(par[ss,]),
-      val = mu + rnorm(nr, 0, sd = sig)
+      mu = .f(par[ss,]),
+      val = mu + stats::rnorm(nr, 0, sd = sig)
     )
   }
   sim <- dplyr::bind_rows(sim)
