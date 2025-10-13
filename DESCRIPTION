@@ -20,5 +20,5 @@ Imports:
     stringr,
     tibble,
     tidyr
-URL: https://github.com/djnavarro/emaxnls
+URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues
