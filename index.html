@@ -71,23 +71,26 @@
 <h2 id="minimal-example">Minimal example<a class="anchor" aria-label="anchor" href="#minimal-example"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/emaxnls" class="external-link">emaxnls</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/emaxnls" class="external-link">emaxnls</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">emax_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   dose exposure_1 exposure_2 response_1 response_2    cnt_a    cnt_b    cnt_c</span></span>
-<span><span class="co">#&gt; 1    0          0          0   6.489196          0 3.057604 6.504826 5.928023</span></span>
-<span><span class="co">#&gt; 2    0          0          0   7.812194          0 5.721756 3.843353 5.596357</span></span>
-<span><span class="co">#&gt; 3    0          0          0   7.261408          0 4.306662 3.675049 8.164048</span></span>
-<span><span class="co">#&gt; 4    0          0          0   7.454626          0 4.026786 2.859747 9.384137</span></span>
-<span><span class="co">#&gt; 5    0          0          0   6.334730          0 2.463863 3.358705 8.293186</span></span>
-<span><span class="co">#&gt; 6    0          0          0   7.128279          0 4.872995 8.900582 7.060294</span></span>
-<span><span class="co">#&gt;   bin_d bin_e</span></span>
-<span><span class="co">#&gt; 1     0     1</span></span>
-<span><span class="co">#&gt; 2     0     1</span></span>
-<span><span class="co">#&gt; 3     0     0</span></span>
-<span><span class="co">#&gt; 4     1     1</span></span>
-<span><span class="co">#&gt; 5     0     1</span></span>
-<span><span class="co">#&gt; 6     0     0</span></span>
+<span><span class="va">emax_df</span></span>
+<span><span class="co">#&gt; # A tibble: 400 × 10</span></span>
+<span><span class="co">#&gt;     dose exposure_1 exposure_2 response_1 response_2 cnt_a cnt_b cnt_c bin_d</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1     0          0          0       6.49          0  3.06  6.50 5.93      0</span></span>
+<span><span class="co">#&gt;  2     0          0          0       7.81          0  5.72  3.84 5.60      0</span></span>
+<span><span class="co">#&gt;  3     0          0          0       7.26          0  4.31  3.68 8.16      0</span></span>
+<span><span class="co">#&gt;  4     0          0          0       7.45          0  4.03  2.86 9.38      1</span></span>
+<span><span class="co">#&gt;  5     0          0          0       6.33          0  2.46  3.36 8.29      0</span></span>
+<span><span class="co">#&gt;  6     0          0          0       7.13          0  4.87  8.90 7.06      0</span></span>
+<span><span class="co">#&gt;  7     0          0          0       6.07          0  2.87  4.85 0.989     0</span></span>
+<span><span class="co">#&gt;  8     0          0          0       5.47          1  1.07  5.34 3.34      1</span></span>
+<span><span class="co">#&gt;  9     0          0          0       7.12          0  3.94  5.68 4.01      1</span></span>
+<span><span class="co">#&gt; 10     0          0          0       8.21          1  7.46  8.16 6.92      1</span></span>
+<span><span class="co">#&gt; # ℹ 390 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: bin_e &lt;dbl&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
 <span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span>
@@ -140,38 +143,38 @@
 <span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
 <span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
+<span><span class="co">#&gt; try add: Emax ~ bin_e</span></span>
+<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
+<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
+<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
+<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
 <span><span class="co">#&gt; try add: E0 ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
 <span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
-<span><span class="co">#&gt; addition: E0 ~ cnt_a p: &lt;0.001</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
 <span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
+<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
+<span><span class="co">#&gt; addition: E0 ~ cnt_a p: &lt;0.001</span></span>
 <span><span class="co">#&gt; try add: Emax ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
+<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
 <span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
+<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
+<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
+<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
+<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
+<span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
+<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
 <span><span class="co">#&gt; addition: Emax ~ bin_e p: 0.008</span></span>
 <span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
 <span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
+<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
 <span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
 <span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
 <span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
 <span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
+<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
 <span><span class="co">#&gt; no improvements found</span></span>
-<span><span class="co">#&gt; try remove: E0 ~ cnt_a p: &lt;0.001</span></span>
 <span><span class="co">#&gt; try remove: Emax ~ bin_e p: 0.008</span></span>
+<span><span class="co">#&gt; try remove: E0 ~ cnt_a p: &lt;0.001</span></span>
 <span><span class="co">#&gt; removal: Emax ~ bin_e p: 0.008</span></span>
 <span><span class="co">#&gt; try remove: E0 ~ cnt_a p: &lt;0.001</span></span>
 <span><span class="co">#&gt; no improvements found</span></span>
