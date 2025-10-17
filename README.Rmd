@@ -35,9 +35,11 @@ pak::pak("djnavarro/emaxnls")
 ## Minimal example
 
 ```{r}
+library(tibble)
 library(emaxnls)
+set.seed(123)
 
-head(emax_df)
+emax_df
 
 emax_nls(
   structural_model = response_1 ~ exposure_1, 

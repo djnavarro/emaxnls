@@ -28,23 +28,26 @@ pak::pak("djnavarro/emaxnls")
 ## Minimal example
 
 ``` r
+library(tibble)
 library(emaxnls)
+set.seed(123)
 
-head(emax_df)
-#>   dose exposure_1 exposure_2 response_1 response_2    cnt_a    cnt_b    cnt_c
-#> 1    0          0          0   6.489196          0 3.057604 6.504826 5.928023
-#> 2    0          0          0   7.812194          0 5.721756 3.843353 5.596357
-#> 3    0          0          0   7.261408          0 4.306662 3.675049 8.164048
-#> 4    0          0          0   7.454626          0 4.026786 2.859747 9.384137
-#> 5    0          0          0   6.334730          0 2.463863 3.358705 8.293186
-#> 6    0          0          0   7.128279          0 4.872995 8.900582 7.060294
-#>   bin_d bin_e
-#> 1     0     1
-#> 2     0     1
-#> 3     0     0
-#> 4     1     1
-#> 5     0     1
-#> 6     0     0
+emax_df
+#> # A tibble: 400 × 10
+#>     dose exposure_1 exposure_2 response_1 response_2 cnt_a cnt_b cnt_c bin_d
+#>    <dbl>      <dbl>      <dbl>      <dbl>      <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1     0          0          0       6.49          0  3.06  6.50 5.93      0
+#>  2     0          0          0       7.81          0  5.72  3.84 5.60      0
+#>  3     0          0          0       7.26          0  4.31  3.68 8.16      0
+#>  4     0          0          0       7.45          0  4.03  2.86 9.38      1
+#>  5     0          0          0       6.33          0  2.46  3.36 8.29      0
+#>  6     0          0          0       7.13          0  4.87  8.90 7.06      0
+#>  7     0          0          0       6.07          0  2.87  4.85 0.989     0
+#>  8     0          0          0       5.47          1  1.07  5.34 3.34      1
+#>  9     0          0          0       7.12          0  3.94  5.68 4.01      1
+#> 10     0          0          0       8.21          1  7.46  8.16 6.92      1
+#> # ℹ 390 more rows
+#> # ℹ 1 more variable: bin_e <dbl>
 
 emax_nls(
   structural_model = response_1 ~ exposure_1, 
@@ -97,38 +100,38 @@ covariate_list <- list(
 final_mod <- base_model |> 
   emax_forward(candidates = covariate_list, threshold = .01) |> 
   emax_backward(candidates = covariate_list, threshold = .001) 
-#> try add: E0 ~ cnt_b
-#> try add: E0 ~ bin_e
-#> try add: Emax ~ bin_d
-#> try add: Emax ~ bin_e
-#> try add: E0 ~ bin_d
 #> try add: E0 ~ cnt_c
+#> try add: Emax ~ bin_e
+#> try add: E0 ~ cnt_b
+#> try add: Emax ~ cnt_c
+#> try add: Emax ~ cnt_a
+#> try add: Emax ~ bin_d
 #> try add: E0 ~ cnt_a
-#> try add: Emax ~ cnt_a
 #> try add: Emax ~ cnt_b
-#> try add: Emax ~ cnt_c
-#> addition: E0 ~ cnt_a p: <0.001
-#> try add: E0 ~ bin_d
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ bin_d
-#> try add: Emax ~ cnt_c
 #> try add: E0 ~ bin_e
+#> try add: E0 ~ bin_d
+#> addition: E0 ~ cnt_a p: <0.001
 #> try add: Emax ~ bin_e
-#> try add: Emax ~ cnt_b
-#> try add: Emax ~ cnt_a
+#> try add: E0 ~ bin_e
 #> try add: E0 ~ cnt_c
+#> try add: Emax ~ cnt_c
+#> try add: E0 ~ bin_d
+#> try add: Emax ~ cnt_a
+#> try add: Emax ~ bin_d
+#> try add: Emax ~ cnt_b
+#> try add: E0 ~ cnt_b
 #> addition: Emax ~ bin_e p: 0.008
 #> try add: Emax ~ cnt_c
 #> try add: Emax ~ cnt_b
+#> try add: E0 ~ cnt_b
 #> try add: Emax ~ cnt_a
-#> try add: E0 ~ bin_e
 #> try add: E0 ~ cnt_c
 #> try add: E0 ~ bin_d
 #> try add: Emax ~ bin_d
-#> try add: E0 ~ cnt_b
+#> try add: E0 ~ bin_e
 #> no improvements found
-#> try remove: E0 ~ cnt_a p: <0.001
 #> try remove: Emax ~ bin_e p: 0.008
+#> try remove: E0 ~ cnt_a p: <0.001
 #> removal: Emax ~ bin_e p: 0.008
 #> try remove: E0 ~ cnt_a p: <0.001
 #> no improvements found
