@@ -1,5 +1,7 @@
 
-.assert <- function(expr) stopifnot(expr)
+.assert <- function(expr, message = "emax_nls error", class = "emax_nls_error") {
+  if (any(expr == FALSE)) rlang::abort(message = message, class = class)
+}
 
 .validate_structural_formula <- function(formula, names = NULL) {
 
@@ -34,7 +36,6 @@
     .assert(all(rhs_names %in% names))
   }
 }
-
 
 .validate_candidate_list <- function(candidates, names) {
 
