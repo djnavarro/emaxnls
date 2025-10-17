@@ -24,7 +24,8 @@
   .simulate_dose_data <- function(dose, n, par) {
     tibble::tibble(
       dose = dose,
-      exposure = .simulate_exposure(dose, n = n),
+      exposure_1 = .simulate_exposure(dose, n = n),
+      exposure_2 = 0.7 * exposure_1 + 0.3 * .simulate_exposure(dose, n = n),
 
       # add continuous and binary covariates
       cnt_a = .continuous_covariate(n = n),
@@ -35,7 +36,7 @@
 
       # response 1 is continuous
       response_1 = .emf(
-        exposure,
+        exposure_1,
         emax = par$emax_1,
         ec50 = par$ec50_1,
         e0 = par$e0_1,
@@ -49,7 +50,7 @@
 
       # response 2 is binary; start with the predictor
       bin_pred = .emf(
-        exposure,
+        exposure_1,
         emax = par$emax_2,
         ec50 = par$ec50_2,
         e0 = par$e0_2,
@@ -99,11 +100,42 @@
     .simulate_dose_data(dose = 200, n = 100, par = par),
     .simulate_dose_data(dose = 300, n = 100, par = par)
   ) |> 
-    dplyr::relocate(response_1, response_2, .after = exposure)
+    dplyr::relocate(response_1, response_2, .after = exposure_2)
 
   return(dat)
 }
 
 
-# d_sim_emax <- .simulate_data(seed = 123)
-# usethis::use_data(d_sim_emax, overwrite = TRUE)
+# emax_df <- .simulate_emax_data(seed = 123)
+# usethis::use_data(emax_df, overwrite = TRUE)
+
+
+#' Sample simulated data for Emax exposure-response models with covariates.
+#'
+#' @name emax_df
+#' @format A data frame with columns:
+#' \describe{
+#' \item{dose}{Nominal dose, units not specified}
+#' \item{exposure_1}{Exposure value, units and metric not specified}
+#' \item{exposure_2}{Exposure value, units and metric not specified, but different from exposure_1}
+#' \item{response_1}{Continuous response value (units not specified)}
+#' \item{response_2}{Binary response value (group labels not specified)}
+#' \item{cnt_a}{Continuous valued covariate}
+#' \item{cnt_b}{Continuous valued covariate}
+#' \item{cnt_c}{Continuous valued covariate}
+#' \item{bin_d}{Binary valued covariate}
+#' \item{bin_e}{Binary valued covariate}
+#' }
+#' @details
+#'
+#' This simulated dataset is entirely synthetic. It is a generic data set that can be used
+#' to illustrate Emax modeling. It contains variables corresponding to dose and exposure,
+#' and includes both a continuous response variable and a binary response variable. Three
+#' continuous valued covariates are included, along with two binary covariates.
+#'
+#' You can find the data generating code in the package source code,
+#' under `R/data.R`
+#'
+#' @examples
+#' emax_df
+"emax_df"
