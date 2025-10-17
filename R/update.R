@@ -28,7 +28,8 @@
   # stop if covariate is already included
   if (cov_param %in% all.vars(object$covariate_model[[str_param]][[3]])) {
     if (!quiet) {
-      message("cannot add: `", deparse(formula), "` is already in the model")
+      msg <- paste0("cannot add: `", deparse(formula), "` is already in the model")
+      rlang::inform(msg, class = "emaxnls_message")
     }
     return(object)
   }
@@ -77,7 +78,8 @@
   # stop if covariate is not already included
   if (!(cov_param %in% all.vars(object$covariate_model[[str_param]][[3]]))) {
     if (!quiet) {
-      message("cannot remove: `", deparse(formula), "` is not in the model")
+      msg <- paste0("cannot remove: `", deparse(formula), "` is not in the model")
+      rlang::inform(msg, class = "emaxnls_message")
     }
     return(object)
   }
