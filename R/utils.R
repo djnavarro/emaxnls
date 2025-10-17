@@ -43,9 +43,9 @@
     unlist() |>
     paste(collapse = "+")
   if (nchar(c) == 0) {
-    f <- as.formula(s)
+    f <- stats::as.formula(s)
   } else {
-    f <- as.formula(paste(s, c, sep = "+"))
+    f <- stats::as.formula(paste(s, c, sep = "+"))
   }
   return(f)
 }
@@ -68,3 +68,28 @@
 
   return(list(lookup = lookup, design = design))
 }
+
+utils::globalVariables(c(
+  "label",
+  "Estimate",
+  "Std. Error",
+  "t value",
+  "Pr(>|t|)",
+  "response_1",
+  "response_2", 
+  "exposure_1",  
+  "exposure_2",
+  "bin_pred",
+  "bin_prob",
+  "cnt_a",
+  "cnt_b",
+  "cnt_c",
+  "bin_d",
+  "bin_e",
+  "term",
+  "vcov",
+  "coef",
+  "mu",
+  "residuals",
+  "variable"
+))
