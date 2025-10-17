@@ -32,13 +32,38 @@ You can install the development version of emaxnls from [GitHub](https://github.
 pak::pak("djnavarro/emaxnls")
 ```
 
-## Example
+## Minimal example
 
 ```{r}
 library(emaxnls)
+
+head(emax_df)
+
 emax_nls(
   structural_model = response_1 ~ exposure_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 ```
+
+## Stepwise covariate modelling
+
+```{r}
+base_model <- emax_nls(
+  structural_model = response_1 ~ exposure_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+covariate_list <- list(
+  E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
+  Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
+)
+
+final_mod <- base_model |> 
+  emax_forward(candidates = covariate_list, threshold = .01) |> 
+  emax_backward(candidates = covariate_list, threshold = .001) 
+
+final_mod
+```
+
