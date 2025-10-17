@@ -33,8 +33,8 @@
         parameter == "logHill" ~ -2
       ),
       upper = dplyr::case_when(
-        parameter == "E0"      ~ 10,
-        parameter == "Emax"    ~ 5,
+        parameter == "E0"      ~ 20,
+        parameter == "Emax"    ~ 20,
         parameter == "logEC50" ~ 10,
         parameter == "logHill" ~ 4
       )
