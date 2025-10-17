@@ -18,7 +18,7 @@
   # check that "formula" is a list of 3 or 4 two-sided formulas
   .assert(inherits(formula, "list"))
   .assert(length(formula) %in% 3:4)
-  .assert(all(purrr::map_lgl(formula, \(x) is_formula(x, sides = 2))))
+  .assert(all(purrr::map_lgl(formula, \(x) .is_formula(x, sides = 2))))
 
   # check that the LHS names correspond to the structural parameters
   lhs_names <- unname(sort(purrr::map_chr(formula, \(x) all.vars(x[[2]]))))
