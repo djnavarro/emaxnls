@@ -2,7 +2,6 @@
 .emax_nls <- function(structural_model,
                      covariate_model,
                      data,
-                     dosing = NULL,
                      quiet = FALSE) {
 
   .validate_structural_formula(structural_model, names(data))
@@ -27,7 +26,6 @@
   if (model_type == "sigmoidal") {
     variables$logHill <- as.character(all.vars(covariate_model[["logHill"]][[3]]))
   }
-  variables$dosing <- rlang::as_name(rlang::enquo(dosing))
 
   terms <- variables |>
     purrr::map(

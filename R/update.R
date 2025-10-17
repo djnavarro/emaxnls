@@ -39,16 +39,11 @@
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
 
-  # hack [note: the dd/dosing code currently doesn't do anything,
-  # it is something for future development]
-  dd <- str2lang(object$variables$dosing)
-
   # re-run
   updated <- .emax_nls(
     structural_model = object$structural_model,
     covariate_model = covariate_model,
     data = object$data,
-    dosing = !!dd, # hack
     quiet = quiet
   )
 
@@ -97,15 +92,11 @@
   ))
   covariate_model[[str_param]] <- new
 
-  # hack
-  dd <- str2lang(object$variables$dosing)
-
   # re-run
   updated <- .emax_nls(
     structural_model = object$structural_model,
     covariate_model = covariate_model,
     data = object$data,
-    dosing = !!dd, # hack
     quiet = quiet
   )
 
