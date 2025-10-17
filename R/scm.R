@@ -13,7 +13,10 @@
   return(aic1 - aic2)
 }
 
-.show_p <- scales::label_pvalue()
+.show_p <- function(p_value) {
+  f <- scales::label_pvalue()
+  f(p_value)
+}
 
 # stepwise add/remove functions -------------------------------------------
 
@@ -23,7 +26,7 @@
   candidates |>
     purrr::imap(\(x, l) paste(l, x, sep = "~")) |>
     unlist() |>
-    purrr::map(as.formula) |>
+    purrr::map(stats::as.formula) |>
     unname()
 }
 
