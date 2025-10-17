@@ -1,14 +1,14 @@
 
 # add/remove terms --------------------------------------------------------
 
-#' @param object An emax_fit object
+#' @param object An emaxnls_fit object
 #' @param formula A formula such as E0 ~ AGE
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #' @noRd
 .emax_add_term <- function(object, formula, quiet = FALSE) {
 
   # assertions
-  .assert(inherits(object, "emax_fit"))
+  .assert(inherits(object, "emaxnls_fit"))
   .assert(inherits(formula, "formula"))
   .assert(length(formula) == 3)
 
@@ -50,14 +50,14 @@
   return(updated)
 }
 
-#' @param object An emax_fit object
+#' @param object An emaxnls_fit object
 #' @param formula A formula such as E0 ~ AGE
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #' @noRd
 .emax_remove_term <- function(object, formula, quiet = FALSE) {
 
   # assertions
-  .assert(inherits(object, "emax_fit"))
+  .assert(inherits(object, "emaxnls_fit"))
   .assert(inherits(formula, "formula"))
   .assert(length(formula) == 3)
 

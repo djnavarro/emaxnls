@@ -1,5 +1,5 @@
 
-.assert <- function(expr, message = "emax_nls error", class = "emax_nls_error") {
+.assert <- function(expr, message = "emax_nls error", class = "emaxnls_error") {
   if (any(expr == FALSE)) rlang::abort(message = message, class = class)
 }
 

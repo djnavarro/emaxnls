@@ -53,7 +53,7 @@
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
   # vice versa
-  .assert(inherits(mod, "emax_fit"))
+  .assert(inherits(mod, "emaxnls_fit"))
   .validate_candidate_list(candidates, names(mod$data))
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
@@ -112,7 +112,7 @@
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
   # vice versa
-  .assert(inherits(mod, "emax_fit"))
+  .assert(inherits(mod, "emaxnls_fit"))
   .validate_candidate_list(candidates, names(mod$data))
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)

@@ -2,14 +2,14 @@
 
 #' Coefficents for an Emax regression
 #'
-#' @param object An emax_fit object
+#' @param object An emaxnls_fit object
 #' @param level Confidence level for interval estimate
 #' @param ... Ignored
 #'
 #' @returns A tibble
 #'
 #' @exportS3Method stats::coef
-coef.emax_fit <- function(object, level = 0.95, ...) {
+coef.emaxnls_fit <- function(object, level = 0.95, ...) {
   sss <- summary(object$result)
   coef_tbl <- sss$coef
   ci <- nlstools::confint2(object$result, level = level)
@@ -32,37 +32,37 @@ coef.emax_fit <- function(object, level = 0.95, ...) {
 
 #' Variance-covariance matrix for an Emax regression
 #'
-#' @param object An emax_fit object
+#' @param object An emaxnls_fit object
 #' @param ... Ignored
 #'
 #' @returns A matrix
 #'
 #' @exportS3Method stats::vcov
-vcov.emax_fit <- function(object, ...) {
+vcov.emaxnls_fit <- function(object, ...) {
   vcov(object$result, ...)
 }
 
 #' Residuals for an Emax regression
 #'
-#' @param object An emax_fit object
+#' @param object An emaxnls_fit object
 #' @param ... Ignored
 #'
 #' @returns Numeric vector of residuals
 #'
 #' @exportS3Method stats::residuals
-residuals.emax_fit <- function(object, ...) {
+residuals.emaxnls_fit <- function(object, ...) {
   residuals(object$result, ...)
 }
 
 #' Print an Emax regression model object
 #'
-#' @param x An emax_fit object
+#' @param x An emaxnls_fit object
 #' @param ... Ignored
 #'
 #' @returns Invisibly returns the original object
 #'
 #' @exportS3Method base::print
-print.emax_fit <- function(x, ...) {
+print.emaxnls_fit <- function(x, ...) {
 
   cat("Structural model:\n\n")
   cat("  Exposure: ", as.character(x$variables$exposure), "\n")

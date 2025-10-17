@@ -7,7 +7,7 @@
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #'  
 #' @returns
-#' An object of class `emax_fit`
+#' An object of class `emaxnls_fit`
 #' 
 #' @examples
 #' emax_nls(

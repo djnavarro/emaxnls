@@ -142,13 +142,15 @@
   )
 
   # warn if convergence fails
-  if (!is.null(out$error) & !quiet) warning("`nls()` did not converge")
+  if (!is.null(out$error) & !quiet) {
+    rlang::warn("`nls()` did not converge", class = "emaxnls_warning")
+  }
 
   # append to object and return
   obj$error  <- out$error
   obj$result <- out$result
 
-  return(structure(obj, class = "emax_fit"))
+  return(structure(obj, class = "emaxnls_fit"))
 }
 
 

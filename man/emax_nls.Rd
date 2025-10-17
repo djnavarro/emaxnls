@@ -16,7 +16,7 @@ emax_nls(structural_model, covariate_model, data, quiet = FALSE)
 \item{quiet}{When quiet=TRUE messages and warnings are suppressed}
 }
 \value{
-An object of class \code{emax_fit}
+An object of class \code{emaxnls_fit}
 }
 \description{
 Emax model with arbitrary covariates (does not support interactions)
