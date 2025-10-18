@@ -69,3 +69,10 @@ final_mod <- base_model |>
 final_mod
 ```
 
+
+## Simulation
+
+```{r}
+simulate(final_mod, nsim = 1)
+```
+

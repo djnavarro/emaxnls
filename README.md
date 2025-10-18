@@ -165,3 +165,25 @@ final_mod
 #> Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03
 #> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03
 ```
+
+## Simulation
+
+``` r
+simulate(final_mod, nsim = 1)
+#> # A tibble: 400 × 11
+#>    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept
+#>     <int>  <int> <dbl> <dbl>        <dbl>    <dbl>          <dbl>
+#>  1      1      1  6.52  6.86         4.96    0.508           10.1
+#>  2      2      1  7.84  8.12         4.96    0.508           10.1
+#>  3      3      1  7.14  7.11         4.96    0.508           10.1
+#>  4      4      1  7.00  6.85         4.96    0.508           10.1
+#>  5      5      1  6.22  6.03         4.96    0.508           10.1
+#>  6      6      1  7.42  7.07         4.96    0.508           10.1
+#>  7      7      1  6.42  6.32         4.96    0.508           10.1
+#>  8      8      1  5.53  4.89         4.96    0.508           10.1
+#>  9      9      1  6.95  8.04         4.96    0.508           10.1
+#> 10     10      1  8.71  9.31         4.96    0.508           10.1
+#> # ℹ 390 more rows
+#> # ℹ 4 more variables: logEC50_Intercept <dbl>, response_1 <dbl>,
+#> #   exposure_1 <dbl>, cnt_a <dbl>
+```
