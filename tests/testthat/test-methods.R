@@ -10,6 +10,7 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(vcov(mod))
   expect_no_error(residuals(mod))
   expect_no_error(print(mod))
+  expect_no_error(simulate(mod))
 })
 
 test_that("coef() returns data frame with the expected structure", {

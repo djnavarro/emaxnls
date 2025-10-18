@@ -91,3 +91,29 @@ print.emaxnls_fit <- function(x, ...) {
   return(invisible(x))
 }
 
+
+#' Simulate responses from Emax regression model
+#'
+#' @param object An emaxnls_fit object
+#' @param nsim Number of replicates
+#' @param seed Used to set RNG seed
+#' @param ... Ignored
+#'
+#' @returns A data frame or tibble
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = response_1 ~ exposure_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' simulate(mod)
+#'
+#' @exportS3Method stats::simulate
+simulate.emaxnls_fit <- function(object, nsim = 1, seed = NULL, ...) {
+  .emax_resample(
+    mod = object,
+    nsim = nsim,
+    seed = seed
+  )
+}

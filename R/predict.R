@@ -16,7 +16,7 @@
   }
 }
 
-.emax_resample <- function(mod, n = 100, seed = NULL) {
+.emax_resample <- function(mod, nsim, seed = NULL) {
 
   if (!is.null(seed)) set.seed(seed)
 
@@ -30,13 +30,13 @@
   dat <- mod$data[,var]
   dat$dat_id <- 1L:nr
 
-  par <- mvtnorm::rmvnorm(n, mean = est, sigma = cov)
+  par <- mvtnorm::rmvnorm(nsim, mean = est, sigma = cov)
   colnames(par) <- lbl
 
   .f <- .emax_fn(mod)
 
   sim <- list()
-  for (ss in 1L:n) {
+  for (ss in 1L:nsim) {
     sim[[ss]] <- tibble::tibble(
       dat_id = 1L:nr,
       sim_id = ss,
@@ -46,7 +46,7 @@
   }
   sim <- dplyr::bind_rows(sim)
   par <- tibble::as_tibble(par)
-  par$sim_id <- 1L:n
+  par$sim_id <- 1L:nsim
 
   out <- sim |>
     dplyr::left_join(par, by = "sim_id") |>
