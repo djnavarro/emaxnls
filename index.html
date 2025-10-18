@@ -208,6 +208,28 @@
 <span><span class="co">#&gt; Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03</span></span>
 <span><span class="co">#&gt; logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">final_mod</span>, nsim <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 400 × 11</span></span>
+<span><span class="co">#&gt;    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept</span></span>
+<span><span class="co">#&gt;     &lt;int&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1      1      1  6.52  6.86         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  2      2      1  7.84  8.12         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  3      3      1  7.14  7.11         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  4      4      1  7.00  6.85         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  5      5      1  6.22  6.03         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  6      6      1  7.42  7.07         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  7      7      1  6.42  6.32         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  8      8      1  5.53  4.89         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  9      9      1  6.95  8.04         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt; 10     10      1  8.71  9.31         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt; # ℹ 390 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 4 more variables: logEC50_Intercept &lt;dbl&gt;, response_1 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   exposure_1 &lt;dbl&gt;, cnt_a &lt;dbl&gt;</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
