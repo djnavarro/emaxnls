@@ -2,3 +2,23 @@ url: https://emaxnls.djnavarro.net/
 template:
   bootstrap: 5
   light-switch: true
+
+reference:
+- title: Build 
+  desc: Build Emax regression models
+- contents:
+  - emax_nls
+  - emax_scm
+  - emax_update
+- title: Methods
+  desc: Methods for Emax regression objects
+- contents:
+  - print.emaxnls_fit
+  - coef.emaxnls_fit
+  - vcov.emaxnls_fit
+  - residuals.emaxnls_fit
+  - simulate.emaxnls_fit
+- title: Other
+  desc: Other exported objects
+- contents:
+  - emax_df
