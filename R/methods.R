@@ -153,11 +153,30 @@ NULL
 #' @exportS3Method stats::AIC
 #' @rdname AIC
 AIC.emaxnls_fit <- function(object, ..., k = 2) {
-  stats::AIC(object$result, ..., k = k)
+  mods <- list(object, ...)
+  nls_mods <- lapply(mods, function(x) x$result)
+  do.call(stats::AIC, nls_mods)
 }
 
 #' @exportS3Method stats::BIC
 #' @rdname AIC
 BIC.emaxnls_fit <- function(object, ...) {
-  stats::BIC(object$result, ...)
+  mods <- list(object, ...)
+  nls_mods <- lapply(mods, function(x) x$result)
+  do.call(stats::BIC, nls_mods)
+}
+
+
+#' Analysis of variance for Emax regression models
+#'
+#' @param object An `emaxnls_fit`` object
+#' @param ... Additional fitted model objects
+#'
+#' @returns Analysis of variance tables for a sequence of `emaxnls_fit` models
+#'
+#' @exportS3Method stats::anova
+anova.emaxnls_fit <- function(object, ...) {
+  mods <- list(object, ...)
+  nls_mods <- lapply(mods, function(x) x$result)
+  do.call(stats::anova, nls_mods)
 }

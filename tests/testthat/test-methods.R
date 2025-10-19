@@ -5,6 +5,12 @@ mod <- emax_nls(
 )
 lbl <- mod$coefficients
 
+mod_base <- emax_nls(
+  structural_model = response_1 ~ exposure_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
 test_that("methods do not throw errors with basic use", {
   expect_no_error(coef(mod))
   expect_no_error(vcov(mod))
@@ -14,6 +20,12 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(logLik(mod))
   expect_no_error(AIC(mod))
   expect_no_error(BIC(mod))
+})
+
+test_that("AIC(), BIC(), and anova() can take multiple objects", {
+  expect_no_error(AIC(mod_base, mod))
+  expect_no_error(BIC(mod_base, mod))
+  expect_no_error(anova(mod_base, mod))
 })
 
 test_that("coef() returns data frame with the expected structure", {
