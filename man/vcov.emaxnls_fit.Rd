@@ -7,7 +7,7 @@
 \method{vcov}{emaxnls_fit}(object, ...)
 }
 \arguments{
-\item{object}{An emaxnls_fit object}
+\item{object}{An `emaxnls_fit`` object}
 
 \item{...}{Ignored}
 }

@@ -7,7 +7,7 @@
 \method{print}{emaxnls_fit}(x, ...)
 }
 \arguments{
-\item{x}{An emaxnls_fit object}
+\item{x}{An `emaxnls_fit`` object}
 
 \item{...}{Ignored}
 }

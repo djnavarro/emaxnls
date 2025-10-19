@@ -2,7 +2,7 @@
 
 #' Coefficents for an Emax regression
 #'
-#' @param object An emaxnls_fit object
+#' @param object An `emaxnls_fit`` object
 #' @param level Confidence level for interval estimate
 #' @param ... Ignored
 #'
@@ -32,7 +32,7 @@ coef.emaxnls_fit <- function(object, level = 0.95, ...) {
 
 #' Variance-covariance matrix for an Emax regression
 #'
-#' @param object An emaxnls_fit object
+#' @param object An `emaxnls_fit`` object
 #' @param ... Ignored
 #'
 #' @returns A matrix
@@ -44,7 +44,7 @@ vcov.emaxnls_fit <- function(object, ...) {
 
 #' Residuals for an Emax regression
 #'
-#' @param object An emaxnls_fit object
+#' @param object An `emaxnls_fit`` object
 #' @param ... Ignored
 #'
 #' @returns Numeric vector of residuals
@@ -56,7 +56,7 @@ residuals.emaxnls_fit <- function(object, ...) {
 
 #' Print an Emax regression model object
 #'
-#' @param x An emaxnls_fit object
+#' @param x An `emaxnls_fit`` object
 #' @param ... Ignored
 #'
 #' @returns Invisibly returns the original object
@@ -94,7 +94,7 @@ print.emaxnls_fit <- function(x, ...) {
 
 #' Simulate responses from Emax regression model
 #'
-#' @param object An emaxnls_fit object
+#' @param object An `emaxnls_fit`` object
 #' @param nsim Number of replicates
 #' @param seed Used to set RNG seed
 #' @param ... Ignored
@@ -116,4 +116,48 @@ simulate.emaxnls_fit <- function(object, nsim = 1, seed = NULL, ...) {
     nsim = nsim,
     seed = seed
   )
+}
+
+
+#' Log-likelihood for an Emax regression model
+#'
+#' @param object An `emaxnls_fit`` object
+#' @param REML For `nls` objects only `REML = FALSE` is supported
+#' @param ... Ignored
+#'
+#' @returns Returns an object of class logLik. This is a number with 
+#' at least one attribute, "df" (degrees of freedom), giving the 
+#' number of (estimated) parameters in the model.
+#'
+#' @exportS3Method stats::logLik
+logLik.emaxnls_fit <- function(object, REML = FALSE, ...) {
+  # logLik.nls doesn't support REML=TRUE; but let stats pkg handle the message
+  stats::logLik(object$result, REML = REML, ...) 
+}
+
+
+#' Akaike information criterion / Bayesian information criterion 
+#'
+#' @param object An `emaxnls_fit`` object
+#' @param ... Optionally, more fitted model objects
+#' @param k Penalty per parameter in the AIC
+#'
+#' @returns
+#' If just one object is provided, a numeric value with the corresponding AIC (or BIC). 
+#' If multiple objects are provided, a data.frame with rows corresponding to the objects 
+#' and columns representing the number of parameters in the model (df) and the AIC or BIC.
+#'
+#' @name AIC
+NULL
+
+#' @exportS3Method stats::AIC
+#' @rdname AIC
+AIC.emaxnls_fit <- function(object, ..., k = 2) {
+  stats::AIC(object$result, ..., k = k)
+}
+
+#' @exportS3Method stats::BIC
+#' @rdname AIC
+BIC.emaxnls_fit <- function(object, ...) {
+  stats::BIC(object$result, ...)
 }

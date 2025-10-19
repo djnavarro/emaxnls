@@ -7,7 +7,7 @@
 \method{simulate}{emaxnls_fit}(object, nsim = 1, seed = NULL, ...)
 }
 \arguments{
-\item{object}{An emaxnls_fit object}
+\item{object}{An `emaxnls_fit`` object}
 
 \item{nsim}{Number of replicates}
 

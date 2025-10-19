@@ -17,6 +17,8 @@ reference:
   - coef.emaxnls_fit
   - vcov.emaxnls_fit
   - residuals.emaxnls_fit
+  - logLik.emaxnls_fit
+  - AIC.emaxnls_fit
   - simulate.emaxnls_fit
 - title: Other
   desc: Other exported objects
