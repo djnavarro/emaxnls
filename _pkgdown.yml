@@ -19,6 +19,7 @@ reference:
   - residuals.emaxnls_fit
   - logLik.emaxnls_fit
   - AIC.emaxnls_fit
+  - anova.emaxnls_fit
   - simulate.emaxnls_fit
 - title: Other
   desc: Other exported objects
