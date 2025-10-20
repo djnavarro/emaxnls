@@ -25,7 +25,7 @@ emax_backward(
 )
 }
 \arguments{
-\item{mod}{An emaxnls_fit object}
+\item{mod}{An \code{emaxnls} object}
 
 \item{candidates}{A list of candidate covariates}
 
@@ -38,7 +38,7 @@ emax_backward(
 \item{seed}{Seed for the RNG state}
 }
 \value{
-An object of class \code{emaxnls_fit}
+An object of class \code{emaxnls}
 }
 \description{
 Stepwise covariate modelling for Emax regression

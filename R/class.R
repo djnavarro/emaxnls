@@ -150,9 +150,5 @@
   obj$error  <- out$error
   obj$result <- out$result
 
-  return(structure(obj, class = "emaxnls_fit"))
+  return(structure(obj, class = "emaxnls"))
 }
-
-
-
-

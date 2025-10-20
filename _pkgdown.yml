@@ -13,15 +13,15 @@ reference:
 - title: Methods
   desc: Methods for Emax regression objects
 - contents:
-  - print.emaxnls_fit
-  - coef.emaxnls_fit
-  - vcov.emaxnls_fit
-  - residuals.emaxnls_fit
-  - logLik.emaxnls_fit
-  - AIC.emaxnls_fit
-  - anova.emaxnls_fit
-  - simulate.emaxnls_fit
-  - predict.emaxnls_fit
+  - print.emaxnls
+  - coef.emaxnls
+  - vcov.emaxnls
+  - residuals.emaxnls
+  - logLik.emaxnls
+  - AIC.emaxnls
+  - anova.emaxnls
+  - simulate.emaxnls
+  - predict.emaxnls
 - title: Other
   desc: Other exported objects
 - contents:

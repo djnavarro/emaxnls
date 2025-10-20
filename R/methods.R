@@ -2,14 +2,14 @@
 
 #' Coefficents for an Emax regression
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param level Confidence level for interval estimate
 #' @param ... Ignored
 #'
 #' @returns A tibble
 #'
 #' @exportS3Method stats::coef
-coef.emaxnls_fit <- function(object, level = 0.95, ...) {
+coef.emaxnls <- function(object, level = 0.95, ...) {
   sss <- summary(object$result)
   coef_tbl <- sss$coef
   ci <- nlstools::confint2(object$result, level = level)
@@ -31,39 +31,39 @@ coef.emaxnls_fit <- function(object, level = 0.95, ...) {
 }
 
 #' Variance-covariance matrix for an Emax regression
-#'#' @param object An `emaxnls_fit`` object
+#'#' @param object An `emaxnls`` object
 
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param ... Ignored
 #'
 #' @returns A matrix
 #'
 #' @exportS3Method stats::vcov
-vcov.emaxnls_fit <- function(object, ...) {
+vcov.emaxnls <- function(object, ...) {
   vcov(object$result, ...)
 }
 
 #' Residuals for an Emax regression
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param ... Ignored
 #'
 #' @returns Numeric vector of residuals
 #'
 #' @exportS3Method stats::residuals
-residuals.emaxnls_fit <- function(object, ...) {
+residuals.emaxnls <- function(object, ...) {
   residuals(object$result, ...)
 }
 
 #' Print an Emax regression model object
 #'
-#' @param x An `emaxnls_fit` object
+#' @param x An `emaxnls` object
 #' @param ... Ignored
 #'
 #' @returns Invisibly returns the original object
 #'
 #' @exportS3Method base::print
-print.emaxnls_fit <- function(x, ...) {
+print.emaxnls <- function(x, ...) {
 
   cat("Structural model:\n\n")
   cat("  Exposure: ", as.character(x$variables$exposure), "\n")
@@ -95,7 +95,7 @@ print.emaxnls_fit <- function(x, ...) {
 
 #' Simulate responses from Emax regression model
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param nsim Number of replicates
 #' @param seed Used to set RNG seed
 #' @param ... Ignored
@@ -111,7 +111,7 @@ print.emaxnls_fit <- function(x, ...) {
 #' simulate(mod)
 #'
 #' @exportS3Method stats::simulate
-simulate.emaxnls_fit <- function(object, nsim = 1, seed = NULL, ...) {
+simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
   .emax_resample(
     mod = object,
     nsim = nsim,
@@ -122,16 +122,16 @@ simulate.emaxnls_fit <- function(object, nsim = 1, seed = NULL, ...) {
 
 #' Log-likelihood for an Emax regression model
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param REML For `nls` objects only `REML = FALSE` is supported
 #' @param ... Ignored
 #'
-#' @returns Returns an object of class logLik. This is a number with 
+#' @returns Returns an object of class `logLik`. This is a number with 
 #' at least one attribute, "df" (degrees of freedom), giving the 
 #' number of (estimated) parameters in the model.
 #'
 #' @exportS3Method stats::logLik
-logLik.emaxnls_fit <- function(object, REML = FALSE, ...) {
+logLik.emaxnls <- function(object, REML = FALSE, ...) {
   # logLik.nls doesn't support REML=TRUE; but let stats pkg handle the message
   stats::logLik(object$result, REML = REML, ...) 
 }
@@ -139,7 +139,7 @@ logLik.emaxnls_fit <- function(object, REML = FALSE, ...) {
 
 #' Akaike information criterion / Bayesian information criterion 
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param ... Optionally, more fitted model objects
 #' @param k Penalty per parameter in the AIC
 #'
@@ -153,7 +153,7 @@ NULL
 
 #' @exportS3Method stats::AIC
 #' @rdname AIC
-AIC.emaxnls_fit <- function(object, ..., k = 2) {
+AIC.emaxnls <- function(object, ..., k = 2) {
   mods <- list(object, ...)
   nls_mods <- lapply(mods, function(x) x$result)
   do.call(stats::AIC, nls_mods)
@@ -161,7 +161,7 @@ AIC.emaxnls_fit <- function(object, ..., k = 2) {
 
 #' @exportS3Method stats::BIC
 #' @rdname AIC
-BIC.emaxnls_fit <- function(object, ...) {
+BIC.emaxnls <- function(object, ...) {
   mods <- list(object, ...)
   nls_mods <- lapply(mods, function(x) x$result)
   do.call(stats::BIC, nls_mods)
@@ -170,13 +170,13 @@ BIC.emaxnls_fit <- function(object, ...) {
 
 #' Analysis of variance for Emax regression models
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param ... Additional fitted model objects
 #'
-#' @returns Analysis of variance tables for a sequence of `emaxnls_fit` models
+#' @returns Analysis of variance tables for a sequence of `emaxnls` models
 #'
 #' @exportS3Method stats::anova
-anova.emaxnls_fit <- function(object, ...) {
+anova.emaxnls <- function(object, ...) {
   mods <- list(object, ...)
   nls_mods <- lapply(mods, function(x) x$result)
   do.call(stats::anova, nls_mods)
@@ -185,7 +185,7 @@ anova.emaxnls_fit <- function(object, ...) {
 
 #' Predicting from Emax regression models
 #'
-#' @param object An `emaxnls_fit` object
+#' @param object An `emaxnls` object
 #' @param newdata A named list or data frame in which to look for variables with which to predict. 
 #' If `newdata` is missing the fitted values at the original data points are returned.
 #' @param interval A character string indicating if prediction intervals or a confidence interval 
@@ -201,7 +201,7 @@ anova.emaxnls_fit <- function(object, ...) {
 #' prediction intervals. Please see the documentation for that function. 
 #' 
 #' @exportS3Method stats::predict
-predict.emaxnls_fit <- function(object, 
+predict.emaxnls <- function(object, 
                                 newdata, 
                                 interval = c("none", "confidence", "prediction"),
                                 level = 0.95, 

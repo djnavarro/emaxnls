@@ -7,7 +7,7 @@
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #'  
 #' @returns
-#' An object of class `emaxnls_fit`
+#' An object of class `emaxnls`
 #' 
 #' @examples
 #' emax_nls(
@@ -31,12 +31,12 @@ emax_nls <- function(structural_model,
 
 #' Add or remove a covariate term from an Emax regression
 #'
-#' @param object An emaxnls_fit object
+#' @param object An `emaxnls` object
 #' @param formula A formula such as E0 ~ AGE
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #'
 #' @returns
-#' An object of class `emaxnls_fit`
+#' An object of class `emaxnls`
 #'
 #' @examples
 #' mod_0 <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
@@ -62,7 +62,7 @@ emax_remove_term <- function(object, formula, quiet = FALSE) {
 
 #' Stepwise covariate modelling for Emax regression
 #'
-#' @param mod An emaxnls_fit object
+#' @param mod An `emaxnls` object
 #' @param candidates A list of candidate covariates
 #' @param threshold Threshold for addition or removal
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
@@ -70,7 +70,7 @@ emax_remove_term <- function(object, formula, quiet = FALSE) {
 #' @param seed Seed for the RNG state
 #'
 #' @returns
-#' An object of class `emaxnls_fit`
+#' An object of class `emaxnls`
 #'
 #' @examples
 #' base_model <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)

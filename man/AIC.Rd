@@ -2,16 +2,16 @@
 % Please edit documentation in R/methods.R
 \name{AIC}
 \alias{AIC}
-\alias{AIC.emaxnls_fit}
-\alias{BIC.emaxnls_fit}
+\alias{AIC.emaxnls}
+\alias{BIC.emaxnls}
 \title{Akaike information criterion / Bayesian information criterion}
 \usage{
-\method{AIC}{emaxnls_fit}(object, ..., k = 2)
+\method{AIC}{emaxnls}(object, ..., k = 2)
 
-\method{BIC}{emaxnls_fit}(object, ...)
+\method{BIC}{emaxnls}(object, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls_fit} object}
+\item{object}{An \code{emaxnls} object}
 
 \item{...}{Optionally, more fitted model objects}
 

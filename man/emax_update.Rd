@@ -11,14 +11,14 @@ emax_add_term(object, formula, quiet = FALSE)
 emax_remove_term(object, formula, quiet = FALSE)
 }
 \arguments{
-\item{object}{An emaxnls_fit object}
+\item{object}{An \code{emaxnls} object}
 
 \item{formula}{A formula such as E0 ~ AGE}
 
 \item{quiet}{When quiet=TRUE messages and warnings are suppressed}
 }
 \value{
-An object of class \code{emaxnls_fit}
+An object of class \code{emaxnls}
 }
 \description{
 Add or remove a covariate term from an Emax regression
