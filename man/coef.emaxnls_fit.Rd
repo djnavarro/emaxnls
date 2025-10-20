@@ -7,7 +7,7 @@
 \method{coef}{emaxnls_fit}(object, level = 0.95, ...)
 }
 \arguments{
-\item{object}{An `emaxnls_fit`` object}
+\item{object}{An \code{emaxnls_fit} object}
 
 \item{level}{Confidence level for interval estimate}
 

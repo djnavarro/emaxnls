@@ -2,7 +2,7 @@
 
 #' Coefficents for an Emax regression
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param level Confidence level for interval estimate
 #' @param ... Ignored
 #'
@@ -31,8 +31,9 @@ coef.emaxnls_fit <- function(object, level = 0.95, ...) {
 }
 
 #' Variance-covariance matrix for an Emax regression
-#'
-#' @param object An `emaxnls_fit`` object
+#'#' @param object An `emaxnls_fit`` object
+
+#' @param object An `emaxnls_fit` object
 #' @param ... Ignored
 #'
 #' @returns A matrix
@@ -44,7 +45,7 @@ vcov.emaxnls_fit <- function(object, ...) {
 
 #' Residuals for an Emax regression
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param ... Ignored
 #'
 #' @returns Numeric vector of residuals
@@ -56,7 +57,7 @@ residuals.emaxnls_fit <- function(object, ...) {
 
 #' Print an Emax regression model object
 #'
-#' @param x An `emaxnls_fit`` object
+#' @param x An `emaxnls_fit` object
 #' @param ... Ignored
 #'
 #' @returns Invisibly returns the original object
@@ -94,7 +95,7 @@ print.emaxnls_fit <- function(x, ...) {
 
 #' Simulate responses from Emax regression model
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param nsim Number of replicates
 #' @param seed Used to set RNG seed
 #' @param ... Ignored
@@ -121,7 +122,7 @@ simulate.emaxnls_fit <- function(object, nsim = 1, seed = NULL, ...) {
 
 #' Log-likelihood for an Emax regression model
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param REML For `nls` objects only `REML = FALSE` is supported
 #' @param ... Ignored
 #'
@@ -138,7 +139,7 @@ logLik.emaxnls_fit <- function(object, REML = FALSE, ...) {
 
 #' Akaike information criterion / Bayesian information criterion 
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param ... Optionally, more fitted model objects
 #' @param k Penalty per parameter in the AIC
 #'
@@ -169,7 +170,7 @@ BIC.emaxnls_fit <- function(object, ...) {
 
 #' Analysis of variance for Emax regression models
 #'
-#' @param object An `emaxnls_fit`` object
+#' @param object An `emaxnls_fit` object
 #' @param ... Additional fitted model objects
 #'
 #' @returns Analysis of variance tables for a sequence of `emaxnls_fit` models
@@ -179,4 +180,32 @@ anova.emaxnls_fit <- function(object, ...) {
   mods <- list(object, ...)
   nls_mods <- lapply(mods, function(x) x$result)
   do.call(stats::anova, nls_mods)
+}
+
+
+#' Predicting from Emax regression models
+#'
+#' @param object An `emaxnls_fit` object
+#' @param newdata A named list or data frame in which to look for variables with which to predict. 
+#' If `newdata` is missing the fitted values at the original data points are returned.
+#' @param interval A character string indicating if prediction intervals or a confidence interval 
+#' on the mean responses are to be calculated.
+#' @param level A numeric scalar between 0 and 1 giving the confidence level for the intervals 
+#' (if any) to be calculated.
+#' @param ... Ignored
+#'
+#' @returns The `predict()` method for Emax regression objects always returns a data frame or tibble
+#'
+#' @details
+#' Note that `predict()` for Emax regression calls `investr::predFit()` to obtain confidence and 
+#' prediction intervals. Please see the documentation for that function. 
+#' 
+#' @exportS3Method stats::predict
+predict.emaxnls_fit <- function(object, 
+                                newdata, 
+                                interval = c("none", "confidence", "prediction"),
+                                level = 0.95, 
+                                ...
+) {
+  
 }

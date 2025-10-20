@@ -7,7 +7,7 @@
 \method{anova}{emaxnls_fit}(object, ...)
 }
 \arguments{
-\item{object}{An `emaxnls_fit`` object}
+\item{object}{An \code{emaxnls_fit} object}
 
 \item{...}{Additional fitted model objects}
 }

@@ -21,6 +21,7 @@ reference:
   - AIC.emaxnls_fit
   - anova.emaxnls_fit
   - simulate.emaxnls_fit
+  - predict.emaxnls_fit
 - title: Other
   desc: Other exported objects
 - contents:

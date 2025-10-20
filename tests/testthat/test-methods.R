@@ -20,6 +20,7 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(logLik(mod))
   expect_no_error(AIC(mod))
   expect_no_error(BIC(mod))
+  expect_no_error(predict(mod))
 })
 
 test_that("AIC(), BIC(), and anova() can take multiple objects", {

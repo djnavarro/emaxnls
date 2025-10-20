@@ -7,7 +7,7 @@
 \method{logLik}{emaxnls_fit}(object, REML = FALSE, ...)
 }
 \arguments{
-\item{object}{An `emaxnls_fit`` object}
+\item{object}{An \code{emaxnls_fit} object}
 
 \item{REML}{For \code{nls} objects only \code{REML = FALSE} is supported}
 

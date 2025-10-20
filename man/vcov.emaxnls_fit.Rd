@@ -2,12 +2,13 @@
 % Please edit documentation in R/methods.R
 \name{vcov.emaxnls_fit}
 \alias{vcov.emaxnls_fit}
-\title{Variance-covariance matrix for an Emax regression}
+\title{Variance-covariance matrix for an Emax regression
+#' @param object An `emaxnls_fit`` object}
 \usage{
 \method{vcov}{emaxnls_fit}(object, ...)
 }
 \arguments{
-\item{object}{An `emaxnls_fit`` object}
+\item{object}{An \code{emaxnls_fit} object}
 
 \item{...}{Ignored}
 }
@@ -16,4 +17,5 @@ A matrix
 }
 \description{
 Variance-covariance matrix for an Emax regression
+#' @param object An `emaxnls_fit`` object
 }
