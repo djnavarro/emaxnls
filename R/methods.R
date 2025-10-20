@@ -183,6 +183,31 @@ anova.emaxnls <- function(object, ...) {
 }
 
 
+#' Confidence intervals for Emax regression model parameters
+#'
+#' @param object An `emaxnls` object
+#' @param parm A specification of which parameters are to be given confidence intervals, 
+#' either a vector of numbers or a vector of names. If `parm = NULL`, all parameters are 
+#' considered.
+#' @param level The confidence level required
+#' @param ... Ignored
+#'
+#' @returns
+#' A matrix (or vector) with columns giving lower and upper confidence limits for each 
+#' parameter. These will be labelled as (1-level)/2 and 1 - (1-level)/2 in % (by default 
+#' 2.5% and 97.5%).
+#' 
+#' @exportS3Method stats::confint
+confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
+  .confint_quiet <- purrr::quietly(stats::confint)
+  if (is.null(parm)) {
+    ci <- .confint_quiet(object$result, level = level, ...)
+  } else {
+    ci <- .confint_quiet(object$result, parm = parm, level = level, ...)
+  }
+  ci$result
+}
+
 #' Predicting from Emax regression models
 #'
 #' @param object An `emaxnls` object

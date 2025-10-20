@@ -16,6 +16,7 @@ reference:
   - print.emaxnls
   - coef.emaxnls
   - vcov.emaxnls
+  - confint.emaxnls
   - residuals.emaxnls
   - logLik.emaxnls
   - AIC.emaxnls
