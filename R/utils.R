@@ -7,7 +7,10 @@
 # note: this should probably have a "strictness" argument governing how
 # deeply we want to push the comparison
 .emax_identical <- function(mod1, mod2) {
-  identical(mod1$variables, mod2$variables)
+  identical(
+    .extract_parameter_names(mod1), 
+    .extract_parameter_names(mod2)
+  )
 }
 
 .is_formula <- function(x, sides = NULL) {
@@ -32,8 +35,6 @@
   if (.is_sigmoidal(covariate_model)) return("sigmoidal")
   stop("invalid covariate model", call. = FALSE)
 }
-
-
 
 # only of interest for expanding the model matrix
 .emax_flat_formula <- function(structural_model, covariate_model) {
@@ -91,5 +92,8 @@ utils::globalVariables(c(
   "coef",
   "mu",
   "residuals",
-  "variable"
+  "variable",
+  "formula",
+  "algorithm",
+  "control"
 ))

@@ -27,8 +27,8 @@ test_that(".emax_once_forward and .emax_once_backward select the expected terms"
   fwd_mod_0a <- .emax_once_forward(mod_0, cov_list, threshold = .05, quiet = TRUE)  # should add E0 ~ cnt_a
   bck_mod_1a <- .emax_once_backward(mod_1, cov_list, threshold = .05, quiet = TRUE) # should not remove 
 
-  expect_equal(sort(fwd_mod_0a$coefficients), sort(mod_1$coefficients))
-  expect_equal(sort(bck_mod_1a$coefficients), sort(mod_1$coefficients))
+  expect_equal(sort(.extract_parameter_names(fwd_mod_0a)), sort(.extract_parameter_names(mod_1)))
+  expect_equal(sort(.extract_parameter_names(bck_mod_1a)), sort(.extract_parameter_names(mod_1)))
 
   fwd_mod_0b <- .emax_once_forward(mod_0, cov_list, threshold = 0, quiet = TRUE)  # should not add_
   bck_mod_1b <- .emax_once_backward(mod_1, cov_list, threshold = 0, quiet = TRUE) # should remove E0 ~ cnt_a 
@@ -41,5 +41,5 @@ test_that(".emax_once_forward and .emax_once_backward select the expected terms"
 test_that("basic use of forward/backward scm works", {
   fwd <- .emax_forward(mod = mod_0, candidates = cov_list_big, quiet = TRUE)
   bck <- .emax_backward(mod = fwd, candidates = cov_list_big, quiet = TRUE)
-  expect_equal(sort(bck$coefficients), sort(mod_1$coefficients)) # should find the E0 ~ cnt_a term only
+  expect_equal(sort(.extract_parameter_names(bck)), sort(.extract_parameter_names(mod_1))) # should find the E0 ~ cnt_a term only
 })

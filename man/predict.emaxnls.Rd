@@ -4,13 +4,7 @@
 \alias{predict.emaxnls}
 \title{Predicting from Emax regression models}
 \usage{
-\method{predict}{emaxnls}(
-  object,
-  newdata,
-  interval = c("none", "confidence", "prediction"),
-  level = 0.95,
-  ...
-)
+\method{predict}{emaxnls}(object, newdata = NULL, interval = "none", level = 0.95, ...)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}
@@ -19,7 +13,7 @@
 If \code{newdata} is missing the fitted values at the original data points are returned.}
 
 \item{interval}{A character string indicating if prediction intervals or a confidence interval
-on the mean responses are to be calculated.}
+on the mean responses are to be calculated. Can be "none", "confidence", or "prediction"}
 
 \item{level}{A numeric scalar between 0 and 1 giving the confidence level for the intervals
 (if any) to be calculated.}

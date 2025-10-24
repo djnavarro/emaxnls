@@ -3,13 +3,13 @@
 # model comparison functions ----------------------------------------------
 
 .anova_p <- function(obj1, obj2) {
-  a <- stats::anova(obj1$result, obj2$result)
+  a <- stats::anova(obj1, obj2)
   return(a$`Pr(>F)`[2])
 }
 
 .aic_diff <- function(obj1, obj2) {
-  aic1 <- stats::AIC(obj1$result)
-  aic2 <- stats::AIC(obj2$result)
+  aic1 <- stats::AIC(obj1)
+  aic2 <- stats::AIC(obj2)
   return(aic1 - aic2)
 }
 
@@ -69,7 +69,7 @@
     candidate_mod <- .emax_add_term(mod, formula = t, quiet = TRUE)
     if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
       if (!quiet) message("try add: ", deparse(t))
-      if (!is.null(candidate_mod$result)) {  # skip if nls() fails
+      if (!is.null(.extract_nls(candidate_mod))) {  # skip if nls() fails
         p <- .anova_p(mod, candidate_mod)
         if (p < lowest_p) {
           best_mod <- candidate_mod
@@ -127,7 +127,7 @@
   for(t in terms) {
     candidate_mod <- .emax_remove_term(mod, formula = t, quiet = TRUE)
     if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
-      nls_fail <- is.null(candidate_mod$result)
+      nls_fail <- is.null(.extract_nls(candidate_mod))
       if (!nls_fail) {  # skip if nls() fails
         p <- .anova_p(candidate_mod, mod)
         if (p > highest_p) {

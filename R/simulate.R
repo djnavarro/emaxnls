@@ -10,9 +10,9 @@
       param <- coef(mod)$estimate
       names(param) <- coef(mod)$label
     }
-    old_env <- mod$result$m$getEnv()
+    old_env <- .extract_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
-    eval(mod$formula[[3]], envir = new_env)
+    eval(mod$formula$nls[[3]], envir = new_env)
   }
 }
 
@@ -23,7 +23,7 @@
   cov <- vcov(mod)
   est <- coef(mod)$estimate
   lbl <- coef(mod)$label
-  sig <- summary(mod$result)$sigma
+  sig <- summary(.extract_nls(mod))$sigma
   nr <- nrow(mod$data)
 
   var <- unique(unlist(mod$variables))

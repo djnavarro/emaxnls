@@ -71,14 +71,14 @@
   }
 
   if (model_type == "hyperbolic") {
-    formula <- stats::as.formula(paste0(
+    nls_formula <- stats::as.formula(paste0(
       variables$response, " ~ (", covariates$E0, ") + ", variables$exposure,
       " * (", covariates$Emax, ") / (", variables$exposure,
       " + exp(", covariates$logEC50, "))"
     ))
   }
   if (model_type == "sigmoidal") {
-    formula <- stats::as.formula(paste0(
+    nls_formula <- stats::as.formula(paste0(
       variables$response,
       " ~ (", covariates$E0, ") + ",
       variables$exposure, "^ exp(", covariates$logHill, ")",
@@ -98,57 +98,73 @@
   names(start) <- coefficients
   names(lower) <- coefficients
   names(upper) <- coefficients
-
-  # bundle all the setup into a list
+   
+  # initialise the emaxnls object
   obj <- list(
 
-    # input args
-    structural_model = structural_model,
-    covariate_model = covariate_model,
+    # formulae
+    formula = list(
+      structural = structural_model,
+      covariate = covariate_model,
+      nls = nls_formula 
+    ),
+      
+    # data
     data = data,
 
-    # model specification
-    formula = formula,
-    model_type = model_type,
-    variables = variables,
-    coefficients = coefficients,
-    design = design,
-    lookup = lookup,
+    # other information
+    info = list(
+      model_type = model_type,
+      variables = variables,
+      coefficients = coefficients
+    ),
 
-    # nls settings: for future development, these should
-    # be user-customisable values
-    start = start,
-    lower = lower,
-    upper = upper,
-    algorithm = "port",
-    control = list(
-      tol = 1e-8,
-      minFactor = 1024^-4,
-      maxiter = 200000,
-      scaleOffset = 1,
-      warnOnly = FALSE
+    # environment in which the nls call evaluates
+    env = rlang::new_environment(
+      data = list(
+        formula = nls_formula, 
+        design = design, 
+        lookup = lookup,
+        start = start, 
+        algorithm = "port", 
+        control = list(
+          tol = 1e-8,
+          minFactor = 1024^-4,
+          maxiter = 200000,
+          scaleOffset = 1,
+          warnOnly = FALSE
+        ), 
+        lower = lower, 
+        upper = upper
+      ), 
+      parent = parent.frame()
     )
-  )
+  )  
 
-  # call nls() safely
-  out <- .nls_safe(
-    formula   = obj$formula,
-    data      = obj$design,
-    start     = obj$start,
-    algorithm = obj$algorithm,
-    control   = obj$control,
-    lower     = obj$lower,
-    upper     = obj$upper
+  # call nls() safely, within the stored environment
+  tmp <- evalq(
+    .nls_safe(
+      formula   = formula,
+      data      = design,
+      start     = start,
+      algorithm = algorithm,
+      control   = control,
+      lower     = lower,
+      upper     = upper
+    ),
+    envir = obj$env
   )
+  obj$env$model <- tmp$result 
+  obj$env$error <- tmp$error
 
   # warn if convergence fails
-  if (!is.null(out$error) & !quiet) {
+  if (!is.null(obj$env$error) & !quiet) {
     rlang::warn("`nls()` did not converge", class = "emaxnls_warning")
   }
 
   # append to object and return
-  obj$error  <- out$error
-  obj$result <- out$result
+  #obj$error  <- out$error
+  #obj$result <- out$result
 
   return(structure(obj, class = "emaxnls"))
 }

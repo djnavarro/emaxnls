@@ -10,9 +10,9 @@
 #'
 #' @exportS3Method stats::coef
 coef.emaxnls <- function(object, level = 0.95, ...) {
-  sss <- summary(object$result)
+  sss <- summary(.extract_nls(object))
   coef_tbl <- sss$coef
-  ci <- nlstools::confint2(object$result, level = level)
+  ci <- nlstools::confint2(.extract_nls(object), level = level)
   coef_tbl |>
     as.data.frame() |>
     tibble::rownames_to_column("label") |>
@@ -40,7 +40,7 @@ coef.emaxnls <- function(object, level = 0.95, ...) {
 #'
 #' @exportS3Method stats::vcov
 vcov.emaxnls <- function(object, ...) {
-  vcov(object$result, ...)
+  vcov(.extract_nls(object), ...)
 }
 
 #' Residuals for an Emax regression
@@ -52,7 +52,7 @@ vcov.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::residuals
 residuals.emaxnls <- function(object, ...) {
-  residuals(object$result, ...)
+  residuals(.extract_nls(object), ...)
 }
 
 #' Print an Emax regression model object
@@ -66,18 +66,18 @@ residuals.emaxnls <- function(object, ...) {
 print.emaxnls <- function(x, ...) {
 
   cat("Structural model:\n\n")
-  cat("  Exposure: ", as.character(x$variables$exposure), "\n")
-  cat("  Response: ", as.character(x$variables$response), "\n")
-  cat("  Emax type:", x$model_type, "\n\n")
+  cat("  Exposure: ", as.character(.extract_exposure_name(x)), "\n")
+  cat("  Response: ", as.character(.extract_response_name(x)), "\n")
+  cat("  Emax type:", .extract_model_type(x), "\n\n")
   cat("Covariate model:\n\n")
-  cat("  E0:      ", deparse(x$covariate_model$E0), "\n")
-  cat("  Emax:    ", deparse(x$covariate_model$Emax), "\n")
-  cat("  logEC50: ", deparse(x$covariate_model$logEC50), "\n")
-  if (x$model_type == "sigmoidal") {
-    cat("  logHill: ", deparse(x$covariate_model$logHill), "\n")
+  cat("  E0:      ", deparse(.extract_covariate_formula(x, "E0")), "\n")
+  cat("  Emax:    ", deparse(.extract_covariate_formula(x, "Emax")), "\n")
+  cat("  logEC50: ", deparse(.extract_covariate_formula(x, "logEC50")), "\n")
+  if (.extract_model_type(x) == "sigmoidal") {
+    cat("  logHill: ", deparse(.extract_covariate_formula(x, "logHill")), "\n")
   }
   cat("\n")
-  if(is.null(x$result)) {
+  if(is.null(.extract_nls(x))) {
     cat("Model does not converge\n")
   } else {
     cat("Coefficient table:\n\n")
@@ -133,7 +133,7 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 #' @exportS3Method stats::logLik
 logLik.emaxnls <- function(object, REML = FALSE, ...) {
   # logLik.nls doesn't support REML=TRUE; but let stats pkg handle the message
-  stats::logLik(object$result, REML = REML, ...) 
+  stats::logLik(.extract_nls(object), REML = REML, ...) 
 }
 
 
@@ -154,16 +154,16 @@ NULL
 #' @exportS3Method stats::AIC
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
-  mods <- list(object, ...)
-  nls_mods <- lapply(mods, function(x) x$result)
+  emaxnls_mods <- list(object, ...)
+  nls_mods <- lapply(emaxnls_mods, .extract_nls)
   do.call(stats::AIC, nls_mods)
 }
 
 #' @exportS3Method stats::BIC
 #' @rdname AIC
 BIC.emaxnls <- function(object, ...) {
-  mods <- list(object, ...)
-  nls_mods <- lapply(mods, function(x) x$result)
+  emaxnls_mods <- list(object, ...)
+  nls_mods <- lapply(emaxnls_mods, .extract_nls)
   do.call(stats::BIC, nls_mods)
 }
 
@@ -177,8 +177,8 @@ BIC.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::anova
 anova.emaxnls <- function(object, ...) {
-  mods <- list(object, ...)
-  nls_mods <- lapply(mods, function(x) x$result)
+  emaxnls_mods <- list(object, ...)
+  nls_mods <- lapply(emaxnls_mods, .extract_nls)
   do.call(stats::anova, nls_mods)
 }
 
@@ -201,9 +201,9 @@ anova.emaxnls <- function(object, ...) {
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
   .confint_quiet <- purrr::quietly(stats::confint)
   if (is.null(parm)) {
-    ci <- .confint_quiet(object$result, level = level, ...)
+    ci <- .confint_quiet(.extract_nls(object), level = level, ...)
   } else {
-    ci <- .confint_quiet(object$result, parm = parm, level = level, ...)
+    ci <- .confint_quiet(.extract_nls(object), parm = parm, level = level, ...)
   }
   ci$result
 }
@@ -214,7 +214,7 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
 #' @param newdata A named list or data frame in which to look for variables with which to predict. 
 #' If `newdata` is missing the fitted values at the original data points are returned.
 #' @param interval A character string indicating if prediction intervals or a confidence interval 
-#' on the mean responses are to be calculated.
+#' on the mean responses are to be calculated. Can be "none", "confidence", or "prediction"
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for the intervals 
 #' (if any) to be calculated.
 #' @param ... Ignored
@@ -227,10 +227,20 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
 #' 
 #' @exportS3Method stats::predict
 predict.emaxnls <- function(object, 
-                                newdata, 
-                                interval = c("none", "confidence", "prediction"),
-                                level = 0.95, 
-                                ...
-) {
-  
+                            newdata = NULL, 
+                            interval = "none",
+                            level = 0.95, 
+                            ...) {
+  nls_object <- .extract_nls(object)
+  if (is.null(newdata)) {
+    env <- nls_object$m$getEnv()
+    newdata <- eval(nls_object$data, envir = env)
+  }
+  out <- stats::predict(
+    object = nls_object,
+    newdata = newdata,
+    interval = interval,
+    level = level
+  )
+  out
 }
