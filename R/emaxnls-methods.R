@@ -12,7 +12,8 @@
 coef.emaxnls <- function(object, level = 0.95, ...) {
   sss <- summary(.extract_nls(object))
   coef_tbl <- sss$coef
-  ci <- nlstools::confint2(.extract_nls(object), level = level)
+  ci <- .confint_quiet(.extract_nls(object), level = level)
+  ci <- ci$result
   coef_tbl |>
     as.data.frame() |>
     tibble::rownames_to_column("label") |>
@@ -224,7 +225,6 @@ fitted.emaxnls <- function(object, ...) {
 #' 
 #' @exportS3Method stats::confint
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
-  .confint_quiet <- purrr::quietly(stats::confint)
   if (is.null(parm)) {
     ci <- .confint_quiet(.extract_nls(object), level = level, ...)
   } else {
