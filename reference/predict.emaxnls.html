@@ -45,7 +45,14 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'emaxnls'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>, newdata <span class="op">=</span> <span class="cn">NULL</span>, interval <span class="op">=</span> <span class="st">"none"</span>, level <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  newdata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  se.fit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  interval <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -59,6 +66,10 @@
 <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
 <dd><p>A named list or data frame in which to look for variables with which to predict.
 If <code>newdata</code> is missing the fitted values at the original data points are returned.</p></dd>
+
+
+<dt id="arg-se-fit">se.fit<a class="anchor" aria-label="anchor" href="#arg-se-fit"></a></dt>
+<dd><p>A switch indicating if standard errors are required.</p></dd>
 
 
 <dt id="arg-interval">interval<a class="anchor" aria-label="anchor" href="#arg-interval"></a></dt>
@@ -77,12 +88,12 @@ on the mean responses are to be calculated. Can be "none", "confidence", or "pre
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method for Emax regression objects always returns a data frame or tibble</p>
+    <p>As <code><a href="https://rdrr.io/pkg/xgxr/man/predict.nls.html" class="external-link">xgxr::predict.nls()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Note that <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> for Emax regression calls <code>investr::predFit()</code> to obtain confidence and
-prediction intervals. Please see the documentation for that function.</p>
+    <p>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method for for Emax regression is a thin wrapper around <code><a href="https://rdrr.io/pkg/xgxr/man/predict.nls.html" class="external-link">xgxr::predict.nls()</a></code>.
+Please see the documentation for that function.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
