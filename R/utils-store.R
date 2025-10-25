@@ -43,7 +43,7 @@
   preds <- all.vars(ff)        # variables required, including response
   terms <- colnames(mm)[-1]    # terms in the model, dropping intercept
   terms <- c(preds[1], terms)  # but keep the response
-  terms <- stringr::str_remove_all(terms, " ")
+  terms <- gsub(" ", "", terms)
   index <- attr(mm, "assign")[-1]
   index <- c(1, index + 1)     # index into preds
 
@@ -110,7 +110,8 @@
 
 .make_cov_terms <- function(tt, cc) {
   ss <- paste(c("1", tt), cc, sep = " * ", collapse = " + ")
-  stringr::str_remove_all(ss, stringr::fixed("1 * "))
+  ss <- gsub("1 * ", "", ss, fixed = TRUE)
+  ss
 }
 
 .store_covariates <- function(store) {

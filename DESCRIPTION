@@ -16,7 +16,6 @@ Imports:
     nlstools,
     purrr,
     rlang,
-    stringr,
     tibble,
     tidyr,
     xgxr
