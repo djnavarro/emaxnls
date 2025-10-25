@@ -4,13 +4,22 @@
 \alias{predict.emaxnls}
 \title{Predicting from Emax regression models}
 \usage{
-\method{predict}{emaxnls}(object, newdata = NULL, interval = "none", level = 0.95, ...)
+\method{predict}{emaxnls}(
+  object,
+  newdata = NULL,
+  se.fit = FALSE,
+  interval = "none",
+  level = 0.95,
+  ...
+)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}
 
 \item{newdata}{A named list or data frame in which to look for variables with which to predict.
 If \code{newdata} is missing the fitted values at the original data points are returned.}
+
+\item{se.fit}{A switch indicating if standard errors are required.}
 
 \item{interval}{A character string indicating if prediction intervals or a confidence interval
 on the mean responses are to be calculated. Can be "none", "confidence", or "prediction"}
@@ -21,12 +30,12 @@ on the mean responses are to be calculated. Can be "none", "confidence", or "pre
 \item{...}{Ignored}
 }
 \value{
-The \code{predict()} method for Emax regression objects always returns a data frame or tibble
+As \code{xgxr::predict.nls()}.
 }
 \description{
 Predicting from Emax regression models
 }
 \details{
-Note that \code{predict()} for Emax regression calls \code{investr::predFit()} to obtain confidence and
-prediction intervals. Please see the documentation for that function.
+The \code{predict()} method for for Emax regression is a thin wrapper around \code{xgxr::predict.nls()}.
+Please see the documentation for that function.
 }

@@ -276,44 +276,32 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
 #' @param object An `emaxnls` object
 #' @param newdata A named list or data frame in which to look for variables with which to predict. 
 #' If `newdata` is missing the fitted values at the original data points are returned.
+#' @param se.fit A switch indicating if standard errors are required.
 #' @param interval A character string indicating if prediction intervals or a confidence interval 
 #' on the mean responses are to be calculated. Can be "none", "confidence", or "prediction"
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for the intervals 
 #' (if any) to be calculated.
 #' @param ... Ignored
 #'
-#' @returns The `predict()` method for Emax regression objects always returns a data frame or tibble
+#' @returns As `xgxr::predict.nls()`.
 #'
 #' @details
-#' Note that `predict()` for Emax regression calls `investr::predFit()` to obtain confidence and 
-#' prediction intervals. Please see the documentation for that function. 
+#' The `predict()` method for for Emax regression is a thin wrapper around `xgxr::predict.nls()`. 
+#' Please see the documentation for that function. 
 #' 
 #' @exportS3Method stats::predict
 predict.emaxnls <- function(object, 
                             newdata = NULL, 
+                            se.fit = FALSE,
                             interval = "none",
                             level = 0.95, 
                             ...) {
-  if (is.null(newdata)) newdata <- evalq(design, envir = object$env)
-  assign(
-    "predict_args", 
-    list(
-      newdata = newdata, 
-      interval = interval, 
-      level = level
-    ), 
-    envir = object$env
+  xgxr::predict.nls(
+    object$env$model, 
+    newdata, 
+    se.fit, 
+    interval, 
+    level, 
+    ...
   )
-
-  # this is placeholder only
-  out <- evalq(
-    expr = stats::predict(
-      object = model, 
-      newdata = predict_args$newdata, 
-      interval = predict_args$interval, 
-      level = predict_args$level
-    ), 
-    envir = object$env
-  )
-  out
 }
