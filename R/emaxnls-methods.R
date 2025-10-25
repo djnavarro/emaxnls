@@ -54,44 +54,6 @@ residuals.emaxnls <- function(object, ...) {
   residuals(.extract_nls(object), ...)
 }
 
-#' Print an Emax regression model object
-#'
-#' @param x An `emaxnls` object
-#' @param ... Ignored
-#'
-#' @returns Invisibly returns the original object
-#'
-#' @exportS3Method base::print
-print.emaxnls <- function(x, ...) {
-
-  cat("Structural model:\n\n")
-  cat("  Exposure: ", as.character(.extract_exposure_name(x)), "\n")
-  cat("  Response: ", as.character(.extract_response_name(x)), "\n")
-  cat("  Emax type:", .extract_model_type(x), "\n\n")
-  cat("Covariate model:\n\n")
-  cat("  E0:      ", deparse(.extract_covariate_formula(x, "E0")), "\n")
-  cat("  Emax:    ", deparse(.extract_covariate_formula(x, "Emax")), "\n")
-  cat("  logEC50: ", deparse(.extract_covariate_formula(x, "logEC50")), "\n")
-  if (.extract_model_type(x) == "sigmoidal") {
-    cat("  logHill: ", deparse(.extract_covariate_formula(x, "logHill")), "\n")
-  }
-  cat("\n")
-  if(is.null(.extract_nls(x))) {
-    cat("Model does not converge\n")
-  } else {
-    cat("Coefficient table:\n\n")
-    ccc <- utils::capture.output(print(coef(x)))
-    ccc <- ccc[c(-1, -3)]
-    cat(ccc, sep = "\n")
-    cat("\n")
-    cat("Variance-covariance matrix:\n\n")
-    print(vcov(x), digits = 2)
-  }
-
-  return(invisible(x))
-}
-
-
 #' Simulate responses from Emax regression model
 #'
 #' @param object An `emaxnls` object

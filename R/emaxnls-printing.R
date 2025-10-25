@@ -1,0 +1,55 @@
+
+
+
+#' Print an Emax regression model object
+#'
+#' @param x An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Invisibly returns the original object
+#'
+#' @exportS3Method base::print
+print.emaxnls <- function(x, ...) {
+
+  cat("Structural model:\n\n")
+  cat("  Exposure: ", as.character(.extract_exposure_name(x)), "\n")
+  cat("  Response: ", as.character(.extract_response_name(x)), "\n")
+  cat("  Emax type:", .extract_model_type(x), "\n\n")
+  cat("Covariate model:\n\n")
+  cat("  E0:      ", deparse(.extract_covariate_formula(x, "E0")), "\n")
+  cat("  Emax:    ", deparse(.extract_covariate_formula(x, "Emax")), "\n")
+  cat("  logEC50: ", deparse(.extract_covariate_formula(x, "logEC50")), "\n")
+  if (.extract_model_type(x) == "sigmoidal") {
+    cat("  logHill: ", deparse(.extract_covariate_formula(x, "logHill")), "\n")
+  }
+  cat("\n")
+  if(is.null(.extract_nls(x))) {
+    cat("Model does not converge\n")
+  } else {
+    cat("Coefficient table:\n\n")
+    ccc <- utils::capture.output(print(coef(x)))
+    ccc <- ccc[c(-1, -3)]
+    cat(ccc, sep = "\n")
+    cat("\n")
+    cat("Variance-covariance matrix:\n\n")
+    print(vcov(x), digits = 2)
+  }
+
+  return(invisible(x))
+}
+
+
+# simplified version of scales::label_pvalue()
+.show_p <- function(x, accuracy = 0.001) {
+  prefix <- c("<", "", ">")
+  digits <- -floor(log10(accuracy))
+  fmt <- paste0("%1.", digits, "f")
+  out <- sprintf(fmt, x)
+  out <- paste0(prefix[[2]], out)
+  out[x < accuracy] <- paste0(prefix[[1]], accuracy)
+  out[x > 1 - accuracy] <- paste0(prefix[[3]], 1 - accuracy)
+  out[is.na(x)] <- NA
+  names(out) <- names(x)
+  return(out)
+}
+

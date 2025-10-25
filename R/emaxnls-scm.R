@@ -13,11 +13,6 @@
   return(aic1 - aic2)
 }
 
-.show_p <- function(p_value) {
-  f <- scales::label_pvalue()
-  f(p_value)
-}
-
 # stepwise add/remove functions -------------------------------------------
 
 
