@@ -31,8 +31,7 @@ coef.emaxnls <- function(object, level = 0.95, ...) {
 }
 
 #' Variance-covariance matrix for an Emax regression
-#'#' @param object An `emaxnls`` object
-
+#' 
 #' @param object An `emaxnls` object
 #' @param ... Ignored
 #'

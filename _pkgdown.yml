@@ -23,6 +23,11 @@ reference:
   - anova.emaxnls
   - simulate.emaxnls
   - predict.emaxnls
+  - deviance.emaxnls
+  - df.residual.emaxnls
+  - fitted.emaxnls 
+  - nobs.emaxnls
+  - sigma.emaxnls
 - title: Other
   desc: Other exported objects
 - contents:
