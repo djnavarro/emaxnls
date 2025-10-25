@@ -183,6 +183,70 @@ anova.emaxnls <- function(object, ...) {
 }
 
 
+#' Residual standard deviation for Emax regression models
+#'
+#' @param object An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Numeric
+#'
+#' @exportS3Method stats::sigma
+sigma.emaxnls <- function(object, ...) {
+  evalq(stats::sigma(model), envir = object$env)
+}
+
+
+#' Number of observations for an Emax regression model
+#'
+#' @param object An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Numeric
+#'
+#' @exportS3Method stats::nobs
+nobs.emaxnls <- function(object, ...) {
+  evalq(stats::nobs(model), envir = object$env)
+}
+
+
+#' Residual degrees of freedom for an Emax regression model
+#'
+#' @param object An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Numeric
+#'
+#' @exportS3Method stats::df.residual
+df.residual.emaxnls <- function(object, ...) {
+  evalq(stats::df.residual(model), envir = object$env)
+}
+
+
+#' Model deviance for an Emax regression 
+#'
+#' @param object An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Numeric
+#'
+#' @exportS3Method stats::deviance
+deviance.emaxnls <- function(object, ...) {
+  evalq(stats::deviance(model), envir = object$env)
+}
+
+#' Fitted values for an Emax regression 
+#'
+#' @param object An `emaxnls` object
+#' @param ... Ignored
+#'
+#' @returns Numeric vector of fitted values
+#'
+#' @exportS3Method stats::fitted
+fitted.emaxnls <- function(object, ...) {
+  evalq(stats::fitted(model), envir = object$env)
+}
+
+
 #' Confidence intervals for Emax regression model parameters
 #'
 #' @param object An `emaxnls` object
@@ -231,16 +295,26 @@ predict.emaxnls <- function(object,
                             interval = "none",
                             level = 0.95, 
                             ...) {
-  nls_object <- .extract_nls(object)
-  if (is.null(newdata)) {
-    env <- nls_object$m$getEnv()
-    newdata <- eval(nls_object$data, envir = env)
-  }
-  out <- stats::predict(
-    object = nls_object,
-    newdata = newdata,
-    interval = interval,
-    level = level
+  if (is.null(newdata)) newdata <- evalq(design, envir = object$env)
+  assign(
+    "predict_args", 
+    list(
+      newdata = newdata, 
+      interval = interval, 
+      level = level
+    ), 
+    envir = object$env
+  )
+
+  # this is placeholder only
+  out <- evalq(
+    expr = stats::predict(
+      object = model, 
+      newdata = predict_args$newdata, 
+      interval = predict_args$interval, 
+      level = predict_args$level
+    ), 
+    envir = object$env
   )
   out
 }

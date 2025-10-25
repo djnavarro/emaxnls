@@ -162,9 +162,5 @@
     rlang::warn("`nls()` did not converge", class = "emaxnls_warning")
   }
 
-  # append to object and return
-  #obj$error  <- out$error
-  #obj$result <- out$result
-
   return(structure(obj, class = "emaxnls"))
 }

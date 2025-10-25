@@ -95,5 +95,8 @@ utils::globalVariables(c(
   "variable",
   "formula",
   "algorithm",
-  "control"
+  "control",
+  "design", 
+  "model", 
+  "predict_args"
 ))

@@ -22,6 +22,11 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(BIC(mod))
   expect_no_error(predict(mod))
   expect_no_error(confint(mod))
+  expect_no_error(nobs(mod))
+  expect_no_error(sigma(mod))
+  expect_no_error(deviance(mod))
+  expect_no_error(fitted(mod))
+  expect_no_error(df.residual(mod))
 })
 
 test_that("AIC(), BIC(), and anova() can take multiple objects", {
