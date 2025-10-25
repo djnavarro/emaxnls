@@ -159,9 +159,11 @@
 
 .get_settings <- function(coefficients) {
 
+  coefficient_vec <- unname(unlist(coefficients))
+
   coefficient_table <- tibble::tibble(
-    parameter = gsub("_.*$", "", unname(unlist(coefficients))),
-    covariate = gsub("^[^_]*_", "", unname(unlist(coefficients)))
+    parameter = gsub("_.*$", "", coefficient_vec),
+    covariate = gsub("^[^_]*_", "", coefficient_vec)
   )
 
   coefficient_settings <- coefficient_table |>
@@ -188,9 +190,9 @@
       )
     )
   
-  names(coefficient_settings$start) <- coefficients
-  names(coefficient_settings$lower) <- coefficients
-  names(coefficient_settings$upper) <- coefficients
+  names(coefficient_settings$start) <- coefficient_vec
+  names(coefficient_settings$lower) <- coefficient_vec
+  names(coefficient_settings$upper) <- coefficient_vec
   
   settings <- list(
     coefficient = coefficient_settings,
