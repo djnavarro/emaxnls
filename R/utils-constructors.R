@@ -155,3 +155,55 @@
   return(store)
 }
 
+# settings are hard-coded for the moment ------
+
+.get_settings <- function(coefficients) {
+
+  coefficient_table <- tibble::tibble(
+    parameter = gsub("_.*$", "", unname(unlist(coefficients))),
+    covariate = gsub("^[^_]*_", "", unname(unlist(coefficients)))
+  )
+
+  coefficient_settings <- coefficient_table |>
+    dplyr::mutate(
+      start = dplyr::case_when(
+        covariate != "Intercept" ~ 0,
+        covariate == "Intercept" & parameter == "E0"      ~ -2,
+        covariate == "Intercept" & parameter == "Emax"    ~ -1,
+        covariate == "Intercept" & parameter == "logEC50" ~ 5,
+        covariate == "Intercept" & parameter == "logHill" ~ 0,
+      ),
+      lower = dplyr::case_when(
+        parameter == "E0"      ~ -10,
+        parameter == "Emax"    ~ -10,
+        covariate == "Intercept" & parameter == "logEC50" ~ 1,
+        covariate != "Intercept" & parameter == "logEC50" ~ 0,
+        parameter == "logHill" ~ -2
+      ),
+      upper = dplyr::case_when(
+        parameter == "E0"      ~ 20,
+        parameter == "Emax"    ~ 20,
+        parameter == "logEC50" ~ 10,
+        parameter == "logHill" ~ 4
+      )
+    )
+  
+  names(coefficient_settings$start) <- coefficients
+  names(coefficient_settings$lower) <- coefficients
+  names(coefficient_settings$upper) <- coefficients
+  
+  settings <- list(
+    coefficient = coefficient_settings,
+    algorithm = "port",
+    control = list(
+      tol = 1e-8,
+      minFactor = 1024^-4,
+      maxiter = 200000,
+      scaleOffset = 1,
+      warnOnly = FALSE
+    )
+  )
+
+  return(settings)
+}
+
