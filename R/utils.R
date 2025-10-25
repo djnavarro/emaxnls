@@ -6,7 +6,7 @@
 # are these two emax models the same?
 # note: this should probably have a "strictness" argument governing how
 # deeply we want to push the comparison
-.emax_identical <- function(mod1, mod2) {
+.is_same <- function(mod1, mod2) {
   identical(
     .extract_parameter_names(mod1), 
     .extract_parameter_names(mod2)

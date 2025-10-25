@@ -67,7 +67,7 @@
   new_term <- NULL
   for(t in terms) {
     candidate_mod <- .emax_add_term(mod, formula = t, quiet = TRUE)
-    if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
+    if (!.is_same(mod, candidate_mod)) { # don't compare to self
       if (!quiet) message("try add: ", deparse(t))
       if (!is.null(.extract_nls(candidate_mod))) {  # skip if nls() fails
         p <- .anova_p(mod, candidate_mod)
@@ -126,7 +126,7 @@
   new_term <- NULL
   for(t in terms) {
     candidate_mod <- .emax_remove_term(mod, formula = t, quiet = TRUE)
-    if (!.emax_identical(mod, candidate_mod)) { # don't compare to self
+    if (!.is_same(mod, candidate_mod)) { # don't compare to self
       nls_fail <- is.null(.extract_nls(candidate_mod))
       if (!nls_fail) {  # skip if nls() fails
         p <- .anova_p(candidate_mod, mod)
@@ -181,7 +181,7 @@
 
     old_mod <- mod
     mod <- .emax_once_forward(mod, candidates, threshold, quiet, history)
-    if (.emax_identical(mod, old_mod)) finished <- TRUE
+    if (.is_same(mod, old_mod)) finished <- TRUE
 
   }
 
@@ -201,7 +201,7 @@
 
     old_mod <- mod
     mod <- .emax_once_backward(mod, candidates, threshold, quiet, history)
-    if (.emax_identical(mod, old_mod)) finished <- TRUE
+    if (.is_same(mod, old_mod)) finished <- TRUE
 
   }
 
