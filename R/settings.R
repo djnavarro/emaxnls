@@ -14,8 +14,9 @@
 
 # initial values and boundaries for model parameters; these
 # are currently hard coded, and somewhat arbitrarily at that
-.get_coefficient_settings <- function(coefficients) {
-  coefficients |>
+.get_settings <- function(coefficients) {
+  coefficients <- unname(unlist(coefficients))
+  coefficient_settings <- coefficients |>
     .as_coefficient_table() |>
     dplyr::mutate(
       start = dplyr::case_when(
@@ -39,5 +40,23 @@
         parameter == "logHill" ~ 4
       )
     )
+  
+  names(coefficient_settings$start) <- coefficients
+  names(coefficient_settings$lower) <- coefficients
+  names(coefficient_settings$upper) <- coefficients
+  
+  settings <- list(
+    coefficient = coefficient_settings,
+    algorithm = "port",
+    control = list(
+      tol = 1e-8,
+      minFactor = 1024^-4,
+      maxiter = 200000,
+      scaleOffset = 1,
+      warnOnly = FALSE
+    )
+  )
+
+  return(settings)
 }
 
