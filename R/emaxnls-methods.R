@@ -10,9 +10,9 @@
 #'
 #' @exportS3Method stats::coef
 coef.emaxnls <- function(object, level = 0.95, ...) {
-  sss <- summary(.extract_nls(object))
+  sss <- summary(.get_nls(object))
   coef_tbl <- sss$coef
-  ci <- .confint_quiet(.extract_nls(object), level = level)
+  ci <- .confint_quiet(.get_nls(object), level = level)
   ci <- ci$result
   coef_tbl |>
     as.data.frame() |>
@@ -40,7 +40,7 @@ coef.emaxnls <- function(object, level = 0.95, ...) {
 #'
 #' @exportS3Method stats::vcov
 vcov.emaxnls <- function(object, ...) {
-  vcov(.extract_nls(object), ...)
+  vcov(.get_nls(object), ...)
 }
 
 #' Residuals for an Emax regression
@@ -52,7 +52,7 @@ vcov.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::residuals
 residuals.emaxnls <- function(object, ...) {
-  residuals(.extract_nls(object), ...)
+  residuals(.get_nls(object), ...)
 }
 
 #' Simulate responses from Emax regression model
@@ -95,7 +95,7 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 #' @exportS3Method stats::logLik
 logLik.emaxnls <- function(object, REML = FALSE, ...) {
   # logLik.nls doesn't support REML=TRUE; but let stats pkg handle the message
-  stats::logLik(.extract_nls(object), REML = REML, ...) 
+  stats::logLik(.get_nls(object), REML = REML, ...) 
 }
 
 
@@ -117,7 +117,7 @@ NULL
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .extract_nls)
+  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
   do.call(stats::AIC, nls_mods)
 }
 
@@ -125,7 +125,7 @@ AIC.emaxnls <- function(object, ..., k = 2) {
 #' @rdname AIC
 BIC.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .extract_nls)
+  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
   do.call(stats::BIC, nls_mods)
 }
 
@@ -140,7 +140,7 @@ BIC.emaxnls <- function(object, ...) {
 #' @exportS3Method stats::anova
 anova.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .extract_nls)
+  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
   do.call(stats::anova, nls_mods)
 }
 
@@ -226,9 +226,9 @@ fitted.emaxnls <- function(object, ...) {
 #' @exportS3Method stats::confint
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
   if (is.null(parm)) {
-    ci <- .confint_quiet(.extract_nls(object), level = level, ...)
+    ci <- .confint_quiet(.get_nls(object), level = level, ...)
   } else {
-    ci <- .confint_quiet(.extract_nls(object), parm = parm, level = level, ...)
+    ci <- .confint_quiet(.get_nls(object), parm = parm, level = level, ...)
   }
   ci$result
 }

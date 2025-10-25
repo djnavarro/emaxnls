@@ -25,7 +25,7 @@
 }
 
 .emax_history <- function(mod) {
-  history <- .extract_history(mod)
+  history <- .get_scm_history(mod)
   if (is.null(history)) {
     history <- tibble::tibble(
       iteration = 0L,
@@ -63,7 +63,7 @@
     candidate_mod <- .emax_add_term(mod, formula = t, quiet = TRUE)
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
       if (!quiet) message("try add: ", deparse(t))
-      if (!is.null(.extract_nls(candidate_mod))) {  # skip if nls() fails
+      if (!is.null(.get_nls(candidate_mod))) {  # skip if nls() fails
         p <- .anova_p(mod, candidate_mod)
         if (p < lowest_p) {
           best_mod <- candidate_mod
@@ -91,7 +91,7 @@
         term = deparse(new_term),
         p_value = lowest_p
       )   
-    best_mod <- .set_history(best_mod, scm_history)
+    best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
   return(best_mod)
@@ -121,7 +121,7 @@
   for(t in terms) {
     candidate_mod <- .emax_remove_term(mod, formula = t, quiet = TRUE)
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
-      nls_fail <- is.null(.extract_nls(candidate_mod))
+      nls_fail <- is.null(.get_nls(candidate_mod))
       if (!nls_fail) {  # skip if nls() fails
         p <- .anova_p(candidate_mod, mod)
         if (p > highest_p) {
@@ -156,7 +156,7 @@
         term = deparse(new_term),
         p_value = highest_p
       )
-    best_mod <- .set_history(best_mod, scm_history)
+    best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
   return(best_mod)

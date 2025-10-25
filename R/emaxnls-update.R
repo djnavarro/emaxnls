@@ -17,16 +17,16 @@
   cov_param <- as.character(formula[[3]])
 
   # more assertions
-  if (.extract_model_type(object) == "hyperbolic") {
+  if (.get_model_type(object) == "hyperbolic") {
     .assert(str_param %in% c("E0", "Emax", "logEC50"))
   }
-  if (.extract_model_type(object) == "sigmoidal") {
+  if (.get_model_type(object) == "sigmoidal") {
     .assert(str_param %in% c("E0", "Emax", "logEC50", "logHill"))
   }
-  .assert(cov_param %in% names(.extract_data(object)))
+  .assert(cov_param %in% names(.get_data(object)))
 
   # stop if covariate is already included
-  if (cov_param %in% all.vars(.extract_covariate_formula(object, str_param)[[3]])) {
+  if (cov_param %in% all.vars(.get_covariate_formula(object, str_param)[[3]])) {
     if (!quiet) {
       msg <- paste0("cannot add: `", deparse(formula), "` is already in the model")
       rlang::inform(msg, class = "emaxnls_message")
@@ -35,16 +35,16 @@
   }
 
   # update covariate model
-  covariate_model <- .extract_covariate_formula(object)
+  covariate_model <- .get_covariate_formula(object)
   old <- deparse(covariate_model[[str_param]])
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .extract_structural_formula(object),
+    structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
-    data = .extract_data(object),
+    data = .get_data(object),
     quiet = quiet
   )
 
@@ -67,16 +67,16 @@
   cov_param <- as.character(formula[[3]])
 
   # more assertions
-  if(.extract_model_type(object) == "hyperbolic") {
+  if(.get_model_type(object) == "hyperbolic") {
     .assert(str_param %in% c("E0", "Emax", "logEC50"))
   }
-  if(.extract_model_type(object) == "sigmoidal") {
+  if(.get_model_type(object) == "sigmoidal") {
     .assert(str_param %in% c("E0", "Emax", "logEC50", "logHill"))
   }
-  .assert(cov_param %in% names(.extract_data(object)))
+  .assert(cov_param %in% names(.get_data(object)))
 
   # stop if covariate is not already included
-  if (!(cov_param %in% all.vars(.extract_covariate_formula(object, str_param)[[3]]))) {
+  if (!(cov_param %in% all.vars(.get_covariate_formula(object, str_param)[[3]]))) {
     if (!quiet) {
       msg <- paste0("cannot remove: `", deparse(formula), "` is not in the model")
       rlang::inform(msg, class = "emaxnls_message")
@@ -85,7 +85,7 @@
   }
 
   # update covariate model
-  covariate_model <- .extract_covariate_formula(object)
+  covariate_model <- .get_covariate_formula(object)
   old_vars <- all.vars(covariate_model[[str_param]][[3]])
   new_vars <- setdiff(old_vars, cov_param)
   if (length(new_vars) == 0) new_vars <- "1"
@@ -96,9 +96,9 @@
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .extract_structural_formula(object),
+    structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
-    data = .extract_data(object),
+    data = .get_data(object),
     quiet = quiet
   )
 

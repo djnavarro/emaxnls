@@ -1,61 +1,62 @@
 
 # extractors for model and data ------
 
-.extract_data <- function(object) {
+.get_data <- function(object) {
   object$data
 }
 
-.extract_design <- function(object) {
+.get_design <- function(object) {
   object$env$design
 }
 
-.extract_nls <- function(object) {
+.get_nls <- function(object) {
   object$env$model
 }
 
 # extractors for variable names ------
 
-.extract_exposure_name <- function(object) {
+.get_exposure_name <- function(object) {
   object$info$variables$exposure
 }
 
-.extract_response_name <- function(object) {
+.get_response_name <- function(object) {
   object$info$variables$response
 }
 
-.extract_coefficient_names <- function(object) {
+.get_coefficient_names <- function(object) {
   object$info$coefficients
 }
 
-.extract_variable_names <- function(object) {
+.get_variable_names <- function(object) {
   object$info$variables
 }
 
 # extractors for formulae ------
 
-.extract_covariate_formula <- function(object, param = NULL) {
+.get_covariate_formula <- function(object, param = NULL) {
   if (is.null(param)) return(object$formula$covariate)
   object$formula$covariate[[param]]
 }
 
-.extract_structural_formula <- function(object) {
+.get_structural_formula <- function(object) {
   object$formula$structural
 }
 
-.extract_nls_formula <- function(object) {
+.get_nls_formula <- function(object) {
   object$formula$nls
 }
 
 # other extractors -------
 
-.extract_model_type <- function(object) {
+.get_model_type <- function(object) {
   object$info$model_type
 }
 
-.extract_history <- function(object) {
+.get_scm_history <- function(object) {
   object$info$history
 }
-.set_history <- function(object, value) {
+
+.set_scm_history <- function(object, value) {
   object$info$history <- value
   object
 }

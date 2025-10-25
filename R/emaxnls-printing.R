@@ -12,18 +12,18 @@
 print.emaxnls <- function(x, ...) {
 
   cat("Structural model:\n\n")
-  cat("  Exposure: ", as.character(.extract_exposure_name(x)), "\n")
-  cat("  Response: ", as.character(.extract_response_name(x)), "\n")
-  cat("  Emax type:", .extract_model_type(x), "\n\n")
+  cat("  Exposure: ", as.character(.get_exposure_name(x)), "\n")
+  cat("  Response: ", as.character(.get_response_name(x)), "\n")
+  cat("  Emax type:", .get_model_type(x), "\n\n")
   cat("Covariate model:\n\n")
-  cat("  E0:      ", deparse(.extract_covariate_formula(x, "E0")), "\n")
-  cat("  Emax:    ", deparse(.extract_covariate_formula(x, "Emax")), "\n")
-  cat("  logEC50: ", deparse(.extract_covariate_formula(x, "logEC50")), "\n")
-  if (.extract_model_type(x) == "sigmoidal") {
-    cat("  logHill: ", deparse(.extract_covariate_formula(x, "logHill")), "\n")
+  cat("  E0:      ", deparse(.get_covariate_formula(x, "E0")), "\n")
+  cat("  Emax:    ", deparse(.get_covariate_formula(x, "Emax")), "\n")
+  cat("  logEC50: ", deparse(.get_covariate_formula(x, "logEC50")), "\n")
+  if (.get_model_type(x) == "sigmoidal") {
+    cat("  logHill: ", deparse(.get_covariate_formula(x, "logHill")), "\n")
   }
   cat("\n")
-  if(is.null(.extract_nls(x))) {
+  if(is.null(.get_nls(x))) {
     cat("Model does not converge\n")
   } else {
     cat("Coefficient table:\n\n")
