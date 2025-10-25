@@ -47,3 +47,27 @@
   .assert(all(unlist(candidates) %in% names))
 
 }
+
+.is_same <- function(mod1, mod2) {
+  identical(
+    .extract_parameter_names(mod1), 
+    .extract_parameter_names(mod2)
+  )
+}
+
+.is_formula <- function(x, sides = NULL) {
+  out <- inherits(x, "formula")
+  if (!is.null(sides)) {
+    if (sides == 1) out <- out && length(x) == 2
+    if (sides == 2) out <- out && length(x) == 3
+  }
+  out
+}
+
+.is_sigmoidal <- function(covariate_model) {
+  length(covariate_model) == 4
+}
+
+.is_hyperbolic <- function(covariate_model) {
+  length(covariate_model) == 3
+}

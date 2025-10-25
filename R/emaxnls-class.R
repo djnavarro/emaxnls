@@ -67,4 +67,5 @@
   return(structure(obj, class = "emaxnls"))
 }
 
+.nls_safe <- purrr::safely(stats::nls)
 
