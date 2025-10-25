@@ -16,7 +16,6 @@ Imports:
     purrr,
     rlang,
     tibble,
-    tidyr,
     xgxr
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues

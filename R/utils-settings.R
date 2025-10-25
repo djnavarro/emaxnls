@@ -1,15 +1,10 @@
 
 # convert coefficient names into table
 .as_coefficient_table <- function(coefficients) {
-  coefficients |>
-    tibble::tibble() |>
-    tidyr::separate(
-      coefficients,
-      into = c("parameter", "covariate"),
-      sep = "_",
-      extra = "merge",
-      remove = FALSE
-    )
+  tibble::tibble(
+    parameter = gsub("_.*$", "", coefficients),
+    covariate = gsub("^[^_]*_", "", coefficients)
+  )
 }
 
 # initial values and boundaries for model parameters; these
