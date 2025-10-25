@@ -50,8 +50,8 @@
 
 .is_same <- function(mod1, mod2) {
   identical(
-    .extract_parameter_names(mod1), 
-    .extract_parameter_names(mod2)
+    .extract_coefficient_names(mod1), 
+    .extract_coefficient_names(mod2)
   )
 }
 

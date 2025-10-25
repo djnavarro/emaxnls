@@ -23,7 +23,7 @@
   object$info$variables$response
 }
 
-.extract_parameter_names <- function(object) {
+.extract_coefficient_names <- function(object) {
   object$info$coefficients
 }
 
@@ -50,4 +50,12 @@
 
 .extract_model_type <- function(object) {
   object$info$model_type
+}
+
+.extract_history <- function(object) {
+  object$info$history
+}
+.set_history <- function(object, value) {
+  object$info$history <- value
+  object
 }

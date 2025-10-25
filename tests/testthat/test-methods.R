@@ -3,7 +3,7 @@ mod <- emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-lbl <- .extract_parameter_names(mod)
+lbl <- .extract_coefficient_names(mod)
 
 mod_base <- emax_nls(
   structural_model = response_1 ~ exposure_1, 

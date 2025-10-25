@@ -15,7 +15,6 @@
 
 # stepwise add/remove functions -------------------------------------------
 
-
 # list of all possible terms that could be considered
 .emax_extract_terms <- function(candidates) {
   candidates |>
@@ -26,7 +25,7 @@
 }
 
 .emax_history <- function(mod) {
-  history <- attr(mod, "history")
+  history <- .extract_history(mod)
   if (is.null(history)) {
     history <- tibble::tibble(
       iteration = 0L,
@@ -40,10 +39,10 @@
 }
 
 .emax_once_forward <- function(mod,
-                              candidates,
-                              threshold = .01,
-                              quiet = FALSE,
-                              history = TRUE) {
+                               candidates,
+                               threshold = .01,
+                               quiet = FALSE,
+                               history = TRUE) {
 
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
@@ -91,18 +90,18 @@
         action = "add",
         term = deparse(new_term),
         p_value = lowest_p
-      )
-    attr(best_mod, "history") <- scm_history
+      )   
+    best_mod <- .set_history(best_mod, scm_history)
   }
 
   return(best_mod)
 }
 
 .emax_once_backward <- function(mod,
-                               candidates,
-                               threshold = .001,
-                               quiet = FALSE,
-                               history = TRUE) {
+                                candidates,
+                                threshold = .001,
+                                quiet = FALSE,
+                                history = TRUE) {
 
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
@@ -157,7 +156,7 @@
         term = deparse(new_term),
         p_value = highest_p
       )
-    attr(best_mod, "history") <- scm_history
+    best_mod <- .set_history(best_mod, scm_history)
   }
 
   return(best_mod)
