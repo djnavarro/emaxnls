@@ -7,6 +7,7 @@
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
 
+  # compute and store everything in temporary object 
   store <- .store_inputs(covariate_model, structural_model, data)   
   store <- .store_modeltype(store)
   store <- .store_design(store)
@@ -18,6 +19,7 @@
   
   settings <- .get_settings(store$coefficients)
 
+  # organise into emaxnls structure
   obj <- list(
     formula = list(
       structural = store$structural_model,
@@ -45,6 +47,7 @@
     )
   )  
 
+  # estimate the nls model
   tmp <- evalq(
     .nls_safe(
       formula   = formula,
@@ -60,10 +63,10 @@
   obj$env$model <- tmp$result 
   obj$env$error <- tmp$error
 
+  # message user if needed and return
   if (!is.null(obj$env$error) & !quiet) {
     rlang::warn("`nls()` did not converge", class = "emaxnls_warning")
   }
-
   return(structure(obj, class = "emaxnls"))
 }
 

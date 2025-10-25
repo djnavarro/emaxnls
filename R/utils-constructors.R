@@ -1,5 +1,5 @@
 
-# internal constructors for emaxnls object constituents ------
+# internal constructors used to build up emaxnls object constituents ------
 
 .store_inputs <- function(covariate_model, structural_model, data) {
   names(covariate_model) <- covariate_model |> purrr::map_chr(\(x) all.vars(x[[2]]))

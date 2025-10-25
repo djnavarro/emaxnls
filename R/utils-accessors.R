@@ -1,5 +1,5 @@
 
-# extractors for model and data ------
+# accessors for model and data ------
 
 .get_data <- function(object) {
   object$data
@@ -13,7 +13,7 @@
   object$env$model
 }
 
-# extractors for variable names ------
+# accessors for variable names ------
 
 .get_exposure_name <- function(object) {
   object$info$variables$exposure
@@ -31,7 +31,7 @@
   object$info$variables
 }
 
-# extractors for formulae ------
+# accessors for formulae ------
 
 .get_covariate_formula <- function(object, param = NULL) {
   if (is.null(param)) return(object$formula$covariate)
@@ -46,7 +46,7 @@
   object$formula$nls
 }
 
-# other extractors -------
+# other accessors -------
 
 .get_model_type <- function(object) {
   object$info$model_type
