@@ -110,7 +110,6 @@ final_mod <- base_model |>
 #> try add: Emax ~ cnt_b
 #> try add: E0 ~ bin_e
 #> try add: E0 ~ bin_d
-#> addition: E0 ~ cnt_a p: <0.001
 #> try add: Emax ~ bin_e
 #> try add: E0 ~ bin_e
 #> try add: E0 ~ cnt_c
@@ -120,7 +119,6 @@ final_mod <- base_model |>
 #> try add: Emax ~ bin_d
 #> try add: Emax ~ cnt_b
 #> try add: E0 ~ cnt_b
-#> addition: Emax ~ bin_e p: 0.008
 #> try add: Emax ~ cnt_c
 #> try add: Emax ~ cnt_b
 #> try add: E0 ~ cnt_b
@@ -129,12 +127,9 @@ final_mod <- base_model |>
 #> try add: E0 ~ bin_d
 #> try add: Emax ~ bin_d
 #> try add: E0 ~ bin_e
-#> no improvements found
-#> try remove: Emax ~ bin_e p: 0.008
-#> try remove: E0 ~ cnt_a p: <0.001
-#> removal: Emax ~ bin_e p: 0.008
-#> try remove: E0 ~ cnt_a p: <0.001
-#> no improvements found
+#> try remove: Emax ~ bin_e
+#> try remove: E0 ~ cnt_a
+#> try remove: E0 ~ cnt_a
 
 final_mod
 #> Structural model:
@@ -170,7 +165,7 @@ final_mod
 
 ``` r
 simulate(final_mod, nsim = 1)
-#> # A tibble: 400 × 11
+#> # A tibble: 400 × 8
 #>    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>        <dbl>    <dbl>          <dbl>
 #>  1      1      1  6.52  6.86         4.96    0.508           10.1
@@ -184,6 +179,5 @@ simulate(final_mod, nsim = 1)
 #>  9      9      1  6.95  8.04         4.96    0.508           10.1
 #> 10     10      1  8.71  9.31         4.96    0.508           10.1
 #> # ℹ 390 more rows
-#> # ℹ 4 more variables: logEC50_Intercept <dbl>, response_1 <dbl>,
-#> #   exposure_1 <dbl>, cnt_a <dbl>
+#> # ℹ 1 more variable: logEC50_Intercept <dbl>
 ```
