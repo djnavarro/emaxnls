@@ -8,6 +8,7 @@ Build Emax regression models
   Emax model with arbitrary covariates (does not support interactions)
 - [`emax_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  [`emax_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   : Stepwise covariate modelling for Emax regression
 - [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)

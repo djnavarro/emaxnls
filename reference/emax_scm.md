@@ -22,6 +22,8 @@ emax_backward(
   history = TRUE,
   seed = NULL
 )
+
+emax_history(mod)
 ```
 
 ## Arguments
@@ -126,4 +128,21 @@ final_mod
 #> E0_cnt_a              -0.00062  1.3e-04        4.2e-05           2.5e-05
 #> Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03
 #> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03
+
+emax_history(final_mod)
+#> # A tibble: 32 × 9
+#>    iteration attempt step       action term_tested  model_tested model_converged
+#>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
+#>  1         0       0 base model NA     NA           E0 ~ 1, Ema… FALSE          
+#>  2         1       1 forward    add    E0 ~ bin_d   E0 ~ 1 + bi… TRUE           
+#>  3         1       2 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
+#>  4         1       3 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
+#>  5         1       4 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
+#>  6         1       5 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
+#>  7         1       6 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
+#>  8         1       7 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
+#>  9         1       8 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
+#> 10         1       9 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
+#> # ℹ 22 more rows
+#> # ℹ 2 more variables: term_p_value <dbl>, model_updated <lgl>
 ```
