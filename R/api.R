@@ -86,6 +86,8 @@ emax_remove_term <- function(object, formula, quiet = FALSE) {
 #' 
 #' final_mod
 #' 
+#' emax_history(final_mod)
+#' 
 #' @name emax_scm
 NULL
 
@@ -123,4 +125,10 @@ emax_backward <- function(mod,
     history = history, 
     seed = seed
   )
+}
+
+#' @export
+#' @rdname emax_scm
+emax_history <- function(mod) {
+  .emax_history(mod, is_final = TRUE)
 }

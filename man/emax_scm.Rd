@@ -4,6 +4,7 @@
 \alias{emax_scm}
 \alias{emax_forward}
 \alias{emax_backward}
+\alias{emax_history}
 \title{Stepwise covariate modelling for Emax regression}
 \usage{
 emax_forward(
@@ -23,6 +24,8 @@ emax_backward(
   history = TRUE,
   seed = NULL
 )
+
+emax_history(mod)
 }
 \arguments{
 \item{mod}{An \code{emaxnls} object}
@@ -56,5 +59,7 @@ final_mod <- base_model |>
   emax_backward(candidates = covariate_list, threshold = .001) 
 
 final_mod
+
+emax_history(final_mod)
 
 }
