@@ -60,3 +60,11 @@
   object$info$history <- value
   object
 }
+
+.get_short_formula <- function(object) {
+  object$formula$covariate |>
+    purrr::map(deparse) |>
+    unlist() |>
+    (\(x) paste(x, collapse = ", "))()
+}
+

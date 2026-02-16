@@ -24,16 +24,34 @@
     unname()
 }
 
-.emax_history <- function(mod) {
+.emax_history <- function(mod, is_final = FALSE) {
   history <- .get_scm_history(mod)
   if (is.null(history)) {
     history <- tibble::tibble(
       iteration = 0L,
-      step = "initial",
+      attempt = 0L,
+      step = "base model",
       action = NA_character_,
-      term = NA_character_,
-      p_value = NA_real_
+      term_tested = NA_character_,
+      model_tested = .get_short_formula(mod),
+      model_converged = !is.null(mod$result),
+      term_p_value = NA_real_,
+      model_updated = NA
     )
+  }
+  if (is_final) {
+    history <- history |>
+      tibble::add_row(
+        iteration = max(history$iteration) + 1L,
+        attempt = max(history$attempt) + 1L,
+        step = "final model",
+        action = NA_character_,
+        term_tested = NA_character_,
+        model_tested = .get_short_formula(mod),
+        model_converged = !is.null(mod$result),
+        term_p_value = NA_real_,
+        model_updated = NA
+      )
   }
   return(history)
 }
@@ -52,45 +70,59 @@
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
-  if (history) scm_history <- .emax_history(mod)
-
+  if (history) {
+    scm_history <- .emax_history(mod)
+    iter <- max(scm_history$iteration) + 1L
+    attm <- max(scm_history$attempt)
+  }
+ 
   # note for future development: this implementation hard-codes the
   # assumption that selection is based on p-values
   lowest_p <- threshold
   best_mod <- mod
+  best_mod_attm <- NA_integer_
   new_term <- NULL
   for(t in terms) {
     candidate_mod <- .emax_add_term(mod, formula = t, quiet = TRUE)
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
+      attm <- attm + 1L
+      p <- NA_real_
+      converge <- !is.null(.get_nls(candidate_mod))
       if (!quiet) message("try add: ", deparse(t))
-      if (!is.null(.get_nls(candidate_mod))) {  # skip if nls() fails
+      if (converge) {  # skip if nls() fails
         p <- .anova_p(mod, candidate_mod)
         if (p < lowest_p) {
           best_mod <- candidate_mod
+          best_mod_attm <- attm
           new_term <- t
           lowest_p <- p
         }
       }
+      if (history) {
+        scm_history <- scm_history |>
+          tibble::add_row(
+            iteration = iter,
+            attempt = attm,
+            step = "forward",
+            action = "add",
+            term_tested = deparse(t),
+            model_tested = .get_short_formula(candidate_mod),
+            model_converged = converge,
+            term_p_value = p,
+            model_updated = FALSE # default
+          )
+      }
     }
   }
 
-  if (!quiet & !is.null(new_term)) {
-    message("addition: ", deparse(new_term), " p: ", .show_p(lowest_p))
-  }
-  if (!quiet & is.null(new_term)) {
-    message("no improvements found")
-  }
-
-  if (history & !is.null(new_term)) {
-    iteration <- max(scm_history$iteration) + 1L
-    scm_history <- scm_history |>
-      tibble::add_row(
-        iteration = iteration,
-        step = "forward",
-        action = "add",
-        term = deparse(new_term),
-        p_value = lowest_p
-      )   
+  if (history) {
+    scm_history <- scm_history |> 
+      dplyr::mutate(
+        model_updated = dplyr::case_when(
+          iteration == iter & attempt == best_mod_attm ~ TRUE,
+          TRUE ~ model_updated
+        )
+      )
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
@@ -111,50 +143,58 @@
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
-  if (history) scm_history <- .emax_history(mod)
+  if (history) {
+    scm_history <- .emax_history(mod)
+    iter <- max(scm_history$iteration) + 1L
+    attm <- max(scm_history$attempt)
+  }
 
   # note for future development: this implementation hard-codes the
   # assumption that selection is based on p-values
   highest_p <- threshold
   best_mod <- mod
+  best_mod_attm <- NA_integer_
   new_term <- NULL
   for(t in terms) {
     candidate_mod <- .emax_remove_term(mod, formula = t, quiet = TRUE)
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
-      nls_fail <- is.null(.get_nls(candidate_mod))
-      if (!nls_fail) {  # skip if nls() fails
+      attm <- attm + 1L
+      p <- NA_real_
+      converge <- !is.null(.get_nls(candidate_mod))
+      if (!quiet) message("try remove: ", deparse(t))
+      if (converge) {  # skip if nls() fails
         p <- .anova_p(candidate_mod, mod)
         if (p > highest_p) {
           best_mod <- candidate_mod
+          best_mod_attm <- attm
           new_term <- t
           highest_p <- p
         }
       }
-      if (!quiet & nls_fail) {
-        message("try remove: ", deparse(t), " [nls fail]")
-      }
-      if (!quiet & !nls_fail) {
-        message("try remove: ", deparse(t), " p: ", .show_p(p))
+      if (history) {
+        scm_history <- scm_history |>
+          tibble::add_row(
+            iteration = iter,
+            attempt = attm,
+            step = "backward",
+            action = "remove",
+            term_tested = deparse(t),
+            model_tested = .get_short_formula(candidate_mod),
+            model_converged = converge,
+            term_p_value = p,
+            model_updated = FALSE # default
+          )
       }
     }
   }
 
-  if (!quiet & !is.null(new_term)) {
-    message("removal: ", deparse(new_term), " p: ", .show_p(highest_p))
-  }
-  if (!quiet & is.null(new_term)) {
-    message("no improvements found")
-  }
-
-  if (history & !is.null(new_term)) {
-    iteration <- max(scm_history$iteration) + 1L
-    scm_history <- scm_history |>
-      tibble::add_row(
-        iteration = iteration,
-        step = "backward",
-        action = "remove",
-        term = deparse(new_term),
-        p_value = highest_p
+  if (history) {
+    scm_history <- scm_history |> 
+      dplyr::mutate(
+        model_updated = dplyr::case_when(
+          iteration == iter & attempt == best_mod_attm ~ TRUE,
+          TRUE ~ model_updated
+        )
       )
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
