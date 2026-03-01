@@ -59,7 +59,7 @@
 .emax_once_forward <- function(mod,
                                candidates,
                                threshold = .01,
-                               quiet = FALSE,
+                               quiet = TRUE,
                                history = TRUE) {
 
   # note: checking is limited here. in future, throw an error if
@@ -132,7 +132,7 @@
 .emax_once_backward <- function(mod,
                                 candidates,
                                 threshold = .001,
-                                quiet = FALSE,
+                                quiet = TRUE,
                                 history = TRUE) {
 
   # note: checking is limited here. in future, throw an error if
@@ -205,7 +205,7 @@
 .emax_forward <- function(mod,
                          candidates,
                          threshold = .01,
-                         quiet = FALSE,
+                         quiet = TRUE,
                          history = TRUE,
                          seed = NULL) {
 
@@ -225,7 +225,7 @@
 .emax_backward <- function(mod,
                           candidates,
                           threshold = .001,
-                          quiet = FALSE,
+                          quiet = TRUE,
                           history = TRUE,
                           seed = NULL) {
 

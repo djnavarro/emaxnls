@@ -50,13 +50,13 @@ NULL
 
 #' @export
 #' @rdname emax_update
-emax_add_term <- function(object, formula, quiet = FALSE) {
+emax_add_term <- function(object, formula, quiet = TRUE) {
   .emax_add_term(object = object, formula = formula, quiet = quiet)
 }
 
 #' @export
 #' @rdname emax_update
-emax_remove_term <- function(object, formula, quiet = FALSE) {
+emax_remove_term <- function(object, formula, quiet = TRUE) {
   .emax_remove_term(object = object, formula = formula, quiet = quiet)
 }
 
@@ -96,7 +96,7 @@ NULL
 emax_forward <- function(mod,
                          candidates,
                          threshold = .01,
-                         quiet = FALSE,
+                         quiet = TRUE,
                          history = TRUE,
                          seed = NULL) {
   .emax_forward(
@@ -114,7 +114,7 @@ emax_forward <- function(mod,
 emax_backward <- function(mod,
                           candidates,
                           threshold = .001,
-                          quiet = FALSE,
+                          quiet = TRUE,
                           history = TRUE,
                           seed = NULL) {
   .emax_backward(

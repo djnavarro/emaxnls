@@ -6,9 +6,9 @@
 \alias{emax_remove_term}
 \title{Add or remove a covariate term from an Emax regression}
 \usage{
-emax_add_term(object, formula, quiet = FALSE)
+emax_add_term(object, formula, quiet = TRUE)
 
-emax_remove_term(object, formula, quiet = FALSE)
+emax_remove_term(object, formula, quiet = TRUE)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}

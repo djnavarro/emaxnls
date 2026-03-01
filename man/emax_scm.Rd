@@ -11,7 +11,7 @@ emax_forward(
   mod,
   candidates,
   threshold = 0.01,
-  quiet = FALSE,
+  quiet = TRUE,
   history = TRUE,
   seed = NULL
 )
@@ -20,7 +20,7 @@ emax_backward(
   mod,
   candidates,
   threshold = 0.001,
-  quiet = FALSE,
+  quiet = TRUE,
   history = TRUE,
   seed = NULL
 )

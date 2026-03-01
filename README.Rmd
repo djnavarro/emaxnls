@@ -66,6 +66,8 @@ final_mod <- base_model |>
   emax_forward(candidates = covariate_list, threshold = .01) |> 
   emax_backward(candidates = covariate_list, threshold = .001) 
 
+emax_history(final_mod)
+
 final_mod
 ```
 
