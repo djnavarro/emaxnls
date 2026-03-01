@@ -3,33 +3,15 @@
 #' Coefficents for an Emax regression
 #'
 #' @param object An `emaxnls` object
-#' @param level Confidence level for interval estimate
 #' @param ... Ignored
 #'
-#' @returns A tibble
+#' @returns A vector of coefficients
 #'
 #' @exportS3Method stats::coef
-coef.emaxnls <- function(object, level = 0.95, ...) {
-  sss <- summary(.get_nls(object))
-  coef_tbl <- sss$coef
-  ci <- .confint_quiet(.get_nls(object), level = level)
-  ci <- ci$result
-  coef_tbl |>
-    as.data.frame() |>
-    tibble::rownames_to_column("label") |>
-    tibble::as_tibble() |>
-    dplyr::select(
-      label = label,
-      estimate = Estimate,
-      std_error = `Std. Error`,
-      t_statistic = `t value`,
-      p_value = `Pr(>|t|)`
-    ) |>
-    dplyr::mutate(
-      ci_lower = ci[, 1],
-      ci_upper = ci[, 2]
-    )
+coef.emaxnls <- function(object, ...) {
+  coef(.get_nls(object), ...)
 }
+
 
 #' Variance-covariance matrix for an Emax regression
 #' 

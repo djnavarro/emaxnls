@@ -7,10 +7,7 @@
 # cloned environment to prevent modification to the original model
 .emax_fn <- function(mod, data = mod$data) {
   function(param = NULL) {
-    if(is.null(param)) {
-      param <- coef(mod)$estimate
-      names(param) <- coef(mod)$label
-    }
+    if(is.null(param)) param <- coef(mod)
     old_env <- .get_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
     purrr::iwalk(data, \(x, lbl) assign(lbl, x, envir = new_env))
@@ -24,8 +21,8 @@
   if (!is.null(seed)) set.seed(seed)
 
   cov <- vcov(mod)
-  est <- coef(mod)$estimate
-  lbl <- coef(mod)$label
+  est <- coef(mod)
+  lbl <- names(coef(mod))
   sig <- summary(.get_nls(mod))$sigma
   nr <- nrow(mod$data)
 

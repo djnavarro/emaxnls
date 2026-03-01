@@ -4,17 +4,15 @@
 \alias{coef.emaxnls}
 \title{Coefficents for an Emax regression}
 \usage{
-\method{coef}{emaxnls}(object, level = 0.95, ...)
+\method{coef}{emaxnls}(object, ...)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}
 
-\item{level}{Confidence level for interval estimate}
-
 \item{...}{Ignored}
 }
 \value{
-A tibble
+A vector of coefficients
 }
 \description{
 Coefficents for an Emax regression

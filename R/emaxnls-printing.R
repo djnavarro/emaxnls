@@ -1,6 +1,4 @@
 
-
-
 #' Print an Emax regression model object
 #'
 #' @param x An `emaxnls` object
@@ -27,7 +25,7 @@ print.emaxnls <- function(x, ...) {
     cat("Model does not converge\n")
   } else {
     cat("Coefficient table:\n\n")
-    ccc <- utils::capture.output(print(coef(x)))
+    ccc <- utils::capture.output(print(.coef_table(x)))
     ccc <- ccc[c(-1, -3)]
     cat(ccc, sep = "\n")
     cat("\n")
@@ -38,6 +36,28 @@ print.emaxnls <- function(x, ...) {
   return(invisible(x))
 }
 
+# construct the coefficient table
+.coef_table <- function(object, level = 0.95, ...) {
+  sss <- summary(.get_nls(object))
+  coef_tbl <- sss$coef
+  ci <- .confint_quiet(.get_nls(object), level = level)
+  ci <- ci$result
+  coef_tbl |>
+    as.data.frame() |>
+    tibble::rownames_to_column("label") |>
+    tibble::as_tibble() |>
+    dplyr::select(
+      label = label,
+      estimate = Estimate,
+      std_error = `Std. Error`,
+      t_statistic = `t value`,
+      p_value = `Pr(>|t|)`
+    ) |>
+    dplyr::mutate(
+      ci_lower = ci[, 1],
+      ci_upper = ci[, 2]
+    )
+}
 
 # simplified version of scales::label_pvalue()
 .show_p <- function(x, accuracy = 0.001) {

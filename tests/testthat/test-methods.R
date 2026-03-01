@@ -35,11 +35,12 @@ test_that("AIC(), BIC(), and anova() can take multiple objects", {
   expect_no_error(anova(mod_base, mod))
 })
 
-test_that("coef() returns data frame with the expected structure", {
+test_that("coef() returns numeric vector with correct length and names", {
   cc <- coef(mod)
-  expect_s3_class(cc, class = "data.frame")
-  expect_named(cc, c("label", "estimate", "std_error", "t_statistic", "p_value", "ci_lower", "ci_upper"))
-  expect_equal(cc$label, lbl)
+  expect_true(is.vector(cc))
+  expect_true(is.numeric(cc))
+  expect_length(cc, length(lbl))
+  expect_equal(names(cc), lbl)
 })
 
 test_that("vcov() returns symmetric numeric matrix with correct row/col names", {
@@ -72,3 +73,11 @@ test_that("print() writes expected message to console and returns object invisib
   expect_true(any(grepl("^Coefficient table:$", msg)))
   expect_true(any(grepl("^Variance-covariance matrix:$", msg)))
 })
+
+test_that(".coef_table returns data frame with the expected structure", {
+  cc <- .coef_table(mod)
+  expect_s3_class(cc, class = "data.frame")
+  expect_named(cc, c("label", "estimate", "std_error", "t_statistic", "p_value", "ci_lower", "ci_upper"))
+  expect_equal(cc$label, lbl)
+})
+
