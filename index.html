@@ -143,36 +143,23 @@
 <span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_b</span></span>
-<span><span class="co">#&gt; try add: Emax ~ cnt_a</span></span>
-<span><span class="co">#&gt; try add: E0 ~ cnt_c</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: Emax ~ bin_d</span></span>
-<span><span class="co">#&gt; try add: E0 ~ bin_e</span></span>
-<span><span class="co">#&gt; try remove: Emax ~ bin_e</span></span>
-<span><span class="co">#&gt; try remove: E0 ~ cnt_a</span></span>
-<span><span class="co">#&gt; try remove: E0 ~ cnt_a</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/emax_scm.html">emax_history</a></span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 9</span></span>
+<span><span class="co">#&gt;    iteration attempt step       action term_tested  model_tested model_converged</span></span>
+<span><span class="co">#&gt;        &lt;int&gt;   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;        &lt;lgl&gt;          </span></span>
+<span><span class="co">#&gt;  1         0       0 base model &lt;NA&gt;   &lt;NA&gt;         E0 ~ 1, Ema… FALSE          </span></span>
+<span><span class="co">#&gt;  2         1       1 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           </span></span>
+<span><span class="co">#&gt;  3         1       2 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           </span></span>
+<span><span class="co">#&gt;  4         1       3 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           </span></span>
+<span><span class="co">#&gt;  5         1       4 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           </span></span>
+<span><span class="co">#&gt;  6         1       5 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           </span></span>
+<span><span class="co">#&gt;  7         1       6 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           </span></span>
+<span><span class="co">#&gt;  8         1       7 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           </span></span>
+<span><span class="co">#&gt;  9         1       8 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           </span></span>
+<span><span class="co">#&gt; 10         1       9 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           </span></span>
+<span><span class="co">#&gt; # ℹ 22 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: term_p_value &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
 <span></span>
 <span><span class="va">final_mod</span></span>
 <span><span class="co">#&gt; Structural model:</span></span>
@@ -211,16 +198,16 @@
 <span><span class="co">#&gt; # A tibble: 400 × 8</span></span>
 <span><span class="co">#&gt;    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept</span></span>
 <span><span class="co">#&gt;     &lt;int&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1      1      1  6.52  6.86         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  2      2      1  7.84  8.12         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  3      3      1  7.14  7.11         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  1      1      1  6.51  6.86         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  2      2      1  7.87  8.14         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  3      3      1  7.15  7.12         4.96    0.508           10.1</span></span>
 <span><span class="co">#&gt;  4      4      1  7.00  6.85         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  5      5      1  6.22  6.03         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  6      6      1  7.42  7.07         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  7      7      1  6.42  6.32         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  8      8      1  5.53  4.89         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt;  9      9      1  6.95  8.04         4.96    0.508           10.1</span></span>
-<span><span class="co">#&gt; 10     10      1  8.71  9.31         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  5      5      1  6.21  6.02         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  6      6      1  7.43  7.09         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  7      7      1  6.42  6.31         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  8      8      1  5.50  4.87         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt;  9      9      1  6.96  8.04         4.96    0.508           10.1</span></span>
+<span><span class="co">#&gt; 10     10      1  8.75  9.35         4.96    0.508           10.1</span></span>
 <span><span class="co">#&gt; # ℹ 390 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: logEC50_Intercept &lt;dbl&gt;</span></span></code></pre></div>
 </div>

@@ -48,7 +48,7 @@
 <span>  <span class="va">mod</span>,</span>
 <span>  <span class="va">candidates</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  history <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -57,7 +57,7 @@
 <span>  <span class="va">mod</span>,</span>
 <span>  <span class="va">candidates</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">0.001</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  history <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -110,36 +110,6 @@
 <span class="r-in"><span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span></span>
 <span class="r-in"><span>  <span class="fu">emax_forward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
 <span class="r-in"><span>  <span class="fu">emax_backward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ cnt_c</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: E0 ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try add: Emax ~ bin_d</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try remove: E0 ~ cnt_a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try remove: Emax ~ bin_e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> try remove: E0 ~ cnt_a</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">final_mod</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Structural model:</span>

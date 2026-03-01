@@ -5,9 +5,9 @@ Add or remove a covariate term from an Emax regression
 ## Usage
 
 ``` r
-emax_add_term(object, formula, quiet = FALSE)
+emax_add_term(object, formula, quiet = TRUE)
 
-emax_remove_term(object, formula, quiet = FALSE)
+emax_remove_term(object, formula, quiet = TRUE)
 ```
 
 ## Arguments

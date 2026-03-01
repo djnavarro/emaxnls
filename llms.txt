@@ -88,36 +88,23 @@ covariate_list <- list(
 final_mod <- base_model |> 
   emax_forward(candidates = covariate_list, threshold = .01) |> 
   emax_backward(candidates = covariate_list, threshold = .001) 
-#> try add: E0 ~ cnt_c
-#> try add: Emax ~ bin_e
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ cnt_c
-#> try add: Emax ~ cnt_a
-#> try add: Emax ~ bin_d
-#> try add: E0 ~ cnt_a
-#> try add: Emax ~ cnt_b
-#> try add: E0 ~ bin_e
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ bin_e
-#> try add: E0 ~ bin_e
-#> try add: E0 ~ cnt_c
-#> try add: Emax ~ cnt_c
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ cnt_a
-#> try add: Emax ~ bin_d
-#> try add: Emax ~ cnt_b
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ cnt_c
-#> try add: Emax ~ cnt_b
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ cnt_a
-#> try add: E0 ~ cnt_c
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ bin_d
-#> try add: E0 ~ bin_e
-#> try remove: Emax ~ bin_e
-#> try remove: E0 ~ cnt_a
-#> try remove: E0 ~ cnt_a
+
+emax_history(final_mod)
+#> # A tibble: 32 × 9
+#>    iteration attempt step       action term_tested  model_tested model_converged
+#>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
+#>  1         0       0 base model <NA>   <NA>         E0 ~ 1, Ema… FALSE          
+#>  2         1       1 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
+#>  3         1       2 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
+#>  4         1       3 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
+#>  5         1       4 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
+#>  6         1       5 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
+#>  7         1       6 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
+#>  8         1       7 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
+#>  9         1       8 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
+#> 10         1       9 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
+#> # ℹ 22 more rows
+#> # ℹ 2 more variables: term_p_value <dbl>, model_updated <lgl>
 
 final_mod
 #> Structural model:
@@ -156,16 +143,16 @@ simulate(final_mod, nsim = 1)
 #> # A tibble: 400 × 8
 #>    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>        <dbl>    <dbl>          <dbl>
-#>  1      1      1  6.52  6.86         4.96    0.508           10.1
-#>  2      2      1  7.84  8.12         4.96    0.508           10.1
-#>  3      3      1  7.14  7.11         4.96    0.508           10.1
+#>  1      1      1  6.51  6.86         4.96    0.508           10.1
+#>  2      2      1  7.87  8.14         4.96    0.508           10.1
+#>  3      3      1  7.15  7.12         4.96    0.508           10.1
 #>  4      4      1  7.00  6.85         4.96    0.508           10.1
-#>  5      5      1  6.22  6.03         4.96    0.508           10.1
-#>  6      6      1  7.42  7.07         4.96    0.508           10.1
-#>  7      7      1  6.42  6.32         4.96    0.508           10.1
-#>  8      8      1  5.53  4.89         4.96    0.508           10.1
-#>  9      9      1  6.95  8.04         4.96    0.508           10.1
-#> 10     10      1  8.71  9.31         4.96    0.508           10.1
+#>  5      5      1  6.21  6.02         4.96    0.508           10.1
+#>  6      6      1  7.43  7.09         4.96    0.508           10.1
+#>  7      7      1  6.42  6.31         4.96    0.508           10.1
+#>  8      8      1  5.50  4.87         4.96    0.508           10.1
+#>  9      9      1  6.96  8.04         4.96    0.508           10.1
+#> 10     10      1  8.75  9.35         4.96    0.508           10.1
 #> # ℹ 390 more rows
 #> # ℹ 1 more variable: logEC50_Intercept <dbl>
 ```

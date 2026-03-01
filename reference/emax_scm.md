@@ -9,7 +9,7 @@ emax_forward(
   mod,
   candidates,
   threshold = 0.01,
-  quiet = FALSE,
+  quiet = TRUE,
   history = TRUE,
   seed = NULL
 )
@@ -18,7 +18,7 @@ emax_backward(
   mod,
   candidates,
   threshold = 0.001,
-  quiet = FALSE,
+  quiet = TRUE,
   history = TRUE,
   seed = NULL
 )
@@ -69,36 +69,6 @@ covariate_list <- list(
 final_mod <- base_model |> 
   emax_forward(candidates = covariate_list, threshold = .01) |> 
   emax_backward(candidates = covariate_list, threshold = .001) 
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ cnt_a
-#> try add: E0 ~ cnt_a
-#> try add: E0 ~ bin_e
-#> try add: Emax ~ cnt_b
-#> try add: Emax ~ bin_d
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ bin_e
-#> try add: Emax ~ cnt_c
-#> try add: E0 ~ cnt_c
-#> try add: E0 ~ bin_e
-#> try add: Emax ~ bin_e
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ bin_d
-#> try add: E0 ~ cnt_b
-#> try add: Emax ~ cnt_c
-#> try add: Emax ~ cnt_b
-#> try add: Emax ~ cnt_a
-#> try add: E0 ~ cnt_c
-#> try add: Emax ~ cnt_a
-#> try add: Emax ~ cnt_b
-#> try add: Emax ~ cnt_c
-#> try add: E0 ~ bin_e
-#> try add: E0 ~ cnt_b
-#> try add: E0 ~ cnt_c
-#> try add: E0 ~ bin_d
-#> try add: Emax ~ bin_d
-#> try remove: E0 ~ cnt_a
-#> try remove: Emax ~ bin_e
-#> try remove: E0 ~ cnt_a
 
 final_mod
 #> Structural model:
