@@ -3,7 +3,8 @@
 # resampling code ---------------------------------------------------------
 
 # safely construct a prediction function for emax model mod, with
-# user-customisable parameter values
+# user-customisable parameter values; function is evaluated in 
+# cloned environment to prevent modification to the original model
 .emax_fn <- function(mod, data = mod$data) {
   function(param = NULL) {
     if(is.null(param)) {
@@ -12,6 +13,8 @@
     }
     old_env <- .get_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
+    purrr::iwalk(data, \(x, lbl) assign(lbl, x, envir = new_env))
+    purrr::iwalk(param, \(x, lbl) assign(lbl, x, envir = new_env))
     eval(mod$formula$nls[[3]], envir = new_env)
   }
 }
