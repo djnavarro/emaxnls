@@ -6,7 +6,7 @@ Coefficents for an Emax regression
 
 ``` r
 # S3 method for class 'emaxnls'
-coef(object, level = 0.95, ...)
+coef(object, ...)
 ```
 
 ## Arguments
@@ -15,14 +15,10 @@ coef(object, level = 0.95, ...)
 
   An `emaxnls` object
 
-- level:
-
-  Confidence level for interval estimate
-
 - ...:
 
   Ignored
 
 ## Value
 
-A tibble
+A vector of coefficients

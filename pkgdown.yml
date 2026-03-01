@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-03-01T02:11Z
+last_built: 2026-03-01T03:03Z
 urls:
   reference: https://emaxnls.djnavarro.net/reference
   article: https://emaxnls.djnavarro.net/articles
