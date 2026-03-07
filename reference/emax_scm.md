@@ -104,15 +104,15 @@ emax_history(final_mod)
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
 #>  1         0       0 base model NA     NA           E0 ~ 1, Ema… FALSE          
-#>  2         1       1 forward    add    E0 ~ bin_d   E0 ~ 1 + bi… TRUE           
-#>  3         1       2 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
-#>  4         1       3 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
-#>  5         1       4 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
-#>  6         1       5 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
-#>  7         1       6 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
-#>  8         1       7 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
-#>  9         1       8 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
-#> 10         1       9 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
+#>  2         1       1 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
+#>  3         1       2 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
+#>  4         1       3 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
+#>  5         1       4 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
+#>  6         1       5 forward    add    E0 ~ bin_d   E0 ~ 1 + bi… TRUE           
+#>  7         1       6 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
+#>  8         1       7 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
+#>  9         1       8 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
+#> 10         1       9 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
 #> # ℹ 22 more rows
 #> # ℹ 2 more variables: term_p_value <dbl>, model_updated <lgl>
 ```
