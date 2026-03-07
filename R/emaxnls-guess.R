@@ -15,7 +15,17 @@
   rsp <- store$design[[rsp_var]]
   base_guess <- .guess_base(exp, rsp)
   base_resid <- .guess_resid(base_guess, exp, rsp)
+  cov_names <- unique(unlist(c(
+    store$variables$E0, 
+    store$variables$Emax, 
+    store$variables$logEC50, 
+    store$variables$logHill
+  )))
+
+  scale_guess <- .guess_var_scale(exp, rsp, base_resid, cov_names, store$design)
   resid_max <- max(abs(base_resid))
+  beta_max <- 5
+  loghill_max <- 5
 
   ini <- coefficient_table |>
     dplyr::mutate(
@@ -29,16 +39,22 @@
       lower = dplyr::case_when(
         covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - resid_max,
         covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - resid_max,
-        covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"] - 10,
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - 5,
-        covariate != "Intercept" ~ -10
+        covariate == "Intercept" & parameter == "logEC50" ~ min(base_guess["logEC01"], min(log(exp[exp>0]))),
+        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - loghill_max,
+        covariate != "Intercept" & parameter == "E0"      ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "Emax"    ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "logEC50" ~ -beta_max * scale_guess$exp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "logHill" ~ -loghill_max 
       ),
       upper = dplyr::case_when(
         covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + resid_max,
         covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + resid_max,
-        covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"] + 10,
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + 5,
-        covariate != "Intercept" ~ 10
+        covariate == "Intercept" & parameter == "logEC50" ~ max(base_guess["logEC99"], max(log(exp[exp>0]))),
+        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + loghill_max,
+        covariate != "Intercept" & parameter == "E0"      ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "Emax"    ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "logEC50" ~ beta_max * scale_guess$exp / scale_guess$cov[covariate],
+        covariate != "Intercept" & parameter == "logHill" ~ loghill_max
       )
     )
   
@@ -82,15 +98,19 @@
   Emax <- stats::predict(m, newdata = data.frame(log_exp_dosed = max(log_exp_dosed))) - E0
 
   # estimate logEC50 using the model, and the estimates for E0 and Emax
-  E50 <- E0 + Emax / 2
+  E50 <- E0 + Emax * 0.5
+  E01 <- E0 + Emax * 0.01
+  E99 <- E0 + Emax * 0.99
   b <- stats::coef(m)
   logEC50 <- (E50 - b[1]) / b[2] 
+  logEC01 <- (E01 - b[1]) / b[2] 
+  logEC99 <- (E99 - b[1]) / b[2] 
 
   # fix the initial estimate of logHill at 0
   logHill <- 0
 
-  est <- c(E0, Emax, logEC50, logHill)
-  names(est) <- c("E0", "Emax", "logEC50", "logHill")
+  est <- c(E0, Emax, logEC50, logHill, logEC01, logEC99)
+  names(est) <- c("E0", "Emax", "logEC50", "logHill", "logEC01", "logEC99")
 
   return(est)
 }
@@ -102,4 +122,18 @@
   prd <- est["E0"] + est["Emax"] * (exph / (exph + ec50h))
   resid <- response - prd
   return(resid)
+}
+
+.guess_var_scale <- function(exposure, response, residuals, cov_names, design) {
+  sds <- list(
+    cov = purrr::map_dbl(
+      .x = cov_names,
+      .f = function(nn) stats::sd(design[[nn]])
+    ),
+    exp = stats::sd(exposure),
+    rsp = stats::sd(response),
+    res = stats::sd(residuals)
+  )
+  names(sds$cov) <- cov_names
+  return(sds)
 }
