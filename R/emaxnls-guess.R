@@ -24,20 +24,21 @@
         covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"],
         covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"],
         covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"],
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"],
+        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"]
       ),
       lower = dplyr::case_when(
-        parameter == "E0"      ~ base_guess["E0"] - resid_max,
-        parameter == "Emax"    ~ base_guess["Emax"] - resid_max,
+        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - resid_max,
+        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - resid_max,
         covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"] - 10,
-        covariate != "Intercept" & parameter == "logEC50" ~ 0,
-        parameter == "logHill" ~ -2
+        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - 5,
+        covariate != "Intercept" ~ -10
       ),
       upper = dplyr::case_when(
-        parameter == "E0"      ~ base_guess["E0"] + resid_max,
-        parameter == "Emax"    ~ base_guess["Emax"] + resid_max,
-        parameter == "logEC50" ~ base_guess["logEC50"] + 10,
-        parameter == "logHill" ~ 4
+        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + resid_max,
+        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + resid_max,
+        covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"] + 10,
+        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + 5,
+        covariate != "Intercept" ~ 10
       )
     )
   
