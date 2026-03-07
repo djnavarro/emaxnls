@@ -17,7 +17,19 @@
   store <- .store_covariates(store)
   store <- .store_nlsformula(store)
   
-  settings <- .get_settings(store$coefficients)
+  # hard code this for now
+  settings <- list(
+    algorithm = "port",
+    control = list(
+      tol = 1e-8,
+      minFactor = 1024^-4,
+      maxiter = 200000,
+      scaleOffset = 1,
+      warnOnly = FALSE
+    )
+  )
+
+  init <- .guess_init(store$coefficients, store$design)
 
   # organise into emaxnls structure
   obj <- list(
@@ -37,11 +49,11 @@
         formula   = store$nls_formula, 
         design    = store$design, 
         lookup    = store$lookup,
-        start     = settings$coefficient$start, 
-        algorithm = settings$algorithm, 
+        start     = init$start, 
         control   = settings$control, 
-        lower     = settings$coefficient$lower, 
-        upper     = settings$coefficient$upper
+        algorithm = settings$algorithm, 
+        lower     = init$lower, 
+        upper     = init$upper
       ), 
       parent = parent.frame()
     )
@@ -53,8 +65,8 @@
       formula   = formula,
       data      = design,
       start     = start,
-      algorithm = algorithm,
       control   = control,
+      algorithm = algorithm,
       lower     = lower,
       upper     = upper
     ),

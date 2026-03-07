@@ -155,9 +155,9 @@
   return(store)
 }
 
-# settings are hard-coded for the moment ------
+# guess parameters for initialisation ------
 
-.get_settings <- function(coefficients) {
+.guess_init <- function(coefficients, design) {
 
   coefficient_vec <- unname(unlist(coefficients))
 
@@ -166,7 +166,7 @@
     covariate = gsub("^[^_]*_", "", coefficient_vec)
   )
 
-  coefficient_settings <- coefficient_table |>
+  ini <- coefficient_table |>
     dplyr::mutate(
       start = dplyr::case_when(
         covariate != "Intercept" ~ 0,
@@ -190,22 +190,10 @@
       )
     )
   
-  names(coefficient_settings$start) <- coefficient_vec
-  names(coefficient_settings$lower) <- coefficient_vec
-  names(coefficient_settings$upper) <- coefficient_vec
+  names(ini$start) <- coefficient_vec
+  names(ini$lower) <- coefficient_vec
+  names(ini$upper) <- coefficient_vec
   
-  settings <- list(
-    coefficient = coefficient_settings,
-    algorithm = "port",
-    control = list(
-      tol = 1e-8,
-      minFactor = 1024^-4,
-      maxiter = 200000,
-      scaleOffset = 1,
-      warnOnly = FALSE
-    )
-  )
-
-  return(settings)
+  return(ini)
 }
 
