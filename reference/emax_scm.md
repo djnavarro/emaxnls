@@ -103,7 +103,7 @@ emax_history(final_mod)
 #> # A tibble: 32 × 9
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
-#>  1         0       0 base model NA     NA           E0 ~ 1, Ema… FALSE          
+#>  1         0       0 base model NA     NA           E0 ~ 1, Ema… TRUE           
 #>  2         1       1 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
 #>  3         1       2 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
 #>  4         1       3 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
