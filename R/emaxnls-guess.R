@@ -63,8 +63,8 @@
 
   # fit a log-linear model for the dosed samples, and 
   # extrapolate a crude estimate of E0 from it
-  m <- lm(rsp_dosed ~ log_exp_dosed)
-  my <- predict(m, newdata = data.frame(log_exp_dosed = min(log_exp_dosed) + c(0, 1)))
+  m <- stats::lm(rsp_dosed ~ log_exp_dosed)
+  my <- stats::predict(m, newdata = data.frame(log_exp_dosed = min(log_exp_dosed) + c(0, 1)))
   mx <- exp(min(log_exp_dosed) + c(0, 1))
   E0_dosed  <- my[1] - mx[1]/(mx[2] - mx[1]) * (my[2] - my[1])
 
@@ -79,11 +79,11 @@
 
   # estimate emax based on the predicted response at the maximum
   # observed exposure in the data
-  Emax <- predict(m, newdata = data.frame(log_exp_dosed = max(log_exp_dosed))) - E0
+  Emax <- stats::predict(m, newdata = data.frame(log_exp_dosed = max(log_exp_dosed))) - E0
 
   # estimate logEC50 using the model, and the estimates for E0 and Emax
   E50 <- E0 + Emax / 2
-  b <- coef(m)
+  b <- stats::coef(m)
   logEC50 <- (E50 - b[1]) / b[2] 
 
   # fix the initial estimate of logHill at 0
