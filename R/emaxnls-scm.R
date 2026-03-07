@@ -34,7 +34,7 @@
       action = NA_character_,
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
-      model_converged = !is.null(mod$result),
+      model_converged = !is.null(.get_nls(mod)),
       term_p_value = NA_real_,
       model_updated = NA
     )
@@ -48,7 +48,7 @@
         action = NA_character_,
         term_tested = NA_character_,
         model_tested = .get_short_formula(mod),
-        model_converged = !is.null(mod$result),
+        model_converged = !is.null(.get_nls(mod)),
         term_p_value = NA_real_,
         model_updated = NA
       )
