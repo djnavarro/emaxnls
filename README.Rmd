@@ -71,7 +71,6 @@ emax_history(final_mod)
 final_mod
 ```
 
-
 ## Simulation
 
 ```{r}

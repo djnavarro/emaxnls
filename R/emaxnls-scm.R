@@ -36,6 +36,8 @@
       model_tested = .get_short_formula(mod),
       model_converged = !is.null(.get_nls(mod)),
       term_p_value = NA_real_,
+      model_aic = AIC(mod),
+      model_bic = BIC(mod),
       model_updated = NA
     )
   }
@@ -50,6 +52,8 @@
         model_tested = .get_short_formula(mod),
         model_converged = !is.null(.get_nls(mod)),
         term_p_value = NA_real_,
+        model_aic = AIC(mod),
+        model_bic = BIC(mod),
         model_updated = NA
       )
   }
@@ -109,6 +113,8 @@
             model_tested = .get_short_formula(candidate_mod),
             model_converged = converge,
             term_p_value = p,
+            model_aic = AIC(candidate_mod),
+            model_bic = BIC(candidate_mod),
             model_updated = FALSE # default
           )
       }
@@ -182,6 +188,8 @@
             model_tested = .get_short_formula(candidate_mod),
             model_converged = converge,
             term_p_value = p,
+            model_aic = AIC(candidate_mod),
+            model_bic = BIC(candidate_mod),
             model_updated = FALSE # default
           )
       }
