@@ -29,7 +29,7 @@
     )
   )
 
-  init <- .guess_init(store$coefficients, store$design)
+  ini <- .guess_init(store)
 
   # organise into emaxnls structure
   obj <- list(
@@ -42,18 +42,19 @@
     info = list(
       model_type   = store$model_type,
       variables    = store$variables,
-      coefficients = unname(unlist(store$coefficients))
+      coefficients = unname(unlist(store$coefficients)),
+      init = ini
     ),
     env = rlang::new_environment(
       data = list(
         formula   = store$nls_formula, 
         design    = store$design, 
         lookup    = store$lookup,
-        start     = init$start, 
+        start     = ini$start, 
         control   = settings$control, 
         algorithm = settings$algorithm, 
-        lower     = init$lower, 
-        upper     = init$upper
+        lower     = ini$lower, 
+        upper     = ini$upper
       ), 
       parent = parent.frame()
     )
