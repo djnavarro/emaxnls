@@ -90,10 +90,10 @@ final_mod <- base_model |>
   emax_backward(candidates = covariate_list, threshold = .001) 
 
 emax_history(final_mod)
-#> # A tibble: 32 × 9
+#> # A tibble: 32 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
-#>  1         0       0 base model <NA>   <NA>         E0 ~ 1, Ema… FALSE          
+#>  1         0       0 base model <NA>   <NA>         E0 ~ 1, Ema… TRUE           
 #>  2         1       1 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
 #>  3         1       2 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
 #>  4         1       3 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
@@ -104,7 +104,8 @@ emax_history(final_mod)
 #>  9         1       8 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
 #> 10         1       9 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
 #> # ℹ 22 more rows
-#> # ℹ 2 more variables: term_p_value <dbl>, model_updated <lgl>
+#> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
+#> #   model_updated <lgl>
 
 final_mod
 #> Structural model:

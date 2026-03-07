@@ -100,7 +100,7 @@ final_mod
 #> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03
 
 emax_history(final_mod)
-#> # A tibble: 32 × 9
+#> # A tibble: 32 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
 #>  1         0       0 base model NA     NA           E0 ~ 1, Ema… TRUE           
@@ -114,5 +114,6 @@ emax_history(final_mod)
 #>  9         1       8 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
 #> 10         1       9 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
 #> # ℹ 22 more rows
-#> # ℹ 2 more variables: term_p_value <dbl>, model_updated <lgl>
+#> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
+#> #   model_updated <lgl>
 ```
