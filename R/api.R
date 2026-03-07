@@ -4,6 +4,7 @@
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each of specifying a covariate model for a structural parameter
 #' @param data A data frame
+#' @param settings Settings for the nls() optimisation
 #' @param quiet When quiet=TRUE messages and warnings are suppressed
 #'  
 #' @returns
@@ -20,13 +21,47 @@
 emax_nls <- function(structural_model,
                      covariate_model,
                      data,
+                     settings = emax_nls_settings(),
                      quiet = FALSE) {
   .emax_nls(
     structural_model = structural_model,
     covariate_model = covariate_model,
     data = data,
+    settings = settings,
     quiet = quiet
   )
+}
+
+#' Settings used to estimate Emax model
+#'
+#' @param init Data frame specifying initial parameters (start, upper, lower)
+#' @param algorithm Has same meaning as in nls() (allowed: "default", "plinear", "port")
+#' @param control Has same meaning as in nls()
+#' @param ... Other arguments passed to nls()
+#'
+#' @returns List
+#'
+#' @export
+emax_nls_settings <- function(init = NULL,
+                              algorithm = "port",
+                              control = list(
+                                tol = 1e-8,
+                                minFactor = 1024^-4,
+                                maxiter = 200000,
+                                scaleOffset = 1,
+                                warnOnly = FALSE
+                              ),
+                              ...) {
+  settings <- list(
+    init = init,
+    algorithm = algorithm,
+    control = control,
+    ...
+  )
+  settings$start <- NULL
+  settings$upper <- NULL
+  settings$lower <- NULL
+  return(settings)
 }
 
 #' Add or remove a covariate term from an Emax regression

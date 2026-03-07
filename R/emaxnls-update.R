@@ -40,11 +40,20 @@
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
 
+  # update initial parameter guess (TODO: init should reuse info from old fit)
+  settings <- .get_settings(object)
+  settings$init <- .guess_init(.store(
+    covariate_model = covariate_model, 
+    structural_model = .get_structural_formula(object),
+    data = .get_data(object)
+  ))
+
   # re-run
   updated <- .emax_nls(
     structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
     data = .get_data(object),
+    settings = settings,
     quiet = quiet
   )
 
@@ -94,11 +103,20 @@
   ))
   covariate_model[[str_param]] <- new
 
+  # update initial parameter guess (TODO: init should reuse info from old fit)
+  settings <- .get_settings(object)
+  settings$init <- .guess_init(.store(
+    covariate_model = covariate_model, 
+    structural_model = .get_structural_formula(object),
+    data = .get_data(object)
+  ))
+
   # re-run
   updated <- .emax_nls(
     structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
     data = .get_data(object),
+    settings = settings,
     quiet = quiet
   )
 

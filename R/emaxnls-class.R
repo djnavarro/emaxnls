@@ -2,7 +2,8 @@
 .emax_nls <- function(structural_model,
                       covariate_model,
                       data,
-                      quiet = FALSE) {
+                      settings, 
+                      quiet) {
 
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
@@ -10,19 +11,7 @@
   # compute and store everything in temporary object
   store <- .store(covariate_model, structural_model, data) 
   
-  # hard code this for now
-  settings <- list(
-    algorithm = "port",
-    control = list(
-      tol = 1e-8,
-      minFactor = 1024^-4,
-      maxiter = 200000,
-      scaleOffset = 1,
-      warnOnly = FALSE
-    )
-  )
-
-  ini <- .guess_init(store)
+  if (is.null(settings$init)) settings$init <- .guess_init(store)
 
   # organise into emaxnls structure
   obj <- list(
@@ -36,18 +25,18 @@
       model_type   = store$model_type,
       variables    = store$variables,
       coefficients = unname(unlist(store$coefficients)),
-      init = ini
+      settings = settings
     ),
     env = rlang::new_environment(
       data = list(
         formula   = store$nls_formula, 
         design    = store$design, 
         lookup    = store$lookup,
-        start     = ini$start, 
+        start     = settings$init$start, 
         control   = settings$control, 
         algorithm = settings$algorithm, 
-        lower     = ini$lower, 
-        upper     = ini$upper
+        lower     = settings$init$lower, 
+        upper     = settings$init$upper
       ), 
       parent = parent.frame()
     )

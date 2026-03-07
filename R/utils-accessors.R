@@ -31,6 +31,12 @@
   object$info$variables
 }
 
+# accessors for settings -----
+
+.get_settings <- function(object) {
+  object$info$settings
+}
+
 # accessors for formulae ------
 
 .get_covariate_formula <- function(object, param = NULL) {
