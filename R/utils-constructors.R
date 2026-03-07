@@ -1,6 +1,17 @@
 
 # internal constructors used to build up emaxnls object constituents ------
 
+.store <- function(covariate_model, structural_model, data) {
+  store <- .store_inputs()   
+  store <- .store_modeltype(store)
+  store <- .store_design(store)
+  store <- .store_variables(store)
+  store <- .store_terms(store)
+  store <- .store_coefficients(store) 
+  store <- .store_covariates(store)
+  store <- .store_nlsformula(store)
+}
+
 .store_inputs <- function(covariate_model, structural_model, data) {
   names(covariate_model) <- covariate_model |> purrr::map_chr(\(x) all.vars(x[[2]]))
   store <- list(

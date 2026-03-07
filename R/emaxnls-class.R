@@ -7,15 +7,8 @@
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
 
-  # compute and store everything in temporary object 
-  store <- .store_inputs(covariate_model, structural_model, data)   
-  store <- .store_modeltype(store)
-  store <- .store_design(store)
-  store <- .store_variables(store)
-  store <- .store_terms(store)
-  store <- .store_coefficients(store) 
-  store <- .store_covariates(store)
-  store <- .store_nlsformula(store)
+  # compute and store everything in temporary object
+  store <- .store(covariate_model, structural_model, data) 
   
   # hard code this for now
   settings <- list(
