@@ -2,7 +2,7 @@
 # internal constructors used to build up emaxnls object constituents ------
 
 .store <- function(covariate_model, structural_model, data) {
-  store <- .store_inputs()   
+  store <- .store_inputs(covariate_model, structural_model, data)   
   store <- .store_modeltype(store)
   store <- .store_design(store)
   store <- .store_variables(store)
