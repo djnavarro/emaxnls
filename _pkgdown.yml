@@ -9,6 +9,7 @@ reference:
 - contents:
   - emax_nls
   - emax_nls_settings
+  - emax_auto_init
   - emax_scm
   - emax_update
 - title: Methods

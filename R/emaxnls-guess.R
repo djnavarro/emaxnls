@@ -1,5 +1,14 @@
-# guess parameters for initialisation ------
 
+# allow a user-facing version
+.emax_auto_init <- function(structural_model, covariate_model, data) {
+  .validate_structural_formula(structural_model, names(data))
+  .validate_covariate_formula(covariate_model, names(data))
+  store <- .store(covariate_model, structural_model, data)
+  ini <- .guess_init(store)
+  return(ini)
+}
+
+# workhorse function
 .guess_init <- function(store) {
 
   coefficient_vec <- unname(unlist(store$coefficients))
@@ -37,8 +46,8 @@
         covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"]
       ),
       lower = dplyr::case_when(
-        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - resid_max,
-        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - resid_max,
+        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - 2 * resid_max,
+        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - 2 * resid_max,
         covariate == "Intercept" & parameter == "logEC50" ~ min(base_guess["logEC01"], min(log(exp[exp>0]))),
         covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - loghill_max,
         covariate != "Intercept" & parameter == "E0"      ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
@@ -47,8 +56,8 @@
         covariate != "Intercept" & parameter == "logHill" ~ -loghill_max 
       ),
       upper = dplyr::case_when(
-        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + resid_max,
-        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + resid_max,
+        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + 2 * resid_max,
+        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + 2 * resid_max,
         covariate == "Intercept" & parameter == "logEC50" ~ max(base_guess["logEC99"], max(log(exp[exp>0]))),
         covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + loghill_max,
         covariate != "Intercept" & parameter == "E0"      ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
@@ -65,6 +74,7 @@
   return(ini)
 }
 
+# construct a guess for a base structural model with no covariates
 .guess_base <- function(exposure, response) {
 
   # separate placebo samples from dosed samples
@@ -115,6 +125,7 @@
   return(est)
 }
 
+# guess what the residuals will be
 .guess_resid <- function(est, exposure, response) {
   h <- exp(est["logHill"])
   exph <- exposure ^ h
@@ -124,6 +135,7 @@
   return(resid)
 }
 
+# guess the scale associated with key variables
 .guess_var_scale <- function(exposure, response, residuals, cov_names, design) {
   sds <- list(
     cov = purrr::map_dbl(

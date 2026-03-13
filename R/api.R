@@ -64,6 +64,36 @@ emax_nls_settings <- function(init = NULL,
   return(settings)
 }
 
+#' Construct initial guess of a Emax model parameters
+#'
+#' @param structural_model A two-sided formula of the form response ~ exposure
+#' @param covariate_model A list of two-sided formulas, each of specifying a covariate model for a structural parameter
+#' @param data A data frame
+#'
+#' @returns A data frame
+#'
+#' @export
+#' 
+#' @examples
+#' # use a heuristic to construct sensible start values, and plausible
+#' # upper and lower bounds within which the estimate is expected to fall 
+#' emax_auto_init(
+#'   structural_model = response_1 ~ exposure_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' # compare to the values estimated:
+#' coef(emax_nls(
+#'   structural_model = response_1 ~ exposure_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' ))
+#' 
+emax_auto_init <- function(structural_model, covariate_model, data) {
+  .emax_auto_init(structural_model, covariate_model, data)
+}
+
 #' Add or remove a covariate term from an Emax regression
 #'
 #' @param object An `emaxnls` object
