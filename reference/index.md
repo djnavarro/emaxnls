@@ -8,6 +8,8 @@ Build Emax regression models
   Emax model with arbitrary covariates (does not support interactions)
 - [`emax_nls_settings()`](https://emaxnls.djnavarro.net/reference/emax_nls_settings.md)
   : Settings used to estimate Emax model
+- [`emax_auto_init()`](https://emaxnls.djnavarro.net/reference/emax_auto_init.md)
+  : Construct initial guess of a Emax model parameters
 - [`emax_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
