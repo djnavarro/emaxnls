@@ -50,9 +50,9 @@
     message = "`optim_method` must be one of 'gauss', 'port', or 'levenberg'"
   )
   if (optim_method == "levenberg") {
-    .assert(
-      expr = rlang::is_installed("minpack.lm"),
-      message = "`optim_method = 'levenberg' requires the minpack.lm package" 
+    rlang::check_installed(
+      pkg = "minpack.lm",
+      reason = "`optim_method = 'levenberg' requires the minpack.lm package" 
     )
   }
 }
