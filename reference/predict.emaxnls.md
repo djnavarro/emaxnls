@@ -49,12 +49,15 @@ predict(
 
 ## Value
 
-As
-[`xgxr::predict.nls()`](https://rdrr.io/pkg/xgxr/man/predict.nls.html).
+The return value differs slightly depending on inputs. When
+`se.fit = FALSE`, it produces a vector or matrix of predictions with
+column names `fit`, `lwr` and `upr` if the `interval` argument is set.
+When `se.fit = TRUE`, it returns a list with the following components:
 
-## Details
+- `fit`: vector or matrix as above
 
-The [`predict()`](https://rdrr.io/r/stats/predict.html) method for for
-Emax regression is a thin wrapper around
-[`xgxr::predict.nls()`](https://rdrr.io/pkg/xgxr/man/predict.nls.html).
-Please see the documentation for that function.
+- `se.fit`: standard error of the predicted means
+
+- `residual.scale`: residual standard deviation
+
+- `df`: residual degrees of freedom

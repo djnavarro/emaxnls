@@ -88,13 +88,14 @@ on the mean responses are to be calculated. Can be "none", "confidence", or "pre
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>As <code><a href="https://rdrr.io/pkg/xgxr/man/predict.nls.html" class="external-link">xgxr::predict.nls()</a></code>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method for for Emax regression is a thin wrapper around <code><a href="https://rdrr.io/pkg/xgxr/man/predict.nls.html" class="external-link">xgxr::predict.nls()</a></code>.
-Please see the documentation for that function.</p>
-    </div>
+    <p>The return value differs slightly depending on inputs. When <code>se.fit = FALSE</code>, it
+produces a vector or matrix of predictions with column names <code>fit</code>, <code>lwr</code> and <code>upr</code> if
+the <code>interval</code> argument is set. When <code>se.fit = TRUE</code>, it returns a list with the following
+components:</p><ul><li><p><code>fit</code>: vector or matrix as above</p></li>
+<li><p><code>se.fit</code>: standard error of the predicted means</p></li>
+<li><p><code>residual.scale</code>: residual standard deviation</p></li>
+<li><p><code>df</code>: residual degrees of freedom</p></li>
+</ul></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
