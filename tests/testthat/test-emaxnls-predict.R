@@ -78,6 +78,7 @@ test_that(".predict_nls matches default predict method for nls objects", {
   
   pred_nls <- c(predict(mod, newdata = new_dat))
   pred_new <- .predict_nls(mod, newdata = new_dat)
+  expect_equal(pred_new, pred_nls)
 
 })
 
