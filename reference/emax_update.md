@@ -5,9 +5,9 @@ Add or remove a covariate term from an Emax regression
 ## Usage
 
 ``` r
-emax_add_term(object, formula, quiet = TRUE)
+emax_add_term(object, formula)
 
-emax_remove_term(object, formula, quiet = TRUE)
+emax_remove_term(object, formula)
 ```
 
 ## Arguments
@@ -19,10 +19,6 @@ emax_remove_term(object, formula, quiet = TRUE)
 - formula:
 
   A formula such as E0 ~ AGE
-
-- quiet:
-
-  When quiet=TRUE messages and warnings are suppressed
 
 ## Value
 

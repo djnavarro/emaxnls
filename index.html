@@ -141,10 +141,10 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="reference/emax_scm.html">emax_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="reference/emax_scm.html">emax_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span>
+<span>  <span class="fu"><a href="reference/emax_scm.html">emax_scm_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/emax_scm.html">emax_scm_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="fu"><a href="reference/emax_scm.html">emax_history</a></span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/emax_scm.html">emax_scm_history</a></span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
 <span><span class="co">#&gt;    iteration attempt step       action term_tested  model_tested model_converged</span></span>
 <span><span class="co">#&gt;        &lt;int&gt;   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;        &lt;lgl&gt;          </span></span>

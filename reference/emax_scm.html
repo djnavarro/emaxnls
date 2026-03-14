@@ -44,25 +44,11 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">emax_forward</span><span class="op">(</span></span>
-<span>  <span class="va">mod</span>,</span>
-<span>  <span class="va">candidates</span>,</span>
-<span>  threshold <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  history <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">emax_scm_forward</span><span class="op">(</span><span class="va">mod</span>, <span class="va">candidates</span>, threshold <span class="op">=</span> <span class="fl">0.01</span>, seed <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">emax_backward</span><span class="op">(</span></span>
-<span>  <span class="va">mod</span>,</span>
-<span>  <span class="va">candidates</span>,</span>
-<span>  threshold <span class="op">=</span> <span class="fl">0.001</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  history <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">emax_scm_backward</span><span class="op">(</span><span class="va">mod</span>, <span class="va">candidates</span>, threshold <span class="op">=</span> <span class="fl">0.001</span>, seed <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">emax_history</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,14 +65,6 @@
 
 <dt id="arg-threshold">threshold<a class="anchor" aria-label="anchor" href="#arg-threshold"></a></dt>
 <dd><p>Threshold for addition or removal</p></dd>
-
-
-<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
-<dd><p>When quiet=TRUE messages and warnings are suppressed</p></dd>
-
-
-<dt id="arg-history">history<a class="anchor" aria-label="anchor" href="#arg-history"></a></dt>
-<dd><p>When history=TRUE the sequence of models tested is stored</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
@@ -108,8 +86,8 @@
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span></span>
-<span class="r-in"><span>  <span class="fu">emax_forward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
-<span class="r-in"><span>  <span class="fu">emax_backward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span></span>
+<span class="r-in"><span>  <span class="fu">emax_scm_forward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
+<span class="r-in"><span>  <span class="fu">emax_scm_backward</span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">final_mod</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Structural model:</span>
@@ -140,7 +118,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">emax_history</span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration attempt step       action term_tested  model_tested model_converged</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>          </span>

@@ -5,13 +5,7 @@ Emax model with arbitrary covariates (does not support interactions)
 ## Usage
 
 ``` r
-emax_nls(
-  structural_model,
-  covariate_model,
-  data,
-  settings = emax_nls_settings(),
-  quiet = FALSE
-)
+emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 ```
 
 ## Arguments
@@ -29,13 +23,15 @@ emax_nls(
 
   A data frame
 
-- settings:
+- init:
 
-  Settings for the nls() optimisation
+  Initial values and bounds for parameters. See
+  [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
 
-- quiet:
+- opts:
 
-  When quiet=TRUE messages and warnings are suppressed
+  Model fitting and optimization options. See
+  [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
 
 ## Value
 

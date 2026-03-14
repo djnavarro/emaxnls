@@ -5,25 +5,11 @@ Stepwise covariate modelling for Emax regression
 ## Usage
 
 ``` r
-emax_forward(
-  mod,
-  candidates,
-  threshold = 0.01,
-  quiet = TRUE,
-  history = TRUE,
-  seed = NULL
-)
+emax_scm_forward(mod, candidates, threshold = 0.01, seed = NULL)
 
-emax_backward(
-  mod,
-  candidates,
-  threshold = 0.001,
-  quiet = TRUE,
-  history = TRUE,
-  seed = NULL
-)
+emax_scm_backward(mod, candidates, threshold = 0.001, seed = NULL)
 
-emax_history(mod)
+emax_scm_history(mod)
 ```
 
 ## Arguments
@@ -39,14 +25,6 @@ emax_history(mod)
 - threshold:
 
   Threshold for addition or removal
-
-- quiet:
-
-  When quiet=TRUE messages and warnings are suppressed
-
-- history:
-
-  When history=TRUE the sequence of models tested is stored
 
 - seed:
 
@@ -67,8 +45,8 @@ covariate_list <- list(
 )
 
 final_mod <- base_model |> 
-  emax_forward(candidates = covariate_list, threshold = .01) |> 
-  emax_backward(candidates = covariate_list, threshold = .001) 
+  emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
+  emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
 final_mod
 #> Structural model:
@@ -99,7 +77,7 @@ final_mod
 #> Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03
 #> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03
 
-emax_history(final_mod)
+emax_scm_history(final_mod)
 #> # A tibble: 32 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          

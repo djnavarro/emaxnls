@@ -6,13 +6,13 @@ Build Emax regression models
 
 - [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md) :
   Emax model with arbitrary covariates (does not support interactions)
-- [`emax_nls_settings()`](https://emaxnls.djnavarro.net/reference/emax_nls_settings.md)
+- [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
   : Settings used to estimate Emax model
-- [`emax_auto_init()`](https://emaxnls.djnavarro.net/reference/emax_auto_init.md)
-  : Construct initial guess of a Emax model parameters
-- [`emax_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
-  [`emax_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
-  [`emax_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+- [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
+  : Construct an initial guess for the Emax model parameters
+- [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   : Stepwise covariate modelling for Emax regression
 - [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
