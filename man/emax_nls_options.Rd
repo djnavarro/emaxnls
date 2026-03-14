@@ -15,7 +15,7 @@ emax_nls_options(
 \arguments{
 \item{optim_method}{Character string specifying the algorithm used to solve
 the nonlinear least squares optimization problem. Supported pptions are
-"gauss" (the default), "golub", "port", and "levenberg". See details.}
+"gauss", "port", and "levenberg". See details.}
 
 \item{optim_control}{A list of arguments used to control the behavior of
 the optimization algorithm. Allowed values differ depending on which
@@ -28,18 +28,19 @@ specified, weighted least squares is used}
 
 \item{na.action}{How should missing values in the data be handled
 
-There are four supported values for \code{optim_method}:
+At present there are three supported values for \code{optim_method}:
 \itemize{
-\item "gauss": The Gauss-Newton algorithm, and equivalent to the "default" option
-in \code{nls()}
-\item "golub": The Golub-Pereyra algorithm for partially linear least-squares,
-equivalent to using "plinear" in \code{nls()}
-\item "port": The "nl2sol" algorithm from from the the Port library, equivalent
-to "port" in \code{nls()}
-\item "levenberg": The Levenberg-Marquardt algorithm. Equivalent to \code{nlsLM()}
-from the "minpack.lm" package. To use this method, the "minpack.lm"
-package must be installed
-}}
+\item "gauss": Estimate parameters using the Gauss-Newton algorithm. This is
+equivalent to the using "default" option in \code{nls()}
+\item "port": Estimate parameters using bounded optimization with the "nl2sol"
+algorithm from from the the Port library. Equivalent to "port" in \code{nls()}
+\item "levenberg": Estimate parameters using the Levenberg-Marquardt algorithm.
+This is equivalent to using \code{nlsLM()} from the "minpack.lm" package.
+}
+
+Note that the Golub-Pereyra algorithm for partially linear least-squares (i.e. the
+"plinear" option in \code{nls()}) is not currently supported for Emax regression. Informal
+testing suggests it does not perform well for these models, and rarely converges.}
 }
 \value{
 List

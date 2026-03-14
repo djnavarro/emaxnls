@@ -6,7 +6,7 @@
 #' covariate model for a structural parameter
 #' @param data A data frame
 #' @param init Initial values and bounds for parameters. See `emax_nls_init()`
-#' @param opts Model-fitting and optimization options. See `emax_nls_options()`
+#' @param opts Model fitting and optimization options. See `emax_nls_options()`
 #'  
 #' @returns
 #' An object of class `emaxnls`
@@ -37,7 +37,7 @@ emax_nls <- function(structural_model,
 #'
 #' @param optim_method Character string specifying the algorithm used to solve 
 #' the nonlinear least squares optimization problem. Supported pptions are 
-#' "gauss" (the default), "golub", "port", and "levenberg". See details.
+#' "gauss", "port", and "levenberg". See details.
 #' @param optim_control A list of arguments used to control the behavior of 
 #' the optimization algorithm. Allowed values differ depending on which 
 #' algorithm is used
@@ -46,17 +46,18 @@ emax_nls <- function(structural_model,
 #' specified, weighted least squares is used
 #' @param na.action How should missing values in the data be handled
 #'
-#' There are four supported values for `optim_method`:
+#' At present there are three supported values for `optim_method`:
 #' 
-#' - "gauss": The Gauss-Newton algorithm, and equivalent to the "default" option
-#'   in `nls()`
-#' - "golub": The Golub-Pereyra algorithm for partially linear least-squares, 
-#'   equivalent to using "plinear" in `nls()`
-#' - "port": The "nl2sol" algorithm from from the the Port library, equivalent
-#'   to "port" in `nls()`
-#' - "levenberg": The Levenberg-Marquardt algorithm. Equivalent to `nlsLM()` 
-#'   from the "minpack.lm" package. To use this method, the "minpack.lm" 
-#'   package must be installed 
+#' - "gauss": Estimate parameters using the Gauss-Newton algorithm. This is 
+#'   equivalent to the using "default" option in `nls()`
+#' - "port": Estimate parameters using bounded optimization with the "nl2sol" 
+#'   algorithm from from the the Port library. Equivalent to "port" in `nls()`
+#' - "levenberg": Estimate parameters using the Levenberg-Marquardt algorithm. 
+#'   This is equivalent to using `nlsLM()` from the "minpack.lm" package.
+#' 
+#' Note that the Golub-Pereyra algorithm for partially linear least-squares (i.e. the 
+#' "plinear" option in `nls()`) is not currently supported for Emax regression. Informal
+#' testing suggests it does not perform well for these models, and rarely converges.
 #' 
 #' @returns List
 #'

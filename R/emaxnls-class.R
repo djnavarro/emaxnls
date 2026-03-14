@@ -35,8 +35,8 @@
         lookup    = store$lookup,
         start     = init$start, 
         control   = opts$optim_control, 
-        algorithm = opts$optim_method, 
-        lower     = init$lower, 
+        algorithm = .nls_method(opts$optim_method), 
+        lower     = init$lower,
         upper     = init$upper
       ), 
       parent = parent.frame()
@@ -45,13 +45,13 @@
 
   # estimate the nls model
   tmp <- evalq(
-    .nls_safe(
+    .nls_call(
       formula   = formula,
       data      = design,
       start     = start,
       control   = control,
       algorithm = algorithm,
-      lower     = lower,
+      lower     = lower, 
       upper     = upper
     ),
     envir = obj$env
@@ -66,3 +66,45 @@
   return(structure(obj, class = "emaxnls"))
 }
 
+.nls_call <- function(formula, data, start, control, algorithm, lower, upper) {
+  if (algorithm %in% c("default", "plinear")) {
+    return(.nls_safe(
+      formula = formula,
+      data = data,
+      start = start,
+      control = control,
+      algorithm = algorithm
+    ))
+  }
+  if (algorithm == "port") {
+    return(.nls_safe(
+      formula = formula,
+      data = data,
+      start = start,
+      control = control,
+      algorithm = algorithm,
+      lower = lower,
+      upper = upper
+    ))
+  }
+  if (algorithm == "LM") {
+    return(.nls_lm_safe(
+      formula = formula,
+      data = data,
+      start = start,
+      control = control,
+      algorithm = algorithm
+    ))
+  }
+  NULL
+}
+
+.nls_method <- function(optim_method) {
+  if (optim_method == "gauss") return("default")
+  if (optim_method == "port") return("port")
+  if (optim_method == "levenberg") return("LM")
+  rlang::abort(
+    message = "optim_method must be one of 'gauss', 'port', or 'levenberg'",
+    class = "emaxnls_error"
+  )
+}

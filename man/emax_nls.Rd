@@ -16,7 +16,7 @@ covariate model for a structural parameter}
 
 \item{init}{Initial values and bounds for parameters. See \code{emax_nls_init()}}
 
-\item{opts}{Model-fitting and optimization options. See \code{emax_nls_options()}}
+\item{opts}{Model fitting and optimization options. See \code{emax_nls_options()}}
 }
 \value{
 An object of class \code{emaxnls}
