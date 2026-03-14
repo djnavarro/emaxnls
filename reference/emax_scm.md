@@ -44,9 +44,16 @@ covariate_list <- list(
   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 )
 
-final_mod <- base_model |> 
-  emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
-  emax_scm_backward(candidates = covariate_list, threshold = .001) 
+mm <- emax_scm_forward(
+  mod = base_model,
+  candidates = covariate_list, 
+  threshold = .01
+)
+final_mod <- emax_scm_backward(
+  mod = mm,
+  candidates = covariate_list, 
+  threshold = .001
+) 
 
 final_mod
 #> Structural model:
