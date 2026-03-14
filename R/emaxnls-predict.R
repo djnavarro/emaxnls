@@ -91,7 +91,7 @@
   }
 
   if (with_gradient) {
-    ret$grad <- as.matrix(dplyr::bind_rows(ret$grad))
+    ret$grad <- as.matrix(do.call(rbind, lapply(ret$grad, as.data.frame)))
   }
   return(ret)
 }

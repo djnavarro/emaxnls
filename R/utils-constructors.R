@@ -91,9 +91,10 @@
 .store_terms <- function(store) {
   store$terms <- purrr::map(
     .x = store$variables,
-    .f = function(x) {
-      ll <- dplyr::filter(store$lookup, variable %in% x)
-      dplyr::pull(ll, term)
+    .f = function(vv) {
+      dd <- store$lookup
+      ll <- .filter(dd, variable %in% vv)
+      ll$term
     }
   )
   return(store)

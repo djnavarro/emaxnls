@@ -45,12 +45,12 @@
       val = mu + stats::rnorm(nr, 0, sd = sig)
     )
   }
-  sim <- dplyr::bind_rows(sim)
+  sim <- do.call(rbind, sim)
   par <- tibble::as_tibble(par)
   par$sim_id <- 1L:nsim
 
-  out <- dplyr::left_join(sim, par, by = "sim_id") 
-  out <- dplyr::left_join(out, dat, by = "dat_id")
+  out <- .left_join(sim, par, by = "sim_id") 
+  out <- .left_join(out, dat, by = "dat_id")
 
   return(out)
 }

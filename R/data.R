@@ -64,8 +64,10 @@
       # convert
       bin_prob = 1 / (1 + exp(-bin_pred)),
       response_2 = as.numeric(stats::runif(n) < bin_prob)
-    ) 
-    out <- dplyr::select(out, -bin_pred, -bin_prob) # remove intermediate variables
+    )
+    out$bin_pred <- NULL
+    out$bin_prob <- NULL
+
     return(out)
   }
 
@@ -95,13 +97,17 @@
   )
 
   # create data set assuming three dosing groups
-  dat <- dplyr::bind_rows(
+  dat <- rbind(
     .simulate_dose_data(dose = 0, n = 100, par = par),
     .simulate_dose_data(dose = 100, n = 100, par = par),
     .simulate_dose_data(dose = 200, n = 100, par = par),
     .simulate_dose_data(dose = 300, n = 100, par = par)
   )
-  dat <- dplyr::relocate(dat, response_1, response_2, .after = exposure_2)
+  cols <- c(
+    "dose", "exposure_1", "exposure_2", "response_1", "response_2", 
+    "cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"
+  )
+  dat <- dat[, cols]
 
   return(dat)
 }

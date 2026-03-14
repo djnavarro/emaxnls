@@ -36,37 +36,35 @@
   beta_max <- 5
   loghill_max <- 5
 
-  ini <- dplyr::mutate(
-      coefficient_table,
-      start = dplyr::case_when(
-        covariate != "Intercept" ~ 0,
-        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"],
-        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"],
-        covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"],
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"]
-      ),
-      lower = dplyr::case_when(
-        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - 2 * resid_max,
-        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - 2 * resid_max,
-        covariate == "Intercept" & parameter == "logEC50" ~ min(base_guess["logEC01"], min(log(exp[exp>0]))),
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - loghill_max,
-        covariate != "Intercept" & parameter == "E0"      ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "Emax"    ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "logEC50" ~ -beta_max * scale_guess$exp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "logHill" ~ -loghill_max 
-      ),
-      upper = dplyr::case_when(
-        covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + 2 * resid_max,
-        covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + 2 * resid_max,
-        covariate == "Intercept" & parameter == "logEC50" ~ max(base_guess["logEC99"], max(log(exp[exp>0]))),
-        covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + loghill_max,
-        covariate != "Intercept" & parameter == "E0"      ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "Emax"    ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "logEC50" ~ beta_max * scale_guess$exp / scale_guess$cov[covariate],
-        covariate != "Intercept" & parameter == "logHill" ~ loghill_max
-      )
-    )
-  
+  ini <- coefficient_table
+  ini$start <- with(coefficient_table, .case_when(
+    covariate != "Intercept" ~ 0,
+    covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"],
+    covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"],
+    covariate == "Intercept" & parameter == "logEC50" ~ base_guess["logEC50"],
+    covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"]
+  ))
+  ini$lower <- with(coefficient_table, .case_when(
+    covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] - 2 * resid_max,
+    covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] - 2 * resid_max,
+    covariate == "Intercept" & parameter == "logEC50" ~ min(base_guess["logEC01"], min(log(exp[exp>0]))),
+    covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] - loghill_max,
+    covariate != "Intercept" & parameter == "E0"      ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "Emax"    ~ -beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "logEC50" ~ -beta_max * scale_guess$exp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "logHill" ~ -loghill_max 
+  ))
+  ini$upper <- with(coefficient_table, .case_when(
+    covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"] + 2 * resid_max,
+    covariate == "Intercept" & parameter == "Emax"    ~ base_guess["Emax"] + 2 * resid_max,
+    covariate == "Intercept" & parameter == "logEC50" ~ max(base_guess["logEC99"], max(log(exp[exp>0]))),
+    covariate == "Intercept" & parameter == "logHill" ~ base_guess["logHill"] + loghill_max,
+    covariate != "Intercept" & parameter == "E0"      ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "Emax"    ~ beta_max * scale_guess$rsp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "logEC50" ~ beta_max * scale_guess$exp / scale_guess$cov[covariate],
+    covariate != "Intercept" & parameter == "logHill" ~ loghill_max
+  ))
+      
   names(ini$start) <- coefficient_vec
   names(ini$lower) <- coefficient_vec
   names(ini$upper) <- coefficient_vec

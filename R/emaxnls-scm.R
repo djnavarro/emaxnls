@@ -121,13 +121,10 @@
   }
 
   if (history) {
-    scm_history <- dplyr::mutate(
-      scm_history,
-      model_updated = dplyr::case_when(
+    scm_history$model_updated <- with(scm_history, .case_when(
         iteration == iter & attempt == best_mod_attm ~ TRUE,
         TRUE ~ model_updated
-      )
-    )
+    ))
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
@@ -195,13 +192,10 @@
   }
 
   if (history) {
-    scm_history <- dplyr::mutate(
-      scm_history,
-      model_updated = dplyr::case_when(
+    scm_history$model_updated <- with(scm_history, .case_when(
         iteration == iter & attempt == best_mod_attm ~ TRUE,
         TRUE ~ model_updated
-      )
-    )
+    ))
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
 

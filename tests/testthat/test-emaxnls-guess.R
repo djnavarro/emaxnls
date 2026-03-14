@@ -41,13 +41,13 @@ test_that(".guess_init scales logEC50 with exposure", {
 
   # no difference for other parameters
   expect_equal(
-    dplyr::filter(gg1, parameter != "logEC50"),
-    dplyr::filter(gg2, parameter != "logEC50")
+    .filter(gg1, parameter != "logEC50"),
+    .filter(gg2, parameter != "logEC50")
   )
 
   # guesses for the logEC50 parameters
-  gg1_exppars <- dplyr::filter(gg1, parameter == "logEC50")
-  gg2_exppars <- dplyr::filter(gg2, parameter == "logEC50")
+  gg1_exppars <- .filter(gg1, parameter == "logEC50")
+  gg2_exppars <- .filter(gg2, parameter == "logEC50")
 
   # multiplying exposures by 100 should increase all guesses by log(100) 
   dev_start <- gg2_exppars$start - gg1_exppars$start - log(100)
@@ -71,13 +71,13 @@ test_that(".guess_init scales E0 and Emax with response", {
 
   # no difference for other parameters
   expect_equal(
-    dplyr::filter(gg1, !(parameter %in% c("E0", "Emax"))),
-    dplyr::filter(gg2, !(parameter %in% c("E0", "Emax")))
+    .filter(gg1, !(parameter %in% c("E0", "Emax"))),
+    .filter(gg2, !(parameter %in% c("E0", "Emax")))
   )
 
   # guesses for the E0 and Emax parameters
-  gg1_rsppars <- dplyr::filter(gg1, parameter %in% c("E0", "Emax"))
-  gg2_rsppars <- dplyr::filter(gg2, parameter %in% c("E0", "Emax"))
+  gg1_rsppars <- .filter(gg1, parameter %in% c("E0", "Emax"))
+  gg2_rsppars <- .filter(gg2, parameter %in% c("E0", "Emax"))
 
   # E0 and Emax are linear with response: multiplying by 100 should 
   # scale the initial guesses accordingly
@@ -101,13 +101,13 @@ test_that(".guess_init scales coefficient with covariate", {
 
   # no difference for other parameters
   expect_equal(
-    dplyr::filter(gg1, covariate != "cnt_a"),
-    dplyr::filter(gg2, covariate != "cnt_a")
+    .filter(gg1, covariate != "cnt_a"),
+    .filter(gg2, covariate != "cnt_a")
   )
 
   # guesses for the E0 and Emax parameters
-  gg1_covpars <- dplyr::filter(gg1, covariate == "cnt_a")
-  gg2_covpars <- dplyr::filter(gg2, covariate == "cnt_a")
+  gg1_covpars <- .filter(gg1, covariate == "cnt_a")
+  gg2_covpars <- .filter(gg2, covariate == "cnt_a")
 
   # covariate coefficients scale inverse linearly
   dev_start <- gg2_covpars$start - (gg1_covpars$start / 100)
