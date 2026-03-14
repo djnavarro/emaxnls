@@ -8,8 +8,8 @@ reference:
   desc: Build Emax regression models
 - contents:
   - emax_nls
-  - emax_nls_settings
-  - emax_auto_init
+  - emax_nls_options
+  - emax_nls_init
   - emax_scm
   - emax_update
 - title: Methods

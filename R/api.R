@@ -2,10 +2,11 @@
 #' Emax model with arbitrary covariates (does not support interactions)
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each of specifying a covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each of specifying a 
+#' covariate model for a structural parameter
 #' @param data A data frame
-#' @param settings Settings for the nls() optimisation
-#' @param quiet When quiet=TRUE messages and warnings are suppressed
+#' @param init Initial values and bounds for parameters. See `emax_nls_init()`
+#' @param opts Model-fitting and optimization options. See `emax_nls_options()`
 #'  
 #' @returns
 #' An object of class `emaxnls`
@@ -21,53 +22,64 @@
 emax_nls <- function(structural_model,
                      covariate_model,
                      data,
-                     settings = emax_nls_settings(),
-                     quiet = FALSE) {
+                     init = NULL,
+                     opts = NULL) {  
   .emax_nls(
     structural_model = structural_model,
     covariate_model = covariate_model,
     data = data,
-    settings = settings,
-    quiet = quiet
+    init = init,
+    opts = opts
   )
 }
 
 #' Settings used to estimate Emax model
 #'
-#' @param init Data frame specifying initial parameters (start, upper, lower)
-#' @param algorithm Has same meaning as in nls() (allowed: "default", "plinear", "port")
-#' @param control Has same meaning as in nls()
-#' @param ... Other arguments passed to nls()
+#' @param optim_method Character string specifying the algorithm used to solve 
+#' the nonlinear least squares optimization problem. Supported pptions are 
+#' "gauss" (the default), "golub", "port", and "levenberg". See details.
+#' @param optim_control A list of arguments used to control the behavior of 
+#' the optimization algorithm. Allowed values differ depending on which 
+#' algorithm is used
+#' @param quiet When `quiet=TRUE`, messages are suppressed
+#' @param weights Numeric vector providing the weights for observations. When
+#' specified, weighted least squares is used
+#' @param na.action How should missing values in the data be handled
 #'
+#' There are four supported values for `optim_method`:
+#' 
+#' - "gauss": The Gauss-Newton algorithm, and equivalent to the "default" option
+#'   in `nls()`
+#' - "golub": The Golub-Pereyra algorithm for partially linear least-squares, 
+#'   equivalent to using "plinear" in `nls()`
+#' - "port": The "nl2sol" algorithm from from the the Port library, equivalent
+#'   to "port" in `nls()`
+#' - "levenberg": The Levenberg-Marquardt algorithm. Equivalent to `nlsLM()` 
+#'   from the "minpack.lm" package. To use this method, the "minpack.lm" 
+#'   package must be installed 
+#' 
 #' @returns List
 #'
 #' @export
-emax_nls_settings <- function(init = NULL,
-                              algorithm = "port",
-                              control = list(
-                                tol = 1e-8,
-                                minFactor = 1024^-4,
-                                maxiter = 200000,
-                                scaleOffset = 1,
-                                warnOnly = FALSE
-                              ),
-                              ...) {
-  settings <- list(
-    init = init,
-    algorithm = algorithm,
-    control = control,
-    ...
+emax_nls_options <- function(optim_method = "port",
+                             optim_control = NULL,
+                             quiet = FALSE,
+                             weights = NULL,
+                             na.action = options("na.action")) {
+  .emax_nls_options(
+    optim_method = optim_method,
+    optim_control = optim_control,
+    quiet = quiet,
+    weights = weights,
+    na.action = na.action
   )
-  settings$start <- NULL
-  settings$upper <- NULL
-  settings$lower <- NULL
-  return(settings)
 }
 
-#' Construct initial guess of a Emax model parameters
+#' Construct an initial guess for the Emax model parameters
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each of specifying a covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each of specifying a 
+#' covariate model for a structural parameter
 #' @param data A data frame
 #'
 #' @returns A data frame
@@ -77,7 +89,7 @@ emax_nls_settings <- function(init = NULL,
 #' @examples
 #' # use a heuristic to construct sensible start values, and plausible
 #' # upper and lower bounds within which the estimate is expected to fall 
-#' emax_auto_init(
+#' emax_nls_init(
 #'   structural_model = response_1 ~ exposure_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
@@ -90,15 +102,14 @@ emax_nls_settings <- function(init = NULL,
 #'   data = emax_df
 #' ))
 #' 
-emax_auto_init <- function(structural_model, covariate_model, data) {
-  .emax_auto_init(structural_model, covariate_model, data)
+emax_nls_init <- function(structural_model, covariate_model, data) {
+  .emax_nls_init(structural_model, covariate_model, data)
 }
 
 #' Add or remove a covariate term from an Emax regression
 #'
 #' @param object An `emaxnls` object
 #' @param formula A formula such as E0 ~ AGE
-#' @param quiet When quiet=TRUE messages and warnings are suppressed
 #'
 #' @returns
 #' An object of class `emaxnls`
@@ -115,14 +126,14 @@ NULL
 
 #' @export
 #' @rdname emax_update
-emax_add_term <- function(object, formula, quiet = TRUE) {
-  .emax_add_term(object = object, formula = formula, quiet = quiet)
+emax_add_term <- function(object, formula) {
+  .emax_add_term(object = object, formula = formula)
 }
 
 #' @export
 #' @rdname emax_update
-emax_remove_term <- function(object, formula, quiet = TRUE) {
-  .emax_remove_term(object = object, formula = formula, quiet = quiet)
+emax_remove_term <- function(object, formula) {
+  .emax_remove_term(object = object, formula = formula)
 }
 
 #' Stepwise covariate modelling for Emax regression
@@ -130,8 +141,6 @@ emax_remove_term <- function(object, formula, quiet = TRUE) {
 #' @param mod An `emaxnls` object
 #' @param candidates A list of candidate covariates
 #' @param threshold Threshold for addition or removal
-#' @param quiet When quiet=TRUE messages and warnings are suppressed
-#' @param history When history=TRUE the sequence of models tested is stored
 #' @param seed Seed for the RNG state
 #'
 #' @returns
@@ -146,54 +155,40 @@ emax_remove_term <- function(object, formula, quiet = TRUE) {
 #' )
 #' 
 #' final_mod <- base_model |> 
-#'   emax_forward(candidates = covariate_list, threshold = .01) |> 
-#'   emax_backward(candidates = covariate_list, threshold = .001) 
+#'   emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
+#'   emax_scm_backward(candidates = covariate_list, threshold = .001) 
 #' 
 #' final_mod
 #' 
-#' emax_history(final_mod)
+#' emax_scm_history(final_mod)
 #' 
 #' @name emax_scm
 NULL
 
 #' @export
 #' @rdname emax_scm
-emax_forward <- function(mod,
-                         candidates,
-                         threshold = .01,
-                         quiet = TRUE,
-                         history = TRUE,
-                         seed = NULL) {
-  .emax_forward(
+emax_scm_forward <- function(mod, candidates, threshold = .01, seed = NULL) {
+  .emax_scm_forward(
     mod = mod,
     candidates = candidates,
     threshold = threshold,
-    quiet = quiet,
-    history = history, 
     seed = seed
   )
 }
 
 #' @export
 #' @rdname emax_scm
-emax_backward <- function(mod,
-                          candidates,
-                          threshold = .001,
-                          quiet = TRUE,
-                          history = TRUE,
-                          seed = NULL) {
-  .emax_backward(
+emax_scm_backward <- function(mod, candidates, threshold = .001, seed = NULL) {
+  .emax_scm_backward(
     mod = mod,
     candidates = candidates,
     threshold = threshold,
-    quiet = quiet,
-    history = history, 
     seed = seed
   )
 }
 
 #' @export
 #' @rdname emax_scm
-emax_history <- function(mod) {
-  .emax_history(mod, is_final = TRUE)
+emax_scm_history <- function(mod) {
+  .emax_scm_history(mod, is_final = TRUE)
 }

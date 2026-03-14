@@ -19,19 +19,19 @@ cov_list_big <- list(
 
 
 test_that("basic use of .emax_once_forward and .emax_once_backward does not error", {
-  expect_no_error(.emax_once_forward(mod_0, cov_list, quiet = TRUE))
-  expect_no_error(.emax_once_backward(mod_1, cov_list, quiet = TRUE))
+  expect_no_error(.emax_once_forward(mod_0, cov_list, threshold = .01))
+  expect_no_error(.emax_once_backward(mod_1, cov_list, threshold = .001))
 })
 
 test_that(".emax_once_forward and .emax_once_backward select the expected terms", {
-  fwd_mod_0a <- .emax_once_forward(mod_0, cov_list, threshold = .05, quiet = TRUE)  # should add E0 ~ cnt_a
-  bck_mod_1a <- .emax_once_backward(mod_1, cov_list, threshold = .05, quiet = TRUE) # should not remove 
+  fwd_mod_0a <- .emax_once_forward(mod_0, cov_list, threshold = .05)  # should add E0 ~ cnt_a
+  bck_mod_1a <- .emax_once_backward(mod_1, cov_list, threshold = .05) # should not remove 
 
   expect_equal(sort(.get_coefficient_names(fwd_mod_0a)), sort(.get_coefficient_names(mod_1)))
   expect_equal(sort(.get_coefficient_names(bck_mod_1a)), sort(.get_coefficient_names(mod_1)))
 
-  fwd_mod_0b <- .emax_once_forward(mod_0, cov_list, threshold = 0, quiet = TRUE)  # should not add_
-  bck_mod_1b <- .emax_once_backward(mod_1, cov_list, threshold = 0, quiet = TRUE) # should remove E0 ~ cnt_a 
+  fwd_mod_0b <- .emax_once_forward(mod_0, cov_list, threshold = 0)  # should not add_
+  bck_mod_1b <- .emax_once_backward(mod_1, cov_list, threshold = 0) # should remove E0 ~ cnt_a 
 
   expect_equal(sort(fwd_mod_0b$coefficients), sort(mod_0$coefficients))
   expect_equal(sort(bck_mod_1b$coefficients), sort(mod_0$coefficients))
@@ -39,7 +39,7 @@ test_that(".emax_once_forward and .emax_once_backward select the expected terms"
 })
 
 test_that("basic use of forward/backward scm works", {
-  fwd <- .emax_forward(mod = mod_0, candidates = cov_list_big, quiet = TRUE)
-  bck <- .emax_backward(mod = fwd, candidates = cov_list_big, quiet = TRUE)
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, threshold = .01)
+  bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, threshold = .001)
   expect_equal(sort(.get_coefficient_names(bck)), sort(.get_coefficient_names(mod_1))) # should find the E0 ~ cnt_a term only
 })

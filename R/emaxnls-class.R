@@ -2,16 +2,16 @@
 .emax_nls <- function(structural_model,
                       covariate_model,
                       data,
-                      settings, 
-                      quiet) {
+                      init,
+                      opts) {
 
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
 
-  # compute and store everything in temporary object
-  store <- .store(covariate_model, structural_model, data) 
+  store <- .store(covariate_model, structural_model, data)
   
-  if (is.null(settings$init)) settings$init <- .guess_init(store)
+  if (is.null(opts)) opts <- emax_nls_options()
+  if (is.null(init)) init <- .guess_init(store)
 
   # organise into emaxnls structure
   obj <- list(
@@ -21,22 +21,23 @@
       nls        = store$nls_formula 
     ),      
     data = store$data,
+    opts = opts,
+    init = init,
     info = list(
       model_type   = store$model_type,
       variables    = store$variables,
-      coefficients = unname(unlist(store$coefficients)),
-      settings = settings
+      coefficients = unname(unlist(store$coefficients))
     ),
     env = rlang::new_environment(
       data = list(
         formula   = store$nls_formula, 
         design    = store$design, 
         lookup    = store$lookup,
-        start     = settings$init$start, 
-        control   = settings$control, 
-        algorithm = settings$algorithm, 
-        lower     = settings$init$lower, 
-        upper     = settings$init$upper
+        start     = init$start, 
+        control   = opts$optim_control, 
+        algorithm = opts$optim_method, 
+        lower     = init$lower, 
+        upper     = init$upper
       ), 
       parent = parent.frame()
     )
@@ -59,7 +60,7 @@
   obj$env$error <- tmp$error
 
   # message user if needed and return
-  if (!is.null(obj$env$error) & !quiet) {
+  if (!is.null(obj$env$error) & !opts$quiet) {
     rlang::warn("`nls()` did not converge", class = "emaxnls_warning")
   }
   return(structure(obj, class = "emaxnls"))

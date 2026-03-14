@@ -9,7 +9,7 @@
 #'
 #' @exportS3Method stats::coef
 coef.emaxnls <- function(object, ...) {
-  coef(.get_nls(object), ...)
+  stats::coef(.get_nls(object), ...)
 }
 
 
@@ -22,7 +22,7 @@ coef.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::vcov
 vcov.emaxnls <- function(object, ...) {
-  vcov(.get_nls(object), ...)
+  stats::vcov(.get_nls(object), ...)
 }
 
 #' Residuals for an Emax regression
@@ -34,7 +34,7 @@ vcov.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::residuals
 residuals.emaxnls <- function(object, ...) {
-  residuals(.get_nls(object), ...)
+  stats::residuals(.get_nls(object), ...)
 }
 
 #' Simulate responses from Emax regression model

@@ -1,30 +1,30 @@
 
-
-# model comparison functions ----------------------------------------------
-
-.anova_p <- function(obj1, obj2) {
-  a <- stats::anova(obj1, obj2)
-  return(a$`Pr(>F)`[2])
+.emax_scm_forward <- function(mod, candidates, threshold, seed = NULL) {
+  if (!is.null(seed)) set.seed(seed)
+  finished <- FALSE
+  while(!finished) {
+    old_mod <- mod
+    mod <- .emax_once_forward(mod, candidates, threshold)
+    if (.is_same(mod, old_mod)) finished <- TRUE
+  }
+  return(mod)
 }
 
-.aic_diff <- function(obj1, obj2) {
-  aic1 <- stats::AIC(obj1)
-  aic2 <- stats::AIC(obj2)
-  return(aic1 - aic2)
+.emax_scm_backward <- function(mod, candidates, threshold, seed = NULL) {
+  if (!is.null(seed)) set.seed(seed)
+  finished <- FALSE
+  while(!finished) {
+    old_mod <- mod
+    mod <- .emax_once_backward(mod, candidates, threshold)
+    if (.is_same(mod, old_mod)) finished <- TRUE
+  }
+  return(mod)
 }
+
 
 # stepwise add/remove functions -------------------------------------------
 
-# list of all possible terms that could be considered
-.emax_extract_terms <- function(candidates) {
-  candidates |>
-    purrr::imap(\(x, l) paste(l, x, sep = "~")) |>
-    unlist() |>
-    purrr::map(stats::as.formula) |>
-    unname()
-}
-
-.emax_history <- function(mod, is_final = FALSE) {
+.emax_scm_history <- function(mod, is_final = FALSE) {
   history <- .get_scm_history(mod)
   if (is.null(history)) {
     history <- tibble::tibble(
@@ -60,11 +60,10 @@
   return(history)
 }
 
-.emax_once_forward <- function(mod,
-                               candidates,
-                               threshold = .01,
-                               quiet = TRUE,
-                               history = TRUE) {
+.emax_once_forward <- function(mod, candidates, threshold) {
+
+  quiet <- TRUE
+  history <- TRUE
 
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
@@ -75,7 +74,7 @@
   terms <- sample(terms)
 
   if (history) {
-    scm_history <- .emax_history(mod)
+    scm_history <- .emax_scm_history(mod)
     iter <- max(scm_history$iteration) + 1L
     attm <- max(scm_history$attempt)
   }
@@ -135,11 +134,10 @@
   return(best_mod)
 }
 
-.emax_once_backward <- function(mod,
-                                candidates,
-                                threshold = .001,
-                                quiet = TRUE,
-                                history = TRUE) {
+.emax_once_backward <- function(mod, candidates, threshold) {
+
+  quiet <- TRUE
+  history <- TRUE
 
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
@@ -150,7 +148,7 @@
   terms <- sample(terms)
 
   if (history) {
-    scm_history <- .emax_history(mod)
+    scm_history <- .emax_scm_history(mod)
     iter <- max(scm_history$iteration) + 1L
     attm <- max(scm_history$attempt)
   }
@@ -210,42 +208,27 @@
   return(best_mod)
 }
 
-.emax_forward <- function(mod,
-                         candidates,
-                         threshold = .01,
-                         quiet = TRUE,
-                         history = TRUE,
-                         seed = NULL) {
 
-  if (!is.null(seed)) set.seed(seed)
-  finished <- FALSE
-  while(!finished) {
-
-    old_mod <- mod
-    mod <- .emax_once_forward(mod, candidates, threshold, quiet, history)
-    if (.is_same(mod, old_mod)) finished <- TRUE
-
-  }
-
-  return(mod)
+# list of all possible terms that could be considered
+.emax_extract_terms <- function(candidates) {
+  candidates |>
+    purrr::imap(\(x, l) paste(l, x, sep = "~")) |>
+    unlist() |>
+    purrr::map(stats::as.formula) |>
+    unname()
 }
 
-.emax_backward <- function(mod,
-                          candidates,
-                          threshold = .001,
-                          quiet = TRUE,
-                          history = TRUE,
-                          seed = NULL) {
 
-  if (!is.null(seed)) set.seed(seed)
-  finished <- FALSE
-  while(!finished) {
+# model comparison functions ----------------------------------------------
 
-    old_mod <- mod
-    mod <- .emax_once_backward(mod, candidates, threshold, quiet, history)
-    if (.is_same(mod, old_mod)) finished <- TRUE
-
-  }
-
-  return(mod)
+.anova_p <- function(obj1, obj2) {
+  a <- stats::anova(obj1, obj2)
+  return(a$`Pr(>F)`[2])
 }
+
+.aic_diff <- function(obj1, obj2) {
+  aic1 <- stats::AIC(obj1)
+  aic2 <- stats::AIC(obj2)
+  return(aic1 - aic2)
+}
+
