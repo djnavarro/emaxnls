@@ -105,3 +105,16 @@
   if (optim_method == "levenberg") return("LM")
   .abort("optim_method must be one of 'gauss', 'port', or 'levenberg'")
 }
+
+.nls_lm <- function(...) {
+  rlang::check_installed(
+    pkg = "minpack.lm",
+    reason = "`optim_method = 'levenberg' requires the minpack.lm package"
+  )
+  minpack.lm::nlsLM(...)
+}
+
+.nls_safe <- .safe_fn(stats::nls)
+.nls_lm_safe <- .safe_fn(.nls_lm)
+
+

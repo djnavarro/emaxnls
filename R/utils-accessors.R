@@ -68,7 +68,7 @@
 }
 
 .get_short_formula <- function(object) {
-  fml <- unlist(purrr::map(
+  fml <- unlist(.map(
     .x = object$formula$covariate,
     .f = deparse
   ))

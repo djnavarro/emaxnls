@@ -13,7 +13,7 @@
 }
 
 .store_inputs <- function(covariate_model, structural_model, data) {
-  names(covariate_model) <- purrr::map_chr(
+  names(covariate_model) <- .map_chr(
     .x = covariate_model, 
     .f = function(x) all.vars(x[[2]])
   )
@@ -41,7 +41,7 @@
 
   # construct flat formula 
   ss <- deparse(store$structural_model)
-  cc <- unlist(purrr::map(
+  cc <- unlist(.map(
     .x = store$covariate_model,
     .f = function(x) all.vars(x[[3]])
   ))
@@ -89,7 +89,7 @@
 }
 
 .store_terms <- function(store) {
-  store$terms <- purrr::map(
+  store$terms <- .map(
     .x = store$variables,
     .f = function(vv) {
       dd <- store$lookup
@@ -117,11 +117,11 @@
       logEC50 = store$terms$logEC50
     )
   }
-  cc <- purrr::map(
+  cc <- .map(
     .x = coefficients,
     .f = function(x) c("Intercept", x)
   )
-  cc <- purrr::imap(
+  cc <- .imap(
     .x = cc,
     .f = function(x, l) paste(l, x, sep = "_")
   )

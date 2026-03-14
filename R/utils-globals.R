@@ -1,20 +1,4 @@
 
-# purrr wrapped functions ------
-
-.nls_safe      <- purrr::safely(stats::nls)
-.nls_lm_safe   <- purrr::safely(
-  function(...) {
-    rlang::check_installed(
-      pkg = "minpack.lm",
-      reason = "`optim_method = 'levenberg' requires the minpack.lm package"
-    )
-    minpack.lm::nlsLM(...)
-  }
-)
-.confint_quiet <- purrr::quietly(stats::confint)
-
-# global variable declaration ------
-
 utils::globalVariables(c(
   "label",
   "Estimate",

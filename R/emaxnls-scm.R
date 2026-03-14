@@ -205,11 +205,11 @@
 
 # list of all possible terms that could be considered
 .emax_extract_terms <- function(candidates) {
-  cc <- unlist(purrr::imap(
+  cc <- unlist(.imap(
     .x = candidates,
     .f = function(x, l) paste(l, x, sep = "~")
   ))
-  unname(purrr::map(
+  unname(.map(
     .x = cc,
     .f = stats::as.formula
   ))

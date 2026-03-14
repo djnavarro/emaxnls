@@ -11,8 +11,8 @@
     if(is.null(param)) param <- coef(mod)
     old_env <- .get_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
-    purrr::iwalk(data, function(x, lbl) assign(lbl, x, envir = new_env))
-    purrr::iwalk(param, function(x, lbl) assign(lbl, x, envir = new_env))
+    .iwalk(data, function(x, lbl) assign(lbl, x, envir = new_env))
+    .iwalk(param, function(x, lbl) assign(lbl, x, envir = new_env))
     eval(mod$formula$nls[[3]], envir = new_env)
   }
 }

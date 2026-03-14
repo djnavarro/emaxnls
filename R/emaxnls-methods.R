@@ -99,7 +99,7 @@ NULL
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(emaxnls_mods, .get_nls)
   do.call(stats::AIC, nls_mods)
 }
 
@@ -107,7 +107,7 @@ AIC.emaxnls <- function(object, ..., k = 2) {
 #' @rdname AIC
 BIC.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(emaxnls_mods, .get_nls)
   do.call(stats::BIC, nls_mods)
 }
 
@@ -122,7 +122,7 @@ BIC.emaxnls <- function(object, ...) {
 #' @exportS3Method stats::anova
 anova.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- purrr::map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(emaxnls_mods, .get_nls)
   do.call(stats::anova, nls_mods)
 }
 
@@ -214,6 +214,9 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
   }
   ci$result
 }
+
+.confint_quiet <- .quiet_fn(stats::confint)
+
 
 #' Predicting from Emax regression models
 #'

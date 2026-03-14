@@ -136,7 +136,7 @@
 # guess the scale associated with key variables
 .guess_var_scale <- function(exposure, response, residuals, cov_names, design) {
   sds <- list(
-    cov = purrr::map_dbl(
+    cov = .map_dbl(
       .x = cov_names,
       .f = function(nn) stats::sd(design[[nn]])
     ),

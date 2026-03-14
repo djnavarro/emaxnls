@@ -13,7 +13,6 @@ RoxygenNote: 7.3.3
 Imports: 
     Deriv,
     mvtnorm,
-    purrr,
     rlang,
     tibble
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
