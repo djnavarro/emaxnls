@@ -77,4 +77,3 @@ final_mod
 simulate(final_mod, nsim = 1)
 ```
 
-

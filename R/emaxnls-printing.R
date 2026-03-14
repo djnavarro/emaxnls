@@ -28,9 +28,6 @@ print.emaxnls <- function(x, ...) {
     ccc <- utils::capture.output(print(.coef_table(x)))
     ccc <- ccc[c(-1, -3)]
     cat(ccc, sep = "\n")
-    cat("\n")
-    cat("Variance-covariance matrix:\n\n")
-    print(vcov(x), digits = 2)
   }
 
   return(invisible(x))
