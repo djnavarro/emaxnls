@@ -239,8 +239,6 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
 #'
 #' 
 #' @exportS3Method stats::predict
-
-
 predict.emaxnls <- function(object, 
                             newdata = NULL, 
                             se.fit = FALSE,

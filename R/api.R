@@ -200,3 +200,45 @@ emax_scm_backward <- function(mod, candidates, threshold = .001, seed = NULL) {
 emax_scm_history <- function(mod) {
   .emax_scm_history(mod, is_final = TRUE)
 }
+
+#' Construct Emax function from model object
+#'
+#' @param mod An `emaxnls` object
+#'
+#' @returns A function with arguments `data` and `params`
+#'
+#' @export
+#' @examples
+#' 
+#' mod <- emax_nls(
+#'   structural_model = response_1 ~ exposure_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' par <- coef(mod)
+#' 
+#' # customizable emax function with the same structural 
+#' # model and same covariate model, defaulting to the 
+#' # same data and parameters as the original model, but
+#' # allowing user to pass their own data and parameters  
+#' mod_fn <- emax_fn(mod)
+#' 
+#' # apply the function to a few rows of the original data
+#' mod_fn(
+#'   data = emax_df[120:125, ],
+#'   param = par
+#' )
+#' 
+#' # adjust the parameters
+#' new_par <- par
+#' new_par["E0_Intercept"] <- 0
+#' 
+#' # simulate the model with the adjusted parameters
+#' mod_fn(
+#'   data = emax_df[120:125, ],
+#'   param = new_par
+#' )
+#' 
+emax_fn <- function(mod) {
+  .emax_fn(mod)
+}

@@ -6,7 +6,8 @@
 # user-customisable parameter values; function is evaluated in 
 # cloned environment to prevent modification to the original model
 .emax_fn <- function(mod, data = mod$data) {
-  function(param = NULL) {
+  function(data = NULL, param = NULL) {
+    if(is.null(data)) data <- mod$data
     if(is.null(param)) param <- coef(mod)
     old_env <- .get_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
