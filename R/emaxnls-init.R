@@ -1,6 +1,6 @@
 
 # allow a user-facing version
-.emax_auto_init <- function(structural_model, covariate_model, data) {
+.emax_nls_init <- function(structural_model, covariate_model, data) {
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
   store <- .store(covariate_model, structural_model, data)

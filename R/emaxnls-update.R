@@ -3,9 +3,10 @@
 
 #' @param object An emaxnls object
 #' @param formula A formula such as E0 ~ AGE
-#' @param quiet When quiet=TRUE messages and warnings are suppressed
+#' @param quiet Logical
 #' @noRd
-.emax_add_term <- function(object, formula, quiet = FALSE) {
+.emax_add_term <- function(object, formula, quiet = NULL) {
+  if (is.null(quiet)) quiet <- .get_options(object)$quiet
 
   # assertions
   .assert(inherits(object, "emaxnls"))
@@ -40,9 +41,8 @@
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
 
-  # update initial parameter guess (TODO: init should reuse info from old fit)
-  settings <- .get_settings(object)
-  settings$init <- .guess_init(.store(
+  # initial parameter guess for updated model
+  init <- .guess_init(.store(
     covariate_model = covariate_model, 
     structural_model = .get_structural_formula(object),
     data = .get_data(object)
@@ -53,8 +53,8 @@
     structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
     data = .get_data(object),
-    settings = settings,
-    quiet = quiet
+    init = init,
+    opts = .get_options(object)
   )
 
   return(updated)
@@ -62,9 +62,10 @@
 
 #' @param object An emaxnls object
 #' @param formula A formula such as E0 ~ AGE
-#' @param quiet When quiet=TRUE messages and warnings are suppressed
+#' @param quiet Logical
 #' @noRd
-.emax_remove_term <- function(object, formula, quiet = FALSE) {
+.emax_remove_term <- function(object, formula, quiet = NULL) {
+  if (is.null(quiet)) quiet <- .get_options(object)$quiet
 
   # assertions
   .assert(inherits(object, "emaxnls"))
@@ -103,9 +104,8 @@
   ))
   covariate_model[[str_param]] <- new
 
-  # update initial parameter guess (TODO: init should reuse info from old fit)
-  settings <- .get_settings(object)
-  settings$init <- .guess_init(.store(
+  # initial parameter guess for updated model
+  init <- .guess_init(.store(
     covariate_model = covariate_model, 
     structural_model = .get_structural_formula(object),
     data = .get_data(object)
@@ -116,8 +116,8 @@
     structural_model = .get_structural_formula(object),
     covariate_model = covariate_model,
     data = .get_data(object),
-    settings = settings,
-    quiet = quiet
+    init = init,
+    opts = .get_options(object)
   )
 
   return(updated)

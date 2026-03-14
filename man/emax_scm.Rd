@@ -2,30 +2,16 @@
 % Please edit documentation in R/api.R
 \name{emax_scm}
 \alias{emax_scm}
-\alias{emax_forward}
-\alias{emax_backward}
-\alias{emax_history}
+\alias{emax_scm_forward}
+\alias{emax_scm_backward}
+\alias{emax_scm_history}
 \title{Stepwise covariate modelling for Emax regression}
 \usage{
-emax_forward(
-  mod,
-  candidates,
-  threshold = 0.01,
-  quiet = TRUE,
-  history = TRUE,
-  seed = NULL
-)
+emax_scm_forward(mod, candidates, threshold = 0.01, seed = NULL)
 
-emax_backward(
-  mod,
-  candidates,
-  threshold = 0.001,
-  quiet = TRUE,
-  history = TRUE,
-  seed = NULL
-)
+emax_scm_backward(mod, candidates, threshold = 0.001, seed = NULL)
 
-emax_history(mod)
+emax_scm_history(mod)
 }
 \arguments{
 \item{mod}{An \code{emaxnls} object}
@@ -33,10 +19,6 @@ emax_history(mod)
 \item{candidates}{A list of candidate covariates}
 
 \item{threshold}{Threshold for addition or removal}
-
-\item{quiet}{When quiet=TRUE messages and warnings are suppressed}
-
-\item{history}{When history=TRUE the sequence of models tested is stored}
 
 \item{seed}{Seed for the RNG state}
 }
@@ -55,11 +37,11 @@ covariate_list <- list(
 )
 
 final_mod <- base_model |> 
-  emax_forward(candidates = covariate_list, threshold = .01) |> 
-  emax_backward(candidates = covariate_list, threshold = .001) 
+  emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
+  emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
 final_mod
 
-emax_history(final_mod)
+emax_scm_history(final_mod)
 
 }

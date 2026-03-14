@@ -98,10 +98,10 @@ covariate_list <- list(
 )
 
 final_mod <- base_model |> 
-  emax_forward(candidates = covariate_list, threshold = .01) |> 
-  emax_backward(candidates = covariate_list, threshold = .001) 
+  emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
+  emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
-emax_history(final_mod)
+emax_scm_history(final_mod)
 #> # A tibble: 32 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          

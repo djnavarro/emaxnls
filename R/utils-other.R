@@ -2,6 +2,7 @@
 # purrr wrapped functions ------
 
 .nls_safe      <- purrr::safely(stats::nls)
+.nls_lm_safe   <- purrr::safely(minpack.lm::nlsLM)
 .confint_quiet <- purrr::quietly(stats::confint)
 
 # global variable declaration ------

@@ -33,8 +33,8 @@
 
 # accessors for settings -----
 
-.get_settings <- function(object) {
-  object$info$settings
+.get_options <- function(object) {
+  object$opts
 }
 
 # accessors for formulae ------

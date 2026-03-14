@@ -4,24 +4,19 @@
 \alias{emax_nls}
 \title{Emax model with arbitrary covariates (does not support interactions)}
 \usage{
-emax_nls(
-  structural_model,
-  covariate_model,
-  data,
-  settings = emax_nls_settings(),
-  quiet = FALSE
-)
+emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 }
 \arguments{
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
-\item{covariate_model}{A list of two-sided formulas, each of specifying a covariate model for a structural parameter}
+\item{covariate_model}{A list of two-sided formulas, each of specifying a
+covariate model for a structural parameter}
 
 \item{data}{A data frame}
 
-\item{settings}{Settings for the nls() optimisation}
+\item{init}{Initial values and bounds for parameters. See \code{emax_nls_init()}}
 
-\item{quiet}{When quiet=TRUE messages and warnings are suppressed}
+\item{opts}{Model fitting and optimization options. See \code{emax_nls_options()}}
 }
 \value{
 An object of class \code{emaxnls}
