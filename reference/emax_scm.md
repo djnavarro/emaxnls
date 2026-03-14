@@ -75,14 +75,6 @@ final_mod
 #> 2 E0_cnt_a             0.498    0.0113        44.2 4.30e-155    0.476    0.520
 #> 3 Emax_Intercept      10.0      0.104         96.3 7.23e-277    9.80    10.2  
 #> 4 logEC50_Intercept    8.27     0.0366       226.  0            8.19     8.34 
-#> 
-#> Variance-covariance matrix:
-#> 
-#>                   E0_Intercept E0_cnt_a Emax_Intercept logEC50_Intercept
-#> E0_Intercept           0.00548 -6.2e-04       -2.2e-03           4.3e-04
-#> E0_cnt_a              -0.00062  1.3e-04        4.2e-05           2.5e-05
-#> Emax_Intercept        -0.00224  4.2e-05        1.1e-02           2.6e-03
-#> logEC50_Intercept      0.00043  2.5e-05        2.6e-03           1.3e-03
 
 emax_scm_history(final_mod)
 #> # A tibble: 32 × 11
