@@ -1,5 +1,4 @@
 
-
 .safe_fn <- function(.f) {
   function(...) {
     tryCatch(
@@ -37,4 +36,10 @@
     )
   }
 }
+
+.nls_safe <- .safe_fn(stats::nls)
+.nls_lm_safe <- .safe_fn(.nls_lm)
+.confint_quiet <- .quiet_fn(stats::confint)
+
+
 

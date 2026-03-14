@@ -215,9 +215,6 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
   ci$result
 }
 
-.confint_quiet <- .quiet_fn(stats::confint)
-
-
 #' Predicting from Emax regression models
 #'
 #' @param object An `emaxnls` object

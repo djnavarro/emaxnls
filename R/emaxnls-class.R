@@ -114,7 +114,4 @@
   minpack.lm::nlsLM(...)
 }
 
-.nls_safe <- .safe_fn(stats::nls)
-.nls_lm_safe <- .safe_fn(.nls_lm)
-
 
