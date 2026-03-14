@@ -42,20 +42,20 @@
     )
   }
   if (is_final) {
-    history <- history |>
-      tibble::add_row(
-        iteration = max(history$iteration) + 1L,
-        attempt = max(history$attempt) + 1L,
-        step = "final model",
-        action = NA_character_,
-        term_tested = NA_character_,
-        model_tested = .get_short_formula(mod),
-        model_converged = !is.null(.get_nls(mod)),
-        term_p_value = NA_real_,
-        model_aic = stats::AIC(mod),
-        model_bic = stats::BIC(mod),
-        model_updated = NA
-      )
+    history <- tibble::add_row(
+      history,
+      iteration = max(history$iteration) + 1L,
+      attempt = max(history$attempt) + 1L,
+      step = "final model",
+      action = NA_character_,
+      term_tested = NA_character_,
+      model_tested = .get_short_formula(mod),
+      model_converged = !is.null(.get_nls(mod)),
+      term_p_value = NA_real_,
+      model_aic = stats::AIC(mod),
+      model_bic = stats::BIC(mod),
+      model_updated = NA
+    )
   }
   return(history)
 }
@@ -102,32 +102,32 @@
         }
       }
       if (history) {
-        scm_history <- scm_history |>
-          tibble::add_row(
-            iteration = iter,
-            attempt = attm,
-            step = "forward",
-            action = "add",
-            term_tested = deparse(t),
-            model_tested = .get_short_formula(candidate_mod),
-            model_converged = converge,
-            term_p_value = p,
-            model_aic = stats::AIC(candidate_mod),
-            model_bic = stats::BIC(candidate_mod),
-            model_updated = FALSE # default
-          )
+        scm_history <- tibble::add_row(
+          scm_history,
+          iteration = iter,
+          attempt = attm,
+          step = "forward",
+          action = "add",
+          term_tested = deparse(t),
+          model_tested = .get_short_formula(candidate_mod),
+          model_converged = converge,
+          term_p_value = p,
+          model_aic = stats::AIC(candidate_mod),
+          model_bic = stats::BIC(candidate_mod),
+          model_updated = FALSE # default
+        )
       }
     }
   }
 
   if (history) {
-    scm_history <- scm_history |> 
-      dplyr::mutate(
-        model_updated = dplyr::case_when(
-          iteration == iter & attempt == best_mod_attm ~ TRUE,
-          TRUE ~ model_updated
-        )
+    scm_history <- dplyr::mutate(
+      scm_history,
+      model_updated = dplyr::case_when(
+        iteration == iter & attempt == best_mod_attm ~ TRUE,
+        TRUE ~ model_updated
       )
+    )
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
@@ -176,32 +176,32 @@
         }
       }
       if (history) {
-        scm_history <- scm_history |>
-          tibble::add_row(
-            iteration = iter,
-            attempt = attm,
-            step = "backward",
-            action = "remove",
-            term_tested = deparse(t),
-            model_tested = .get_short_formula(candidate_mod),
-            model_converged = converge,
-            term_p_value = p,
-            model_aic = stats::AIC(candidate_mod),
-            model_bic = stats::BIC(candidate_mod),
-            model_updated = FALSE # default
-          )
+        scm_history <- tibble::add_row(
+          scm_history,
+          iteration = iter,
+          attempt = attm,
+          step = "backward",
+          action = "remove",
+          term_tested = deparse(t),
+          model_tested = .get_short_formula(candidate_mod),
+          model_converged = converge,
+          term_p_value = p,
+          model_aic = stats::AIC(candidate_mod),
+          model_bic = stats::BIC(candidate_mod),
+          model_updated = FALSE # default
+        )
       }
     }
   }
 
   if (history) {
-    scm_history <- scm_history |> 
-      dplyr::mutate(
-        model_updated = dplyr::case_when(
-          iteration == iter & attempt == best_mod_attm ~ TRUE,
-          TRUE ~ model_updated
-        )
+    scm_history <- dplyr::mutate(
+      scm_history,
+      model_updated = dplyr::case_when(
+        iteration == iter & attempt == best_mod_attm ~ TRUE,
+        TRUE ~ model_updated
       )
+    )
     best_mod <- .set_scm_history(best_mod, scm_history)
   }
 
@@ -211,11 +211,14 @@
 
 # list of all possible terms that could be considered
 .emax_extract_terms <- function(candidates) {
-  candidates |>
-    purrr::imap(\(x, l) paste(l, x, sep = "~")) |>
-    unlist() |>
-    purrr::map(stats::as.formula) |>
-    unname()
+  cc <- unlist(purrr::imap(
+    .x = candidates,
+    .f = function(x, l) paste(l, x, sep = "~")
+  ))
+  unname(purrr::map(
+    .x = cc,
+    .f = stats::as.formula
+  ))
 }
 
 

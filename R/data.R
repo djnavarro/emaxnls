@@ -22,7 +22,7 @@
   }
 
   .simulate_dose_data <- function(dose, n, par) {
-    tibble::tibble(
+    out <- tibble::tibble(
       dose = dose,
       exposure_1 = .simulate_exposure(dose, n = n),
       exposure_2 = 0.7 * exposure_1 + 0.3 * .simulate_exposure(dose, n = n),
@@ -64,8 +64,9 @@
       # convert
       bin_prob = 1 / (1 + exp(-bin_pred)),
       response_2 = as.numeric(stats::runif(n) < bin_prob)
-    ) |>
-      dplyr::select(-bin_pred, -bin_prob) # remove intermediate variables
+    ) 
+    out <- dplyr::select(out, -bin_pred, -bin_prob) # remove intermediate variables
+    return(out)
   }
 
   set.seed(seed)
@@ -99,8 +100,8 @@
     .simulate_dose_data(dose = 100, n = 100, par = par),
     .simulate_dose_data(dose = 200, n = 100, par = par),
     .simulate_dose_data(dose = 300, n = 100, par = par)
-  ) |> 
-    dplyr::relocate(response_1, response_2, .after = exposure_2)
+  )
+  dat <- dplyr::relocate(dat, response_1, response_2, .after = exposure_2)
 
   return(dat)
 }

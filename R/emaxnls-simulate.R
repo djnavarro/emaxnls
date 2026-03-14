@@ -10,8 +10,8 @@
     if(is.null(param)) param <- coef(mod)
     old_env <- .get_nls(mod)$m$getEnv()
     new_env <- rlang::env_clone(env = old_env)
-    purrr::iwalk(data, \(x, lbl) assign(lbl, x, envir = new_env))
-    purrr::iwalk(param, \(x, lbl) assign(lbl, x, envir = new_env))
+    purrr::iwalk(data, function(x, lbl) assign(lbl, x, envir = new_env))
+    purrr::iwalk(param, function(x, lbl) assign(lbl, x, envir = new_env))
     eval(mod$formula$nls[[3]], envir = new_env)
   }
 }
@@ -48,9 +48,8 @@
   par <- tibble::as_tibble(par)
   par$sim_id <- 1L:nsim
 
-  out <- sim |>
-    dplyr::left_join(par, by = "sim_id") |>
-    dplyr::left_join(dat, by = "dat_id")
+  out <- dplyr::left_join(sim, par, by = "sim_id") 
+  out <- dplyr::left_join(out, dat, by = "dat_id")
 
   return(out)
 }

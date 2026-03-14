@@ -16,19 +16,19 @@
   # check that "formula" is a list of 3 or 4 two-sided formulas
   .assert(inherits(formula, "list"))
   .assert(length(formula) %in% 3:4)
-  .assert(all(purrr::map_lgl(formula, \(x) .is_formula(x, sides = 2))))
+  .assert(all(purrr::map_lgl(formula, function(x) .is_formula(x, sides = 2))))
 
   # check that the LHS names correspond to the structural parameters
-  lhs_names <- unname(sort(purrr::map_chr(formula, \(x) all.vars(x[[2]]))))
+  lhs_names <- unname(sort(purrr::map_chr(formula, function(x) all.vars(x[[2]]))))
   if (length(lhs_names) == 3) .assert(lhs_names == c("E0", "Emax", "logEC50"))
   if (length(lhs_names) == 4) .assert(lhs_names == c("E0", "Emax", "logEC50", "logHill"))
 
   # check that RHS names refer to known variables
   if (!is.null(names)) {
-    rhs_names <- formula |>
-      purrr::map(\(x) all.vars(x[[3]])) |>
-      unlist() |>
-      unique()
+    rhs_names <- unique(unlist(purrr::map(
+      .x = formula, 
+      .f = function(x) all.vars(x[[3]])
+    )))
     .assert(all(rhs_names %in% names))
   }
 }
@@ -49,6 +49,12 @@
     expr = optim_method %in% c("gauss", "port", "levenberg"),
     message = "`optim_method` must be one of 'gauss', 'port', or 'levenberg'"
   )
+  if (optim_method == "levenberg") {
+    .assert(
+      expr = rlang::is_installed("minpack.lm"),
+      message = "`optim_method = 'levenberg' requires the minpack.lm package" 
+    )
+  }
 }
 
 .is_same <- function(mod1, mod2) {

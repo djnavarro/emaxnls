@@ -88,6 +88,7 @@
     ))
   }
   if (algorithm == "LM") {
+    .validate_optim_method("levenberg")
     return(.nls_lm_safe(
       formula = formula,
       data = data,
@@ -95,8 +96,7 @@
       control = control,
       algorithm = algorithm
     ))
-  }
-  .validate_optim_method("") 
+  } 
 }
 
 .nls_method <- function(optim_method) {

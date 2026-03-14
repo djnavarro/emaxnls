@@ -68,9 +68,11 @@
 }
 
 .get_short_formula <- function(object) {
-  object$formula$covariate |>
-    purrr::map(deparse) |>
-    unlist() |>
-    (\(x) paste(x, collapse = ", "))()
+  fml <- unlist(purrr::map(
+    .x = object$formula$covariate,
+    .f = deparse
+  ))
+  fml <- paste(fml, collapse = ", ")
+  fml
 }
 

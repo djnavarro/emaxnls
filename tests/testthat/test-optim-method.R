@@ -69,7 +69,7 @@ test_that("example base model converges with 'port'", {
 })
 
 test_that("example base model converges with 'levenberg'", {
-  skip_if(!require("minpack.lm", quietly = TRUE))
+  skip_if(!rlang::is_installed("minpack.lm"))
   mm <- "levenberg"
   aa <- "LM"
   expect_no_error(
@@ -172,7 +172,7 @@ test_that("example covariate model converges with 'port'", {
 })
 
 test_that("example covariate model converges with 'levenberg'", {
-  skip_if(!require("minpack.lm", quietly = TRUE))
+  skip_if(!rlang::is_installed("minpack.lm"))
   mm <- "levenberg"
   aa <- "LM"
   expect_no_error(
@@ -205,7 +205,7 @@ test_that("example covariate model converges with 'levenberg'", {
 })
 
 test_that("emax_nls errors for 'levenberg' when minpack.lm is missing", {
-  skip_if(require("minpack.lm", quietly = TRUE))
+  skip_if(rlang::is_installed("minpack.lm"))
   expect_error(
     emax_nls(
       structural_model = str_mod, 

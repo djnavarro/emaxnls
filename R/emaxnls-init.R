@@ -36,8 +36,8 @@
   beta_max <- 5
   loghill_max <- 5
 
-  ini <- coefficient_table |>
-    dplyr::mutate(
+  ini <- dplyr::mutate(
+      coefficient_table,
       start = dplyr::case_when(
         covariate != "Intercept" ~ 0,
         covariate == "Intercept" & parameter == "E0"      ~ base_guess["E0"],

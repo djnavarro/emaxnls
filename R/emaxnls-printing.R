@@ -42,21 +42,23 @@ print.emaxnls <- function(x, ...) {
   coef_tbl <- sss$coef
   ci <- .confint_quiet(.get_nls(object), level = level)
   ci <- ci$result
-  coef_tbl |>
-    as.data.frame() |>
-    tibble::rownames_to_column("label") |>
-    tibble::as_tibble() |>
-    dplyr::select(
+  
+  coef_tbl <- as.data.frame(coef_tbl) 
+  coef_tbl <- tibble::rownames_to_column(coef_tbl, "label")
+  coef_tbl <- tibble::as_tibble(coef_tbl)
+  coef_tbl <- dplyr::select(
+      coef_tbl,
       label = label,
       estimate = Estimate,
       std_error = `Std. Error`,
       t_statistic = `t value`,
       p_value = `Pr(>|t|)`
-    ) |>
-    dplyr::mutate(
-      ci_lower = ci[, 1],
-      ci_upper = ci[, 2]
     )
+  coef_tbl <- dplyr::mutate(
+    coef_tbl,
+    ci_lower = ci[, 1],
+    ci_upper = ci[, 2]
+  )
 }
 
 # simplified version of scales::label_pvalue()

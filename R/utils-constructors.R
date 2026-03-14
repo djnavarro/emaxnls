@@ -13,7 +13,10 @@
 }
 
 .store_inputs <- function(covariate_model, structural_model, data) {
-  names(covariate_model) <- covariate_model |> purrr::map_chr(\(x) all.vars(x[[2]]))
+  names(covariate_model) <- purrr::map_chr(
+    .x = covariate_model, 
+    .f = function(x) all.vars(x[[2]])
+  )
   store <- list(
     structural_model = structural_model,
     covariate_model = covariate_model, 
@@ -38,10 +41,11 @@
 
   # construct flat formula 
   ss <- deparse(store$structural_model)
-  cc <- store$covariate_model |>
-    purrr::map(\(x) all.vars(x[[3]])) |>
-    unlist() |>
-    paste(collapse = "+")
+  cc <- unlist(purrr::map(
+    .x = store$covariate_model,
+    .f = function(x) all.vars(x[[3]])
+  ))
+  cc <- paste(cc, collapse = "+")
   if (nchar(cc) == 0) {
     ff <- stats::as.formula(ss)
   } else {
@@ -59,7 +63,7 @@
   index <- c(1, index + 1)     # index into preds
 
   lookup <- tibble::tibble(variable = preds[index], term = terms)
-  design <- mm |> tibble::as_tibble() |> stats::setNames(terms)
+  design <- stats::setNames(tibble::as_tibble(mm), terms)
   design[[preds[1]]] <- store$data[[preds[1]]]
 
   store$lookup <- lookup
@@ -85,13 +89,13 @@
 }
 
 .store_terms <- function(store) {
-  store$terms <- store$variables |>
-    purrr::map(
-      \(x) store$lookup |>
-        dplyr::filter(variable %in% x) |>
-        dplyr::pull(term)
-    )
-  
+  store$terms <- purrr::map(
+    .x = store$variables,
+    .f = function(x) {
+      ll <- dplyr::filter(store$lookup, variable %in% x)
+      dplyr::pull(ll, term)
+    }
+  )
   return(store)
 }
 
@@ -112,10 +116,15 @@
       logEC50 = store$terms$logEC50
     )
   }
-  store$coefficients <- coefficients |>
-    purrr::map(\(x) c("Intercept", x)) |>
-    purrr::imap(\(x, l) paste(l, x, sep = "_"))
-
+  cc <- purrr::map(
+    .x = coefficients,
+    .f = function(x) c("Intercept", x)
+  )
+  cc <- purrr::imap(
+    .x = cc,
+    .f = function(x, l) paste(l, x, sep = "_")
+  )
+  store$coefficients <- cc
   return(store)
 }
 
