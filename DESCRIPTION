@@ -11,12 +11,12 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports: 
+    Deriv,
     dplyr,
     mvtnorm,
     purrr,
     rlang,
-    tibble,
-    xgxr
+    tibble
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues
 Suggests: 

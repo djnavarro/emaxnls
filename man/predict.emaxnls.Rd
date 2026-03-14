@@ -30,12 +30,17 @@ on the mean responses are to be calculated. Can be "none", "confidence", or "pre
 \item{...}{Ignored}
 }
 \value{
-As \code{xgxr::predict.nls()}.
+The return value differs slightly depending on inputs. When \code{se.fit = FALSE}, it
+produces a vector or matrix of predictions with column names \code{fit}, \code{lwr} and \code{upr} if
+the \code{interval} argument is set. When \code{se.fit = TRUE}, it returns a list with the following
+components:
+\itemize{
+\item \code{fit}: vector or matrix as above
+\item \code{se.fit}: standard error of the predicted means
+\item \code{residual.scale}: residual standard deviation
+\item \code{df}: residual degrees of freedom
+}
 }
 \description{
 Predicting from Emax regression models
-}
-\details{
-The \code{predict()} method for for Emax regression is a thin wrapper around \code{xgxr::predict.nls()}.
-Please see the documentation for that function.
 }

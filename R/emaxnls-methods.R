@@ -227,20 +227,27 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
 #' (if any) to be calculated.
 #' @param ... Ignored
 #'
-#' @returns As `xgxr::predict.nls()`.
+#' @returns The return value differs slightly depending on inputs. When `se.fit = FALSE`, it 
+#' produces a vector or matrix of predictions with column names `fit`, `lwr` and `upr` if 
+#' the `interval` argument is set. When `se.fit = TRUE`, it returns a list with the following
+#' components:
+#' 
+#' - `fit`: vector or matrix as above
+#' - `se.fit`: standard error of the predicted means
+#' - `residual.scale`: residual standard deviation
+#' - `df`: residual degrees of freedom
 #'
-#' @details
-#' The `predict()` method for for Emax regression is a thin wrapper around `xgxr::predict.nls()`. 
-#' Please see the documentation for that function. 
 #' 
 #' @exportS3Method stats::predict
+
+
 predict.emaxnls <- function(object, 
                             newdata = NULL, 
                             se.fit = FALSE,
                             interval = "none",
                             level = 0.95, 
                             ...) {
-  xgxr::predict.nls(
+  .predict_nls(
     object$env$model, 
     newdata, 
     se.fit, 
