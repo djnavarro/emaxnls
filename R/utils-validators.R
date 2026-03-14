@@ -1,8 +1,4 @@
 
-.assert <- function(expr, message = "emax_nls error", class = "emaxnls_error") {
-  if (any(expr == FALSE)) rlang::abort(message = message, class = class)
-}
-
 .validate_structural_formula <- function(formula, names = NULL) {
 
   # check that it is a two-sided formula with one variable on each side

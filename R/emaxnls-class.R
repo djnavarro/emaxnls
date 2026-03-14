@@ -103,8 +103,5 @@
   if (optim_method == "gauss") return("default")
   if (optim_method == "port") return("port")
   if (optim_method == "levenberg") return("LM")
-  rlang::abort(
-    message = "optim_method must be one of 'gauss', 'port', or 'levenberg'",
-    class = "emaxnls_error"
-  )
+  .abort("optim_method must be one of 'gauss', 'port', or 'levenberg'")
 }

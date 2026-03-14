@@ -91,7 +91,7 @@
       attm <- attm + 1L
       p <- NA_real_
       converge <- !is.null(.get_nls(candidate_mod))
-      if (!quiet) message("try add: ", deparse(t))
+      if (!quiet) .inform("try add: ", deparse(t))
       if (converge) {  # skip if nls() fails
         p <- .anova_p(mod, candidate_mod)
         if (p < lowest_p) {
@@ -165,7 +165,7 @@
       attm <- attm + 1L
       p <- NA_real_
       converge <- !is.null(.get_nls(candidate_mod))
-      if (!quiet) message("try remove: ", deparse(t))
+      if (!quiet) .inform("try remove: ", deparse(t))
       if (converge) {  # skip if nls() fails
         p <- .anova_p(candidate_mod, mod)
         if (p > highest_p) {
