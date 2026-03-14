@@ -44,6 +44,13 @@
 
 }
 
+.validate_optim_method <- function(optim_method) {
+  .assert(
+    expr = optim_method %in% c("gauss", "port", "levenberg"),
+    message = "`optim_method` must be one of 'gauss', 'port', or 'levenberg'"
+  )
+}
+
 .is_same <- function(mod1, mod2) {
   identical(
     .get_coefficient_names(mod1), 

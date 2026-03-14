@@ -204,3 +204,30 @@ test_that("example covariate model converges with 'levenberg'", {
   expect_true(mod$env$model$convInfo$isConv)
 })
 
+test_that("emax_nls errors for 'levenberg' when minpack.lm is missing", {
+  skip_if(require("minpack.lm", quietly = TRUE))
+  expect_error(
+    emax_nls(
+      structural_model = str_mod, 
+      covariate_model = cov_mod, 
+      data = emax_df,
+      opts = emax_nls_options(optim_method = "levenberg")
+    ),
+    class = "emaxnls_error"
+  )
+})
+
+test_that("emax_nls errors for unknown optim_method", {
+  invalid_optim_methods <- list("garbage", "plinear", "default", 1, TRUE)
+  for (mm in invalid_optim_methods) {
+    expect_error(
+      emax_nls(
+        structural_model = str_mod, 
+        covariate_model = cov_mod, 
+        data = emax_df,
+        opts = emax_nls_options(optim_method = "mm")
+      ),
+      class = "emaxnls_error"
+    )
+  }
+})

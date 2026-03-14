@@ -4,6 +4,8 @@
                               weights, 
                               na.action) {
   
+  .validate_optim_method(optim_method)
+  
   if (is.null(optim_control)) {
 
     if (optim_method == "gauss") {
@@ -36,7 +38,7 @@
       )
     }
   }
-  
+
   opts <- list(
     optim_method = optim_method,
     optim_control = optim_control,

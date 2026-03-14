@@ -96,7 +96,7 @@
       algorithm = algorithm
     ))
   }
-  NULL
+  .validate_optim_method("") 
 }
 
 .nls_method <- function(optim_method) {
