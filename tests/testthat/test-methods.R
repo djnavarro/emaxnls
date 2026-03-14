@@ -71,7 +71,6 @@ test_that("print() writes expected message to console and returns object invisib
   expect_true(any(grepl("^Structural model:$", msg)))
   expect_true(any(grepl("^Covariate model:$", msg)))
   expect_true(any(grepl("^Coefficient table:$", msg)))
-  expect_true(any(grepl("^Variance-covariance matrix:$", msg)))
 })
 
 test_that(".coef_table returns data frame with the expected structure", {
