@@ -17,6 +17,8 @@ Build Emax regression models
 - [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   : Add or remove a covariate term from an Emax regression
+- [`emax_fn()`](https://emaxnls.djnavarro.net/reference/emax_fn.md) :
+  Construct Emax function from model object
 
 ## Methods
 
