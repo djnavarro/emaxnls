@@ -11,18 +11,20 @@
 }
 
 .map2 <- function(.x, .y, .f) {
-  .assert(length(.x) == length(.y))  
+  .assert(length(.x) == length(.y), "`.x` and `.y` in must have same length")  
   .mapper <- function(ind) .f(.x[[ind]], .y[[ind]])
   lapply(X = seq_along(.x), FUN = .mapper)
 }
 
 .imap <- function(.x, .f) {
+  .assert(!is.null(.x), "`.x` must be a named vector")
   out <- .map2(.x, names(.x), .f)
   names(out) <- names(.x)
   out
 }
 
 .iwalk <- function(.x, .f) {
+  .assert(!is.null(.x), "`.x` must be a named vector")
   .map2(.x, names(.x), .f)
   invisible(.x)
 }

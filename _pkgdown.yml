@@ -12,7 +12,7 @@ reference:
   - emax_nls_init
   - emax_scm
   - emax_update
-  - emax_fn
+  - emax_fun
 - title: Methods
   desc: Methods for Emax regression objects
 - contents:

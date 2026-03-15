@@ -81,6 +81,21 @@
   )
 }
 
+.validate_emax_fun_args <- function(data, param, mod) {
+  .assert(
+    inherits(data, "data.frame") | is.null(data), 
+    "`data` must be a data frame or NULL"
+  )
+  .assert(
+    is.null(param) | (is.numeric(param) & length(param) == length(coef(mod))) , 
+    "`param` must be a named numeric vector of parameters or NULL"
+  )
+  .assert(
+    names(param) == names(coef(mod)), 
+    "`param` names must match those of the model coefficients"
+  )
+}
+
 .is_same <- function(mod1, mod2) {
   identical(
     .get_coefficient_names(mod1), 

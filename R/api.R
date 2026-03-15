@@ -201,11 +201,20 @@ emax_scm_history <- function(mod) {
   .emax_scm_history(mod, is_final = TRUE)
 }
 
-#' Construct Emax function from model object
+#' Construct Emax prediction function from model object
 #'
 #' @param mod An `emaxnls` object
 #'
-#' @returns A function with arguments `data` and `params`
+#' @returns A function `f` with arguments `data` and `params`. The `data`
+#' argument defaults to the data used to estimate the model, and the
+#' `params` arugment defaults to the estimated parameter values. Both
+#' can be customized, as long as `data` contains columns corresponding
+#' to each of the variables used by the model, and `params` is a named
+#' numeric vector of the appropriate length. The names for `params` 
+#' must exactly match the names of the vector returned by `coef(mod)`.
+#' 
+#' The return value for `f` is a numeric vector of model predictions for
+#' each row in `data`, evaluated at parameters `params`. 
 #'
 #' @export
 #' @examples
@@ -221,7 +230,7 @@ emax_scm_history <- function(mod) {
 #' # model and same covariate model, defaulting to the 
 #' # same data and parameters as the original model, but
 #' # allowing user to pass their own data and parameters  
-#' mod_fn <- emax_fn(mod)
+#' mod_fn <- emax_fun(mod)
 #' 
 #' # apply the function to a few rows of the original data
 #' mod_fn(
@@ -239,6 +248,6 @@ emax_scm_history <- function(mod) {
 #'   param = new_par
 #' )
 #' 
-emax_fn <- function(mod) {
-  .emax_fn(mod)
+emax_fun <- function(mod) {
+  .emax_fun(mod)
 }
