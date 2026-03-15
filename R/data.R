@@ -107,11 +107,20 @@
     "dose", "exp_1", "exp_2", "rsp_1", "rsp_2", 
     "cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"
   )
-  dat <- dat[, cols]
-
-  return(dat)
+  rows <- sample.int(nrow(dat))
+  dat <- cbind(
+    .tibble(id = seq.int(length.out = nrow(dat))),
+    dat[rows, cols]
+  )
+  nd <- 2L
+  dat$exp_1 <- round(dat$exp_1, digits = nd)
+  dat$exp_2 <- round(dat$exp_2, digits = nd)
+  dat$rsp_1 <- round(dat$rsp_1, digits = nd)
+  dat$cnt_a <- round(dat$cnt_a, digits = nd)
+  dat$cnt_b <- round(dat$cnt_b, digits = nd)
+  dat$cnt_c <- round(dat$cnt_c, digits = nd)
+  return(.as_tibble(dat))
 }
-
 
 # emax_df <- .simulate_emax_data(seed = 123)
 # usethis::use_data(emax_df, overwrite = TRUE)
@@ -122,6 +131,7 @@
 #' @name emax_df
 #' @format A data frame with columns:
 #' \describe{
+#' \item{id}{Identifier column}
 #' \item{dose}{Nominal dose, units not specified}
 #' \item{exp_1}{Exposure value, units and metric not specified}
 #' \item{exp_2}{Exposure value, units and metric not specified, but different from exp_1}

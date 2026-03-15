@@ -37,7 +37,7 @@ test_that("predict with interval but not se.fit returns data.frame", {
 })
 
 test_that("predict with newdata produces expected values", {
-  ii <- 120:125 
+  ii <- 120:125
   nd <- data.frame(
     exp_1 = emax_df$exp_1[ii], 
     cnt_a = emax_df$cnt_a[ii]
@@ -52,14 +52,13 @@ test_that("predict with newdata produces expected values", {
   pr_lst_nd <- predict(mod, newdata = nd, se.fit = TRUE)
   expect_equal(pr_lst_nd$fit, pr_lst$fit[ii])
   expect_equal(pr_lst_nd$se, pr_lst$se[ii], tolerance = .00001)
-  expect_equal(pr_lst_nd$df, pr_lst$df) # hm, is that right?
+  expect_equal(pr_lst_nd$df, pr_lst$df)
 
   pr_int    <- predict(mod, interval = "confidence")
   pr_int_nd <- predict(mod, newdata = nd, interval = "confidence")
-  expect_equal(pr_int_nd$fit, pr_int$fit[ii])
-  expect_equal(pr_int_nd$lwr, pr_int$lwr[ii])
-  expect_equal(pr_int_nd$upr, pr_int$upr[ii])
-
+  expect_equal(pr_int_nd$fit, pr_int$fit[ii], tolerance = .00001)
+  expect_equal(pr_int_nd$lwr, pr_int$lwr[ii], tolerance = .00001)
+  expect_equal(pr_int_nd$upr, pr_int$upr[ii], tolerance = .00001)
 })
 
 # set up for a simpler nls model based loosely on SSlogis

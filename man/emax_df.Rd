@@ -7,6 +7,7 @@
 \format{
 A data frame with columns:
 \describe{
+\item{id}{Identifier column}
 \item{dose}{Nominal dose, units not specified}
 \item{exp_1}{Exposure value, units and metric not specified}
 \item{exp_2}{Exposure value, units and metric not specified, but different from exp_1}
