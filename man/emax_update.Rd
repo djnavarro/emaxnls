@@ -6,12 +6,12 @@
 \alias{emax_remove_term}
 \title{Add or remove a covariate term from an Emax regression}
 \usage{
-emax_add_term(object, formula)
+emax_add_term(mod, formula)
 
-emax_remove_term(object, formula)
+emax_remove_term(mod, formula)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{mod}{An \code{emaxnls} object}
 
 \item{formula}{A formula such as E0 ~ AGE}
 }

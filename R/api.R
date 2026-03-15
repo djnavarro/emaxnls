@@ -109,7 +109,7 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 
 #' Add or remove a covariate term from an Emax regression
 #'
-#' @param object An `emaxnls` object
+#' @param mod An `emaxnls` object
 #' @param formula A formula such as E0 ~ AGE
 #'
 #' @returns
@@ -127,14 +127,14 @@ NULL
 
 #' @export
 #' @rdname emax_update
-emax_add_term <- function(object, formula) {
-  .emax_add_term(object = object, formula = formula)
+emax_add_term <- function(mod, formula) {
+  .emax_add_term(mod = mod, formula = formula)
 }
 
 #' @export
 #' @rdname emax_update
-emax_remove_term <- function(object, formula) {
-  .emax_remove_term(object = object, formula = formula)
+emax_remove_term <- function(mod, formula) {
+  .emax_remove_term(mod = mod, formula = formula)
 }
 
 #' Stepwise covariate modelling for Emax regression

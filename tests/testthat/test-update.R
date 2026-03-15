@@ -5,13 +5,13 @@ mod <- emax_nls(
 )
 
 test_that("basic use of .emax_add_term and .emax_remove_term does not error", {
-  expect_no_error(.emax_add_term(mod, E0 ~ bin_e))
-  expect_no_error(.emax_remove_term(mod, E0 ~ cnt_a))
+  expect_no_error(.emax_add_term(mod, E0 ~ bin_e, quiet = TRUE))
+  expect_no_error(.emax_remove_term(mod, E0 ~ cnt_a, quiet = TRUE))
 })
 
 test_that(".emax_add_term and .emax_remove_term update the covariate model", {
-  mod_add <- .emax_add_term(mod, E0 ~ bin_e)
-  mod_del <- .emax_remove_term(mod, E0 ~ cnt_a)
+  mod_add <- .emax_add_term(mod, E0 ~ bin_e, quiet = TRUE)
+  mod_del <- .emax_remove_term(mod, E0 ~ cnt_a, quiet = TRUE)
   # check the coefficient names
   expect_true("E0_bin_e" %in% .get_coefficient_names(mod_add))
   expect_false("E0_cnt_a" %in% .get_coefficient_names(mod_del))
@@ -24,8 +24,8 @@ test_that(".emax_add_term and .emax_remove_term update the covariate model", {
 })
 
 test_that("adding a term and later removing leaves the model substantively unchanged", {
-  mod_add <- .emax_add_term(mod, E0 ~ bin_e)
-  mod_del <- .emax_remove_term(mod_add, E0 ~ bin_e)
+  mod_add <- .emax_add_term(mod, E0 ~ bin_e, quiet = TRUE)
+  mod_del <- .emax_remove_term(mod_add, E0 ~ bin_e, quiet = TRUE)
   expect_equal(.get_coefficient_names(mod_del), .get_coefficient_names(mod))
   expect_equal(.get_variable_names(mod_del), .get_variable_names(mod))
   expect_equal(.get_covariate_formula(mod_del), .get_covariate_formula(mod), ignore_attr = TRUE)
@@ -33,12 +33,12 @@ test_that("adding a term and later removing leaves the model substantively uncha
 })
 
 test_that("adding already-existing covariate messages user and returns original object", {
-  expect_message(.emax_add_term(mod, E0 ~ cnt_a), class = "emaxnls_message")
+  expect_message(.emax_add_term(mod, E0 ~ cnt_a, quiet = FALSE), class = "emaxnls_message")
   expect_equal(.emax_add_term(mod, E0 ~ cnt_a, quiet = TRUE), mod)
 })
 
 test_that("removing already-existing covariate messages user and returns original object", {
-  expect_message(.emax_remove_term(mod, E0 ~ cnt_b), class = "emaxnls_message")
+  expect_message(.emax_remove_term(mod, E0 ~ cnt_b, quiet = FALSE), class = "emaxnls_message")
   expect_equal(.emax_remove_term(mod, E0 ~ cnt_b, quiet = TRUE), mod)
 })
 

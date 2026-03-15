@@ -1,42 +1,32 @@
 
 # add/remove terms --------------------------------------------------------
 
-#' @param object An emaxnls object
+#' @param mod An emaxnls object
 #' @param formula A formula such as E0 ~ AGE
 #' @param quiet Logical
 #' @noRd
-.emax_add_term <- function(object, formula, quiet = NULL) {
-  if (is.null(quiet)) quiet <- .get_options(object)$quiet
+.emax_add_term <- function(mod, formula, quiet = NULL) {
 
-  # assertions
-  .assert(inherits(object, "emaxnls"))
-  .assert(inherits(formula, "formula"))
-  .assert(length(formula) == 3)
+  if (is.null(quiet)) quiet <- .get_options(mod)$quiet
 
-  # components
+  .assert(.is_scalar_lgl(quiet), "`quiet` must be a single logical value")
+  .assert(.is_emaxnls(mod), "`mod` must be an emaxnls object")
+  .validate_term_formula(formula, .get_model_type(mod), names(.get_data(mod)))
+
   str_param <- as.character(formula[[2]])
   cov_param <- as.character(formula[[3]])
 
-  # more assertions
-  if (.get_model_type(object) == "hyperbolic") {
-    .assert(str_param %in% c("E0", "Emax", "logEC50"))
-  }
-  if (.get_model_type(object) == "sigmoidal") {
-    .assert(str_param %in% c("E0", "Emax", "logEC50", "logHill"))
-  }
-  .assert(cov_param %in% names(.get_data(object)))
-
   # stop if covariate is already included
-  if (cov_param %in% all.vars(.get_covariate_formula(object, str_param)[[3]])) {
+  if (cov_param %in% all.vars(.get_covariate_formula(mod, str_param)[[3]])) {
     if (!quiet) {
       msg <- paste0("cannot add: `", deparse(formula), "` is already in the model")
       .inform(msg)
     }
-    return(object)
+    return(mod)
   }
 
   # update covariate model
-  covariate_model <- .get_covariate_formula(object)
+  covariate_model <- .get_covariate_formula(mod)
   old <- deparse(covariate_model[[str_param]])
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
@@ -44,58 +34,48 @@
   # initial parameter guess for updated model
   init <- .guess_init(.store(
     covariate_model = covariate_model, 
-    structural_model = .get_structural_formula(object),
-    data = .get_data(object)
+    structural_model = .get_structural_formula(mod),
+    data = .get_data(mod)
   ))
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .get_structural_formula(object),
+    structural_model = .get_structural_formula(mod),
     covariate_model = covariate_model,
-    data = .get_data(object),
+    data = .get_data(mod),
     init = init,
-    opts = .get_options(object)
+    opts = .get_options(mod)
   )
 
   return(updated)
 }
 
-#' @param object An emaxnls object
+#' @param mod An emaxnls object
 #' @param formula A formula such as E0 ~ AGE
 #' @param quiet Logical
 #' @noRd
-.emax_remove_term <- function(object, formula, quiet = NULL) {
-  if (is.null(quiet)) quiet <- .get_options(object)$quiet
+.emax_remove_term <- function(mod, formula, quiet = NULL) {
 
-  # assertions
-  .assert(inherits(object, "emaxnls"))
-  .assert(inherits(formula, "formula"))
-  .assert(length(formula) == 3)
+  if (is.null(quiet)) quiet <- .get_options(mod)$quiet
 
-  # components
+  .assert(.is_scalar_lgl(quiet), "`quiet` must be a single logical value")
+  .assert(.is_emaxnls(mod), "`mod` must be an emaxnls object")
+  .validate_term_formula(formula, .get_model_type(mod), names(.get_data(mod)))
+
   str_param <- as.character(formula[[2]])
   cov_param <- as.character(formula[[3]])
 
-  # more assertions
-  if(.get_model_type(object) == "hyperbolic") {
-    .assert(str_param %in% c("E0", "Emax", "logEC50"))
-  }
-  if(.get_model_type(object) == "sigmoidal") {
-    .assert(str_param %in% c("E0", "Emax", "logEC50", "logHill"))
-  }
-  .assert(cov_param %in% names(.get_data(object)))
-
   # stop if covariate is not already included
-  if (!(cov_param %in% all.vars(.get_covariate_formula(object, str_param)[[3]]))) {
+  if (!(cov_param %in% all.vars(.get_covariate_formula(mod, str_param)[[3]]))) {
     if (!quiet) {
       msg <- paste0("cannot remove: `", deparse(formula), "` is not in the model")
       .inform(msg)
     }
-    return(object)
+    return(mod)
   }
 
   # update covariate model
-  covariate_model <- .get_covariate_formula(object)
+  covariate_model <- .get_covariate_formula(mod)
   old_vars <- all.vars(covariate_model[[str_param]][[3]])
   new_vars <- setdiff(old_vars, cov_param)
   if (length(new_vars) == 0) new_vars <- "1"
@@ -107,17 +87,17 @@
   # initial parameter guess for updated model
   init <- .guess_init(.store(
     covariate_model = covariate_model, 
-    structural_model = .get_structural_formula(object),
-    data = .get_data(object)
+    structural_model = .get_structural_formula(mod),
+    data = .get_data(mod)
   ))
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .get_structural_formula(object),
+    structural_model = .get_structural_formula(mod),
     covariate_model = covariate_model,
-    data = .get_data(object),
+    data = .get_data(mod),
     init = init,
-    opts = .get_options(object)
+    opts = .get_options(mod)
   )
 
   return(updated)

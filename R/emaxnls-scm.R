@@ -1,5 +1,10 @@
 
 .emax_scm_forward <- function(mod, candidates, threshold, seed = NULL) {
+  .assert(.is_emaxnls(mod), "`mod` must be an emaxnls object")
+  .assert(.is_scalar_num(threshold), "`threshold` must be a single number")
+  .assert(.is_scalar_num(seed) | is.null(seed), "`seed` must be NULL or a single number")
+  .validate_candidate_list(candidates, names(mod$data))
+
   if (!is.null(seed)) set.seed(seed)
   finished <- FALSE
   while(!finished) {
@@ -11,6 +16,11 @@
 }
 
 .emax_scm_backward <- function(mod, candidates, threshold, seed = NULL) {
+  .assert(.is_emaxnls(mod), "`mod` must be an emaxnls object")
+  .assert(.is_scalar_num(threshold), "`threshold` must be a single number")
+  .assert(.is_scalar_num(seed) | is.null(seed), "`seed` must be NULL or a single number")
+  .validate_candidate_list(candidates, names(mod$data))
+
   if (!is.null(seed)) set.seed(seed)
   finished <- FALSE
   while(!finished) {
@@ -25,6 +35,9 @@
 # stepwise add/remove functions -------------------------------------------
 
 .emax_scm_history <- function(mod, is_final = FALSE) {
+  .assert(.is_emaxnls(mod), "`mod` must be an emaxnls object")
+  .assert(.is_scalar_lgl(is_final), "`is_final` must be a single logical value")
+
   history <- .get_scm_history(mod)
   if (is.null(history)) {
     history <- .tibble(
@@ -68,8 +81,6 @@
   # note: checking is limited here. in future, throw an error if
   # candidates implies a sigmoidal model but mod is hyperbolic or
   # vice versa
-  .assert(inherits(mod, "emaxnls"))
-  .validate_candidate_list(candidates, names(mod$data))
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
@@ -136,11 +147,6 @@
   quiet <- TRUE
   history <- TRUE
 
-  # note: checking is limited here. in future, throw an error if
-  # candidates implies a sigmoidal model but mod is hyperbolic or
-  # vice versa
-  .assert(inherits(mod, "emaxnls"))
-  .validate_candidate_list(candidates, names(mod$data))
   terms <- .emax_extract_terms(candidates)
   terms <- sample(terms)
 
@@ -220,7 +226,7 @@
 
 .anova_p <- function(obj1, obj2) {
   a <- stats::anova(obj1, obj2)
-  return(a$`Pr(>F)`[2])
+  return(a$`Pr(>F)`[2L])
 }
 
 .aic_diff <- function(obj1, obj2) {
