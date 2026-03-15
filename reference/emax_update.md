@@ -5,14 +5,14 @@ Add or remove a covariate term from an Emax regression
 ## Usage
 
 ``` r
-emax_add_term(object, formula)
+emax_add_term(mod, formula)
 
-emax_remove_term(object, formula)
+emax_remove_term(mod, formula)
 ```
 
 ## Arguments
 
-- object:
+- mod:
 
   An `emaxnls` object
 
