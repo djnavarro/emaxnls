@@ -54,6 +54,8 @@ print.emaxnls <- function(x, ...) {
 
 # simplified version of scales::label_pvalue()
 .show_p <- function(x, accuracy = 0.001) {
+  .assert(is.numeric(x), "`x` must be numeric")
+  .assert(.is_scalar_num(accuracy), "`accuracy must be a single number")
   prefix <- c("<", "", ">")
   digits <- -floor(log10(accuracy))
   fmt <- paste0("%1.", digits, "f")
