@@ -77,30 +77,29 @@
 <span></span>
 <span><span class="va">emax_df</span></span>
 <span><span class="co">#&gt; # A tibble: 400 × 10</span></span>
-<span><span class="co">#&gt;     dose exposure_1 exposure_2 response_1 response_2 cnt_a cnt_b cnt_c bin_d</span></span>
-<span><span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     0          0          0       6.49          0  3.06  6.50 5.93      0</span></span>
-<span><span class="co">#&gt;  2     0          0          0       7.81          0  5.72  3.84 5.60      0</span></span>
-<span><span class="co">#&gt;  3     0          0          0       7.26          0  4.31  3.68 8.16      0</span></span>
-<span><span class="co">#&gt;  4     0          0          0       7.45          0  4.03  2.86 9.38      1</span></span>
-<span><span class="co">#&gt;  5     0          0          0       6.33          0  2.46  3.36 8.29      0</span></span>
-<span><span class="co">#&gt;  6     0          0          0       7.13          0  4.87  8.90 7.06      0</span></span>
-<span><span class="co">#&gt;  7     0          0          0       6.07          0  2.87  4.85 0.989     0</span></span>
-<span><span class="co">#&gt;  8     0          0          0       5.47          1  1.07  5.34 3.34      1</span></span>
-<span><span class="co">#&gt;  9     0          0          0       7.12          0  3.94  5.68 4.01      1</span></span>
-<span><span class="co">#&gt; 10     0          0          0       8.21          1  7.46  8.16 6.92      1</span></span>
+<span><span class="co">#&gt;     dose exp_1 exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1     0     0     0  6.49     0  3.06  6.50 5.93      0     1</span></span>
+<span><span class="co">#&gt;  2     0     0     0  7.81     0  5.72  3.84 5.60      0     1</span></span>
+<span><span class="co">#&gt;  3     0     0     0  7.26     0  4.31  3.68 8.16      0     0</span></span>
+<span><span class="co">#&gt;  4     0     0     0  7.45     0  4.03  2.86 9.38      1     1</span></span>
+<span><span class="co">#&gt;  5     0     0     0  6.33     0  2.46  3.36 8.29      0     1</span></span>
+<span><span class="co">#&gt;  6     0     0     0  7.13     0  4.87  8.90 7.06      0     0</span></span>
+<span><span class="co">#&gt;  7     0     0     0  6.07     0  2.87  4.85 0.989     0     1</span></span>
+<span><span class="co">#&gt;  8     0     0     0  5.47     1  1.07  5.34 3.34      1     1</span></span>
+<span><span class="co">#&gt;  9     0     0     0  7.12     0  3.94  5.68 4.01      1     1</span></span>
+<span><span class="co">#&gt; 10     0     0     0  8.21     1  7.46  8.16 6.92      1     1</span></span>
 <span><span class="co">#&gt; # ℹ 390 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: bin_e &lt;dbl&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
-<span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span>
+<span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span>
 <span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span>
 <span>  data <span class="op">=</span> <span class="va">emax_df</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Structural model:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Exposure:  exposure_1 </span></span>
-<span><span class="co">#&gt;   Response:  response_1 </span></span>
+<span><span class="co">#&gt;   Exposure:  exp_1 </span></span>
+<span><span class="co">#&gt;   Response:  rsp_1 </span></span>
 <span><span class="co">#&gt;   Emax type: hyperbolic </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Covariate model:</span></span>
@@ -122,7 +121,7 @@
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
-<span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span>
+<span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span>
 <span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span>
 <span>  data <span class="op">=</span> <span class="va">emax_df</span></span>
 <span><span class="op">)</span></span>
@@ -157,8 +156,8 @@
 <span><span class="va">final_mod</span></span>
 <span><span class="co">#&gt; Structural model:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Exposure:  exposure_1 </span></span>
-<span><span class="co">#&gt;   Response:  response_1 </span></span>
+<span><span class="co">#&gt;   Exposure:  exp_1 </span></span>
+<span><span class="co">#&gt;   Response:  rsp_1 </span></span>
 <span><span class="co">#&gt;   Emax type: hyperbolic </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Covariate model:</span></span>

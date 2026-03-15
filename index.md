@@ -22,30 +22,29 @@ set.seed(123)
 
 emax_df
 #> # A tibble: 400 × 10
-#>     dose exposure_1 exposure_2 response_1 response_2 cnt_a cnt_b cnt_c bin_d
-#>    <dbl>      <dbl>      <dbl>      <dbl>      <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1     0          0          0       6.49          0  3.06  6.50 5.93      0
-#>  2     0          0          0       7.81          0  5.72  3.84 5.60      0
-#>  3     0          0          0       7.26          0  4.31  3.68 8.16      0
-#>  4     0          0          0       7.45          0  4.03  2.86 9.38      1
-#>  5     0          0          0       6.33          0  2.46  3.36 8.29      0
-#>  6     0          0          0       7.13          0  4.87  8.90 7.06      0
-#>  7     0          0          0       6.07          0  2.87  4.85 0.989     0
-#>  8     0          0          0       5.47          1  1.07  5.34 3.34      1
-#>  9     0          0          0       7.12          0  3.94  5.68 4.01      1
-#> 10     0          0          0       8.21          1  7.46  8.16 6.92      1
+#>     dose exp_1 exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e
+#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1     0     0     0  6.49     0  3.06  6.50 5.93      0     1
+#>  2     0     0     0  7.81     0  5.72  3.84 5.60      0     1
+#>  3     0     0     0  7.26     0  4.31  3.68 8.16      0     0
+#>  4     0     0     0  7.45     0  4.03  2.86 9.38      1     1
+#>  5     0     0     0  6.33     0  2.46  3.36 8.29      0     1
+#>  6     0     0     0  7.13     0  4.87  8.90 7.06      0     0
+#>  7     0     0     0  6.07     0  2.87  4.85 0.989     0     1
+#>  8     0     0     0  5.47     1  1.07  5.34 3.34      1     1
+#>  9     0     0     0  7.12     0  3.94  5.68 4.01      1     1
+#> 10     0     0     0  8.21     1  7.46  8.16 6.92      1     1
 #> # ℹ 390 more rows
-#> # ℹ 1 more variable: bin_e <dbl>
 
 emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 #> Structural model:
 #> 
-#>   Exposure:  exposure_1 
-#>   Response:  response_1 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
 #> Covariate model:
@@ -67,7 +66,7 @@ emax_nls(
 
 ``` r
 base_model <- emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
@@ -102,8 +101,8 @@ emax_scm_history(final_mod)
 final_mod
 #> Structural model:
 #> 
-#>   Exposure:  exposure_1 
-#>   Response:  response_1 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
 #> Covariate model:

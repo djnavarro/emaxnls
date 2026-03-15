@@ -80,14 +80,14 @@ covariate model for a structural parameter</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">emax_nls</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span></span>
+<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Structural model:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Exposure:  exposure_1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Response:  response_1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Exposure:  exp_1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Response:  rsp_1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Emax type: hyperbolic </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Covariate model:</span>

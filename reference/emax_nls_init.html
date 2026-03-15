@@ -74,7 +74,7 @@ covariate model for a structural parameter</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># use a heuristic to construct sensible start values, and plausible</span></span></span>
 <span class="r-in"><span><span class="co"># upper and lower bounds within which the estimate is expected to fall </span></span></span>
 <span class="r-in"><span><span class="fu">emax_nls_init</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span></span>
+<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -88,7 +88,7 @@ covariate model for a structural parameter</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compare to the values estimated:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">response_1</span> <span class="op">~</span> <span class="va">exposure_1</span>, </span></span>
+<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>

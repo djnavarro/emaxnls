@@ -37,7 +37,7 @@ An object of class `emaxnls`
 ## Examples
 
 ``` r
-base_model <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 
 covariate_list <- list(
   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
@@ -58,8 +58,8 @@ final_mod <- emax_scm_backward(
 final_mod
 #> Structural model:
 #> 
-#>   Exposure:  exposure_1 
-#>   Response:  response_1 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
 #> Covariate model:
