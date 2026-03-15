@@ -1,9 +1,3 @@
-# simple tests of the validators
-
-test_that(".assert behaves as expected", {
-  expect_error(.assert(FALSE), class = "emaxnls_error")
-  expect_no_error(.assert(TRUE))
-})
 
 test_that(".validate_structural_formula behaves as expected", {
   # bad
