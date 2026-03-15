@@ -1,19 +1,19 @@
-.tibble <- function(...) {
-  if (rlang::is_installed("tibble")) {
+.tibble <- function(..., .no_tibble = FALSE) {
+  if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::tibble(...))
   }
   as.data.frame(.lst(...))
 }
 
-.as_tibble <- function(...) {
-  if (rlang::is_installed("tibble")) {
+.as_tibble <- function(..., .no_tibble = FALSE) {
+  if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::as_tibble(...))
   }
   as.data.frame(...)
 }
 
-.rownames_to_column <- function(.data, var = "rowname") {
-  if (rlang::is_installed("tibble")) {
+.rownames_to_column <- function(.data, var = "rowname", .no_tibble = FALSE) {
+  if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::rownames_to_column(.data = .data, var = var))
   }
   rn <- rownames(.data)
@@ -24,8 +24,8 @@
   cbind(df_col, .data)
 }
 
-.add_row <- function(.data, ...) {
-  if (rlang::is_installed("tibble")) {
+.add_row <- function(.data, ..., .no_tibble = FALSE) {
+  if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::add_row(.data = .data, ...))
   }
   new_row <- .tibble(...)
