@@ -38,7 +38,7 @@
 
   sim <- list()
   for (ss in 1L:nsim) {
-    sim[[ss]] <- tibble::tibble(
+    sim[[ss]] <- .tibble(
       dat_id = 1L:nr,
       sim_id = ss,
       mu = .f(par[ss,]),
@@ -46,11 +46,12 @@
     )
   }
   sim <- do.call(rbind, sim)
-  par <- tibble::as_tibble(par)
+  par <- .as_tibble(par)
   par$sim_id <- 1L:nsim
 
   out <- .left_join(sim, par, by = "sim_id") 
   out <- .left_join(out, dat, by = "dat_id")
+  out <- .as_tibble(out)
 
   return(out)
 }

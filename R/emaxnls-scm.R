@@ -27,7 +27,7 @@
 .emax_scm_history <- function(mod, is_final = FALSE) {
   history <- .get_scm_history(mod)
   if (is.null(history)) {
-    history <- tibble::tibble(
+    history <- .tibble(
       iteration = 0L,
       attempt = 0L,
       step = "base model",
@@ -42,7 +42,7 @@
     )
   }
   if (is_final) {
-    history <- tibble::add_row(
+    history <- .add_row(
       history,
       iteration = max(history$iteration) + 1L,
       attempt = max(history$attempt) + 1L,
@@ -102,7 +102,7 @@
         }
       }
       if (history) {
-        scm_history <- tibble::add_row(
+        scm_history <- .add_row(
           scm_history,
           iteration = iter,
           attempt = attm,
@@ -173,7 +173,7 @@
         }
       }
       if (history) {
-        scm_history <- tibble::add_row(
+        scm_history <- .add_row(
           scm_history,
           iteration = iter,
           attempt = attm,

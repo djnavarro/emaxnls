@@ -13,13 +13,13 @@ RoxygenNote: 7.3.3
 Imports: 
     Deriv,
     mvtnorm,
-    rlang,
-    tibble
+    rlang
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues
 Suggests: 
     minpack.lm,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tibble
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5)

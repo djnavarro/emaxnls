@@ -13,7 +13,7 @@
 
   coefficient_vec <- unname(unlist(store$coefficients))
 
-  coefficient_table <- tibble::tibble(
+  coefficient_table <- .tibble(
     parameter = gsub("_.*$", "", coefficient_vec),
     covariate = gsub("^[^_]*_", "", coefficient_vec)
   )

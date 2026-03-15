@@ -91,7 +91,7 @@ xgx_1 <- list(
 
 # results for xgxr::predict.nls(mod, new_dat, se.fit = TRUE, interval = "confidence")
 xgx_2 <- list(
-  fit = data.frame(
+  fit = .tibble(
     fit = c(0.1452964, 0.1605549, 0.1774132),
     lwr = c(0.09152257, 0.10312361, 0.11635589),
     upr = c(0.1990702, 0.2179862, 0.2384706)

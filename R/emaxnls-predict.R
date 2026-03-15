@@ -45,7 +45,7 @@
   # compute confidence intervals
   alpha <- 1 - level
   deltaf <- se * stats::qt(1 - alpha/2, df = df)
-  ci_fit <- data.frame(
+  ci_fit <- .tibble(
     fit = fg$value,
     lwr = fg$value - deltaf,
     upr = fg$value + deltaf
@@ -91,7 +91,7 @@
   }
 
   if (with_gradient) {
-    ret$grad <- as.matrix(do.call(rbind, lapply(ret$grad, as.data.frame)))
+    ret$grad <- as.matrix(do.call(rbind, lapply(ret$grad, .as_tibble)))
   }
   return(ret)
 }

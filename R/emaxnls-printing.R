@@ -41,8 +41,8 @@ print.emaxnls <- function(x, ...) {
   ci <- ci$result
   
   coef_tbl <- as.data.frame(coef_tbl) 
-  coef_tbl <- tibble::rownames_to_column(coef_tbl, "label")
-  coef_tbl <- tibble::as_tibble(coef_tbl)
+  coef_tbl <- .rownames_to_column(coef_tbl, "label")
+  coef_tbl <- .as_tibble(coef_tbl)
   coef_tbl <- coef_tbl[, c("label", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
   names(coef_tbl) <- c("label", "estimate", "std_error", "t_statistic", "p_value") 
 

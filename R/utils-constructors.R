@@ -62,8 +62,8 @@
   index <- attr(mm, "assign")[-1]
   index <- c(1, index + 1)     # index into preds
 
-  lookup <- tibble::tibble(variable = preds[index], term = terms)
-  design <- stats::setNames(tibble::as_tibble(mm), terms)
+  lookup <- .tibble(variable = preds[index], term = terms)
+  design <- stats::setNames(.as_tibble(mm), terms)
   design[[preds[1]]] <- store$data[[preds[1]]]
 
   store$lookup <- lookup

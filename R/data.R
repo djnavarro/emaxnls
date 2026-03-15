@@ -22,7 +22,7 @@
   }
 
   .simulate_dose_data <- function(dose, n, par) {
-    out <- tibble::tibble(
+    out <- .tibble(
       dose = dose,
       exposure_1 = .simulate_exposure(dose, n = n),
       exposure_2 = 0.7 * exposure_1 + 0.3 * .simulate_exposure(dose, n = n),
