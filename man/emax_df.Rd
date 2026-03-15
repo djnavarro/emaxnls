@@ -8,10 +8,10 @@
 A data frame with columns:
 \describe{
 \item{dose}{Nominal dose, units not specified}
-\item{exposure_1}{Exposure value, units and metric not specified}
-\item{exposure_2}{Exposure value, units and metric not specified, but different from exposure_1}
-\item{response_1}{Continuous response value (units not specified)}
-\item{response_2}{Binary response value (group labels not specified)}
+\item{exp_1}{Exposure value, units and metric not specified}
+\item{exp_2}{Exposure value, units and metric not specified, but different from exp_1}
+\item{rsp_1}{Continuous response value (units not specified)}
+\item{rsp_2}{Binary response value (group labels not specified)}
 \item{cnt_a}{Continuous valued covariate}
 \item{cnt_b}{Continuous valued covariate}
 \item{cnt_c}{Continuous valued covariate}

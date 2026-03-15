@@ -24,14 +24,14 @@ Construct an initial guess for the Emax model parameters
 # use a heuristic to construct sensible start values, and plausible
 # upper and lower bounds within which the estimate is expected to fall 
 emax_nls_init(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 
 # compare to the values estimated:
 coef(emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 ))

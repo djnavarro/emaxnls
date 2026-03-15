@@ -1,7 +1,7 @@
 
 # tests for base model with no covariates: gauss, port, levenberg
 
-str_mod <- response_1 ~ exposure_1
+str_mod <- rsp_1 ~ exp_1
 cov_mod <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
 
 test_that("example base model converges with 'gauss'", {
@@ -104,7 +104,7 @@ test_that("example base model converges with 'levenberg'", {
 
 # tests for sensible model with one covariate: gauss, port, levenberg
 
-str_mod <- response_1 ~ exposure_1
+str_mod <- rsp_1 ~ exp_1
 cov_mod <- list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1)
 
 test_that("example covariate model converges with 'gauss'", {

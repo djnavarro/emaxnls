@@ -1,12 +1,12 @@
 mod <- emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 lbl <- .get_coefficient_names(mod)
 
 mod_base <- emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )

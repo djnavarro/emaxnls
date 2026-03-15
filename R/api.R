@@ -13,7 +13,7 @@
 #' 
 #' @examples
 #' emax_nls(
-#'   structural_model = response_1 ~ exposure_1, 
+#'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
 #' )
@@ -91,14 +91,14 @@ emax_nls_options <- function(optim_method = "port",
 #' # use a heuristic to construct sensible start values, and plausible
 #' # upper and lower bounds within which the estimate is expected to fall 
 #' emax_nls_init(
-#'   structural_model = response_1 ~ exposure_1, 
+#'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
 #' )
 #' 
 #' # compare to the values estimated:
 #' coef(emax_nls(
-#'   structural_model = response_1 ~ exposure_1, 
+#'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
 #' ))
@@ -116,8 +116,8 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 #' An object of class `emaxnls`
 #'
 #' @examples
-#' mod_0 <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
-#' mod_1 <- emax_nls(response_1 ~ exposure_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
+#' mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+#' mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
 #' 
 #' emax_add_term(mod_0, E0 ~ cnt_a)
 #' emax_remove_term(mod_1, E0 ~ cnt_a)
@@ -148,7 +148,7 @@ emax_remove_term <- function(object, formula) {
 #' An object of class `emaxnls`
 #'
 #' @examples
-#' base_model <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+#' base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 #' 
 #' covariate_list <- list(
 #'   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
@@ -211,7 +211,7 @@ emax_scm_history <- function(mod) {
 #' @examples
 #' 
 #' mod <- emax_nls(
-#'   structural_model = response_1 ~ exposure_1, 
+#'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
 #' )

@@ -29,7 +29,7 @@ An object of class \code{emaxnls}
 Stepwise covariate modelling for Emax regression
 }
 \examples{
-base_model <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 
 covariate_list <- list(
   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),

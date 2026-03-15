@@ -24,8 +24,8 @@
   .simulate_dose_data <- function(dose, n, par) {
     out <- .tibble(
       dose = dose,
-      exposure_1 = .simulate_exposure(dose, n = n),
-      exposure_2 = 0.7 * exposure_1 + 0.3 * .simulate_exposure(dose, n = n),
+      exp_1 = .simulate_exposure(dose, n = n),
+      exp_2 = 0.7 * exp_1 + 0.3 * .simulate_exposure(dose, n = n),
 
       # add continuous and binary covariates
       cnt_a = .continuous_covariate(n = n),
@@ -35,8 +35,8 @@
       bin_e = .binary_covariate(n = n, p = .7),
 
       # response 1 is continuous
-      response_1 = .emf(
-        exposure_1,
+      rsp_1 = .emf(
+        exp_1,
         emax = par$emax_1,
         ec50 = par$ec50_1,
         e0 = par$e0_1,
@@ -50,7 +50,7 @@
 
       # response 2 is binary; start with the predictor
       bin_pred = .emf(
-        exposure_1,
+        exp_1,
         emax = par$emax_2,
         ec50 = par$ec50_2,
         e0 = par$e0_2,
@@ -63,7 +63,7 @@
 
       # convert
       bin_prob = 1 / (1 + exp(-bin_pred)),
-      response_2 = as.numeric(stats::runif(n) < bin_prob)
+      rsp_2 = as.numeric(stats::runif(n) < bin_prob)
     )
     out$bin_pred <- NULL
     out$bin_prob <- NULL
@@ -104,7 +104,7 @@
     .simulate_dose_data(dose = 300, n = 100, par = par)
   )
   cols <- c(
-    "dose", "exposure_1", "exposure_2", "response_1", "response_2", 
+    "dose", "exp_1", "exp_2", "rsp_1", "rsp_2", 
     "cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"
   )
   dat <- dat[, cols]
@@ -123,10 +123,10 @@
 #' @format A data frame with columns:
 #' \describe{
 #' \item{dose}{Nominal dose, units not specified}
-#' \item{exposure_1}{Exposure value, units and metric not specified}
-#' \item{exposure_2}{Exposure value, units and metric not specified, but different from exposure_1}
-#' \item{response_1}{Continuous response value (units not specified)}
-#' \item{response_2}{Binary response value (group labels not specified)}
+#' \item{exp_1}{Exposure value, units and metric not specified}
+#' \item{exp_2}{Exposure value, units and metric not specified, but different from exp_1}
+#' \item{rsp_1}{Continuous response value (units not specified)}
+#' \item{rsp_2}{Binary response value (group labels not specified)}
 #' \item{cnt_a}{Continuous valued covariate}
 #' \item{cnt_b}{Continuous valued covariate}
 #' \item{cnt_c}{Continuous valued covariate}

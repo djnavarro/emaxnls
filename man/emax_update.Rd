@@ -22,8 +22,8 @@ An object of class \code{emaxnls}
 Add or remove a covariate term from an Emax regression
 }
 \examples{
-mod_0 <- emax_nls(response_1 ~ exposure_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
-mod_1 <- emax_nls(response_1 ~ exposure_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
+mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
 
 emax_add_term(mod_0, E0 ~ cnt_a)
 emax_remove_term(mod_1, E0 ~ cnt_a)

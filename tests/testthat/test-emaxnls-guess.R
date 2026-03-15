@@ -1,11 +1,11 @@
 
-str_model <- response_1 ~ exposure_1 
+str_model <- rsp_1 ~ exp_1 
 cov_model <- list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1)
 
 dfs <- list(
   unmodified = emax_df,
-  shifts_exp = within(emax_df, exposure_1 <- exposure_1 * 100),
-  shifts_rsp = within(emax_df, response_1 <- response_1 * 100),
+  shifts_exp = within(emax_df, exp_1 <- exp_1 * 100),
+  shifts_rsp = within(emax_df, rsp_1 <- rsp_1 * 100),
   shifts_cov = within(emax_df, cnt_a <- cnt_a * 100)
 )
 

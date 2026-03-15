@@ -1,5 +1,5 @@
 mod <- emax_nls(
-  structural_model = response_1 ~ exposure_1, 
+  structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
@@ -39,7 +39,7 @@ test_that("predict with interval but not se.fit returns data.frame", {
 test_that("predict with newdata produces expected values", {
   ii <- 120:125 
   nd <- data.frame(
-    exposure_1 = emax_df$exposure_1[ii], 
+    exp_1 = emax_df$exp_1[ii], 
     cnt_a = emax_df$cnt_a[ii]
   )
 

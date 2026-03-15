@@ -1,4 +1,4 @@
-str_model <- response_1 ~ exposure_1 
+str_model <- rsp_1 ~ exp_1 
 cov_model <- list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1)
 
 test_that(".store() works for basic model", {
