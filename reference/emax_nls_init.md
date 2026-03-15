@@ -40,9 +40,9 @@ emax_nls_init(
 #> # A tibble: 4 × 5
 #>   parameter covariate start  lower upper
 #>   <chr>     <chr>     <dbl>  <dbl> <dbl>
-#> 1 E0        Intercept  9.57 -0.163 19.3 
+#> 1 E0        Intercept  9.57 -0.165 19.3 
 #> 2 E0        cnt_a      0    -7.85   7.85
-#> 3 Emax      Intercept  7.69 -2.03  17.4 
+#> 3 Emax      Intercept  7.70 -2.03  17.4 
 #> 4 logEC50   Intercept  8.63  6.59  10.7 
 
 # compare to the values estimated:
@@ -52,5 +52,5 @@ coef(emax_nls(
   data = emax_df
 ))
 #>      E0_Intercept          E0_cnt_a    Emax_Intercept logEC50_Intercept 
-#>          4.993052          0.498213         10.002568          8.265336 
+#>          4.991841          0.498326         10.003186          8.265376 
 ```
