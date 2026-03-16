@@ -1,8 +1,7 @@
 url: https://emaxnls.djnavarro.net/
 template:
-  bootstrap: 5
-  light-switch: true
-
+  package: waeponwifestre
+  
 reference:
 - title: Build 
   desc: Build Emax regression models
