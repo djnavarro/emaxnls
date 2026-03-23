@@ -60,7 +60,7 @@
 }
 
 .get_nls_formula <- function(object) {
-  object$formula$nls
+  object$formula$expanded
 }
 
 .get_short_formula <- function(object) {

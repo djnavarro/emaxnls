@@ -21,7 +21,7 @@
     new_env <- rlang::env_clone(env = old_env)
     .iwalk(data, function(x, lbl) assign(lbl, x, envir = new_env))
     .iwalk(param, function(x, lbl) assign(lbl, x, envir = new_env))
-    eval(mod$formula$nls[[3]], envir = new_env)
+    eval(.get_nls_formula(mod)[[3]], envir = new_env)
   }
 }
 

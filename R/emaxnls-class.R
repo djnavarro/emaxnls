@@ -18,7 +18,7 @@
     formula = list(
       structural = store$structural_model,
       covariate  = store$covariate_model,
-      nls        = store$nls_formula 
+      expanded   = store$nls_formula 
     ),      
     data = store$data,
     info = list(
