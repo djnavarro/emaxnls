@@ -13,7 +13,7 @@
   object$env$model
 }
 
-# accessors for variable names ------
+# accessors for things stored in info ------
 
 .get_exposure_name <- function(object) {
   object$info$variables$exposure
@@ -31,10 +31,21 @@
   object$info$variables
 }
 
-# accessors for settings -----
-
 .get_options <- function(object) {
-  object$opts
+  object$info$opts
+}
+
+.get_model_type <- function(object) {
+  object$info$model_type
+}
+
+.get_scm_history <- function(object) {
+  object$info$history
+}
+
+.set_scm_history <- function(object, value) {
+  object$info$history <- value
+  object
 }
 
 # accessors for formulae ------
@@ -50,21 +61,6 @@
 
 .get_nls_formula <- function(object) {
   object$formula$nls
-}
-
-# other accessors -------
-
-.get_model_type <- function(object) {
-  object$info$model_type
-}
-
-.get_scm_history <- function(object) {
-  object$info$history
-}
-
-.set_scm_history <- function(object, value) {
-  object$info$history <- value
-  object
 }
 
 .get_short_formula <- function(object) {

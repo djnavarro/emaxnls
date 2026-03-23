@@ -21,9 +21,9 @@
       nls        = store$nls_formula 
     ),      
     data = store$data,
-    opts = opts,
-    init = init,
     info = list(
+      opts = opts,
+      init = init,
       model_type   = store$model_type,
       variables    = store$variables,
       coefficients = unname(unlist(store$coefficients))
@@ -56,6 +56,8 @@
     ),
     envir = obj$env
   )
+
+  # update the model object
   obj$env$model <- tmp$result 
   obj$env$error <- tmp$error
 
