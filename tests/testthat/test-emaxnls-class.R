@@ -28,10 +28,27 @@ test_that("emax_nls internal formula object has expected structure", {
   expect_true(all(vapply(fml$covariate, function(x) inherits(x, "formula"), logical(1L))))
 })
 
-test_that("emax_nls works with categorical covariates", {
+test_that("emax_nls works with binary covariates", {
   expect_no_error(emax_nls(
     structural_model = rsp_1 ~ exp_1, 
-    covariate_model = list(E0 ~ cnt_a, Emax ~ cat_f, logEC50 ~ 1), 
+    covariate_model = list(E0 ~ bin_d, Emax ~ 1, logEC50 ~ 1), 
     data = emax_df
   ))
 })
+
+test_that("emax_nls works with categorical covariates", {
+  expect_no_error(emax_nls(
+    structural_model = rsp_1 ~ exp_1, 
+    covariate_model = list(E0 ~ cat_f, Emax ~ 1, logEC50 ~ 1), 
+    data = emax_df
+  ))
+})
+
+test_that("emax_nls works with sigmoidal structure", {
+  expect_no_error(emax_nls(
+    structural_model = rsp_1 ~ exp_1, 
+    covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1), 
+    data = emax_df
+  ))
+})
+

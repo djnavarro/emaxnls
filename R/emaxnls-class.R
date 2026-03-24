@@ -216,7 +216,7 @@
       exp_var, "^ exp", cov_loghill_fml,
       " * ", cov_emax_fml, " / (",
       exp_var, "^ exp", cov_loghill_fml,
-      " + exp", cov_logec50_terms, "^ exp", cov_loghill_terms,
+      " + exp", cov_logec50_fml, "^ exp", cov_loghill_fml,
       ")"
     )
   }
