@@ -25,8 +25,8 @@
   rsp <- design[[rsp_var]]
   base_guess <- .guess_base(exp, rsp)
   base_resid <- .guess_resid(base_guess, exp, rsp)
-  cov_names <- .filter(variables, param_type == "covariate")$var_name
-  cov_names <- unique(cov_names)
+  cov_names <- .filter(variables, param_type == "covariate")$term
+  cov_names <- unique(cov_names) # unneeded now?
 
   scale_guess <- .guess_var_scale(exp, rsp, base_resid, cov_names, design)
   resid_max <- max(abs(base_resid))
