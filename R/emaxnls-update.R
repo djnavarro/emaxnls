@@ -27,20 +27,21 @@
 
   # update covariate model
   covariate_model <- .get_covariate_formula(mod)
+  structural_model <- .get_structural_formula(mod)
   old <- deparse(covariate_model[[str_param]])
   new <- stats::as.formula(paste(old, cov_param, sep = " + "))
   covariate_model[[str_param]] <- new
 
   # initial parameter guess for updated model
-  init <- .guess_init(.store(
-    covariate_model = covariate_model, 
-    structural_model = .get_structural_formula(mod),
-    data = .get_data(mod)
-  ))
+  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod))
+  init <- .guess_init(
+    variables = .construct_variables(structural_model, covariate_model, tmp$lookup),
+    design = tmp$design
+  )
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .get_structural_formula(mod),
+    structural_model = structural_model,
     covariate_model = covariate_model,
     data = .get_data(mod),
     init = init,
@@ -76,6 +77,7 @@
 
   # update covariate model
   covariate_model <- .get_covariate_formula(mod)
+  structural_model <- .get_structural_formula(mod)
   old_vars <- all.vars(covariate_model[[str_param]][[3]])
   new_vars <- setdiff(old_vars, cov_param)
   if (length(new_vars) == 0) new_vars <- "1"
@@ -85,15 +87,15 @@
   covariate_model[[str_param]] <- new
 
   # initial parameter guess for updated model
-  init <- .guess_init(.store(
-    covariate_model = covariate_model, 
-    structural_model = .get_structural_formula(mod),
-    data = .get_data(mod)
-  ))
+  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod))
+  init <- .guess_init(
+    variables = .construct_variables(structural_model, covariate_model, tmp$lookup),
+    design = tmp$design
+  )
 
   # re-run
   updated <- .emax_nls(
-    structural_model = .get_structural_formula(mod),
+    structural_model = structural_model,
     covariate_model = covariate_model,
     data = .get_data(mod),
     init = init,

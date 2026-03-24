@@ -3,35 +3,32 @@
 .emax_nls_init <- function(structural_model, covariate_model, data) {
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
-  store <- .store(covariate_model, structural_model, data)
-  ini <- .guess_init(store)
+  tmp <- .construct_design(structural_model, covariate_model, data)
+  variables <- .construct_variables(structural_model, covariate_model, tmp$lookup)
+  ini <- .guess_init(variables, tmp$design)
   return(ini)
 }
 
 # workhorse function
-.guess_init <- function(store) {
+.guess_init <- function(variables, design) {
 
-  coefficient_vec <- unname(unlist(store$coefficients))
-
+  # this can be tidied now that variables input is better
+  coefficient_vec <- .drop_na(variables$coef_name)
   coefficient_table <- .tibble(
     parameter = gsub("_.*$", "", coefficient_vec),
     covariate = gsub("^[^_]*_", "", coefficient_vec)
   )
 
-  exp_var <- store$variables$exposure 
-  rsp_var <- store$variables$response
-  exp <- store$design[[exp_var]]
-  rsp <- store$design[[rsp_var]]
+  exp_var <- .filter(variables, param_name == "exposure")$var_name 
+  rsp_var <- .filter(variables, param_name == "response")$var_name
+  exp <- design[[exp_var]]
+  rsp <- design[[rsp_var]]
   base_guess <- .guess_base(exp, rsp)
   base_resid <- .guess_resid(base_guess, exp, rsp)
-  cov_names <- unique(unlist(c(
-    store$variables$E0, 
-    store$variables$Emax, 
-    store$variables$logEC50, 
-    store$variables$logHill
-  )))
+  cov_names <- .filter(variables, param_type == "covariate")$var_name
+  cov_names <- unique(cov_names)
 
-  scale_guess <- .guess_var_scale(exp, rsp, base_resid, cov_names, store$design)
+  scale_guess <- .guess_var_scale(exp, rsp, base_resid, cov_names, design)
   resid_max <- max(abs(base_resid))
   beta_max <- 5
   loghill_max <- 5
@@ -70,6 +67,10 @@
   names(ini$upper) <- coefficient_vec
 
   return(ini)
+}
+
+.drop_na <- function(x) {
+  x[!is.na(x)]
 }
 
 # construct a guess for a base structural model with no covariates

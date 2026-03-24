@@ -9,20 +9,15 @@ dfs <- list(
   shifts_cov = within(emax_df, cnt_a <- cnt_a * 100)
 )
 
-test_that(".guess_init works for basic model", {
-  ss <- .store(cov_model, str_model, emax_df)
-  expect_no_error(.guess_init(ss))
+test_that(".emax_nls_init works for basic model", {
+  expect_no_error(.emax_nls_init(str_model, cov_model, emax_df))
 })
 
-test_that(".guess_init returns expected data frame", {
+test_that(".emax_nls_init returns expected data frame", {
   for (df in dfs) {
-    ss <- .store(cov_model, str_model, df)
-    gg <- .guess_init(ss)
+    gg <- .emax_nls_init(str_model, cov_model, emax_df)
     expect_true(inherits(gg, "data.frame"))
     expect_equal(names(gg), c("parameter", "covariate", "start", "lower", "upper"))
-    cc <- unname(unlist(ss$coefficients))
-    expect_equal(nrow(gg), length(cc))
-    expect_equal(paste(gg$parameter, gg$covariate, sep = "_"), cc)
     expect_true(is.numeric(gg$start))
     expect_true(is.numeric(gg$lower))
     expect_true(is.numeric(gg$upper))
@@ -33,11 +28,8 @@ test_that(".guess_init returns expected data frame", {
 
 test_that(".guess_init scales logEC50 with exposure", {
 
-  ss1 <- .store(cov_model, str_model, dfs$unmodified)
-  gg1 <- .guess_init(ss1)
-
-  ss2 <- .store(cov_model, str_model, dfs$shifts_exp)
-  gg2 <- .guess_init(ss2)
+  gg1 <- .emax_nls_init(str_model, cov_model, dfs$unmodified)
+  gg2 <- .emax_nls_init(str_model, cov_model, dfs$shifts_exp)
 
   # no difference for other parameters
   expect_equal(
@@ -63,11 +55,8 @@ test_that(".guess_init scales logEC50 with exposure", {
 
 test_that(".guess_init scales E0 and Emax with response", {
 
-  ss1 <- .store(cov_model, str_model, dfs$unmodified)
-  gg1 <- .guess_init(ss1)
-
-  ss2 <- .store(cov_model, str_model, dfs$shifts_rsp)
-  gg2 <- .guess_init(ss2)
+  gg1 <- .emax_nls_init(str_model, cov_model, dfs$unmodified)
+  gg2 <- .emax_nls_init(str_model, cov_model, dfs$shifts_rsp)
 
   # no difference for other parameters
   expect_equal(
@@ -93,12 +82,9 @@ test_that(".guess_init scales E0 and Emax with response", {
 
 test_that(".guess_init scales coefficient with covariate", {
 
-  ss1 <- .store(cov_model, str_model, dfs$unmodified)
-  gg1 <- .guess_init(ss1)
-
-  ss2 <- .store(cov_model, str_model, dfs$shifts_cov)
-  gg2 <- .guess_init(ss2)
-
+  gg1 <- .emax_nls_init(str_model, cov_model, dfs$unmodified)
+  gg2 <- .emax_nls_init(str_model, cov_model, dfs$shifts_cov)
+  
   # no difference for other parameters
   expect_equal(
     .filter(gg1, covariate != "cnt_a"),

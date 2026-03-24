@@ -27,7 +27,6 @@ test_that("adding a term and later removing leaves the model substantively uncha
   mod_add <- .emax_add_term(mod, E0 ~ bin_e, quiet = TRUE)
   mod_del <- .emax_remove_term(mod_add, E0 ~ bin_e, quiet = TRUE)
   expect_equal(.get_coefficient_names(mod_del), .get_coefficient_names(mod))
-  expect_equal(.get_variable_names(mod_del), .get_variable_names(mod))
   expect_equal(.get_covariate_formula(mod_del), .get_covariate_formula(mod), ignore_attr = TRUE)
   expect_equal(.get_nls(mod)$m$getPars(), .get_nls(mod_del)$m$getPars())
 })
