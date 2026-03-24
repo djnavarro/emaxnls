@@ -9,6 +9,13 @@
     as.numeric(stats::runif(n) <= p)
   }
 
+  .categorical_covariate <- function(n, g, prefix = "grp") {
+    grp_num <- sample.int(n = g, size = n, replace = TRUE)
+    grp_chr <- paste(prefix, grp_num)
+    grp_fct <- as.factor(grp_chr)
+    return(grp_fct)
+  }
+
   .emf <- function(exposure, emax, ec50, e0, gamma = 1) {
     e0 + emax * (exposure^gamma) / (ec50^gamma + exposure^gamma)
   }
@@ -33,6 +40,7 @@
       cnt_c = .continuous_covariate(n = n),
       bin_d = .binary_covariate(n = n, p = .5),
       bin_e = .binary_covariate(n = n, p = .7),
+      cat_f = .categorical_covariate(n = n, g = 3),
 
       # response 1 is continuous
       rsp_1 = .emf(
@@ -105,7 +113,8 @@
   )
   cols <- c(
     "dose", "exp_1", "exp_2", "rsp_1", "rsp_2", 
-    "cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"
+    "cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e",
+    "cat_f"
   )
   rows <- sample.int(nrow(dat))
   dat <- cbind(
@@ -142,6 +151,7 @@
 #' \item{cnt_c}{Continuous valued covariate}
 #' \item{bin_d}{Binary valued covariate}
 #' \item{bin_e}{Binary valued covariate}
+#' \item{cat_f}{Categorical covariate}
 #' }
 #' @details
 #'

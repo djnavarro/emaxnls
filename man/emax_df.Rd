@@ -18,6 +18,7 @@ A data frame with columns:
 \item{cnt_c}{Continuous valued covariate}
 \item{bin_d}{Binary valued covariate}
 \item{bin_e}{Binary valued covariate}
+\item{cat_f}{Categorical covariate}
 }
 }
 \usage{
