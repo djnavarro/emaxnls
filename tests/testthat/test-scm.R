@@ -43,3 +43,21 @@ test_that("basic use of forward/backward scm works", {
   bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, threshold = .001)
   expect_equal(sort(.get_coefficient_names(bck)), sort(.get_coefficient_names(mod_1))) # should find the E0 ~ cnt_a term only
 })
+
+test_that("scm stores history in mod$info", {
+  expect_true(is.null(mod_0$info$history))
+
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, threshold = .01)
+  expect_true(!is.null(fwd$info$history))
+  h_fwd <- fwd$info$history
+
+  bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, threshold = .001)
+  expect_true(!is.null(bck$info$history))
+  h_bck <- bck$info$history
+
+  expect_true(inherits(h_fwd, "data.frame"))
+  expect_true(inherits(h_bck, "data.frame"))
+
+  expect_equal(.filter(h_bck, step != "backward"), h_fwd)
+})
+

@@ -99,15 +99,41 @@ NULL
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- .map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(
+    .x = emaxnls_mods, 
+    .f = function(mod) {
+      nls_mod <- .get_nls(mod)
+      if (is.null(nls_mod)) nls_mod <- .nls_null()
+      nls_mod
+    }
+  )
   do.call(stats::AIC, nls_mods)
+}
+
+# note: the nls_null class is a hotfix. needs a proper solution 
+# when stats methods are passed one or more emaxnls objects where
+# some don't converge
+.nls_null <- function() {
+  structure(NA_real_, class = "emaxnls_null")
+}
+
+#' @exportS3Method stats::logLik
+logLik.emaxnls_null <- function(object, REML = FALSE, ...) {
+  NA_real_
 }
 
 #' @exportS3Method stats::BIC
 #' @rdname AIC
 BIC.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- .map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(
+    .x = emaxnls_mods, 
+    .f = function(mod) {
+      nls_mod <- .get_nls(mod)
+      if (is.null(nls_mod)) nls_mod <- .nls_null()
+      nls_mod
+    }
+  )
   do.call(stats::BIC, nls_mods)
 }
 

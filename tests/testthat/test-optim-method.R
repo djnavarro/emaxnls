@@ -29,7 +29,7 @@ test_that("example base model converges with 'gauss'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")
@@ -61,7 +61,7 @@ test_that("example base model converges with 'port'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")
@@ -94,7 +94,7 @@ test_that("example base model converges with 'levenberg'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")
@@ -132,7 +132,7 @@ test_that("example covariate model converges with 'gauss'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")
@@ -164,7 +164,7 @@ test_that("example covariate model converges with 'port'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")
@@ -197,7 +197,7 @@ test_that("example covariate model converges with 'levenberg'", {
     data = emax_df,
     opts = emax_nls_options(optim_method = mm)
   )
-  expect_equal(mod$opts$optim_method, mm)
+  expect_equal(.get_options(mod)$optim_method, mm)
   expect_equal(mod$env$algorithm, aa)
   expect_null(mod$env$error)
   expect_s3_class(mod$env$model, "nls")

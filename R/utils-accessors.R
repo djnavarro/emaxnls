@@ -13,28 +13,44 @@
   object$env$model
 }
 
-# accessors for variable names ------
+# accessors for things stored in info ------
 
 .get_exposure_name <- function(object) {
-  object$info$variables$exposure
+  as.character(object$formula$structural[[3]])
 }
 
 .get_response_name <- function(object) {
-  object$info$variables$response
+  as.character(object$formula$structural[[2]])
 }
 
 .get_coefficient_names <- function(object) {
-  object$info$coefficients
+  .drop_na(object$info$variables$coef_name)
 }
 
-.get_variable_names <- function(object) {
-  object$info$variables
+# object can be an emaxnls object or the store
+.get_covariate_names <- function(object, param = NULL) {
+  var_df <- object$info$variables
+  var_df <- .filter(var_df, param_type == "covariate")
+  if (is.null(param)) return(var_df$var_name)
+  var_df <- .filter(var_df, param_name == param)
+  return(var_df$var_name)
 }
-
-# accessors for settings -----
 
 .get_options <- function(object) {
-  object$opts
+  object$info$opts
+}
+
+.get_model_type <- function(object) {
+  object$info$model_type
+}
+
+.get_scm_history <- function(object) {
+  object$info$history
+}
+
+.set_scm_history <- function(object, value) {
+  object$info$history <- value
+  object
 }
 
 # accessors for formulae ------
@@ -49,22 +65,7 @@
 }
 
 .get_nls_formula <- function(object) {
-  object$formula$nls
-}
-
-# other accessors -------
-
-.get_model_type <- function(object) {
-  object$info$model_type
-}
-
-.get_scm_history <- function(object) {
-  object$info$history
-}
-
-.set_scm_history <- function(object, value) {
-  object$info$history <- value
-  object
+  object$formula$expanded
 }
 
 .get_short_formula <- function(object) {

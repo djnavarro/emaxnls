@@ -30,5 +30,9 @@ utils::globalVariables(c(
   "predict_args",
   "lower",
   "start",
-  "upper"
+  "upper",
+  "param_name",
+  "cov_logec50_terms",
+  "cov_loghill_terms",
+  "param_type"
 ))
