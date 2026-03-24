@@ -46,10 +46,10 @@ emax_add_term(mod_0, E0 ~ cnt_a)
 #> Coefficient table:
 #> 
 #>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_Intercept         4.99     0.0740        67.4 3.47e-219    4.85     5.14 
-#> 2 E0_cnt_a             0.498    0.0113        44.2 3.95e-155    0.476    0.521
-#> 3 Emax_Intercept      10.0      0.104         96.3 6.94e-277    9.80    10.2  
-#> 4 logEC50_Intercept    8.27     0.0366       226.  0            8.19     8.34 
+#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
+#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
+#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
+#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
 emax_remove_term(mod_1, E0 ~ cnt_a)
 #> Structural model:
 #> 
@@ -66,7 +66,7 @@ emax_remove_term(mod_1, E0 ~ cnt_a)
 #> Coefficient table:
 #> 
 #>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_Intercept          7.41    0.121         61.0 7.99e-204     7.17     7.65
-#> 2 Emax_Intercept        9.84    0.244         40.3 1.87e-142     9.37    10.3 
-#> 3 logEC50_Intercept     8.17    0.0904        90.3 8.57e-267     7.98     8.34
+#> 1 E0_Intercept          7.42    0.119         62.4 2.52e-207     7.19     7.66
+#> 2 Emax_Intercept        9.86    0.251         39.3 7.31e-139     9.37    10.4 
+#> 3 logEC50_Intercept     8.16    0.0931        87.6 7.61e-262     7.97     8.35
 ```

@@ -78,13 +78,12 @@ covariate model for a structural parameter</p></dd>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   parameter covariate start  lower upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0        Intercept  9.57 -<span style="color: #BB0000;">0.165</span> 19.3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0        cnt_a      0    -<span style="color: #BB0000;">7.85</span>   7.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax      Intercept  7.70 -<span style="color: #BB0000;">2.03</span>  17.4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50   Intercept  8.63  6.59  10.7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0        Intercept  9.73  0.528  18.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Emax      Intercept  7.74 -<span style="color: #BB0000;">1.47</span>   16.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> logEC50   Intercept  8.69  6.63   10.8</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compare to the values estimated:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
@@ -92,8 +91,8 @@ covariate model for a structural parameter</p></dd>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      E0_Intercept          E0_cnt_a    Emax_Intercept logEC50_Intercept </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          4.991841          0.498326         10.003186          8.265376 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0.4861467         5.0548075         9.9697250         8.2688405 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
