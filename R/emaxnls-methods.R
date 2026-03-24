@@ -99,8 +99,24 @@ NULL
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
   emaxnls_mods <- list(object, ...)
-  nls_mods <- .map(emaxnls_mods, .get_nls)
+  nls_mods <- .map(
+    .x = emaxnls_mods, 
+    .f = function(mod) {
+      nls_mod <- .get_nls(mod)
+      if (is.null(nls_mod)) nls_mod <- .nls_null()
+      nls_mod
+    }
+  )
   do.call(stats::AIC, nls_mods)
+}
+
+.nls_null <- function() {
+  structure(NA_real_, class = "emaxnls_null")
+}
+
+#' @exportS3Method stats::logLik
+logLik.emaxnls_null <- function(object, REML = FALSE, ...) {
+  NA_real_
 }
 
 #' @exportS3Method stats::BIC
