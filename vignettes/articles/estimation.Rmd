@@ -1,0 +1,96 @@
+---
+title: "Estimation methods in emaxnls"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(emaxnls)
+```
+
+## Continuous outcomes
+
+For continuous outcomes, the underlying Emax model can be expressed as:
+
+$$
+y_i = f(x_i, \beta) + \epsilon_i
+$$ 
+
+where $y_i$ is the response for the $i$-th subject, $\beta$ denotes the vector of regression coefficients, and $x_i$ is the exposure for the $i$-th subject. The Emax model itself is supplied via $f(x_i, \beta)$:
+
+$$
+f(x_i, \beta) = E_0(\beta) + \frac{E_{max}(\beta)^{h(\beta)}}{E_{max}(\beta)^{h(\beta)} + EC_{50}(\beta)^{h(\beta)}}
+$$
+
+where the structural parameters $E_0$, $E_{max}$, $EC_{50}$ and $h$ are all functions of $\beta$, expressing both the intercept and covariate term. Note that when estimating the model we fit $EC_{50}$ and $h$ on the logarithmic scale for numerical stability, and as such the $h(\beta)$ and $EC_{50}(\beta)$ are multiplicative functions of $\beta$, whereas $E_0(\beta)$ and $E_{max}(\beta)$ are linear functions of $\beta$.
+
+The residual terms $\epsilon_i$ associated with each subject are assumed to be independent, and normally distributed with mean 0 and standard deviation $\sigma$. The likelihood function is given:
+
+$$
+\mathcal{L}(\beta) = \prod_{i=1}^n p(y_i | x_i, \beta, \sigma)
+$$
+
+where $p(y_i | x_i, \beta, \sigma)$ is the probability density for the normal distribution
+
+$$
+p(y_i | x_i, \beta, \sigma) = \frac{1}{\sqrt{2\pi} \sigma} \exp \left( - \frac{(y-f(x_i, \beta))^2}{2\sigma^2} \right)
+$$
+
+In this case, the maximum likelihood estimate (MLE) is obtained by least squares estimation:
+
+$$
+\hat\beta = \arg \max_{\beta} \mathcal{L}(\beta) = \arg \min_{\beta} \displaystyle\sum_{i=1}^n (y-f(x_i, \beta))^2
+$$
+
+Solving the nonlinear least squares problem gives the MLE for the Emax regression problem. The nonlinearity of $f(x, \beta)$ makes this a more complicated problem than simpler linear regression problems, but can be solved via Gauss-Newton, Levenberg-Marquardt and other methods. 
+
+## Binary outcomes
+
+For binary outcomes, MLE no longer maps exactly onto a least squares problem. The typical formulation of the binary Emax regression model is as follows. Letting $p_i = P(y_i = 1)$ be the probability that the event occurs for $i$-th subject, the binary Emax regression model in `emaxnls` takes the same approach as in `rstanemax` and asserts that:
+
+$$
+\mbox{logit}(p_i) = f(x_i, \beta)
+$$
+
+hence
+
+$$ 
+p_i = \mbox{logit}^{-1} (f(x_i, \beta)) = \frac{1}{1 + \exp(- f(x_i, \beta))}
+$$
+
+Assuming the events are independent Bernoulli trials the likelihood is given
+
+$$
+\mathcal{L}(\beta) = \prod_{i = 1}^n \left\{ \begin{array}{rl} p_i & \mbox{ if } y_i = 1 \\ 1 - p_i & \mbox{ if } y_i = 0 \end{array} \right.
+$$
+
+Reparameterising the outcome as $z = 2y - 1$ we can write the likelihood as:
+
+$$
+\mathcal{L}(\beta) = \prod_{i = 1}^n \frac{1}{1 + \exp(- z_i f(x_i, \beta))}
+$$
+
+As usual maximizing the likelihood is equivalent to minimizing negative log-likelihood, so we obtain
+
+$$
+\hat\beta_{MLE} = \arg \min_{\beta} \sum_{i = 1}^n \ln (1 + \exp(- z_i f(x_i, \beta)))
+$$ 
+
+This can be expressed as a least squares problem, albeit somewhat awkwardly. Letting
+
+$$
+g(z_i, x_i, \beta) = \sqrt{\ln (1 + \exp(- z_i f(x_i, \beta)))}
+$$
+
+we can express the MLE as a nonlinear least squares problem in which $g(z_i, x_i, \beta)$ is our loss function:
+
+$$
+\hat\beta_{MLE} = \arg \min_\beta \sum_{i = 1}^n  g(z_i, x_i, \beta)^2
+$$
+
+Although `stats::nls()` doesn't support this as a loss function to be minimized, it's possible to do this via Levenberg-Marquardt with `minpack.lm::nls.lm()`.
