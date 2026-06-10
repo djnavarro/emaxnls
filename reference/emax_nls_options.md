@@ -60,6 +60,18 @@ emax_nls_options(
   supported for Emax regression. Informal testing suggests it does not
   perform well for these models, and rarely converges.
 
+  The `optim_control` argument mirrors the corresponding control
+  arguments for the respective optimization methods:
+
+  - For "gauss" and "port": the list should match the output of
+    [`stats::nls.control()`](https://rdrr.io/r/stats/nls.control.html)
+
+  - For "levenberg": the list should match the output of
+    [`minpack.lm::nls.lm.control()`](https://rdrr.io/pkg/minpack.lm/man/nls.lm.control.html)
+
+  If `optim_control = NULL`, the default settings are used for the
+  relevant function.
+
 ## Value
 
 List

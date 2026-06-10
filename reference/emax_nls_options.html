@@ -88,7 +88,11 @@ algorithm from from the the Port library. Equivalent to "port" in <code><a href=
 This is equivalent to using <code>nlsLM()</code> from the "minpack.lm" package.</p></li>
 </ul><p>Note that the Golub-Pereyra algorithm for partially linear least-squares (i.e. the
 "plinear" option in <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls()</a></code>) is not currently supported for Emax regression. Informal
-testing suggests it does not perform well for these models, and rarely converges.</p></dd>
+testing suggests it does not perform well for these models, and rarely converges.</p>
+<p>The <code>optim_control</code> argument mirrors the corresponding control arguments for
+the respective optimization methods:</p><ul><li><p>For "gauss" and "port": the list should match the output of <code><a href="https://rdrr.io/r/stats/nls.control.html" class="external-link">stats::nls.control()</a></code></p></li>
+<li><p>For "levenberg": the list should match the output of <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.control.html" class="external-link">minpack.lm::nls.lm.control()</a></code></p></li>
+</ul><p>If <code>optim_control = NULL</code>, the default settings are used for the relevant function.</p></dd>
 
 </dl></div>
     <div class="section level2">
