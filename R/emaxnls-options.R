@@ -7,36 +7,9 @@
   .validate_optim_method(optim_method)
   
   if (is.null(optim_control)) {
-
-    if (optim_method == "gauss") {
-      optim_control <- list(
-        tol = 1e-8,
-        minFactor = 1024^-4,
-        maxiter = 200000,
-        scaleOffset = 1,
-        warnOnly = FALSE
-      )
-    }
-   
-    if (optim_method == "port") {
-      optim_control <- list(
-        tol = 1e-8,
-        minFactor = 1024^-4,
-        maxiter = 200000,
-        scaleOffset = 1,
-        warnOnly = FALSE
-      )
-    }
-
-     if (optim_method == "levenberg") {
-      optim_control <- list(
-        tol = 1e-8,
-        minFactor = 1024^-4,
-        maxiter = 1024,
-        scaleOffset = 1,
-        warnOnly = FALSE
-      )
-    }
+    if (optim_method == "gauss") optim_control <- stats::nls.control()  
+    if (optim_method == "port") optim_control <- stats::nls.control()
+    if (optim_method == "levenberg") optim_control <- minpack.lm::nls.lm.control()
   }
 
   opts <- list(

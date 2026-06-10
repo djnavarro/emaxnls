@@ -5,7 +5,7 @@
 \title{Settings used to estimate Emax model}
 \usage{
 emax_nls_options(
-  optim_method = "port",
+  optim_method = "gauss",
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
@@ -14,8 +14,8 @@ emax_nls_options(
 }
 \arguments{
 \item{optim_method}{Character string specifying the algorithm used to solve
-the nonlinear least squares optimization problem. Supported pptions are
-"gauss", "port", and "levenberg". See details.}
+the nonlinear least squares optimization problem. Supported options are
+"gauss" (the default), "port", and "levenberg". See details.}
 
 \item{optim_control}{A list of arguments used to control the behavior of
 the optimization algorithm. Allowed values differ depending on which
@@ -26,7 +26,7 @@ algorithm is used}
 \item{weights}{Numeric vector providing the weights for observations. When
 specified, weighted least squares is used}
 
-\item{na.action}{How should missing values in the data be handled
+\item{na.action}{How should missing values in the data be handled?
 
 At present there are three supported values for \code{optim_method}:
 \itemize{
