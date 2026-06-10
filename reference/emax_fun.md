@@ -30,6 +30,7 @@ each row in `data`, evaluated at parameters `params`.
 ## Examples
 
 ``` r
+
 mod <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 

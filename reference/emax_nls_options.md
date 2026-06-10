@@ -6,7 +6,7 @@ Settings used to estimate Emax model
 
 ``` r
 emax_nls_options(
-  optim_method = "port",
+  optim_method = "gauss",
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
@@ -19,8 +19,8 @@ emax_nls_options(
 - optim_method:
 
   Character string specifying the algorithm used to solve the nonlinear
-  least squares optimization problem. Supported pptions are "gauss",
-  "port", and "levenberg". See details.
+  least squares optimization problem. Supported options are "gauss" (the
+  default), "port", and "levenberg". See details.
 
 - optim_control:
 
@@ -38,7 +38,7 @@ emax_nls_options(
 
 - na.action:
 
-  How should missing values in the data be handled
+  How should missing values in the data be handled?
 
   At present there are three supported values for `optim_method`:
 

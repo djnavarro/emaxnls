@@ -9,6 +9,7 @@ You can install the development version of emaxnls from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("djnavarro/emaxnls")
 ```
@@ -16,6 +17,7 @@ pak::pak("djnavarro/emaxnls")
 ## Minimal example
 
 ``` r
+
 library(tibble)
 library(emaxnls)
 set.seed(123)
@@ -65,6 +67,7 @@ emax_nls(
 ## Stepwise covariate modelling
 
 ``` r
+
 base_model <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
@@ -123,6 +126,7 @@ final_mod
 ## Simulation
 
 ``` r
+
 simulate(final_mod, nsim = 1)
 #> # A tibble: 400 × 8
 #>    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept

@@ -67,6 +67,6 @@ emax_remove_term(mod_1, E0 ~ cnt_a)
 #> 
 #>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
 #> 1 E0_Intercept          7.42    0.119         62.4 2.52e-207     7.19     7.66
-#> 2 Emax_Intercept        9.86    0.251         39.3 7.31e-139     9.37    10.4 
-#> 3 logEC50_Intercept     8.16    0.0931        87.6 7.61e-262     7.97     8.35
+#> 2 Emax_Intercept        9.86    0.251         39.3 7.30e-139     9.37    10.4 
+#> 3 logEC50_Intercept     8.16    0.0931        87.6 7.62e-262     7.97     8.35
 ```
