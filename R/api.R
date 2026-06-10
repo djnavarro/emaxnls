@@ -59,6 +59,14 @@ emax_nls <- function(structural_model,
 #' "plinear" option in `nls()`) is not currently supported for Emax regression. Informal
 #' testing suggests it does not perform well for these models, and rarely converges.
 #' 
+#' The `optim_control` argument mirrors the corresponding control arguments for 
+#' the respective optimization methods:
+#' 
+#' - For "gauss" and "port": the list should match the output of `stats::nls.control()`
+#' - For "levenberg": the list should match the output of `minpack.lm::nls.lm.control()`
+#' 
+#' If `optim_control = NULL`, the default settings are used for the relevant function.
+#' 
 #' @returns List
 #'
 #' @export

@@ -40,7 +40,16 @@ This is equivalent to using \code{nlsLM()} from the "minpack.lm" package.
 
 Note that the Golub-Pereyra algorithm for partially linear least-squares (i.e. the
 "plinear" option in \code{nls()}) is not currently supported for Emax regression. Informal
-testing suggests it does not perform well for these models, and rarely converges.}
+testing suggests it does not perform well for these models, and rarely converges.
+
+The \code{optim_control} argument mirrors the corresponding control arguments for
+the respective optimization methods:
+\itemize{
+\item For "gauss" and "port": the list should match the output of \code{stats::nls.control()}
+\item For "levenberg": the list should match the output of \code{minpack.lm::nls.lm.control()}
+}
+
+If \code{optim_control = NULL}, the default settings are used for the relevant function.}
 }
 \value{
 List
