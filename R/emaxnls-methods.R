@@ -340,3 +340,30 @@ predict.emaxnls <- function(object,
     ...
   )
 }
+
+#' Summary of an Emax regression model
+#'
+#' @param object An `emaxnls` object
+#' @param conf_level Confidence level for interval estimates
+#' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
+#' @param ... Ignored
+#'
+#' @returns A data frame or tibble containing a table of parameter estimates and other statistical summaries. 
+#' Please note that the return value may be modified in future releases.
+#'
+#' @exportS3Method base::summary
+#' 
+#' @examples 
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' summary(mod)
+#' summary(mod, conf_level = 0.99)
+#' summary(mod, back_transform = TRUE)
+#' 
+summary.emaxnls <- function(object, conf_level = 0.95, back_transform = FALSE, ...) {
+  .coef_table(object = object, level = conf_level, back_transform = back_transform)
+}
