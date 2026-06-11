@@ -1,27 +1,29 @@
 Package: emaxnls
-Title: Nonlinear Least Squares Estimation for Emax Regression Models 
+Title: Nonlinear Least Squares Estimation for Emax Regression Models
 Version: 0.0.0.9000
 Authors@R: 
-    person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-7648-6578"))
-Description:
-    Provides estimation and covariate selection tools for Emax regression models 
-    using nonlinear least squares methods.
+    person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0001-7648-6578"))
+Description:Provides estimation and covariate selection tools for Emax
+    regression models using nonlinear least squares methods.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
-Imports: 
-    Deriv,
-    mvtnorm,
-    rlang
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues
-Suggests: 
-    minpack.lm,
-    testthat (>= 3.0.0),
-    tibble
-Config/testthat/edition: 3
-Config/Needs/website: djnavarro/waeponwifestre
 Depends: 
     R (>= 3.5)
+Imports: 
+    Deriv,
+    minpack.lm,
+    mvtnorm,
+    rlang,
+    stats,
+    tibble,
+    utils
+Suggests: 
+    testthat (>= 3.0.0)
+Config/Needs/website: djnavarro/waeponwifestre
+Config/testthat/edition: 3
+Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
