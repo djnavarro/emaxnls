@@ -132,14 +132,15 @@
   variables_df_list <- .imap(
     .x = variables, 
     .f = function(x, l) { 
-      .tibble(
+      tbl <- .tibble(
         param_name = l, 
-        var_name = x,
-        param_type = .case_when(
-          param_name %in% c("exposure", "response") ~ "structural",
-          TRUE ~ "covariate"
-        )
+        var_name = x
       )
+      tbl$param_type = with(tbl, .case_when(
+        param_name %in% c("exposure", "response") ~ "structural",
+        TRUE ~ "covariate"
+      ))
+      tbl
     }
   )
   variables_df <- do.call(rbind, variables_df_list)
