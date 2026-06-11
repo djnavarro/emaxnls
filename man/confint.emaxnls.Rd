@@ -4,7 +4,7 @@
 \alias{confint.emaxnls}
 \title{Confidence intervals for Emax regression model parameters}
 \usage{
-\method{confint}{emaxnls}(object, parm = NULL, level = 0.95, ...)
+\method{confint}{emaxnls}(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}
@@ -14,6 +14,8 @@ either a vector of numbers or a vector of names. If \code{parm = NULL}, all para
 considered.}
 
 \item{level}{The confidence level required}
+
+\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
 
 \item{...}{Ignored}
 }

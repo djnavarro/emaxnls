@@ -282,6 +282,7 @@ fitted.emaxnls <- function(object, ...) {
 #' either a vector of numbers or a vector of names. If `parm = NULL`, all parameters are 
 #' considered.
 #' @param level The confidence level required
+#' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
 #' @param ... Ignored
 #'
 #' @returns
@@ -290,14 +291,22 @@ fitted.emaxnls <- function(object, ...) {
 #' 2.5% and 97.5%).
 #' 
 #' @exportS3Method stats::confint
-confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
+confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = FALSE, ...) {
   if (!.is_converged(object)) return(.nls_null())
   if (is.null(parm)) {
     ci <- .confint_quiet(.get_nls(object), level = level, ...)
   } else {
     ci <- .confint_quiet(.get_nls(object), parm = parm, level = level, ...)
   }
-  ci$result
+  ci <- ci$result
+
+  if (back_transform) {
+    trans_cases <- grep("^log", rownames(ci))
+    rownames(ci) <- gsub("^log", "", rownames(ci))
+    ci[trans_cases,] <- exp(ci[trans_cases,])
+  } 
+
+  ci
 }
 
 #' Predicting from Emax regression models

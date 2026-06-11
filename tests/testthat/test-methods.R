@@ -108,3 +108,10 @@ test_that("summary() matches .coef_table()", {
   expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99))
   expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE))
 })
+
+test_that("back_transform works for confint()", {
+  ci1 <- confint(mod)
+  ci2 <- confint(mod, back_transform = TRUE)
+  expect_equal(ci1[-4,], ci2[-4,])
+  expect_equal(unname(ci1[4,]), unname(log(ci2[4,])))
+}) 
