@@ -38,7 +38,7 @@ An object of class `emaxnls`
 
 ``` r
 base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
-#> Error in value[[i]]: subscript out of bounds
+#> Error in eval(fs[[i]][[3]], envir = default_env): object 'term' not found
 
 covariate_list <- list(
   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),

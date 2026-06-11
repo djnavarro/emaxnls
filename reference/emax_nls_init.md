@@ -37,7 +37,7 @@ emax_nls_init(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-#> Error in value[[i]]: subscript out of bounds
+#> Error in eval(fs[[i]][[3]], envir = default_env): object 'term' not found
 
 # compare to the values estimated:
 coef(emax_nls(
@@ -45,5 +45,5 @@ coef(emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 ))
-#> Error in value[[i]]: subscript out of bounds
+#> Error in eval(fs[[i]][[3]], envir = default_env): object 'term' not found
 ```
