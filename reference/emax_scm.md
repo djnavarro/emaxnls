@@ -49,7 +49,6 @@ mm <- emax_scm_forward(
   candidates = covariate_list, 
   threshold = .01
 )
-#> Warning: `nls()` did not converge
 final_mod <- emax_scm_backward(
   mod = mm,
   candidates = covariate_list, 
