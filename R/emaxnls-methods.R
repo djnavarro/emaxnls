@@ -349,7 +349,8 @@ predict.emaxnls <- function(object,
 #' @param ... Ignored
 #'
 #' @returns A data frame or tibble containing a table of parameter estimates and other statistical summaries. 
-#' Please note that the return value may be modified in future releases.
+#' Please note that the `summary()` method is experimental (moreso than other methods), and the return value 
+#' may be modified in future releases as the package matures.
 #'
 #' @exportS3Method base::summary
 #' 
