@@ -10,6 +10,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/djnavarro/emaxnls/graph/badge.svg)](https://app.codecov.io/gh/djnavarro/emaxnls)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/emaxnls)](https://CRAN.R-project.org/package=emaxnls)
 <!-- badges: end -->
 
 The **emaxnls** package provides tools for nonlinear least squares
@@ -29,23 +31,24 @@ pak::pak("djnavarro/emaxnls")
 
 ``` r
 library(tibble)
+#> Warning: package 'tibble' was built under R version 4.5.2
 library(emaxnls)
 set.seed(123)
 
 emax_df
-#> # A tibble: 400 × 10
-#>     dose exp_1 exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e
-#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1     0     0     0  6.49     0  3.06  6.50 5.93      0     1
-#>  2     0     0     0  7.81     0  5.72  3.84 5.60      0     1
-#>  3     0     0     0  7.26     0  4.31  3.68 8.16      0     0
-#>  4     0     0     0  7.45     0  4.03  2.86 9.38      1     1
-#>  5     0     0     0  6.33     0  2.46  3.36 8.29      0     1
-#>  6     0     0     0  7.13     0  4.87  8.90 7.06      0     0
-#>  7     0     0     0  6.07     0  2.87  4.85 0.989     0     1
-#>  8     0     0     0  5.47     1  1.07  5.34 3.34      1     1
-#>  9     0     0     0  7.12     0  3.94  5.68 4.01      1     1
-#> 10     0     0     0  8.21     1  7.46  8.16 6.92      1     1
+#> # A tibble: 400 × 12
+#>       id  dose  exp_1  exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e cat_f
+#>    <int> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <fct>
+#>  1     1   200 12332. 13004. 15.7      1  3.85  5.89  4.31     1     1 grp 1
+#>  2     2   300 18232. 17244. 15.3      1  4.78  7.25  3.73     1     1 grp 1
+#>  3     3     0     0      0   5.65     0  1.22  9.24  2.41     1     1 grp 1
+#>  4     4   200  9394.  8839. 12.5      0  2.68  7.14  3.76     1     1 grp 2
+#>  5     5   200  7088.  9827. 13.2      1  4.27  5.57  9.05     0     1 grp 2
+#>  6     6   300 30402. 28483. 16.8      1  6.09  6.08  4.62     0     1 grp 1
+#>  7     7   300 21679. 17137. 17.4      1  7.5   8.1   2.08     0     1 grp 3
+#>  8     8   100 15506. 13377. 15.9      0  3.65  6.89  3.56     0     1 grp 1
+#>  9     9     0     0      0   7.3      0  4.84  3.77  7.44     0     1 grp 2
+#> 10    10   200  5331.  5251. 12.8      1  4.45  3.42  1.66     1     0 grp 3
 #> # ℹ 390 more rows
 
 emax_nls(
@@ -68,10 +71,10 @@ emax_nls(
 #> Coefficient table:
 #> 
 #>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_Intercept         4.99     0.0740        67.5 3.21e-219    4.85     5.14 
-#> 2 E0_cnt_a             0.498    0.0113        44.2 4.30e-155    0.476    0.520
-#> 3 Emax_Intercept      10.0      0.104         96.3 7.23e-277    9.80    10.2  
-#> 4 logEC50_Intercept    8.27     0.0366       226.  0            8.19     8.34
+#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
+#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
+#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
+#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
 ```
 
 ## Stepwise covariate modelling
@@ -93,7 +96,7 @@ final_mod <- base_model |>
   emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
 emax_scm_history(final_mod)
-#> # A tibble: 32 × 11
+#> # A tibble: 22 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
 #>  1         0       0 base model <NA>   <NA>         E0 ~ 1, Ema… TRUE           
@@ -106,7 +109,7 @@ emax_scm_history(final_mod)
 #>  8         1       7 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
 #>  9         1       8 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
 #> 10         1       9 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
-#> # ℹ 22 more rows
+#> # ℹ 12 more rows
 #> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
 #> #   model_updated <lgl>
 
@@ -126,10 +129,10 @@ final_mod
 #> Coefficient table:
 #> 
 #>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_Intercept         4.99     0.0740        67.5 3.21e-219    4.85     5.14 
-#> 2 E0_cnt_a             0.498    0.0113        44.2 4.30e-155    0.476    0.520
-#> 3 Emax_Intercept      10.0      0.104         96.3 7.23e-277    9.80    10.2  
-#> 4 logEC50_Intercept    8.27     0.0366       226.  0            8.19     8.34
+#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
+#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
+#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
+#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
 ```
 
 ## Simulation
@@ -137,18 +140,18 @@ final_mod
 ``` r
 simulate(final_mod, nsim = 1)
 #> # A tibble: 400 × 8
-#>    dat_id sim_id    mu   val E0_Intercept E0_cnt_a Emax_Intercept
-#>     <int>  <int> <dbl> <dbl>        <dbl>    <dbl>          <dbl>
-#>  1      1      1  6.52  6.86         4.96    0.508           10.1
-#>  2      2      1  7.84  8.12         4.96    0.508           10.1
-#>  3      3      1  7.14  7.11         4.96    0.508           10.1
-#>  4      4      1  7.00  6.85         4.96    0.508           10.1
-#>  5      5      1  6.22  6.03         4.96    0.508           10.1
-#>  6      6      1  7.42  7.07         4.96    0.508           10.1
-#>  7      7      1  6.42  6.32         4.96    0.508           10.1
-#>  8      8      1  5.53  4.89         4.96    0.508           10.1
-#>  9      9      1  6.95  8.04         4.96    0.508           10.1
-#> 10     10      1  8.71  9.31         4.96    0.508           10.1
+#>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
+#>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
+#>  1      1      1 14.5  13.9     0.486         5.01           9.95
+#>  2      2      1 15.6  15.5     0.486         5.01           9.95
+#>  3      3      1  5.60  6.15    0.486         5.01           9.95
+#>  4      4      1 13.4  13.3     0.486         5.01           9.95
+#>  5      5      1 13.6  13.0     0.486         5.01           9.95
+#>  6      6      1 16.8  16.4     0.486         5.01           9.95
+#>  7      7      1 17.1  17.5     0.486         5.01           9.95
+#>  8      8      1 14.8  14.6     0.486         5.01           9.95
+#>  9      9      1  7.36  6.69    0.486         5.01           9.95
+#> 10     10      1 13.0  12.7     0.486         5.01           9.95
 #> # ℹ 390 more rows
 #> # ℹ 1 more variable: logEC50_Intercept <dbl>
 ```
