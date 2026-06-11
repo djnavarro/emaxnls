@@ -2,6 +2,7 @@
 
 S3method(base::print,emaxnls)
 S3method(base::print,emaxnls_null)
+S3method(base::summary,emaxnls)
 S3method(stats::AIC,emaxnls)
 S3method(stats::BIC,emaxnls)
 S3method(stats::anova,emaxnls)
