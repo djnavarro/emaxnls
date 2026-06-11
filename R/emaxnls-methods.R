@@ -1,4 +1,18 @@
 
+# the nls_null class is used as a return value when the model does not converge 
+.nls_null <- function() {
+  structure(NA_real_, class = "emaxnls_null")
+}
+
+#' @exportS3Method stats::logLik
+logLik.emaxnls_null <- function(object, REML = FALSE, ...) {
+  .nls_null()
+}
+
+#' @exportS3Method base::print
+print.emaxnls_null <- function(x, ...) {
+ cat("model does not converge") 
+}
 
 #' Coefficents for an Emax regression
 #'
@@ -9,6 +23,7 @@
 #'
 #' @exportS3Method stats::coef
 coef.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   stats::coef(.get_nls(object), ...)
 }
 
@@ -22,6 +37,7 @@ coef.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::vcov
 vcov.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   stats::vcov(.get_nls(object), ...)
 }
 
@@ -34,6 +50,7 @@ vcov.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::residuals
 residuals.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   stats::residuals(.get_nls(object), ...)
 }
 
@@ -56,6 +73,7 @@ residuals.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::simulate
 simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   .emax_resample(
     mod = object,
     nsim = nsim,
@@ -76,6 +94,7 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 #'
 #' @exportS3Method stats::logLik
 logLik.emaxnls <- function(object, REML = FALSE, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   # logLik.nls doesn't support REML=TRUE; but let stats pkg handle the message
   stats::logLik(.get_nls(object), REML = REML, ...) 
 }
@@ -99,42 +118,70 @@ NULL
 #' @rdname AIC
 AIC.emaxnls <- function(object, ..., k = 2) {
   emaxnls_mods <- list(object, ...)
+  x <- match.call()
+  mod_names <- unlist(unname(lapply(as.list(x[-1]), as.character)))
+  mod_names <- mod_names[seq_along(emaxnls_mods)]
+  if (length(emaxnls_mods) == 1L & !.is_converged(object)) return(.nls_null())
+  converged <- unlist(.map(emaxnls_mods, .is_converged))
+  if (!all(converged)) {
+    .warn("dropping non-converging models")
+    emaxnls_mods <- emaxnls_mods[converged]
+    mod_names <- mod_names[converged]
+  }
+  if (length(emaxnls_mods) == 1L) return(stats::AIC(.get_nls(object))) 
   nls_mods <- .map(
     .x = emaxnls_mods, 
-    .f = function(mod) {
-      nls_mod <- .get_nls(mod)
+    .f = function(mm) {
+      nls_mod <- .get_nls(mm)
       if (is.null(nls_mod)) nls_mod <- .nls_null()
       nls_mod
     }
   )
-  do.call(stats::AIC, nls_mods)
-}
-
-# note: the nls_null class is a hotfix. needs a proper solution 
-# when stats methods are passed one or more emaxnls objects where
-# some don't converge
-.nls_null <- function() {
-  structure(NA_real_, class = "emaxnls_null")
-}
-
-#' @exportS3Method stats::logLik
-logLik.emaxnls_null <- function(object, REML = FALSE, ...) {
-  NA_real_
+  aic_vals <- unlist(.map(
+    .x = nls_mods,
+    .f = stats::AIC
+  ))
+  df_vals <- unlist(.map(
+    .x = emaxnls_mods,
+    .f = function(mm) evalq(stats::df.residual(model), envir = mm$env)
+  ))
+  out <- data.frame(df = df_vals, AIC = aic_vals, row.names = mod_names)
+  out
 }
 
 #' @exportS3Method stats::BIC
 #' @rdname AIC
 BIC.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
+  x <- match.call()
+  mod_names <- unlist(unname(lapply(as.list(x[-1]), as.character)))
+  mod_names <- mod_names[seq_along(emaxnls_mods)]
+  if (length(emaxnls_mods) == 1L & !.is_converged(object)) return(.nls_null())
+  converged <- unlist(.map(emaxnls_mods, .is_converged))
+  if (!all(converged)) {
+    .warn("dropping non-converging models")
+    emaxnls_mods <- emaxnls_mods[converged]
+    mod_names <- mod_names[converged]
+  }
+  if (length(emaxnls_mods) == 1L) return(stats::BIC(.get_nls(object))) 
   nls_mods <- .map(
     .x = emaxnls_mods, 
-    .f = function(mod) {
-      nls_mod <- .get_nls(mod)
+    .f = function(mm) {
+      nls_mod <- .get_nls(mm)
       if (is.null(nls_mod)) nls_mod <- .nls_null()
       nls_mod
     }
   )
-  do.call(stats::BIC, nls_mods)
+  bic_vals <- unlist(.map(
+    .x = nls_mods,
+    .f = stats::BIC
+  ))
+  df_vals <- unlist(.map(
+    .x = emaxnls_mods,
+    .f = function(mm) evalq(stats::df.residual(model), envir = mm$env)
+  ))
+  out <- data.frame(df = df_vals, BIC = bic_vals, row.names = mod_names)
+  out
 }
 
 
@@ -148,6 +195,12 @@ BIC.emaxnls <- function(object, ...) {
 #' @exportS3Method stats::anova
 anova.emaxnls <- function(object, ...) {
   emaxnls_mods <- list(object, ...)
+  converged <- unlist(.map(emaxnls_mods, .is_converged))
+  if (!all(converged)) {
+    .warn("dropping non-converging models")
+    emaxnls_mods <- emaxnls_mods[converged]
+  }
+  if (length(emaxnls_mods) < 2L) .abort("anova is only defined for sequences of models")
   nls_mods <- .map(emaxnls_mods, .get_nls)
   do.call(stats::anova, nls_mods)
 }
@@ -162,6 +215,7 @@ anova.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::sigma
 sigma.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())  
   evalq(stats::sigma(model), envir = object$env)
 }
 
@@ -175,6 +229,7 @@ sigma.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::nobs
 nobs.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   evalq(stats::nobs(model), envir = object$env)
 }
 
@@ -188,6 +243,7 @@ nobs.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::df.residual
 df.residual.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   evalq(stats::df.residual(model), envir = object$env)
 }
 
@@ -201,6 +257,7 @@ df.residual.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::deviance
 deviance.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   evalq(stats::deviance(model), envir = object$env)
 }
 
@@ -213,6 +270,7 @@ deviance.emaxnls <- function(object, ...) {
 #'
 #' @exportS3Method stats::fitted
 fitted.emaxnls <- function(object, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   evalq(stats::fitted(model), envir = object$env)
 }
 
@@ -233,6 +291,7 @@ fitted.emaxnls <- function(object, ...) {
 #' 
 #' @exportS3Method stats::confint
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   if (is.null(parm)) {
     ci <- .confint_quiet(.get_nls(object), level = level, ...)
   } else {
@@ -271,6 +330,7 @@ predict.emaxnls <- function(object,
                             interval = "none",
                             level = 0.95, 
                             ...) {
+  if (!.is_converged(object)) return(.nls_null())
   .predict_nls(
     object$env$model, 
     newdata, 

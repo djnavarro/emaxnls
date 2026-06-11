@@ -70,3 +70,35 @@ mod_bad <- emax_nls(
     optim_control = stats::nls.control(maxiter = 1)
   )
 )
+
+test_that("methods return emaxnls_null for models that do not converge", {
+  expect_s3_class(coef(mod_bad), "emaxnls_null")
+  expect_s3_class(vcov(mod_bad), "emaxnls_null")
+  expect_s3_class(residuals(mod_bad), "emaxnls_null")
+  expect_s3_class(simulate(mod_bad), "emaxnls_null")
+  expect_s3_class(logLik(mod_bad), "emaxnls_null")
+  expect_s3_class(AIC(mod_bad), "emaxnls_null")
+  expect_s3_class(BIC(mod_bad), "emaxnls_null")
+  expect_s3_class(predict(mod_bad), "emaxnls_null")
+  expect_s3_class(confint(mod_bad), "emaxnls_null")
+  expect_s3_class(nobs(mod_bad), "emaxnls_null")
+  expect_s3_class(sigma(mod_bad), "emaxnls_null")
+  expect_s3_class(deviance(mod_bad), "emaxnls_null")
+  expect_s3_class(fitted(mod_bad), "emaxnls_null")
+  expect_s3_class(df.residual(mod_bad), "emaxnls_null")
+})
+
+test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
+  expect_no_error(AIC(mod_base, mod, mod_bad))
+  expect_no_error(BIC(mod_base, mod, mod_bad))
+  expect_no_error(anova(mod_base, mod, mod_bad))
+
+  expect_warning(AIC(mod_base, mod, mod_bad))
+  expect_warning(BIC(mod_base, mod, mod_bad))
+  expect_warning(anova(mod_base, mod, mod_bad))
+
+  expect_s3_class(AIC(mod_base, mod, mod_bad), "data.frame")
+  expect_s3_class(BIC(mod_base, mod, mod_bad), "data.frame")
+  expect_s3_class(anova(mod_base, mod, mod_bad), "data.frame")
+
+})

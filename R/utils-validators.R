@@ -125,3 +125,5 @@
 .is_scalar_num <- function(x) is.numeric(x) & length(x) == 1L
 .is_scalar_chr <- function(x) is.character(x) & length(x) == 1L
 .is_scalar_lgl <- function(x) is.logical(x) & length(x) == 1L
+
+.is_converged <- function(x) is.null(x$env$error)
