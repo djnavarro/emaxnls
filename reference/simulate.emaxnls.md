@@ -39,7 +39,7 @@ mod <- emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-simulate(mod)
+if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod)
 #> # A tibble: 400 × 8
 #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
