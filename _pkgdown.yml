@@ -16,6 +16,7 @@ reference:
   desc: Methods for Emax regression objects
 - contents:
   - print.emaxnls
+  - summary.emaxnls
   - coef.emaxnls
   - vcov.emaxnls
   - confint.emaxnls
