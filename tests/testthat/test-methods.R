@@ -102,3 +102,9 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
   expect_s3_class(anova(mod_base, mod, mod_bad), "data.frame")
 
 })
+
+test_that("summary() matches .coef_table()", {
+  expect_equal(summary(mod), .coef_table(mod))
+  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99))
+  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE))
+})
