@@ -376,9 +376,11 @@ predict.emaxnls <- function(object,
 #'   data = emax_df
 #' )
 #' 
-#' summary(mod)
-#' summary(mod, conf_level = 0.99)
-#' summary(mod, back_transform = TRUE)
+#' if (emax_converged(mod)) {
+#'   summary(mod)
+#'   summary(mod, conf_level = 0.99)
+#'   summary(mod, back_transform = TRUE)
+#' }
 #' 
 summary.emaxnls <- function(object, conf_level = 0.95, back_transform = FALSE, ...) {
   .coef_table(object = object, level = conf_level, back_transform = back_transform)
