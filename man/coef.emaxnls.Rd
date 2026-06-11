@@ -4,10 +4,12 @@
 \alias{coef.emaxnls}
 \title{Coefficents for an Emax regression}
 \usage{
-\method{coef}{emaxnls}(object, ...)
+\method{coef}{emaxnls}(object, back_transform = FALSE, ...)
 }
 \arguments{
 \item{object}{An \code{emaxnls} object}
+
+\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
 
 \item{...}{Ignored}
 }

@@ -115,3 +115,11 @@ test_that("back_transform works for confint()", {
   expect_equal(ci1[-4,], ci2[-4,])
   expect_equal(unname(ci1[4,]), unname(log(ci2[4,])))
 }) 
+
+test_that("back_transform works for coef()", {
+  cc1 <- coef(mod)
+  cc2 <- coef(mod, back_transform = TRUE)
+  expect_equal(cc1[-4], cc2[-4])
+  expect_equal(unname(cc1[4]), unname(log(cc2[4])))
+}) 
+

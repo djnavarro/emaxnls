@@ -17,16 +17,22 @@ print.emaxnls_null <- function(x, ...) {
 #' Coefficents for an Emax regression
 #'
 #' @param object An `emaxnls` object
+#' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
 #' @param ... Ignored
 #'
 #' @returns A vector of coefficients
 #'
 #' @exportS3Method stats::coef
-coef.emaxnls <- function(object, ...) {
+coef.emaxnls <- function(object, back_transform = FALSE, ...) {
   if (!.is_converged(object)) return(.nls_null())
-  stats::coef(.get_nls(object), ...)
+  cc <- stats::coef(.get_nls(object), ...)
+  if (back_transform) {
+    trans_cases <- grep("^log", names(cc))
+    names(cc) <- gsub("^log", "", names(cc))
+    cc[trans_cases] <- exp(cc[trans_cases])
+  } 
+  cc
 }
-
 
 #' Variance-covariance matrix for an Emax regression
 #' 
