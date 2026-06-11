@@ -47,10 +47,10 @@
       action = NA_character_,
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
-      model_converged = !is.null(.get_nls(mod)),
+      model_converged = .is_converged(mod),
       term_p_value = NA_real_,
-      model_aic = stats::AIC(mod),
-      model_bic = stats::BIC(mod),
+      model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
+      model_bic = as.numeric(stats::BIC(mod)),
       model_updated = NA
     )
   }
@@ -63,10 +63,10 @@
       action = NA_character_,
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
-      model_converged = !is.null(.get_nls(mod)),
+      model_converged = .is_converged(mod),
       term_p_value = NA_real_,
-      model_aic = stats::AIC(mod),
-      model_bic = stats::BIC(mod),
+      model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
+      model_bic = as.numeric(stats::BIC(mod)),
       model_updated = NA
     )
   }
@@ -123,8 +123,8 @@
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
           term_p_value = p,
-          model_aic = stats::AIC(candidate_mod),
-          model_bic = stats::BIC(candidate_mod),
+          model_aic = as.numeric(stats::AIC(candidate_mod)),
+          model_bic = as.numeric(stats::BIC(candidate_mod)),
           model_updated = FALSE # default
         )
       }
@@ -189,8 +189,8 @@
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
           term_p_value = p,
-          model_aic = stats::AIC(candidate_mod),
-          model_bic = stats::BIC(candidate_mod),
+          model_aic = as.numeric(stats::AIC(candidate_mod)),
+          model_bic = as.numeric(stats::BIC(candidate_mod)),
           model_updated = FALSE # default
         )
       }
@@ -230,8 +230,8 @@
 }
 
 .aic_diff <- function(obj1, obj2) {
-  aic1 <- stats::AIC(obj1)
-  aic2 <- stats::AIC(obj2)
+  aic1 <- as.numeric(stats::AIC(obj1))
+  aic2 <- as.numeric(stats::AIC(obj2))
   return(aic1 - aic2)
 }
 
