@@ -123,8 +123,8 @@
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
           term_p_value = p,
-          model_aic = stats::AIC(candidate_mod),
-          model_bic = stats::BIC(candidate_mod),
+          model_aic = as.numeric(stats::AIC(candidate_mod)),
+          model_bic = as.numeric(stats::BIC(candidate_mod)),
           model_updated = FALSE # default
         )
       }
@@ -189,8 +189,8 @@
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
           term_p_value = p,
-          model_aic = stats::AIC(candidate_mod),
-          model_bic = stats::BIC(candidate_mod),
+          model_aic = as.numeric(stats::AIC(candidate_mod)),
+          model_bic = as.numeric(stats::BIC(candidate_mod)),
           model_updated = FALSE # default
         )
       }
@@ -230,8 +230,8 @@
 }
 
 .aic_diff <- function(obj1, obj2) {
-  aic1 <- stats::AIC(obj1)
-  aic2 <- stats::AIC(obj2)
+  aic1 <- as.numeric(stats::AIC(obj1))
+  aic2 <- as.numeric(stats::AIC(obj2))
   return(aic1 - aic2)
 }
 
