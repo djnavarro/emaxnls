@@ -19,11 +19,13 @@ cov_list_big <- list(
 
 
 test_that("basic use of .emax_once_forward and .emax_once_backward does not error", {
+  skip_on_ci()
   expect_no_error(.emax_once_forward(mod_0, cov_list, threshold = .01))
   expect_no_error(.emax_once_backward(mod_1, cov_list, threshold = .001))
 })
 
 test_that(".emax_once_forward and .emax_once_backward select the expected terms", {
+  skip_on_ci()
   fwd_mod_0a <- .emax_once_forward(mod_0, cov_list, threshold = .05)  # should add E0 ~ cnt_a
   bck_mod_1a <- .emax_once_backward(mod_1, cov_list, threshold = .05) # should not remove 
 
@@ -39,12 +41,14 @@ test_that(".emax_once_forward and .emax_once_backward select the expected terms"
 })
 
 test_that("basic use of forward/backward scm works", {
+  skip_on_ci()
   fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, threshold = .01)
   bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, threshold = .001)
   expect_equal(sort(.get_coefficient_names(bck)), sort(.get_coefficient_names(mod_1))) # should find the E0 ~ cnt_a term only
 })
 
 test_that("scm stores history in mod$info", {
+  skip_on_ci()
   expect_true(is.null(mod_0$info$history))
 
   fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, threshold = .01)

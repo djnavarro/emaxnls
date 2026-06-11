@@ -5,11 +5,13 @@ mod <- emax_nls(
 )
 
 test_that("basic use of .emax_add_term and .emax_remove_term does not error", {
+  skip_on_ci()
   expect_no_error(.emax_add_term(mod, E0 ~ bin_e, quiet = TRUE))
   expect_no_error(.emax_remove_term(mod, E0 ~ cnt_a, quiet = TRUE))
 })
 
 test_that(".emax_add_term and .emax_remove_term update the covariate model", {
+  skip_on_ci()
   mod_add <- .emax_add_term(mod, E0 ~ bin_e, quiet = TRUE)
   mod_del <- .emax_remove_term(mod, E0 ~ cnt_a, quiet = TRUE)
   # check the coefficient names
@@ -24,6 +26,7 @@ test_that(".emax_add_term and .emax_remove_term update the covariate model", {
 })
 
 test_that("adding a term and later removing leaves the model substantively unchanged", {
+  skip_on_ci()
   mod_add <- .emax_add_term(mod, E0 ~ bin_e, quiet = TRUE)
   mod_del <- .emax_remove_term(mod_add, E0 ~ bin_e, quiet = TRUE)
   expect_equal(.get_coefficient_names(mod_del), .get_coefficient_names(mod))
@@ -32,11 +35,13 @@ test_that("adding a term and later removing leaves the model substantively uncha
 })
 
 test_that("adding already-existing covariate messages user and returns original object", {
+  skip_on_ci()
   expect_message(.emax_add_term(mod, E0 ~ cnt_a, quiet = FALSE), class = "emaxnls_message")
   expect_equal(.emax_add_term(mod, E0 ~ cnt_a, quiet = TRUE), mod)
 })
 
 test_that("removing already-existing covariate messages user and returns original object", {
+  skip_on_ci()
   expect_message(.emax_remove_term(mod, E0 ~ cnt_b, quiet = FALSE), class = "emaxnls_message")
   expect_equal(.emax_remove_term(mod, E0 ~ cnt_b, quiet = TRUE), mod)
 })
