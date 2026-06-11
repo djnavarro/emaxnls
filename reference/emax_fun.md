@@ -18,7 +18,7 @@ emax_fun(mod)
 
 A function `f` with arguments `data` and `params`. The `data` argument
 defaults to the data used to estimate the model, and the `params`
-arugment defaults to the estimated parameter values. Both can be
+argument defaults to the estimated parameter values. Both can be
 customized, as long as `data` contains columns corresponding to each of
 the variables used by the model, and `params` is a named numeric vector
 of the appropriate length. The names for `params` must exactly match the

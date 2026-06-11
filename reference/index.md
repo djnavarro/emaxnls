@@ -13,7 +13,7 @@ Build Emax regression models
 - [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
-  : Stepwise covariate modelling for Emax regression
+  : Stepwise covariate modeling for Emax regression
 - [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
   : Add or remove a covariate term from an Emax regression
@@ -29,7 +29,7 @@ Methods for Emax regression objects
 - [`summary(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxnls.md)
   : Summary of an Emax regression model
 - [`coef(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/coef.emaxnls.md)
-  : Coefficents for an Emax regression
+  : Coefficients for an Emax regression
 - [`vcov(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/vcov.emaxnls.md)
   : Variance-covariance matrix for an Emax regression
 - [`confint(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/confint.emaxnls.md)

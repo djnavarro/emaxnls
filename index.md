@@ -65,7 +65,7 @@ emax_nls(
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
 ```
 
-## Stepwise covariate modelling
+## Stepwise covariate modeling
 
 ``` r
 

@@ -1,6 +1,6 @@
-# Stepwise covariate modelling for Emax regression
+# Stepwise covariate modeling for Emax regression
 
-Stepwise covariate modelling for Emax regression
+Stepwise covariate modeling for Emax regression
 
 ## Usage
 

@@ -1,6 +1,6 @@
-# Coefficents for an Emax regression
+# Coefficients for an Emax regression
 
-Coefficents for an Emax regression
+Coefficients for an Emax regression
 
 ## Usage
 
