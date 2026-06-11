@@ -5,7 +5,7 @@
 \alias{emax_scm_forward}
 \alias{emax_scm_backward}
 \alias{emax_scm_history}
-\title{Stepwise covariate modelling for Emax regression}
+\title{Stepwise covariate modeling for Emax regression}
 \usage{
 emax_scm_forward(mod, candidates, threshold = 0.01, seed = NULL)
 
@@ -26,7 +26,7 @@ emax_scm_history(mod)
 An object of class \code{emaxnls}
 }
 \description{
-Stepwise covariate modelling for Emax regression
+Stepwise covariate modeling for Emax regression
 }
 \examples{
 base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)

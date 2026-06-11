@@ -49,7 +49,7 @@ emax_nls(
 )
 ```
 
-## Stepwise covariate modelling
+## Stepwise covariate modeling
 
 ```{r}
 base_model <- emax_nls(

@@ -14,7 +14,7 @@ print.emaxnls_null <- function(x, ...) {
  cat("model does not converge") 
 }
 
-#' Coefficents for an Emax regression
+#' Coefficients for an Emax regression
 #'
 #' @param object An `emaxnls` object
 #' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
@@ -293,7 +293,7 @@ fitted.emaxnls <- function(object, ...) {
 #'
 #' @returns
 #' A matrix (or vector) with columns giving lower and upper confidence limits for each 
-#' parameter. These will be labelled as (1-level)/2 and 1 - (1-level)/2 in % (by default 
+#' parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in % (by default 
 #' 2.5% and 97.5%).
 #' 
 #' @exportS3Method stats::confint

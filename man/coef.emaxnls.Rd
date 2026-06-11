@@ -2,7 +2,7 @@
 % Please edit documentation in R/emaxnls-methods.R
 \name{coef.emaxnls}
 \alias{coef.emaxnls}
-\title{Coefficents for an Emax regression}
+\title{Coefficients for an Emax regression}
 \usage{
 \method{coef}{emaxnls}(object, back_transform = FALSE, ...)
 }
@@ -17,5 +17,5 @@
 A vector of coefficients
 }
 \description{
-Coefficents for an Emax regression
+Coefficients for an Emax regression
 }

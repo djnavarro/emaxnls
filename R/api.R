@@ -145,7 +145,7 @@ emax_remove_term <- function(mod, formula) {
   .emax_remove_term(mod = mod, formula = formula)
 }
 
-#' Stepwise covariate modelling for Emax regression
+#' Stepwise covariate modeling for Emax regression
 #'
 #' @param mod An `emaxnls` object
 #' @param candidates A list of candidate covariates
@@ -215,7 +215,7 @@ emax_scm_history <- function(mod) {
 #'
 #' @returns A function `f` with arguments `data` and `params`. The `data`
 #' argument defaults to the data used to estimate the model, and the
-#' `params` arugment defaults to the estimated parameter values. Both
+#' `params` argument defaults to the estimated parameter values. Both
 #' can be customized, as long as `data` contains columns corresponding
 #' to each of the variables used by the model, and `params` is a named
 #' numeric vector of the appropriate length. The names for `params` 

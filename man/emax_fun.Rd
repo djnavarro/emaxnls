@@ -12,7 +12,7 @@ emax_fun(mod)
 \value{
 A function \code{f} with arguments \code{data} and \code{params}. The \code{data}
 argument defaults to the data used to estimate the model, and the
-\code{params} arugment defaults to the estimated parameter values. Both
+\code{params} argument defaults to the estimated parameter values. Both
 can be customized, as long as \code{data} contains columns corresponding
 to each of the variables used by the model, and \code{params} is a named
 numeric vector of the appropriate length. The names for \code{params}

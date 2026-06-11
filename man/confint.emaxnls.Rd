@@ -21,7 +21,7 @@ considered.}
 }
 \value{
 A matrix (or vector) with columns giving lower and upper confidence limits for each
-parameter. These will be labelled as (1-level)/2 and 1 - (1-level)/2 in \% (by default
+parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in \% (by default
 2.5\% and 97.5\%).
 }
 \description{
