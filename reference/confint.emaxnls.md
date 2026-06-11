@@ -6,7 +6,7 @@ Confidence intervals for Emax regression model parameters
 
 ``` r
 # S3 method for class 'emaxnls'
-confint(object, parm = NULL, level = 0.95, ...)
+confint(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
 ```
 
 ## Arguments
@@ -24,6 +24,11 @@ confint(object, parm = NULL, level = 0.95, ...)
 - level:
 
   The confidence level required
+
+- back_transform:
+
+  Should log-scaled parameters (logEC50, logHill) be back-transformed to
+  original scale?
 
 - ...:
 

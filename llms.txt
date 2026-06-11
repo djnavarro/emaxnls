@@ -173,6 +173,8 @@ Methods for Emax regression objects
 
 - [`print(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/print.emaxnls.md)
   : Print an Emax regression model object
+- [`summary(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxnls.md)
+  : Summary of an Emax regression model
 - [`coef(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/coef.emaxnls.md)
   : Coefficents for an Emax regression
 - [`vcov(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/vcov.emaxnls.md)

@@ -6,7 +6,7 @@ Coefficents for an Emax regression
 
 ``` r
 # S3 method for class 'emaxnls'
-coef(object, ...)
+coef(object, back_transform = FALSE, ...)
 ```
 
 ## Arguments
@@ -14,6 +14,11 @@ coef(object, ...)
 - object:
 
   An `emaxnls` object
+
+- back_transform:
+
+  Should log-scaled parameters (logEC50, logHill) be back-transformed to
+  original scale?
 
 - ...:
 
