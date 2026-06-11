@@ -5,6 +5,7 @@ mod <- emax_nls(
  )
 
 test_that("simulate() returns a data frame", {
+  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not properly installed")
   expect_no_error(simulate(mod))
   sim <- simulate(mod)
   expect_s3_class(sim, "data.frame")
