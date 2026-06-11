@@ -37,7 +37,12 @@ emax_nls_init(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-#> Error in eval(fs[[i]][[3]], envir = default_env): object 'term' not found
+#> # A tibble: 3 × 5
+#>   parameter covariate start  lower upper
+#>   <chr>     <chr>     <dbl>  <dbl> <dbl>
+#> 1 E0        Intercept  9.73  0.528  18.9
+#> 2 Emax      Intercept  7.74 -1.47   16.9
+#> 3 logEC50   Intercept  8.69  6.63   10.8
 
 # compare to the values estimated:
 coef(emax_nls(
@@ -45,5 +50,6 @@ coef(emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 ))
-#> Error in eval(fs[[i]][[3]], envir = default_env): object 'term' not found
+#>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept 
+#>         0.4861467         5.0548075         9.9697250         8.2688405 
 ```
