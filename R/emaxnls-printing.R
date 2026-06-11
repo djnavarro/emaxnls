@@ -34,7 +34,7 @@ print.emaxnls <- function(x, ...) {
 }
 
 # construct the coefficient table
-.coef_table <- function(object, level = 0.95, ...) {
+.coef_table <- function(object, level = 0.95, back_transform = FALSE, ...) {
   sss <- summary(.get_nls(object))
   coef_tbl <- sss$coef
   ci <- .confint_quiet(.get_nls(object), level = level)
@@ -48,6 +48,15 @@ print.emaxnls <- function(x, ...) {
 
   coef_tbl$ci_lower <- ci[, 1]
   coef_tbl$ci_upper <- ci[, 2]
+
+  if (back_transform) {
+    trans_cases <- grep("^log", coef_tbl$label)
+    coef_tbl$label <- gsub("^log", "", coef_tbl$label)
+    coef_tbl$estimate[trans_cases] <- exp(coef_tbl$estimate[trans_cases])
+    coef_tbl$std_error[trans_cases] <- NA_real_
+    coef_tbl$ci_lower[trans_cases] <- exp(coef_tbl$ci_lower[trans_cases])
+    coef_tbl$ci_upper[trans_cases] <- exp(coef_tbl$ci_upper[trans_cases])
+  }
 
   return(coef_tbl)
 }

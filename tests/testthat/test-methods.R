@@ -102,3 +102,24 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
   expect_s3_class(anova(mod_base, mod, mod_bad), "data.frame")
 
 })
+
+test_that("summary() matches .coef_table()", {
+  expect_equal(summary(mod), .coef_table(mod))
+  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99))
+  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE))
+})
+
+test_that("back_transform works for confint()", {
+  ci1 <- confint(mod)
+  ci2 <- confint(mod, back_transform = TRUE)
+  expect_equal(ci1[-4,], ci2[-4,])
+  expect_equal(unname(ci1[4,]), unname(log(ci2[4,])))
+}) 
+
+test_that("back_transform works for coef()", {
+  cc1 <- coef(mod)
+  cc2 <- coef(mod, back_transform = TRUE)
+  expect_equal(cc1[-4], cc2[-4])
+  expect_equal(unname(cc1[4]), unname(log(cc2[4])))
+}) 
+
