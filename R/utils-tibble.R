@@ -1,8 +1,14 @@
+
 .tibble <- function(..., .no_tibble = FALSE) {
   if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::tibble(...))
-  }
-  as.data.frame(.lst(...))
+  }  
+  lst <- .lst(...)
+  lst <- lapply(lst, function(x) {
+    if (is.null(x) || length(x) == 0) return(NA)
+    x
+  })
+  as.data.frame(lst)
 }
 
 .as_tibble <- function(..., .no_tibble = FALSE) {
