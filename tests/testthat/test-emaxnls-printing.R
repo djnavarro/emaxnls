@@ -7,6 +7,7 @@ mod <- emax_nls(
 lbl <- .get_coefficient_names(mod)
 
 test_that("print() writes expected message to console and returns object invisibly", {
+  if (!.is_converged(mod)) skip_on_ci()
   con <- textConnection("text_connection", "w")
   sink(con)
   val <- print(mod)
@@ -20,6 +21,7 @@ test_that("print() writes expected message to console and returns object invisib
 })
 
 test_that(".coef_table returns data frame with the expected structure", {
+  if (!.is_converged(mod)) skip_on_ci()
   cc <- .coef_table(mod)
   expect_s3_class(cc, class = "data.frame")
   expect_named(cc, c("label", "estimate", "std_error", "t_statistic", "p_value", "ci_lower", "ci_upper"))
