@@ -115,6 +115,19 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
   .emax_nls_init(structural_model, covariate_model, data)
 }
 
+
+#' Check Emax regression model for convergence status
+#'
+#' @param mod An `emaxnls` object
+#'
+#' @returns
+#' Logical value
+#'
+#' @export
+emax_converged <- function(mod) {
+  .is_converged(mod)
+}
+
 #' Add or remove a covariate term from an Emax regression
 #'
 #' @param mod An `emaxnls` object

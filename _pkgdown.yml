@@ -9,6 +9,7 @@ reference:
   - emax_nls
   - emax_nls_options
   - emax_nls_init
+  - emax_converged
   - emax_scm
   - emax_update
   - emax_fun
