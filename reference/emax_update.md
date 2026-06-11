@@ -30,7 +30,7 @@ An object of class `emaxnls`
 mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
 
-emax_add_term(mod_0, E0 ~ cnt_a)
+if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 
@@ -50,7 +50,7 @@ emax_add_term(mod_0, E0 ~ cnt_a)
 #> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
 #> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
-emax_remove_term(mod_1, E0 ~ cnt_a)
+if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 

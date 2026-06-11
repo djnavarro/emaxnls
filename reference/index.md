@@ -10,6 +10,8 @@ Build Emax regression models
   : Settings used to estimate Emax model
 - [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
   : Construct an initial guess for the Emax model parameters
+- [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
+  : Check Emax regression model for convergence status
 - [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
