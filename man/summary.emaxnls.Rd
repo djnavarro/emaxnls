@@ -30,8 +30,10 @@ mod <- emax_nls(
   data = emax_df
 )
 
-summary(mod)
-summary(mod, conf_level = 0.99)
-summary(mod, back_transform = TRUE)
+if (emax_converged(mod)) {
+  summary(mod)
+  summary(mod, conf_level = 0.99)
+  summary(mod, back_transform = TRUE)
+}
 
 }
