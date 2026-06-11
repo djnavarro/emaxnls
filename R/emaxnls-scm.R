@@ -47,10 +47,10 @@
       action = NA_character_,
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
-      model_converged = !is.null(.get_nls(mod)),
+      model_converged = .is_converged(mod),
       term_p_value = NA_real_,
-      model_aic = stats::AIC(mod),
-      model_bic = stats::BIC(mod),
+      model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
+      model_bic = as.numeric(stats::BIC(mod)),
       model_updated = NA
     )
   }
@@ -63,10 +63,10 @@
       action = NA_character_,
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
-      model_converged = !is.null(.get_nls(mod)),
+      model_converged = .is_converged(mod),
       term_p_value = NA_real_,
-      model_aic = stats::AIC(mod),
-      model_bic = stats::BIC(mod),
+      model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
+      model_bic = as.numeric(stats::BIC(mod)),
       model_updated = NA
     )
   }
