@@ -78,7 +78,7 @@ final_mod
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
 
 emax_scm_history(final_mod)
-#> # A tibble: 21 × 11
+#> # A tibble: 22 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
 #>  1         0       0 base model NA     NA           E0 ~ 1, Ema… TRUE           
@@ -91,7 +91,7 @@ emax_scm_history(final_mod)
 #>  8         1       7 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
 #>  9         1       8 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
 #> 10         1       9 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
-#> # ℹ 11 more rows
+#> # ℹ 12 more rows
 #> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
 #> #   model_updated <lgl>
 ```
