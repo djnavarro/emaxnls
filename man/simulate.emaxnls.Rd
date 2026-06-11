@@ -27,6 +27,6 @@ mod <- emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-simulate(mod)
+if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod)
 
 }
