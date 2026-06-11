@@ -60,3 +60,13 @@ test_that("residuals() returns numeric vector of the same size as the data", {
   expect_length(rr, nrow(emax_df))
 })
 
+# does not converge
+mod_bad <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df,
+  opts = emax_nls_options(
+    optim_method = "gauss",
+    optim_control = stats::nls.control(maxiter = 1)
+  )
+)
