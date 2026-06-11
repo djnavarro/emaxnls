@@ -140,8 +140,8 @@ emax_converged <- function(mod) {
 #' mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 #' mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
 #' 
-#' emax_add_term(mod_0, E0 ~ cnt_a)
-#' emax_remove_term(mod_1, E0 ~ cnt_a)
+#' if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
+#' if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #' 
 #' @name emax_update
 NULL
@@ -245,30 +245,34 @@ emax_scm_history <- function(mod) {
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
 #'   data = emax_df
 #' )
-#' par <- coef(mod)
 #' 
-#' # customizable emax function with the same structural 
-#' # model and same covariate model, defaulting to the 
-#' # same data and parameters as the original model, but
-#' # allowing user to pass their own data and parameters  
-#' mod_fn <- emax_fun(mod)
+#' if (emax_converged(mod)) {
 #' 
-#' # apply the function to a few rows of the original data
-#' mod_fn(
-#'   data = emax_df[120:125, ],
-#'   param = par
-#' )
+#'   par <- coef(mod)
+#'   
+#'   # customizable emax function with the same structural 
+#'   # model and same covariate model, defaulting to the 
+#'   # same data and parameters as the original model, but
+#'   # allowing user to pass their own data and parameters  
+#'   mod_fn <- emax_fun(mod)
+#'   
+#'   # apply the function to a few rows of the original data
+#'   mod_fn(
+#'     data = emax_df[120:125, ],
+#'     param = par
+#'   )
+#'   
+#'   # adjust the parameters
+#'   new_par <- par
+#'   new_par["E0_Intercept"] <- 0
+#'   
+#'   # simulate the model with the adjusted parameters
+#'   mod_fn(
+#'     data = emax_df[120:125, ],
+#'     param = new_par
+#'   )
 #' 
-#' # adjust the parameters
-#' new_par <- par
-#' new_par["E0_Intercept"] <- 0
-#' 
-#' # simulate the model with the adjusted parameters
-#' mod_fn(
-#'   data = emax_df[120:125, ],
-#'   param = new_par
-#' )
-#' 
+#' }
 emax_fun <- function(mod) {
   .emax_fun(mod)
 }
