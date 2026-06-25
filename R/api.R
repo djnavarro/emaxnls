@@ -1,15 +1,51 @@
 
-#' Emax model with arbitrary covariates (does not support interactions)
+#' Estimate parameters for an Emax regression model
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each of specifying a 
 #' covariate model for a structural parameter
-#' @param data A data frame
+#' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_nls_init()`
 #' @param opts Model fitting and optimization options. See `emax_nls_options()`
+#' 
+#' @details
+#' The `emax_nls()` function is the workhorse function for estimating an Emax
+#' regression model. Pass a two-sided formula to the `structural_model` argument
+#' to specify the exposure variable and the response variable 
+#' (e.g., `response ~ exposure`), and pass a list of formulas to the 
+#' `covariate_model` argument to specify covariates of interest. At a minimum
+#' the covariate model requires specification of the covariate model for the 
+#' E0 parameter, the Emax parameter, and the logEC50 parameter. For example, 
+#' a formula like `E0 ~ age + group` would indicate that `age` and `group` 
+#' should both be included as covariates on the baseline response E0. When 
+#' no covariates are to be added, use a formula like `Emax ~ 1`. 
+#' 
+#' The `emax_nls()` function can support sigmoidal emax models as well as 
+#' hyperbolic models. To build a sigmoidal model (where the Hill parameter)
+#' is estimated from the data, the `covariate_model` argument must also 
+#' include a formula for the `logHill` parameter. For instance, if the 
+#' covariate model includes `logHill ~ 1`, the model will estimate the value
+#' of the Hill parameter (with no covariates on it) from the data set.
+#' 
+#' At present, `emax_nls()` does not support binary response variables, nor
+#' is it possible to specify interaction terms in the covariate model. 
+#' 
+#' When estimating model parameters, the `init` argument can be used to 
+#' specify the starting values for the optimization. If unspecified, 
+#' the `emax_nls_init()` function is used to automatically guess sensible
+#' starting values. Please see the documentation of that function for 
+#' additional details on manually specifying the initial values. 
+#' 
+#' The `emax_nls()` function currently supports three optimization methods:
+#' the Gauss-Newton algorithm, the Levenberg-Marquardt algorithm, and the 
+#' 'nl2sol' algorithm from the Port library. For more information on how
+#' to customize the optimization procedure, please see
+#' the documentation for `emax_nls_options()`.
 #'  
 #' @returns
 #' An object of class `emaxnls`
+#' 
+#' @seealso `emax_nls_options()`, `emax_nls_init()`
 #' 
 #' @examples
 #' emax_nls(
@@ -46,6 +82,7 @@ emax_nls <- function(structural_model,
 #' specified, weighted least squares is used
 #' @param na.action How should missing values in the data be handled?
 #'
+#' @details
 #' At present there are three supported values for `optim_method`:
 #' 
 #' - "gauss": Estimate parameters using the Gauss-Newton algorithm. This is 
@@ -68,7 +105,17 @@ emax_nls <- function(structural_model,
 #' If `optim_control = NULL`, the default settings are used for the relevant function.
 #' 
 #' @returns A list of settings
-#'
+#' 
+#' @seealso `emax_nls()`, `emax_nls_init()`
+#' 
+#' @examples
+#' # default options
+#' emax_nls_options()
+#' 
+#' # switch to levenberg-marquardt
+#' emax_nls_options(optim_method = "levenberg")
+#' 
+#' 
 #' @export
 emax_nls_options <- function(optim_method = "gauss",
                              optim_control = NULL,
@@ -94,6 +141,8 @@ emax_nls_options <- function(optim_method = "gauss",
 #' @returns A data frame
 #'
 #' @export
+#' 
+#' @seealso `emax_nls()`, `emax_nls_options()`
 #' 
 #' @examples
 #' # use a heuristic to construct sensible start values, and plausible
@@ -123,6 +172,7 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 #' @returns
 #' Logical value
 #'
+#' @details
 #' This is a convenience function that takes an Emax regression
 #' object as input. It returns `TRUE` if the optimization routine
 #' converged during model fitting, and `FALSE` if it did not.

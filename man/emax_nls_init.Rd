@@ -37,3 +37,6 @@ coef(emax_nls(
 ))
 
 }
+\seealso{
+\code{emax_nls()}, \code{emax_nls_options()}
+}

@@ -26,8 +26,15 @@ algorithm is used}
 \item{weights}{Numeric vector providing the weights for observations. When
 specified, weighted least squares is used}
 
-\item{na.action}{How should missing values in the data be handled?
-
+\item{na.action}{How should missing values in the data be handled?}
+}
+\value{
+A list of settings
+}
+\description{
+Settings used to estimate Emax model
+}
+\details{
 At present there are three supported values for \code{optim_method}:
 \itemize{
 \item "gauss": Estimate parameters using the Gauss-Newton algorithm. This is
@@ -49,11 +56,17 @@ the respective optimization methods:
 \item For "levenberg": the list should match the output of \code{minpack.lm::nls.lm.control()}
 }
 
-If \code{optim_control = NULL}, the default settings are used for the relevant function.}
+If \code{optim_control = NULL}, the default settings are used for the relevant function.
 }
-\value{
-A list of settings
+\examples{
+# default options
+emax_nls_options()
+
+# switch to levenberg-marquardt
+emax_nls_options(optim_method = "levenberg")
+
+
 }
-\description{
-Settings used to estimate Emax model
+\seealso{
+\code{emax_nls()}, \code{emax_nls_init()}
 }

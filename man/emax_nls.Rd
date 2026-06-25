@@ -2,7 +2,7 @@
 % Please edit documentation in R/api.R
 \name{emax_nls}
 \alias{emax_nls}
-\title{Emax model with arbitrary covariates (does not support interactions)}
+\title{Estimate parameters for an Emax regression model}
 \usage{
 emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 }
@@ -12,7 +12,7 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 \item{covariate_model}{A list of two-sided formulas, each of specifying a
 covariate model for a structural parameter}
 
-\item{data}{A data frame}
+\item{data}{A data frame that includes all relevant variables}
 
 \item{init}{Initial values and bounds for parameters. See \code{emax_nls_init()}}
 
@@ -22,7 +22,41 @@ covariate model for a structural parameter}
 An object of class \code{emaxnls}
 }
 \description{
-Emax model with arbitrary covariates (does not support interactions)
+Estimate parameters for an Emax regression model
+}
+\details{
+The \code{emax_nls()} function is the workhorse function for estimating an Emax
+regression model. Pass a two-sided formula to the \code{structural_model} argument
+to specify the exposure variable and the response variable
+(e.g., \code{response ~ exposure}), and pass a list of formulas to the
+\code{covariate_model} argument to specify covariates of interest. At a minimum
+the covariate model requires specification of the covariate model for the
+E0 parameter, the Emax parameter, and the logEC50 parameter. For example,
+a formula like \code{E0 ~ age + group} would indicate that \code{age} and \code{group}
+should both be included as covariates on the baseline response E0. When
+no covariates are to be added, use a formula like \code{Emax ~ 1}.
+
+The \code{emax_nls()} function can support sigmoidal emax models as well as
+hyperbolic models. To build a sigmoidal model (where the Hill parameter)
+is estimated from the data, the \code{covariate_model} argument must also
+include a formula for the \code{logHill} parameter. For instance, if the
+covariate model includes \code{logHill ~ 1}, the model will estimate the value
+of the Hill parameter (with no covariates on it) from the data set.
+
+At present, \code{emax_nls()} does not support binary response variables, nor
+is it possible to specify interaction terms in the covariate model.
+
+When estimating model parameters, the \code{init} argument can be used to
+specify the starting values for the optimization. If unspecified,
+the \code{emax_nls_init()} function is used to automatically guess sensible
+starting values. Please see the documentation of that function for
+additional details on manually specifying the initial values.
+
+The \code{emax_nls()} function currently supports three optimization methods:
+the Gauss-Newton algorithm, the Levenberg-Marquardt algorithm, and the
+'nl2sol' algorithm from the Port library. For more information on how
+to customize the optimization procedure, please see
+the documentation for \code{emax_nls_options()}.
 }
 \examples{
 emax_nls(
@@ -31,4 +65,7 @@ emax_nls(
   data = emax_df
 )
  
+}
+\seealso{
+\code{emax_nls_options()}, \code{emax_nls_init()}
 }
