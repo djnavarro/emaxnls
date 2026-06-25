@@ -113,7 +113,7 @@ emax_nls <- function(structural_model,
 #' emax_nls_options()
 #' 
 #' # switch to levenberg-marquardt
-#' emax_nls_options(optim_method = "levenberg")
+#' if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "levenberg")
 #' 
 #' 
 #' @export
