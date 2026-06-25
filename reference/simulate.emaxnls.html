@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">emaxnls</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,12 @@
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Ignored</p></dd>
+<dd><p>Ignored</p>
+<p>The <code><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate()</a></code> method for an <code>emaxnls</code> object simulates new
+values for the response, using new parameter values that sampled
+using the variance-covariance matrix associated with the parameter
+estimates. It uses <code><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">mvtnorm::rmvnorm()</a></code> to generate multivariate
+normal variates.</p></dd>
 
 </dl></div>
     <div class="section level2">

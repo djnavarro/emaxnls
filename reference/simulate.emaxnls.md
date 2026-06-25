@@ -27,6 +27,13 @@ simulate(object, nsim = 1, seed = NULL, ...)
 
   Ignored
 
+  The [`simulate()`](https://rdrr.io/r/stats/simulate.html) method for
+  an `emaxnls` object simulates new values for the response, using new
+  parameter values that sampled using the variance-covariance matrix
+  associated with the parameter estimates. It uses
+  [`mvtnorm::rmvnorm()`](https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html) to
+  generate multivariate normal variates.
+
 ## Value
 
 A data frame or tibble

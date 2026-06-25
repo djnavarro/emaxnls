@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">emaxnls</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,6 +82,40 @@ parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in % (by def
 2.5% and 97.5%).</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
+<span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 95% confidence interval on the estimation scale</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        2.5%      97.5%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_cnt_a          0.4634245  0.5088686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_Intercept      4.9055018  5.2041150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept    9.7525268 10.1914700</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logEC50_Intercept 8.1908985  8.3454640</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 90% confidence interval on the estimation scale</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mod</span>, level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          5%        95%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_cnt_a          0.4670913  0.5052018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_Intercept      4.9295962  5.1800202</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept    9.7872831 10.1553642</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logEC50_Intercept 8.2035751  8.3331788</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 95% confidence interval with log-scale parameters back-transformed</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mod</span>, back_transform <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        2.5%        97.5%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_cnt_a          0.4634245    0.5088686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_Intercept      4.9055018    5.2041150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept    9.7525268   10.1914700</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EC50_Intercept 3607.9625359 4211.0361735</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

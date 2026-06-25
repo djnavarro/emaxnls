@@ -74,4 +74,4 @@ emax_nls_options(
 
 ## Value
 
-List
+A list of settings

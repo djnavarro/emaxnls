@@ -44,19 +44,14 @@ covariate_list <- list(
   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 )
 
-mm <- emax_scm_forward(
+# add covariates to the base model using forward addition
+forward_model <- emax_scm_forward(
   mod = base_model,
   candidates = covariate_list, 
   threshold = .01
 )
 #> Warning: `nls()` did not converge
-final_mod <- emax_scm_backward(
-  mod = mm,
-  candidates = covariate_list, 
-  threshold = .001
-) 
-
-final_mod
+forward_model
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 
@@ -77,7 +72,36 @@ final_mod
 #> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
 
-emax_scm_history(final_mod)
+# remove covariates from the forward model using backward deletion
+final_model <- emax_scm_backward(
+  mod = forward_model,
+  candidates = covariate_list, 
+  threshold = .001
+) 
+final_model
+#> Structural model:
+#> 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_1 
+#>   Emax type: hyperbolic 
+#> 
+#> Covariate model:
+#> 
+#>   E0:       E0 ~ 1 + cnt_a 
+#>   Emax:     Emax ~ 1 
+#>   logEC50:  logEC50 ~ 1 
+#> 
+#> Coefficient table:
+#> 
+#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
+#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
+#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
+#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
+#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
+
+# show the history of all models tested during the forward addition
+# step and the backward deletion step
+emax_scm_history(final_model)
 #> # A tibble: 22 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
 #>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
