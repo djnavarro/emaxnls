@@ -24,6 +24,20 @@ emax_remove_term(mod, formula)
 
 An object of class `emaxnls`
 
+## Details
+
+The `emax_add_term()` and `emax_remove_term()` functions take an
+existing Emax regression object, and allow the user to add or remove a
+specific term to the model. It is not expected that users will need
+these functions very often, but they provide the basis for the stepwise
+covariate modeling procedures that are very commonly used when building
+Emax regressions.
+
+## See also
+
+[`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md),
+[emax_scm](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+
 ## Examples
 
 ``` r

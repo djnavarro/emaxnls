@@ -128,7 +128,7 @@
 <div class="section level2">
 <h2 id="stepwise-covariate-modeling">Stepwise covariate modeling<a class="anchor" aria-label="anchor" href="#stepwise-covariate-modeling"></a>
 </h2>
-<p>The package supports stepwise covariate modelling via forward addition and backward elimination. The <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> function supports forward addition, the <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code> function supports backward elimination, and the syntax is designed to allow forward-backward procedures by piping a base model to <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> and then to <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code>.</p>
+<p>The package supports stepwise covariate modeling via forward addition and backward elimination. The <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> function supports forward addition, the <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code> function supports backward elimination, and the syntax is designed to allow forward-backward procedures by piping a base model to <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> and then to <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># base model with no covariates</span></span>
 <span><span class="va">base_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
@@ -143,13 +143,13 @@
 <span>  Emax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cnt_a"</span>, <span class="st">"cnt_b"</span>, <span class="st">"cnt_c"</span>, <span class="st">"bin_d"</span>, <span class="st">"bin_e"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># stepwise covariate modelling with a forward step and a backward step</span></span>
+<span><span class="co"># stepwise covariate modeling with a forward step and a backward step</span></span>
 <span><span class="va">final_mod</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_scm_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/emax_scm.html">emax_scm_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">covariate_list</span>, threshold <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># extract the complete history of all models tested during the </span></span>
-<span><span class="co"># stepwise covariate modelling procedure</span></span>
+<span><span class="co"># stepwise covariate modeling procedure</span></span>
 <span><span class="fu"><a href="reference/emax_scm.html">emax_scm_history</a></span><span class="op">(</span><span class="va">final_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 22 × 11</span></span>
 <span><span class="co">#&gt;    iteration attempt step       action term_tested  model_tested model_converged</span></span>

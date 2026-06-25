@@ -27,6 +27,10 @@ names of the vector returned by `coef(mod)`.
 The return value for `f` is a numeric vector of model predictions for
 each row in `data`, evaluated at parameters `params`.
 
+## See also
+
+[`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md)
+
 ## Examples
 
 ``` r

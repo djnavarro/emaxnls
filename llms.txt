@@ -85,7 +85,7 @@ emax_nls(
 
 ## Stepwise covariate modeling
 
-The package supports stepwise covariate modelling via forward addition
+The package supports stepwise covariate modeling via forward addition
 and backward elimination. The
 [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
 function supports forward addition, the
@@ -111,13 +111,13 @@ covariate_list <- list(
   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 )
 
-# stepwise covariate modelling with a forward step and a backward step
+# stepwise covariate modeling with a forward step and a backward step
 final_mod <- base_model |> 
   emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
   emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
 # extract the complete history of all models tested during the 
-# stepwise covariate modelling procedure
+# stepwise covariate modeling procedure
 emax_scm_history(final_mod)
 #> # A tibble: 22 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
