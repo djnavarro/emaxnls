@@ -67,7 +67,7 @@ emax_nls <- function(structural_model,
 #' 
 #' If `optim_control = NULL`, the default settings are used for the relevant function.
 #' 
-#' @returns List
+#' @returns A list of settings
 #'
 #' @export
 emax_nls_options <- function(optim_method = "gauss",
@@ -123,6 +123,10 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 #' @returns
 #' Logical value
 #'
+#' This is a convenience function that takes an Emax regression
+#' object as input. It returns `TRUE` if the optimization routine
+#' converged during model fitting, and `FALSE` if it did not.
+#' 
 #' @export
 emax_converged <- function(mod) {
   .is_converged(mod)
@@ -141,6 +145,7 @@ emax_converged <- function(mod) {
 #' mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
 #' 
 #' if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
+#' 
 #' if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #' 
 #' @name emax_update
@@ -176,20 +181,25 @@ emax_remove_term <- function(mod, formula) {
 #'   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 #' )
 #' 
-#' mm <- emax_scm_forward(
+#' # add covariates to the base model using forward addition
+#' forward_model <- emax_scm_forward(
 #'   mod = base_model,
 #'   candidates = covariate_list, 
 #'   threshold = .01
 #' )
-#' final_mod <- emax_scm_backward(
-#'   mod = mm,
+#' forward_model
+#' 
+#' # remove covariates from the forward model using backward deletion
+#' final_model <- emax_scm_backward(
+#'   mod = forward_model,
 #'   candidates = covariate_list, 
 #'   threshold = .001
 #' ) 
+#' final_model
 #' 
-#' final_mod
-#' 
-#' emax_scm_history(final_mod)
+#' # show the history of all models tested during the forward addition
+#' # step and the backward deletion step
+#' emax_scm_history(final_model)
 #' 
 #' @name emax_scm
 NULL
@@ -246,6 +256,8 @@ emax_scm_history <- function(mod) {
 #'   data = emax_df
 #' )
 #' 
+#' # the emax simulation function can only be extracted if the
+#' # optimization routine converged
 #' if (emax_converged(mod)) {
 #' 
 #'   par <- coef(mod)
@@ -257,20 +269,22 @@ emax_scm_history <- function(mod) {
 #'   mod_fn <- emax_fun(mod)
 #'   
 #'   # apply the function to a few rows of the original data
-#'   mod_fn(
+#'   out_1 <- mod_fn(
 #'     data = emax_df[120:125, ],
 #'     param = par
 #'   )
+#'   print(out_1)
 #'   
 #'   # adjust the parameters
 #'   new_par <- par
 #'   new_par["E0_Intercept"] <- 0
 #'   
 #'   # simulate the model with the adjusted parameters
-#'   mod_fn(
+#'   out_2 <- mod_fn(
 #'     data = emax_df[120:125, ],
 #'     param = new_par
 #'   )
+#'   print(out_2)
 #' 
 #' }
 emax_fun <- function(mod) {

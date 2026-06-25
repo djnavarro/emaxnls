@@ -13,7 +13,13 @@
 
 \item{seed}{Used to set RNG seed}
 
-\item{...}{Ignored}
+\item{...}{Ignored
+
+The \code{simulate()} method for an \code{emaxnls} object simulates new
+values for the response, using new parameter values that sampled
+using the variance-covariance matrix associated with the parameter
+estimates. It uses \code{mvtnorm::rmvnorm()} to generate multivariate
+normal variates.}
 }
 \value{
 A data frame or tibble

@@ -11,6 +11,10 @@ emax_converged(mod)
 }
 \value{
 Logical value
+
+This is a convenience function that takes an Emax regression
+object as input. It returns \code{TRUE} if the optimization routine
+converged during model fitting, and \code{FALSE} if it did not.
 }
 \description{
 Check Emax regression model for convergence status

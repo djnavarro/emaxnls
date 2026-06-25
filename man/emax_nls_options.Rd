@@ -52,7 +52,7 @@ the respective optimization methods:
 If \code{optim_control = NULL}, the default settings are used for the relevant function.}
 }
 \value{
-List
+A list of settings
 }
 \description{
 Settings used to estimate Emax model

@@ -17,3 +17,19 @@ Analysis of variance tables for a sequence of \code{emaxnls} models
 \description{
 Analysis of variance for Emax regression models
 }
+\examples{
+
+mod_0 <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+mod_1 <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+anova(mod_0, mod_1)
+
+}

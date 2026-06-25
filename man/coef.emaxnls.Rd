@@ -19,3 +19,17 @@ A vector of coefficients
 \description{
 Coefficients for an Emax regression
 }
+\examples{
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+# coefficients on the estimation scale
+coef(mod)
+
+# coefficients with log-scale parameters back-transformed
+coef(mod, back_transform = TRUE)
+
+}

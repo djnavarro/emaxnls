@@ -27,3 +27,20 @@ parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in \% (by de
 \description{
 Confidence intervals for Emax regression model parameters
 }
+\examples{
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+# 95\% confidence interval on the estimation scale
+confint(mod)
+
+# 90\% confidence interval on the estimation scale
+confint(mod, level = 0.9)
+
+# 95\% confidence interval with log-scale parameters back-transformed
+confint(mod, back_transform = TRUE)
+
+}

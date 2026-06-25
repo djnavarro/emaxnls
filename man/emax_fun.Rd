@@ -32,6 +32,8 @@ mod <- emax_nls(
   data = emax_df
 )
 
+# the emax simulation function can only be extracted if the
+# optimization routine converged
 if (emax_converged(mod)) {
 
   par <- coef(mod)
@@ -43,20 +45,22 @@ if (emax_converged(mod)) {
   mod_fn <- emax_fun(mod)
   
   # apply the function to a few rows of the original data
-  mod_fn(
+  out_1 <- mod_fn(
     data = emax_df[120:125, ],
     param = par
   )
+  print(out_1)
   
   # adjust the parameters
   new_par <- par
   new_par["E0_Intercept"] <- 0
   
   # simulate the model with the adjusted parameters
-  mod_fn(
+  out_2 <- mod_fn(
     data = emax_df[120:125, ],
     param = new_par
   )
+  print(out_2)
 
 }
 }

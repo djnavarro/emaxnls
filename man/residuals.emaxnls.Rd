@@ -17,3 +17,12 @@ Numeric vector of residuals
 \description{
 Residuals for an Emax regression
 }
+\examples{
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+res <- residuals(mod)
+res[1:20]
+}

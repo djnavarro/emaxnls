@@ -17,3 +17,12 @@ Numeric
 \description{
 Residual standard deviation for Emax regression models
 }
+\examples{
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+sigma(mod)
+
+}

@@ -30,10 +30,13 @@ mod <- emax_nls(
   data = emax_df
 )
 
-if (emax_converged(mod)) {
-  summary(mod)
-  summary(mod, conf_level = 0.99)
-  summary(mod, back_transform = TRUE)
-}
+# standard summary
+summary(mod)
+
+# summary with adjusted confidence level
+summary(mod, conf_level = 0.99)
+
+# summary with log-scale parameters transformed to original scale
+summary(mod, back_transform = TRUE)
 
 }

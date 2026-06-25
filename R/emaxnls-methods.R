@@ -21,6 +21,19 @@ print.emaxnls_null <- function(x, ...) {
 #' @param ... Ignored
 #'
 #' @returns A vector of coefficients
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' # coefficients on the estimation scale
+#' coef(mod)
+#' 
+#' # coefficients with log-scale parameters back-transformed
+#' coef(mod, back_transform = TRUE)
 #'
 #' @exportS3Method stats::coef
 coef.emaxnls <- function(object, back_transform = FALSE, ...) {
@@ -40,6 +53,14 @@ coef.emaxnls <- function(object, back_transform = FALSE, ...) {
 #' @param ... Ignored
 #'
 #' @returns A matrix
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' vcov(mod)
 #'
 #' @exportS3Method stats::vcov
 vcov.emaxnls <- function(object, ...) {
@@ -51,7 +72,15 @@ vcov.emaxnls <- function(object, ...) {
 #'
 #' @param object An `emaxnls` object
 #' @param ... Ignored
-#'
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' res <- residuals(mod)
+#' res[1:20]
 #' @returns Numeric vector of residuals
 #'
 #' @exportS3Method stats::residuals
@@ -67,6 +96,12 @@ residuals.emaxnls <- function(object, ...) {
 #' @param seed Used to set RNG seed
 #' @param ... Ignored
 #'
+#' The `simulate()` method for an `emaxnls` object simulates new
+#' values for the response, using new parameter values that sampled
+#' using the variance-covariance matrix associated with the parameter
+#' estimates. It uses `mvtnorm::rmvnorm()` to generate multivariate 
+#' normal variates. 
+#' 
 #' @returns A data frame or tibble
 #' 
 #' @examples
@@ -97,6 +132,14 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 #' @returns Returns an object of class `logLik`. This is a number with 
 #' at least one attribute, "df" (degrees of freedom), giving the 
 #' number of (estimated) parameters in the model.
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' logLik(mod)
 #'
 #' @exportS3Method stats::logLik
 logLik.emaxnls <- function(object, REML = FALSE, ...) {
@@ -117,6 +160,32 @@ logLik.emaxnls <- function(object, REML = FALSE, ...) {
 #' If multiple objects are provided, a data.frame with rows corresponding to the objects 
 #' and columns representing the number of parameters in the model (df) and the AIC or BIC.
 #'
+#' @examples
+#' mod_0 <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' mod_1 <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' # calculate AIC for individual models
+#' AIC(mod_0)
+#' AIC(mod_1)
+#' 
+#' # calculate AIC for a sequence of models
+#' AIC(mod_0, mod_1)
+#' 
+#' # calculate BIC for individual models
+#' BIC(mod_0)
+#' BIC(mod_1)
+#' 
+#' # calculate BIC for a sequence of models
+#' BIC(mod_0, mod_1)
+#' 
 #' @name AIC
 NULL
 
@@ -197,6 +266,21 @@ BIC.emaxnls <- function(object, ...) {
 #' @param ... Additional fitted model objects
 #'
 #' @returns Analysis of variance tables for a sequence of `emaxnls` models
+#' 
+#' @examples
+#' 
+#' mod_0 <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' mod_1 <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' anova(mod_0, mod_1)
 #'
 #' @exportS3Method stats::anova
 anova.emaxnls <- function(object, ...) {
@@ -218,6 +302,14 @@ anova.emaxnls <- function(object, ...) {
 #' @param ... Ignored
 #'
 #' @returns Numeric
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' sigma(mod)
 #'
 #' @exportS3Method stats::sigma
 sigma.emaxnls <- function(object, ...) {
@@ -232,6 +324,14 @@ sigma.emaxnls <- function(object, ...) {
 #' @param ... Ignored
 #'
 #' @returns Numeric
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' nobs(mod)
 #'
 #' @exportS3Method stats::nobs
 nobs.emaxnls <- function(object, ...) {
@@ -246,6 +346,14 @@ nobs.emaxnls <- function(object, ...) {
 #' @param ... Ignored
 #'
 #' @returns Numeric
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' df.residual(mod)
 #'
 #' @exportS3Method stats::df.residual
 df.residual.emaxnls <- function(object, ...) {
@@ -260,6 +368,15 @@ df.residual.emaxnls <- function(object, ...) {
 #' @param ... Ignored
 #'
 #' @returns Numeric
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' deviance(mod)
+#'
 #'
 #' @exportS3Method stats::deviance
 deviance.emaxnls <- function(object, ...) {
@@ -273,6 +390,15 @@ deviance.emaxnls <- function(object, ...) {
 #' @param ... Ignored
 #'
 #' @returns Numeric vector of fitted values
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' fit <- fitted(mod)
+#' fit[1:20]
 #'
 #' @exportS3Method stats::fitted
 fitted.emaxnls <- function(object, ...) {
@@ -295,6 +421,22 @@ fitted.emaxnls <- function(object, ...) {
 #' A matrix (or vector) with columns giving lower and upper confidence limits for each 
 #' parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in % (by default 
 #' 2.5% and 97.5%).
+#' 
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' # 95% confidence interval on the estimation scale
+#' confint(mod)
+#' 
+#' # 90% confidence interval on the estimation scale
+#' confint(mod, level = 0.9)
+#' 
+#' # 95% confidence interval with log-scale parameters back-transformed
+#' confint(mod, back_transform = TRUE)
 #' 
 #' @exportS3Method stats::confint
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = FALSE, ...) {
@@ -337,6 +479,19 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 #' - `residual.scale`: residual standard deviation
 #' - `df`: residual degrees of freedom
 #'
+#' @examples
+#' mod <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' 
+#' # return a vector of predictions
+#' pred <- predict(mod)
+#' pred[1:20]
+#' 
+#' # return a matrix with confidence intervals
+#' predict(mod, interval = "confidence", se.fit = FALSE)
 #' 
 #' @exportS3Method stats::predict
 predict.emaxnls <- function(object, 
@@ -376,12 +531,16 @@ predict.emaxnls <- function(object,
 #'   data = emax_df
 #' )
 #' 
-#' if (emax_converged(mod)) {
-#'   summary(mod)
-#'   summary(mod, conf_level = 0.99)
-#'   summary(mod, back_transform = TRUE)
-#' }
+#' # standard summary
+#' summary(mod)
+#' 
+#' # summary with adjusted confidence level
+#' summary(mod, conf_level = 0.99)
+#' 
+#' # summary with log-scale parameters transformed to original scale
+#' summary(mod, back_transform = TRUE)
 #' 
 summary.emaxnls <- function(object, conf_level = 0.95, back_transform = FALSE, ...) {
+  if (!.is_converged(object)) return(.nls_null())
   .coef_table(object = object, level = conf_level, back_transform = back_transform)
 }

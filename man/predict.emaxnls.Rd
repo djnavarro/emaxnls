@@ -44,3 +44,18 @@ components:
 \description{
 Predicting from Emax regression models
 }
+\examples{
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+# return a vector of predictions
+pred <- predict(mod)
+pred[1:20]
+
+# return a matrix with confidence intervals
+predict(mod, interval = "confidence", se.fit = FALSE)
+
+}

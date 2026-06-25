@@ -25,3 +25,30 @@ and columns representing the number of parameters in the model (df) and the AIC 
 \description{
 Akaike information criterion / Bayesian information criterion
 }
+\examples{
+mod_0 <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+mod_1 <- emax_nls(
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  data = emax_df
+)
+
+# calculate AIC for individual models
+AIC(mod_0)
+AIC(mod_1)
+
+# calculate AIC for a sequence of models
+AIC(mod_0, mod_1)
+
+# calculate BIC for individual models
+BIC(mod_0)
+BIC(mod_1)
+
+# calculate BIC for a sequence of models
+BIC(mod_0, mod_1)
+
+}
