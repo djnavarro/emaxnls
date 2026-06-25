@@ -140,6 +140,18 @@ emax_nls_options <- function(optim_method = "gauss",
 #'
 #' @returns A data frame
 #'
+#' @details The `emax_nls()` function requires that the user specify the initial
+#' values for the model parameters. Specifically, it expects to be supplied with
+#' a data frame with columns named `parameter`, `covariate`, and `start`. If a
+#' bounded optimization method is used (e.g. if the "port" method is used), the
+#' data frame also needs to have columns named `lower` and `upper`. The data 
+#' frame should contain one row per parameter. In most cases the user does not
+#' need to define this manually, because `emax_nls_init()` can use heuristics to
+#' make a sensible guess about what to use as starting values. By default this
+#' is what `emax_nls()` relies upon, automatically calling `emax_nls_init()`
+#' using the appropriate values for the `structural_model`, the `covariate_model`,
+#' and the `data`. 
+#' 
 #' @export
 #' 
 #' @seealso `emax_nls()`, `emax_nls_options()`
