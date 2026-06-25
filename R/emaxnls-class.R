@@ -118,6 +118,7 @@
 }
 
 .construct_variables <- function(structural_model, covariate_model, term_lookup) {
+  names(covariate_model) <- .map_chr(covariate_model, function(x) as.character(x[[2]]))
   variables <- list(
     response = as.character(structural_model[[2]]),
     exposure = as.character(structural_model[[3]]),
