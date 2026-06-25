@@ -13,7 +13,12 @@ coverage](https://codecov.io/gh/djnavarro/emaxnls/graph/badge.svg)](https://app.
 <!-- badges: end -->
 
 The **emaxnls** package provides tools for nonlinear least squares
-estimation for Emax regression models.
+estimation for Emax regression models. It supplies a clean interface for
+specifying Emax regression models with covariates, using `nls()` as the
+underlying tool for fitting the model. It supports least squares
+estimation using the Gauss-Newton algorithm, the Levenberg-Marquardt
+algorithm (via `minpack.lm::nls.lm()`) and the ‘nl2sol’ algorithm from
+the Port library.
 
 ## Installation
 
@@ -27,12 +32,17 @@ pak::pak("djnavarro/emaxnls")
 
 ## Minimal example
 
+An Emax regression model is estimated using the `emax_nls()` function,
+using the `structural_model` argument to specify the exposure variable
+and the response variable, and the `covariate_model` argument to specify
+covariates to be estimated for structural parameters (e.g., E0, Emax).
+
 ``` r
 library(tibble)
-#> Warning: package 'tibble' was built under R version 4.5.2
 library(emaxnls)
 set.seed(123)
 
+# a synthetic data set bundled with the package
 emax_df
 #> # A tibble: 400 × 12
 #>       id  dose  exp_1  exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e cat_f
@@ -49,9 +59,14 @@ emax_df
 #> 10    10   200  5331.  5251. 12.8      1  4.45  3.42  1.66     1     0 grp 3
 #> # ℹ 390 more rows
 
+# estimate parameters for an Emax regression with covariates
 emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
+  covariate_model = list(
+    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+    Emax ~ 1,    # no covariates on Emax
+    logEC50 ~ 1  # no covariates on logEC50
+  ), 
   data = emax_df
 )
 #> Structural model:
@@ -77,22 +92,34 @@ emax_nls(
 
 ## Stepwise covariate modeling
 
+The package supports stepwise covariate modelling via forward addition
+and backward elimination. The `emax_scm_forward()` function supports
+forward addition, the `emax_scm_backward()` function supports backward
+elimination, and the syntax is designed to allow forward-backward
+procedures by piping a base model to `emax_scm_forward()` and then to
+`emax_scm_backward()`.
+
 ``` r
+# base model with no covariates
 base_model <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 
+# list of possible consider for E0 and Emax
 covariate_list <- list(
   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 )
 
+# stepwise covariate modelling with a forward step and a backward step
 final_mod <- base_model |> 
   emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
   emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
+# extract the complete history of all models tested during the 
+# stepwise covariate modelling procedure
 emax_scm_history(final_mod)
 #> # A tibble: 22 × 11
 #>    iteration attempt step       action term_tested  model_tested model_converged
@@ -111,6 +138,7 @@ emax_scm_history(final_mod)
 #> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
 #> #   model_updated <lgl>
 
+# show the final model
 final_mod
 #> Structural model:
 #> 
@@ -134,6 +162,10 @@ final_mod
 ```
 
 ## Simulation
+
+The package also provides tools to assist in model-based simulations,
+using the `simulate()` function. A simple example is shown below. Please
+see the package documentation for more details.
 
 ``` r
 simulate(final_mod, nsim = 1)
