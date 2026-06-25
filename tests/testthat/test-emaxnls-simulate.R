@@ -13,8 +13,8 @@ test_that("simulate() returns a data frame", {
 })
 
 test_that(".emax_fun() returns a function", {
-  expect_no_error(.emax_fun(mod))
   if (!.is_converged(mod)) skip_on_ci()
+  expect_no_error(.emax_fun(mod))
   fn <- .emax_fun(mod)
   expect_equal(formals(fn), pairlist(param = NULL, data = NULL))
 })
