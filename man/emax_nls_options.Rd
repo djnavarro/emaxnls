@@ -63,7 +63,7 @@ If \code{optim_control = NULL}, the default settings are used for the relevant f
 emax_nls_options()
 
 # switch to levenberg-marquardt
-emax_nls_options(optim_method = "levenberg")
+if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "levenberg")
 
 
 }
