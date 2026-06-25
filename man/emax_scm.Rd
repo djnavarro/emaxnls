@@ -28,6 +28,33 @@ An object of class \code{emaxnls}
 \description{
 Stepwise covariate modeling for Emax regression
 }
+\details{
+The emaxnls package supports stepwise covariate modelling via forward addition and
+backward elimination. The \code{emax_scm_forward()} function supports forward addition,
+the \code{emax_scm_backward()} function supports backward elimination, and the syntax
+is designed to allow forward-backward procedures by piping a base model to
+\code{emax_scm_forward()} and then to \code{emax_scm_backward()}. In both cases, the
+function takes an \code{emaxnls} regression object as the first argument, as well as
+a list of candidate \code{covariates} to be considered for addition (in the forward
+addition case) or deletion (backward elimination). The input must be a named list,
+with the names corresponding to the relevant structural parameter, and the values
+should be character vector specifying covariates of interest. See the examples for
+an illustration of how this argument should be specified.
+
+As present, these functions only support stepwise regression using p-values as the
+criterion for addition or deletion. The \code{threshold} argument corresponds to the
+threshold p-value to be used. In future, other methods (e.g., selection on the
+basis of AIC values) may be supported.
+
+The \code{seed} argument is used to control the RNG state for stochastic components of
+the stepwise procedure. However, please note that the \code{seed} argument is currently
+experimental, and may be removed in future releases.
+
+A key feature of the stepwise covariate modelling functions is that they keep track
+of every tested model, and store information about this history internally within the
+\code{emaxnls} object that gets returned. Use the \code{emax_scm_history()} function to extract
+this history.
+}
 \examples{
 base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 
