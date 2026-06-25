@@ -1,11 +1,14 @@
 Package: emaxnls
 Title: Nonlinear Least Squares Estimation for Emax Regression Models
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-7648-6578"))
 Description: Provides estimation and covariate selection tools for Emax
-    regression models using nonlinear least squares methods.
+    regression models using nonlinear least squares methods. Supported
+    optimization algorithms are Gauss-Newton, Levenberg-Marquardt, and 
+    the port library for bounded optimization. The package also provides 
+    tools to assist in simulation work using Emax regression.
 License: MIT + file LICENSE
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
 BugReports: https://github.com/djnavarro/emaxnls/issues
