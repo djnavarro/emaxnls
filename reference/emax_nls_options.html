@@ -80,8 +80,16 @@ specified, weighted least squares is used</p></dd>
 
 
 <dt id="arg-na-action">na.action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
-<dd><p>How should missing values in the data be handled?</p>
-<p>At present there are three supported values for <code>optim_method</code>:</p><ul><li><p>"gauss": Estimate parameters using the Gauss-Newton algorithm. This is
+<dd><p>How should missing values in the data be handled?</p></dd>
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A list of settings</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>At present there are three supported values for <code>optim_method</code>:</p><ul><li><p>"gauss": Estimate parameters using the Gauss-Newton algorithm. This is
 equivalent to the using "default" option in <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls()</a></code></p></li>
 <li><p>"port": Estimate parameters using bounded optimization with the "nl2sol"
 algorithm from from the the Port library. Equivalent to "port" in <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls()</a></code></p></li>
@@ -93,14 +101,104 @@ testing suggests it does not perform well for these models, and rarely converges
 <p>The <code>optim_control</code> argument mirrors the corresponding control arguments for
 the respective optimization methods:</p><ul><li><p>For "gauss" and "port": the list should match the output of <code><a href="https://rdrr.io/r/stats/nls.control.html" class="external-link">stats::nls.control()</a></code></p></li>
 <li><p>For "levenberg": the list should match the output of <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.control.html" class="external-link">minpack.lm::nls.lm.control()</a></code></p></li>
-</ul><p>If <code>optim_control = NULL</code>, the default settings are used for the relevant function.</p></dd>
-
-</dl></div>
+</ul><p>If <code>optim_control = NULL</code>, the default settings are used for the relevant function.</p>
+    </div>
     <div class="section level2">
-    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of settings</p>
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="emax_nls.html">emax_nls()</a></code>, <code><a href="emax_nls_init.html">emax_nls_init()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># default options</span></span></span>
+<span class="r-in"><span><span class="fu">emax_nls_options</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "gauss"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$maxiter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$tol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$minFactor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0009765625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$printEval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$warnOnly</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$scaleOffset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$nDcentral</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $na.action$na.action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "na.omit"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># switch to levenberg-marquardt</span></span></span>
+<span class="r-in"><span><span class="fu">emax_nls_options</span><span class="op">(</span>optim_method <span class="op">=</span> <span class="st">"levenberg"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "levenberg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$ftol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.490116e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$ptol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.490116e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$gtol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$diag</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$epsfcn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$factor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$maxfev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> integer(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$maxiter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $optim_control$nprint</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $na.action$na.action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "na.omit"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

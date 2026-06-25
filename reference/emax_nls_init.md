@@ -27,6 +27,11 @@ emax_nls_init(structural_model, covariate_model, data)
 
 A data frame
 
+## See also
+
+[`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md),
+[`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
+
 ## Examples
 
 ``` r

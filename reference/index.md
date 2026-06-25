@@ -5,7 +5,7 @@
 Build Emax regression models
 
 - [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md) :
-  Emax model with arbitrary covariates (does not support interactions)
+  Estimate parameters for an Emax regression model
 - [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
   : Settings used to estimate Emax model
 - [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)

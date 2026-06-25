@@ -1,6 +1,6 @@
-# Emax model with arbitrary covariates (does not support interactions)
+# Estimate parameters for an Emax regression model
 
-Emax model with arbitrary covariates (does not support interactions)
+Estimate parameters for an Emax regression model
 
 ## Usage
 
@@ -21,7 +21,7 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 
 - data:
 
-  A data frame
+  A data frame that includes all relevant variables
 
 - init:
 
@@ -36,6 +36,49 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 ## Value
 
 An object of class `emaxnls`
+
+## Details
+
+The `emax_nls()` function is the workhorse function for estimating an
+Emax regression model. Pass a two-sided formula to the
+`structural_model` argument to specify the exposure variable and the
+response variable (e.g., `response ~ exposure`), and pass a list of
+formulas to the `covariate_model` argument to specify covariates of
+interest. At a minimum the covariate model requires specification of the
+covariate model for the E0 parameter, the Emax parameter, and the
+logEC50 parameter. For example, a formula like `E0 ~ age + group` would
+indicate that `age` and `group` should both be included as covariates on
+the baseline response E0. When no covariates are to be added, use a
+formula like `Emax ~ 1`.
+
+The `emax_nls()` function can support sigmoidal emax models as well as
+hyperbolic models. To build a sigmoidal model (where the Hill parameter)
+is estimated from the data, the `covariate_model` argument must also
+include a formula for the `logHill` parameter. For instance, if the
+covariate model includes `logHill ~ 1`, the model will estimate the
+value of the Hill parameter (with no covariates on it) from the data
+set.
+
+At present, `emax_nls()` does not support binary response variables, nor
+is it possible to specify interaction terms in the covariate model.
+
+When estimating model parameters, the `init` argument can be used to
+specify the starting values for the optimization. If unspecified, the
+[`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
+function is used to automatically guess sensible starting values. Please
+see the documentation of that function for additional details on
+manually specifying the initial values.
+
+The `emax_nls()` function currently supports three optimization methods:
+the Gauss-Newton algorithm, the Levenberg-Marquardt algorithm, and the
+'nl2sol' algorithm from the Port library. For more information on how to
+customize the optimization procedure, please see the documentation for
+[`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md).
+
+## See also
+
+[`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md),
+[`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
 
 ## Examples
 
