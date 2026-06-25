@@ -29,7 +29,7 @@ An object of class \code{emaxnls}
 Stepwise covariate modeling for Emax regression
 }
 \details{
-The emaxnls package supports stepwise covariate modelling via forward addition and
+The emaxnls package supports stepwise covariate modeling via forward addition and
 backward elimination. The \code{emax_scm_forward()} function supports forward addition,
 the \code{emax_scm_backward()} function supports backward elimination, and the syntax
 is designed to allow forward-backward procedures by piping a base model to
@@ -50,7 +50,7 @@ The \code{seed} argument is used to control the RNG state for stochastic compone
 the stepwise procedure. However, please note that the \code{seed} argument is currently
 experimental, and may be removed in future releases.
 
-A key feature of the stepwise covariate modelling functions is that they keep track
+A key feature of the stepwise covariate modeling functions is that they keep track
 of every tested model, and store information about this history internally within the
 \code{emaxnls} object that gets returned. Use the \code{emax_scm_history()} function to extract
 this history.

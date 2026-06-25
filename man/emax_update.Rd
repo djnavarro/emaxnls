@@ -25,7 +25,7 @@ Add or remove a covariate term from an Emax regression
 The \code{emax_add_term()} and \code{emax_remove_term()} functions take an existing Emax regression
 object, and allow the user to add or remove a specific term to the model. It is not expected
 that users will need these functions very often, but they provide the basis for the stepwise
-covariate modelling procedures that are very commonly used when building Emax regressions.
+covariate modeling procedures that are very commonly used when building Emax regressions.
 }
 \examples{
 mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)

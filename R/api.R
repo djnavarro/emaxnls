@@ -203,7 +203,7 @@ emax_converged <- function(mod) {
 #' The `emax_add_term()` and `emax_remove_term()` functions take an existing Emax regression
 #' object, and allow the user to add or remove a specific term to the model. It is not expected
 #' that users will need these functions very often, but they provide the basis for the stepwise
-#' covariate modelling procedures that are very commonly used when building Emax regressions.
+#' covariate modeling procedures that are very commonly used when building Emax regressions.
 #' 
 #' @seealso `emax_nls()`, [emax_scm]
 #' 
@@ -245,7 +245,7 @@ emax_remove_term <- function(mod, formula) {
 #' An object of class `emaxnls`
 #'
 #' @details
-#' The emaxnls package supports stepwise covariate modelling via forward addition and 
+#' The emaxnls package supports stepwise covariate modeling via forward addition and 
 #' backward elimination. The `emax_scm_forward()` function supports forward addition, 
 #' the `emax_scm_backward()` function supports backward elimination, and the syntax 
 #' is designed to allow forward-backward procedures by piping a base model to 
@@ -266,7 +266,7 @@ emax_remove_term <- function(mod, formula) {
 #' the stepwise procedure. However, please note that the `seed` argument is currently 
 #' experimental, and may be removed in future releases.
 #' 
-#' A key feature of the stepwise covariate modelling functions is that they keep track
+#' A key feature of the stepwise covariate modeling functions is that they keep track
 #' of every tested model, and store information about this history internally within the
 #' `emaxnls` object that gets returned. Use the `emax_scm_history()` function to extract
 #' this history.
