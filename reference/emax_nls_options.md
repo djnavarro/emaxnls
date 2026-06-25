@@ -57,8 +57,9 @@ At present there are three supported values for `optim_method`:
   "port" in [`nls()`](https://rdrr.io/r/stats/nls.html)
 
 - "levenberg": Estimate parameters using the Levenberg-Marquardt
-  algorithm. This is equivalent to using `nlsLM()` from the "minpack.lm"
-  package.
+  algorithm. This is equivalent to using
+  [`nlsLM()`](https://rdrr.io/pkg/minpack.lm/man/nlsLM.html) from the
+  "minpack.lm" package.
 
 Note that the Golub-Pereyra algorithm for partially linear least-squares
 (i.e. the "plinear" option in
@@ -127,7 +128,7 @@ emax_nls_options()
 #> 
 
 # switch to levenberg-marquardt
-emax_nls_options(optim_method = "levenberg")
+if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "levenberg")
 #> $optim_method
 #> [1] "levenberg"
 #> 
