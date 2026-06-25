@@ -50,6 +50,7 @@ forward_model <- emax_scm_forward(
   candidates = covariate_list, 
   threshold = .01
 )
+#> Warning: `nls()` did not converge
 forward_model
 #> Structural model:
 #> 

@@ -70,6 +70,20 @@ covariate model for a structural parameter</p></dd>
     <p>A data frame</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The <code><a href="emax_nls.html">emax_nls()</a></code> function requires that the user specify the initial
+values for the model parameters. Specifically, it expects to be supplied with
+a data frame with columns named <code>parameter</code>, <code>covariate</code>, and <code>start</code>. If a
+bounded optimization method is used (e.g. if the "port" method is used), the
+data frame also needs to have columns named <code>lower</code> and <code>upper</code>. The data
+frame should contain one row per parameter. In most cases the user does not
+need to define this manually, because <code>emax_nls_init()</code> can use heuristics to
+make a sensible guess about what to use as starting values. By default this
+is what <code><a href="emax_nls.html">emax_nls()</a></code> relies upon, automatically calling <code>emax_nls_init()</code>
+using the appropriate values for the <code>structural_model</code>, the <code>covariate_model</code>,
+and the <code>data</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="emax_nls.html">emax_nls()</a></code>, <code><a href="emax_nls_options.html">emax_nls_options()</a></code></p></div>
     </div>
@@ -83,12 +97,13 @@ covariate model for a structural parameter</p></dd>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   parameter covariate start  lower upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0        Intercept  9.73  0.528  18.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Emax      Intercept  7.74 -<span style="color: #BB0000;">1.47</span>   16.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> logEC50   Intercept  8.69  6.63   10.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0        cnt_a      0    -<span style="color: #BB0000;">7.84</span>   7.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0        Intercept  9.73  0.528 18.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax      Intercept  7.74 -<span style="color: #BB0000;">1.47</span>  16.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50   Intercept  8.69  6.63  10.8 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compare to the values estimated:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
@@ -97,7 +112,7 @@ covariate model for a structural parameter</p></dd>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0.4861467         5.0548076         9.9697250         8.2688405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0.4861467         5.0548075         9.9697250         8.2688405 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
