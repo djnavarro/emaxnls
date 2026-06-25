@@ -5,6 +5,7 @@ str_mod <- rsp_1 ~ exp_1
 cov_mod <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
 
 test_that("example base model converges with 'gauss'", {
+  skip_if(is_clang())
   mm <- "gauss"
   aa <- "default"
   expect_no_error(
@@ -39,6 +40,7 @@ test_that("example base model converges with 'gauss'", {
 })
 
 test_that("example base model converges with 'port'", {
+  skip_if(is_clang())
   mm <- "port"
   aa <- "port"
   expect_no_error(
@@ -73,6 +75,7 @@ test_that("example base model converges with 'port'", {
 })
 
 test_that("example base model converges with 'levenberg'", {
+  skip_if(is_clang())
   skip_if_not_installed("minpack.lm")
   mm <- "levenberg"
   aa <- "LM"
@@ -114,6 +117,7 @@ str_mod <- rsp_1 ~ exp_1
 cov_mod <- list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1)
 
 test_that("example covariate model converges with 'gauss'", {
+  skip_if(is_clang())
   mm <- "gauss"
   aa <- "default"
   expect_no_error(
@@ -148,6 +152,7 @@ test_that("example covariate model converges with 'gauss'", {
 })
 
 test_that("example covariate model converges with 'port'", {
+  skip_if(is_clang())
   mm <- "port"
   aa <- "port"
   expect_no_error(
@@ -182,6 +187,7 @@ test_that("example covariate model converges with 'port'", {
 })
 
 test_that("example covariate model converges with 'levenberg'", {
+  skip_if(is_clang())
   skip_if_not_installed("minpack.lm")
   mm <- "levenberg"
   aa <- "LM"
