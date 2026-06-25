@@ -21,6 +21,12 @@ An object of class \code{emaxnls}
 \description{
 Add or remove a covariate term from an Emax regression
 }
+\details{
+The \code{emax_add_term()} and \code{emax_remove_term()} functions take an existing Emax regression
+object, and allow the user to add or remove a specific term to the model. It is not expected
+that users will need these functions very often, but they provide the basis for the stepwise
+covariate modelling procedures that are very commonly used when building Emax regressions.
+}
 \examples{
 mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
@@ -29,4 +35,7 @@ if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 
 if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 
+}
+\seealso{
+\code{emax_nls()}, \link{emax_scm}
 }

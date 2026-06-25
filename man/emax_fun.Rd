@@ -64,3 +64,6 @@ if (emax_converged(mod)) {
 
 }
 }
+\seealso{
+\code{emax_nls()}
+}

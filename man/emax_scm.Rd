@@ -84,3 +84,6 @@ final_model
 emax_scm_history(final_model)
 
 }
+\seealso{
+\code{emax_nls()}
+}

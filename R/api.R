@@ -199,6 +199,15 @@ emax_converged <- function(mod) {
 #' @param mod An `emaxnls` object
 #' @param formula A formula such as E0 ~ AGE
 #'
+#' @details
+#' The `emax_add_term()` and `emax_remove_term()` functions take an existing Emax regression
+#' object, and allow the user to add or remove a specific term to the model. It is not expected
+#' that users will need these functions very often, but they provide the basis for the stepwise
+#' covariate modelling procedures that are very commonly used when building Emax regressions.
+#' 
+#' @seealso `emax_nls()`, [emax_scm]
+#' 
+#' 
 #' @returns
 #' An object of class `emaxnls`
 #'
@@ -261,6 +270,8 @@ emax_remove_term <- function(mod, formula) {
 #' of every tested model, and store information about this history internally within the
 #' `emaxnls` object that gets returned. Use the `emax_scm_history()` function to extract
 #' this history.
+#' 
+#' @seealso `emax_nls()`
 #' 
 #' @examples
 #' base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
@@ -335,6 +346,8 @@ emax_scm_history <- function(mod) {
 #' 
 #' The return value for `f` is a numeric vector of model predictions for
 #' each row in `data`, evaluated at parameters `params`. 
+#' 
+#' @seealso `emax_nls()`
 #'
 #' @export
 #' @examples
