@@ -290,7 +290,10 @@ anova.emaxnls <- function(object, ...) {
     .warn("dropping non-converging models")
     emaxnls_mods <- emaxnls_mods[converged]
   }
-  if (length(emaxnls_mods) < 2L) .abort("anova is only defined for sequences of models")
+  if (length(emaxnls_mods) < 2L) {
+    .warn("anova is only defined for sequences of models")
+    return(NULL)
+  }
   nls_mods <- .map(emaxnls_mods, .get_nls)
   do.call(stats::anova, nls_mods)
 }
