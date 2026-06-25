@@ -19,15 +19,16 @@ cov_list_big <- list(
 
 
 test_that("basic use of .emax_once_forward and .emax_once_backward does not error", {
-  skip_if(!.is_converged(mod_0))
-  skip_if(!.is_converged(mod_1))
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+  skip_if(!.is_converged(mod_1), "Skip if convergence fails on this architecture")
+
     expect_no_error(.emax_once_forward(mod_0, cov_list, threshold = .01))
     expect_no_error(.emax_once_backward(mod_1, cov_list, threshold = .001))
 })
 
 test_that(".emax_once_forward and .emax_once_backward select the expected terms", {
-  skip_if(!.is_converged(mod_0))
-  skip_if(!.is_converged(mod_1))
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+  skip_if(!.is_converged(mod_1), "Skip if convergence fails on this architecture")
 
   fwd_mod_0a <- .emax_once_forward(mod_0, cov_list, threshold = .05)  # should add E0 ~ cnt_a
   bck_mod_1a <- .emax_once_backward(mod_1, cov_list, threshold = .05) # should not remove 
@@ -43,7 +44,8 @@ test_that(".emax_once_forward and .emax_once_backward select the expected terms"
 })
 
 test_that("basic use of forward/backward scm works", {
-  skip_if(!.is_converged(mod_0))
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
   fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, threshold = .01)
   if (.is_converged(fwd)) {
     bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, threshold = .001)
@@ -54,7 +56,7 @@ test_that("basic use of forward/backward scm works", {
 })
 
 test_that("scm stores history in mod$info", {
-  skip_if(!.is_converged(mod_0))
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
   
   expect_true(is.null(mod_0$info$history))
 

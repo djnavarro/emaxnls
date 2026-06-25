@@ -6,21 +6,24 @@ mod <- emax_nls(
 
 test_that("simulate() returns a data frame", {
   skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not properly installed")
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if(!.is_converged(mod), "Skip if convergence fails on this architecture")
+  
   expect_no_error(simulate(mod))
   sim <- simulate(mod)
   expect_s3_class(sim, "data.frame")
 })
 
 test_that(".emax_fun() returns a function", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if(!.is_converged(mod), "Skip if convergence fails on this architecture")
+
   expect_no_error(.emax_fun(mod))
   fn <- .emax_fun(mod)
   expect_equal(formals(fn), pairlist(param = NULL, data = NULL))
 })
 
 test_that(".emax_fun() allows custom data and params", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if(!.is_converged(mod), "Skip if convergence fails on this architecture")
+
   fn <- .emax_fun(mod)
   pp <- coef(mod)
   e0 <- pp["E0_Intercept"]
@@ -35,7 +38,8 @@ test_that(".emax_fun() allows custom data and params", {
 })
 
 test_that(".emax_fun() mirrors predict() by default", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if(!.is_converged(mod), "Skip if convergence fails on this architecture")
+
   fn <- .emax_fun(mod)
   val_f <- fn()
   val_p <- predict(mod)

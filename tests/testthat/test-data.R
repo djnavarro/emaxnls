@@ -5,6 +5,6 @@ test_that("emax_df matches internal function", {
     expr = .simulate_emax_data(seed = 123L), 
     error = function(e) NULL
   )
-  skip_if(is.null(sim_df))
+  skip_if(is.null(sim_df), "Skip when .simulate_emax_data fails")
   expect_equal(emax_df, sim_df)
 })

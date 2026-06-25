@@ -1,6 +1,4 @@
-This is a new package, designed to support emax regression models in R, commonly used in pharmacometric modeling. It has been checked on rhub and on cran infrastructure. Test coverage is slightly restricted on CI (82%), primarily because model convergence varies across architectures so some test results are difficult to predict on CI, but the local test runs cover 95% of code.
-
-My apologies in advance if I have forgotten something.
+This is a resubmission of a new package designed to support emax regression models in R, commonly used in pharmacometric modeling (version updated from 0.1 to 0.1.1). The resubmission addresses the primary concern with the original submission, namely that the Description field in DESCRIPTION was not sufficiently detailed. I have also taken the opportunity to improve documentation and the unit tests in the resubmission.
 
 Kind regards
 Danielle Navarro
@@ -13,9 +11,9 @@ Danielle Navarro
 
 ## Rhub results 
 
-Tested on all architectures available on Rhub. The only failure is for rchk, which I believe to be innocuous as the package does not contain compiled code.
+Checked on the following architectures: 
 
-https://github.com/djnavarro/emaxnls/actions/runs/27332706889
+linux, m1-san, macos, macos-arm64, windows, atlas, c23, clang-asan, clang-ubsan, clang16, clang17, clang18, clang19, clang20, clang21, clang22, donttest, gcc-asan, gcc13, gcc14, gcc15, gcc16, intel, lto, mkl, nold, noremap, nosuggests, ubuntu-clang, ubuntu-gcc12, ubuntu-next, ubuntu-release, valgrind, vnu
 
 ## CRAN infrastructure tests
 
