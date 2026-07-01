@@ -20,7 +20,9 @@ specifying Emax regression models with covariates, using `nls()` as the
 underlying tool for fitting the model. It supports least squares
 estimation using the Gauss-Newton algorithm, the Levenberg-Marquardt
 algorithm (via `minpack.lm::nls.lm()`) and the ‘nl2sol’ algorithm from
-the Port library.
+the Port library. Continuous and binary response variables are both
+supported, with an iterative reweighted least squares method used to
+produce estiates in the binary case.
 
 ## Installation
 
