@@ -16,11 +16,21 @@ print.emaxnls_null <- function(x, ...) {
 
 #' Coefficients for an Emax regression
 #'
+#' Returns the named vector of fitted parameter values. Parameters involving a
+#' log transformation (logEC50, logHill) are returned on the log scale by
+#' default, which is the scale on which they are estimated.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
 #' @param ... Ignored
 #'
-#' @returns A vector of coefficients
+#' @details
+#' Setting `back_transform = TRUE` exponentiates logEC50 and logHill and drops
+#' the `log` prefix from their names, giving more interpretable units. This
+#' transformation is not applied automatically to the corresponding confidence
+#' intervals or standard errors returned by `confint()` and `vcov()`.
+#'
+#' @returns A named numeric vector of parameter estimates
 #' 
 #' @examples
 #' mod_c <- emax_nls(
@@ -55,11 +65,22 @@ coef.emaxnls <- function(object, back_transform = FALSE, ...) {
 }
 
 #' Variance-covariance matrix for an Emax regression
-#' 
+#'
+#' Returns the estimated variance-covariance matrix of the model parameters.
+#' The square roots of the diagonal entries are the parameter standard errors.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Ignored
 #'
-#' @returns A matrix
+#' @details
+#' For `emaxnls` objects, the matrix is derived from the Hessian of the NLS
+#' objective at the parameter estimates (via `stats::vcov.nls()`). For
+#' `emaxlogistic` objects, it is derived from the Jacobian of the IRLS
+#' algorithm at convergence, which provides the correct asymptotic covariance
+#' matrix under binomial sampling.
+#'
+#' @returns A square numeric matrix with rows and columns named by the model
+#'   parameters
 #' 
 #' @examples
 #' mod_c <- emax_nls(
@@ -84,11 +105,23 @@ vcov.emaxnls <- function(object, ...) {
 
 #' Residuals for an Emax regression model
 #'
+#' For `emaxnls` objects, returns raw residuals on the response scale. For
+#' `emaxlogistic` objects, Pearson or deviance residuals are available via
+#' the `type` argument.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param type For `emaxlogistic` objects: the type of residuals to return.
 #'   `"pearson"` (default) returns Pearson residuals; `"deviance"` returns
 #'   deviance residuals. Ignored for `emaxnls` objects.
 #' @param ... Ignored
+#'
+#' @details
+#' Pearson residuals are the raw residuals divided by `sqrt(mu * (1 - mu))`,
+#' the estimated standard deviation of a Bernoulli observation, giving a
+#' standardized measure of discrepancy. Deviance residuals are the signed
+#' square root of each observation's contribution to the total binomial
+#' deviance; their sum of squares equals the model deviance returned by
+#' `deviance()`.
 #'
 #' @returns A numeric vector of residuals
 #'
@@ -116,6 +149,11 @@ residuals.emaxnls <- function(object, ...) {
 }
 
 #' Simulate responses from an Emax regression model
+#'
+#' Generates simulated response datasets from a fitted Emax model, propagating
+#' uncertainty in the parameter estimates. This is useful for constructing
+#' simulation-based confidence bands, for predictive checks, or for
+#' bootstrapping downstream analyses.
 #'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param nsim Number of replicates
@@ -161,10 +199,21 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 
 #' Log-likelihood for an Emax regression model
 #'
+#' Evaluates the log-likelihood of a fitted Emax model at the maximum
+#' likelihood estimates. The returned object is compatible with `AIC()`,
+#' `BIC()`, and likelihood ratio tests via `anova()`.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param REML For `emaxnls` objects only `REML = FALSE` is supported.
 #'   Ignored for `emaxlogistic` objects.
 #' @param ... Ignored
+#'
+#' @details
+#' For `emaxnls` objects, the log-likelihood is computed under the assumption
+#' of normally distributed errors, as returned by `stats::logLik.nls()`. For
+#' `emaxlogistic` objects, it is the binomial log-likelihood evaluated at the
+#' fitted probabilities. The `logLik` object carries `df` (number of
+#' parameters) and `nobs` attributes.
 #'
 #' @returns An object of class `logLik` with at least one attribute, `"df"`
 #'   (degrees of freedom), giving the number of estimated parameters in the
@@ -194,11 +243,21 @@ logLik.emaxnls <- function(object, REML = FALSE, ...) {
 }
 
 
-#' Akaike information criterion / Bayesian information criterion 
+#' Akaike information criterion / Bayesian information criterion
+#'
+#' Computes AIC or BIC for one or more fitted Emax models. Lower values
+#' indicate a better-fitting model; values are only meaningful in comparison
+#' to other models fitted to the same response variable and dataset.
 #'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Optionally, more fitted model objects
 #' @param k Penalty per parameter in the AIC
+#'
+#' @details
+#' AIC applies a penalty of `2 * k` to minus twice the log-likelihood, where
+#' `k` is the number of estimated parameters. BIC applies `log(n) * k`,
+#' making it more conservative than AIC in large samples. When multiple models
+#' are passed, any non-converging models are dropped with a warning.
 #'
 #' @returns
 #' If just one object is provided, a numeric value with the corresponding AIC (or BIC). 
@@ -321,6 +380,9 @@ BIC.emaxnls <- function(object, ...) {
 
 #' Analysis of variance for Emax regression models
 #'
+#' Compares a sequence of nested Emax models. At least two model objects must
+#' be provided; all must be of the same class.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Additional fitted model objects of the same class
 #'
@@ -330,7 +392,9 @@ BIC.emaxnls <- function(object, ...) {
 #' `emaxlogistic` objects, computes a likelihood ratio chi-squared test
 #' comparing nested models; the test statistic is the difference in
 #' deviances and the reference distribution is chi-squared with degrees
-#' of freedom equal to the difference in the number of parameters.
+#' of freedom equal to the difference in the number of parameters. The
+#' nesting assumption is not checked; results are only interpretable when
+#' each successive model genuinely adds parameters to the previous one.
 #'
 #' @returns For `emaxnls` objects, an analysis of variance table for a
 #'   sequence of models. For `emaxlogistic` objects, a data frame with
@@ -380,12 +444,22 @@ anova.emaxnls <- function(object, ...) {
 }
 
 
-#' Residual standard deviation for Emax regression models
+#' Residual standard deviation for an Emax regression model
+#'
+#' Returns the estimated residual standard deviation from the NLS fit. This
+#' method is only available for `emaxnls` objects; there is no analogous
+#' quantity for `emaxlogistic` models.
 #'
 #' @param object An `emaxnls` object
 #' @param ... Ignored
 #'
-#' @returns Numeric
+#' @details
+#' Under the assumption of normally distributed errors, `sigma` estimates the
+#' standard deviation of the error term in the Emax model. It is computed as
+#' the square root of the residual sum of squares divided by the residual
+#' degrees of freedom.
+#'
+#' @returns A numeric scalar
 #' 
 #' @examples
 #' mod <- emax_nls(
@@ -404,10 +478,18 @@ sigma.emaxnls <- function(object, ...) {
 
 #' Number of observations for an Emax regression model
 #'
+#' Returns the number of observations used when fitting the model.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Ignored
 #'
-#' @returns Numeric
+#' @details
+#' This reflects the actual number of rows passed to the fitting algorithm
+#' after any missing-value handling specified via the `na.action` option in
+#' `emax_nls_options()` or `emax_logistic_options()`. The value is used
+#' internally by `BIC()` and `df.residual()`.
+#'
+#' @returns A numeric scalar
 #' 
 #' @examples
 #' mod_c <- emax_nls(
@@ -433,10 +515,18 @@ nobs.emaxnls <- function(object, ...) {
 
 #' Residual degrees of freedom for an Emax regression model
 #'
+#' Returns the residual degrees of freedom, equal to the number of
+#' observations minus the number of estimated parameters.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Ignored
 #'
-#' @returns Numeric
+#' @details
+#' For `emaxnls` objects, the value is obtained directly from the underlying
+#' `nls` fit. For `emaxlogistic` objects, it is computed as
+#' `nobs(object) - length(coef(object))`.
+#'
+#' @returns A numeric scalar
 #'
 #' @examples
 #' mod_c <- emax_nls(
@@ -463,11 +553,16 @@ df.residual.emaxnls <- function(object, ...) {
 
 #' Model deviance for an Emax regression model
 #'
+#' Returns a scalar measure of the overall lack of fit. The two model classes
+#' use different definitions of deviance that reflect their different
+#' likelihoods. Both measures decrease as the fit improves and are used
+#' internally by `anova()` for model comparison.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Ignored
 #'
-#' @returns Numeric. For `emaxnls` objects, returns the residual sum of
-#'   squares. For `emaxlogistic` objects, returns the binomial deviance
+#' @returns A numeric scalar. For `emaxnls` objects, returns the residual sum
+#'   of squares. For `emaxlogistic` objects, returns the binomial deviance
 #'   (`-2 * logLik`).
 #'
 #' @examples
@@ -496,13 +591,22 @@ deviance.emaxnls <- function(object, ...) {
 
 #' Fitted values for an Emax regression model
 #'
+#' Returns the model predictions at the original data points. For
+#' `emaxlogistic` objects, the `type` argument controls whether fitted
+#' probabilities or the linear predictor on the logit scale are returned.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param type For `emaxlogistic` objects: `"response"` (default) returns
 #'   fitted probabilities; `"link"` returns the linear predictor on the
 #'   logit scale. Ignored for `emaxnls` objects.
 #' @param ... Ignored
 #'
-#' @returns A numeric vector of fitted values
+#' @details
+#' For `emaxnls` objects, these are the predicted values from the Emax curve
+#' evaluated at each observation's exposure and covariate values.
+#'
+#' @returns A numeric vector of fitted values, with length equal to the number
+#'   of observations in the original data
 #'
 #' @examples
 #' mod_c <- emax_nls(
@@ -530,6 +634,11 @@ fitted.emaxnls <- function(object, ...) {
 
 #' Confidence intervals for Emax regression model parameters
 #'
+#' Computes profile likelihood confidence intervals for the model parameters.
+#' Profile likelihood intervals are generally preferred over Wald intervals in
+#' nonlinear settings because they do not assume the likelihood surface is
+#' quadratic near the estimates.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param parm A specification of which parameters are to be given confidence intervals,
 #'   either a vector of numbers or a vector of names. If `parm = NULL`, all parameters
@@ -537,6 +646,13 @@ fitted.emaxnls <- function(object, ...) {
 #' @param level The confidence level required
 #' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
 #' @param ... Ignored
+#'
+#' @details
+#' For `emaxnls` objects, this calls `stats::confint.nls()`. For
+#' `emaxlogistic` objects, the same profiling approach is applied to the
+#' final NLS fit from the IRLS algorithm at convergence. Setting
+#' `back_transform = TRUE` exponentiates the confidence limits for logEC50
+#' and logHill and drops the `log` prefix from their row names.
 #'
 #' @returns A matrix (or vector) with columns giving lower and upper confidence limits
 #'   for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in %
@@ -586,6 +702,10 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 
 #' Predicting from Emax regression models
 #'
+#' Generates predictions from a fitted Emax model, either at the original data
+#' points or at new covariate and exposure values supplied via `newdata`.
+#' Standard errors and confidence or prediction intervals can be requested.
+#'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param newdata A named list or data frame in which to look for variables with which to predict.
 #'   If `newdata` is missing the fitted values at the original data points are returned.
@@ -599,6 +719,12 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for the
 #'   intervals (if any) to be calculated.
 #' @param ... Ignored
+#'
+#' @details
+#' For `emaxlogistic` objects, when `interval` is set, the bounds are first
+#' computed on the link scale and then passed through the inverse logit
+#' transformation, ensuring they remain in the unit interval on the
+#' probability scale.
 #'
 #' @returns The return value differs slightly depending on inputs. When `se.fit = FALSE`,
 #'   it produces a vector or matrix of predictions with column names `fit`, `lwr` and `upr`
@@ -653,14 +779,25 @@ predict.emaxnls <- function(object,
 
 #' Summary of an Emax regression model
 #'
+#' Returns a tidy coefficient table for a fitted `emaxnls` model, combining
+#' parameter estimates, standard errors, t-statistics, p-values, and
+#' confidence intervals.
+#'
 #' @param object An `emaxnls` object
 #' @param conf_level Confidence level for interval estimates
 #' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
 #' @param ... Ignored
 #'
-#' @returns A data frame or tibble containing a table of parameter estimates and other statistical summaries. 
-#' Please note that the `summary()` method is experimental (moreso than other methods), and the return value 
-#' may be modified in future releases as the package matures.
+#' @details
+#' The `back_transform` argument applies the same log-scale transformation as
+#' in `coef()` and `confint()`, exponentiating logEC50 and logHill and
+#' renaming them. See `summary.emaxlogistic()` for the analogous method for
+#' binary response models, which reports z-statistics rather than t-statistics.
+#'
+#' @returns A data frame containing one row per model parameter with columns
+#'   for the estimate, standard error, test statistic, p-value, and confidence
+#'   interval bounds. The return format is experimental and may change in
+#'   future releases.
 #'
 #' @exportS3Method base::summary
 #' 

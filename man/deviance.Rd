@@ -16,12 +16,15 @@
 \item{...}{Ignored}
 }
 \value{
-Numeric. For \code{emaxnls} objects, returns the residual sum of
-squares. For \code{emaxlogistic} objects, returns the binomial deviance
+A numeric scalar. For \code{emaxnls} objects, returns the residual sum
+of squares. For \code{emaxlogistic} objects, returns the binomial deviance
 (\code{-2 * logLik}).
 }
 \description{
-Model deviance for an Emax regression model
+Returns a scalar measure of the overall lack of fit. The two model classes
+use different definitions of deviance that reflect their different
+likelihoods. Both measures decrease as the fit improves and are used
+internally by \code{anova()} for model comparison.
 }
 \examples{
 # emaxnls deviance (residual sum of squares)

@@ -16,10 +16,16 @@
 \item{...}{Ignored}
 }
 \value{
-Numeric
+A numeric scalar
 }
 \description{
-Residual degrees of freedom for an Emax regression model
+Returns the residual degrees of freedom, equal to the number of
+observations minus the number of estimated parameters.
+}
+\details{
+For \code{emaxnls} objects, the value is obtained directly from the underlying
+\code{nls} fit. For \code{emaxlogistic} objects, it is computed as
+\code{nobs(object) - length(coef(object))}.
 }
 \examples{
 mod_c <- emax_nls(

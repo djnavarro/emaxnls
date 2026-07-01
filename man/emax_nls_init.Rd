@@ -18,7 +18,8 @@ covariate model for a structural parameter}
 A data frame
 }
 \description{
-Construct an initial guess for the Emax model parameters
+Constructs a data frame of starting values and parameter bounds for the
+Emax NLS optimization, using heuristics derived from the data.
 }
 \details{
 The \code{emax_nls()} function requires that the user specify the initial

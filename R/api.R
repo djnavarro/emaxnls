@@ -1,6 +1,9 @@
 
 #' Estimate parameters for an Emax regression model
 #'
+#' Fits an Emax regression model for a continuous response variable using
+#' nonlinear least squares. For binary outcomes, use `emax_logistic()` instead.
+#'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each of specifying a 
 #' covariate model for a structural parameter
@@ -9,38 +12,21 @@
 #' @param opts Model fitting and optimization options. See `emax_nls_options()`
 #' 
 #' @details
-#' The `emax_nls()` function is the workhorse function for estimating an Emax
-#' regression model. Pass a two-sided formula to the `structural_model` argument
-#' to specify the exposure variable and the response variable 
-#' (e.g., `response ~ exposure`), and pass a list of formulas to the 
-#' `covariate_model` argument to specify covariates of interest. At a minimum
-#' the covariate model requires specification of the covariate model for the 
-#' E0 parameter, the Emax parameter, and the logEC50 parameter. For example, 
-#' a formula like `E0 ~ age + group` would indicate that `age` and `group` 
-#' should both be included as covariates on the baseline response E0. When 
-#' no covariates are to be added, use a formula like `Emax ~ 1`. 
+#' Pass a two-sided formula to `structural_model` to specify the response and
+#' exposure variables (e.g., `response ~ exposure`), and a list of formulas to
+#' `covariate_model` to specify covariates. At a minimum the covariate model
+#' requires formulas for E0, Emax, and logEC50. A formula like `E0 ~ age + group`
+#' includes `age` and `group` as covariates on the baseline response; use
+#' `Emax ~ 1` when no covariates are to be added for a parameter.
 #' 
-#' The `emax_nls()` function can support sigmoidal emax models as well as 
-#' hyperbolic models. To build a sigmoidal model (where the Hill parameter)
-#' is estimated from the data, the `covariate_model` argument must also 
-#' include a formula for the `logHill` parameter. For instance, if the 
-#' covariate model includes `logHill ~ 1`, the model will estimate the value
-#' of the Hill parameter (with no covariates on it) from the data set.
+#' To fit a sigmoidal Emax model (estimating the Hill parameter), include a
+#' formula for `logHill` in `covariate_model`, e.g. `logHill ~ 1`. Without
+#' this term a hyperbolic model is fitted. Interaction terms in the covariate
+#' model are not currently supported.
 #' 
-#' For binary response variables, use `emax_logistic()` instead. It is not
-#' currently possible to specify interaction terms in the covariate model. 
-#' 
-#' When estimating model parameters, the `init` argument can be used to 
-#' specify the starting values for the optimization. If unspecified, 
-#' the `emax_nls_init()` function is used to automatically guess sensible
-#' starting values. Please see the documentation of that function for 
-#' additional details on manually specifying the initial values. 
-#' 
-#' The `emax_nls()` function currently supports three optimization methods:
-#' the Gauss-Newton algorithm, the Levenberg-Marquardt algorithm, and the 
-#' 'nl2sol' algorithm from the Port library. For more information on how
-#' to customize the optimization procedure, please see
-#' the documentation for `emax_nls_options()`.
+#' Starting values are constructed automatically via `emax_nls_init()` unless
+#' the `init` argument is supplied manually. Three optimization algorithms are
+#' available; see `emax_nls_options()` for details.
 #'  
 #' @returns
 #' An object of class `emaxnls`
@@ -70,6 +56,10 @@ emax_nls <- function(structural_model,
 }
 
 #' Settings used to estimate Emax model
+#'
+#' Constructs a settings object controlling the optimization algorithm and
+#' other aspects of model fitting for `emax_nls()`. Pass the result to the
+#' `opts` argument of `emax_nls()`.
 #'
 #' @param optim_method Character string specifying the algorithm used to solve 
 #' the nonlinear least squares optimization problem. Supported options are 
@@ -133,6 +123,9 @@ emax_nls_options <- function(optim_method = "gauss",
 
 #' Construct an initial guess for the Emax model parameters
 #'
+#' Constructs a data frame of starting values and parameter bounds for the
+#' Emax NLS optimization, using heuristics derived from the data.
+#'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each of specifying a 
 #' covariate model for a structural parameter
@@ -179,16 +172,12 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 
 #' Check Emax regression model for convergence status
 #'
+#' Returns `TRUE` if the model converged during fitting and `FALSE` otherwise.
+#'
 #' @param mod An `emaxnls` object
 #'
-#' @returns
-#' Logical value
+#' @returns A logical value
 #'
-#' @details
-#' This is a convenience function that takes an Emax regression
-#' object as input. It returns `TRUE` if the optimization routine
-#' converged during model fitting, and `FALSE` if it did not.
-#' 
 #' @export
 emax_converged <- function(mod) {
   .is_converged(mod)
@@ -196,14 +185,16 @@ emax_converged <- function(mod) {
 
 #' Add or remove a covariate term from an Emax regression
 #'
+#' Add or remove a single covariate term from an existing Emax regression
+#' model, returning a new fitted model object.
+#'
 #' @param mod An `emaxnls` object
 #' @param formula A formula such as E0 ~ AGE
 #'
 #' @details
-#' The `emax_add_term()` and `emax_remove_term()` functions take an existing Emax regression
-#' object, and allow the user to add or remove a specific term to the model. It is not expected
-#' that users will need these functions very often, but they provide the basis for the stepwise
-#' covariate modeling procedures that are very commonly used when building Emax regressions.
+#' These functions are not typically called directly; they underpin the
+#' stepwise covariate modeling procedures that are very commonly used when
+#' building Emax regressions.
 #' 
 #' @seealso `emax_nls()`, [emax_scm]
 #' 
@@ -236,6 +227,11 @@ emax_remove_term <- function(mod, formula) {
 
 #' Stepwise covariate modeling for Emax regression
 #'
+#' Performs stepwise covariate modeling by forward addition
+#' (`emax_scm_forward()`), backward elimination (`emax_scm_backward()`), or
+#' both in sequence. Use `emax_scm_history()` to retrieve the history of all
+#' models tested during the procedure.
+#'
 #' @param mod An `emaxnls` object
 #' @param candidates A list of candidate covariates
 #' @param threshold Threshold for addition or removal
@@ -245,31 +241,22 @@ emax_remove_term <- function(mod, formula) {
 #' An object of class `emaxnls`
 #'
 #' @details
-#' The emaxnls package supports stepwise covariate modeling via forward addition and 
-#' backward elimination. The `emax_scm_forward()` function supports forward addition, 
-#' the `emax_scm_backward()` function supports backward elimination, and the syntax 
-#' is designed to allow forward-backward procedures by piping a base model to 
-#' `emax_scm_forward()` and then to `emax_scm_backward()`. In both cases, the 
-#' function takes an `emaxnls` regression object as the first argument, as well as 
-#' a list of candidate `covariates` to be considered for addition (in the forward
-#' addition case) or deletion (backward elimination). The input must be a named list,
-#' with the names corresponding to the relevant structural parameter, and the values
-#' should be character vector specifying covariates of interest. See the examples for
-#' an illustration of how this argument should be specified.
+#' The `candidates` argument must be a named list whose names correspond to
+#' structural parameters (e.g. `E0`, `Emax`) and whose values are character
+#' vectors of covariate names to consider. See the examples for an
+#' illustration.
 #' 
-#' As present, these functions only support stepwise regression using p-values as the
-#' criterion for addition or deletion. The `threshold` argument corresponds to the 
-#' threshold p-value to be used. In future, other methods (e.g., selection on the 
-#' basis of AIC values) may be supported.
+#' At present, covariate selection uses p-values as the criterion: a term is
+#' added if its p-value falls below `threshold` (forward) or removed if its
+#' p-value exceeds `threshold` (backward). Selection on AIC or other criteria
+#' may be supported in future.
 #' 
-#' The `seed` argument is used to control the RNG state for stochastic components of 
-#' the stepwise procedure. However, please note that the `seed` argument is currently 
-#' experimental, and may be removed in future releases.
+#' The `seed` argument controls the RNG state for any stochastic components of
+#' the procedure. It is currently experimental and may be removed in future
+#' releases.
 #' 
-#' A key feature of the stepwise covariate modeling functions is that they keep track
-#' of every tested model, and store information about this history internally within the
-#' `emaxnls` object that gets returned. Use the `emax_scm_history()` function to extract
-#' this history.
+#' Every model tested during the procedure is stored internally in the returned
+#' object. Use `emax_scm_history()` to extract this record.
 #' 
 #' @seealso `emax_nls()`
 #' 
@@ -359,19 +346,20 @@ emax_scm_history <- function(mod) {
 
 #' Construct Emax prediction function from model object
 #'
+#' Extracts a customizable prediction function from a fitted Emax model,
+#' allowing predictions to be evaluated at arbitrary data and parameter values.
+#'
 #' @param mod An `emaxnls` object
 #'
-#' @returns A function `f` with arguments `data` and `params`. The `data`
-#' argument defaults to the data used to estimate the model, and the
-#' `params` argument defaults to the estimated parameter values. Both
-#' can be customized, as long as `data` contains columns corresponding
-#' to each of the variables used by the model, and `params` is a named
-#' numeric vector of the appropriate length. The names for `params` 
-#' must exactly match the names of the vector returned by `coef(mod)`.
-#' 
-#' The return value for `f` is a numeric vector of model predictions for
-#' each row in `data`, evaluated at parameters `params`. 
-#' 
+#' @details
+#' The extracted function accepts `data` and `param` arguments. Both default
+#' to the values used when fitting the model. When supplying custom values,
+#' `data` must contain all variables used by the model, and `param` must be a
+#' named numeric vector whose names exactly match those returned by `coef(mod)`.
+#'
+#' @returns A function that evaluates the Emax model predictions for each row
+#' in `data` at the parameter values `param`.
+#'
 #' @seealso `emax_nls()`
 #'
 #' @export
@@ -421,6 +409,10 @@ emax_fun <- function(mod) {
 
 #' Estimate parameters for a logistic Emax regression model
 #'
+#' Fits a logistic Emax regression model for a binary response variable using
+#' iterative reweighted least squares (IRLS). For continuous outcomes, use
+#' `emax_nls()` instead.
+#'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each specifying a 
 #' covariate model for a structural parameter
@@ -429,9 +421,7 @@ emax_fun <- function(mod) {
 #' @param opts Model fitting and optimization options. See `emax_logistic_options()`
 #'
 #' @details
-#' The `emax_logistic()` function estimates a logistic Emax regression model for
-#' binary outcomes. The structural Emax model is placed on the log-odds (logit)
-#' scale:
+#' The structural Emax model is placed on the log-odds (logit) scale:
 #' 
 #' `logit(p) = E0 + Emax * x / (x + EC50)`  (hyperbolic)
 #' 
@@ -476,6 +466,10 @@ emax_logistic <- function(structural_model,
 
 #' Settings used to estimate a logistic Emax model
 #'
+#' Constructs a settings object controlling the NLS optimizer and IRLS
+#' convergence for `emax_logistic()`. Pass the result to the `opts` argument
+#' of `emax_logistic()`.
+#'
 #' @param optim_method Character string specifying the algorithm used for the
 #' weighted NLS step within each IRLS iteration. Supported options are 
 #' `"gauss"` (default), `"port"`, and `"levenberg"`. See `emax_nls_options()` 
@@ -518,6 +512,10 @@ emax_logistic_options <- function(optim_method = "gauss",
 
 #' Construct an initial guess for logistic Emax model parameters
 #'
+#' Constructs a data frame of starting values and parameter bounds for the
+#' logistic Emax model, using the same heuristic approach as `emax_nls_init()`
+#' applied to the empirical logit scale rather than the raw response.
+#'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each specifying a 
 #' covariate model for a structural parameter
@@ -525,11 +523,6 @@ emax_logistic_options <- function(optim_method = "gauss",
 #'
 #' @returns A data frame with columns `parameter`, `covariate`, `start`, 
 #' `lower`, and `upper`
-#'
-#' @details
-#' Constructs starting values for the logistic Emax model on the logit scale
-#' using the same heuristic approach as `emax_nls_init()`, applied to the
-#' empirical logits of the binary response rather than to the raw response.
 #'
 #' @seealso `emax_logistic()`, `emax_logistic_options()`
 #'

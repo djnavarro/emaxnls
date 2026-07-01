@@ -23,7 +23,10 @@
 A data frame with \code{nsim} columns named \code{sim_1}, \code{sim_2}, etc.
 }
 \description{
-Simulate responses from an Emax regression model
+Generates simulated response datasets from a fitted Emax model, propagating
+uncertainty in the parameter estimates. This is useful for constructing
+simulation-based confidence bands, for predictive checks, or for
+bootstrapping downstream analyses.
 }
 \details{
 The \code{simulate()} method samples new parameter values from the multivariate

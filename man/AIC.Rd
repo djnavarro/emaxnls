@@ -29,7 +29,15 @@ If multiple objects are provided, a data.frame with rows corresponding to the ob
 and columns representing the number of parameters in the model (\code{df}) and the AIC or BIC.
 }
 \description{
-Akaike information criterion / Bayesian information criterion
+Computes AIC or BIC for one or more fitted Emax models. Lower values
+indicate a better-fitting model; values are only meaningful in comparison
+to other models fitted to the same response variable and dataset.
+}
+\details{
+AIC applies a penalty of \code{2 * k} to minus twice the log-likelihood, where
+\code{k} is the number of estimated parameters. BIC applies \code{log(n) * k},
+making it more conservative than AIC in large samples. When multiple models
+are passed, any non-converging models are dropped with a warning.
 }
 \examples{
 mod_0 <- emax_nls(

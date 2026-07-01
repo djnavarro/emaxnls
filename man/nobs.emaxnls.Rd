@@ -12,10 +12,16 @@
 \item{...}{Ignored}
 }
 \value{
-Numeric
+A numeric scalar
 }
 \description{
-Number of observations for an Emax regression model
+Returns the number of observations used when fitting the model.
+}
+\details{
+This reflects the actual number of rows passed to the fitting algorithm
+after any missing-value handling specified via the \code{na.action} option in
+\code{emax_nls_options()} or \code{emax_logistic_options()}. The value is used
+internally by \code{BIC()} and \code{df.residual()}.
 }
 \examples{
 mod_c <- emax_nls(

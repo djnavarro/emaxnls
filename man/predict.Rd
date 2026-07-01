@@ -59,7 +59,15 @@ following components:
 }
 }
 \description{
-Predicting from Emax regression models
+Generates predictions from a fitted Emax model, either at the original data
+points or at new covariate and exposure values supplied via \code{newdata}.
+Standard errors and confidence or prediction intervals can be requested.
+}
+\details{
+For \code{emaxlogistic} objects, when \code{interval} is set, the bounds are first
+computed on the link scale and then passed through the inverse logit
+transformation, ensuring they remain in the unit interval on the
+probability scale.
 }
 \examples{
 mod_c <- emax_nls(

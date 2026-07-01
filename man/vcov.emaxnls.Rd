@@ -12,10 +12,19 @@
 \item{...}{Ignored}
 }
 \value{
-A matrix
+A square numeric matrix with rows and columns named by the model
+parameters
 }
 \description{
-Variance-covariance matrix for an Emax regression
+Returns the estimated variance-covariance matrix of the model parameters.
+The square roots of the diagonal entries are the parameter standard errors.
+}
+\details{
+For \code{emaxnls} objects, the matrix is derived from the Hessian of the NLS
+objective at the parameter estimates (via \code{stats::vcov.nls()}). For
+\code{emaxlogistic} objects, it is derived from the Jacobian of the IRLS
+algorithm at convergence, which provides the correct asymptotic covariance
+matrix under binomial sampling.
 }
 \examples{
 mod_c <- emax_nls(

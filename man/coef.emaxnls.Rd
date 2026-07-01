@@ -14,10 +14,18 @@
 \item{...}{Ignored}
 }
 \value{
-A vector of coefficients
+A named numeric vector of parameter estimates
 }
 \description{
-Coefficients for an Emax regression
+Returns the named vector of fitted parameter values. Parameters involving a
+log transformation (logEC50, logHill) are returned on the log scale by
+default, which is the scale on which they are estimated.
+}
+\details{
+Setting \code{back_transform = TRUE} exponentiates logEC50 and logHill and drops
+the \code{log} prefix from their names, giving more interpretable units. This
+transformation is not applied automatically to the corresponding confidence
+intervals or standard errors returned by \code{confint()} and \code{vcov()}.
 }
 \examples{
 mod_c <- emax_nls(

@@ -20,10 +20,17 @@ logit scale. Ignored for \code{emaxnls} objects.}
 \item{...}{Ignored}
 }
 \value{
-A numeric vector of fitted values
+A numeric vector of fitted values, with length equal to the number
+of observations in the original data
 }
 \description{
-Fitted values for an Emax regression model
+Returns the model predictions at the original data points. For
+\code{emaxlogistic} objects, the \code{type} argument controls whether fitted
+probabilities or the linear predictor on the logit scale are returned.
+}
+\details{
+For \code{emaxnls} objects, these are the predicted values from the Emax curve
+evaluated at each observation's exposure and covariate values.
 }
 \examples{
 mod_c <- emax_nls(

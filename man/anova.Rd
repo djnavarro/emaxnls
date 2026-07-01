@@ -21,7 +21,8 @@ sequence of models. For \code{emaxlogistic} objects, a data frame with
 columns \code{Df}, \code{Deviance}, \code{Df_diff}, \code{LRT}, and \verb{Pr(>Chi)}.
 }
 \description{
-Analysis of variance for Emax regression models
+Compares a sequence of nested Emax models. At least two model objects must
+be provided; all must be of the same class.
 }
 \details{
 For \code{emaxnls} objects, calls \code{stats::anova()} on the underlying \code{nls}
@@ -29,7 +30,9 @@ objects to produce an ANOVA table for the sequence of models. For
 \code{emaxlogistic} objects, computes a likelihood ratio chi-squared test
 comparing nested models; the test statistic is the difference in
 deviances and the reference distribution is chi-squared with degrees
-of freedom equal to the difference in the number of parameters.
+of freedom equal to the difference in the number of parameters. The
+nesting assumption is not checked; results are only interpretable when
+each successive model genuinely adds parameters to the previous one.
 }
 \examples{
 mod_0 <- emax_nls(

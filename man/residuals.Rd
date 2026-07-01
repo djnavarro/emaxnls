@@ -23,7 +23,17 @@ deviance residuals. Ignored for \code{emaxnls} objects.}
 A numeric vector of residuals
 }
 \description{
-Residuals for an Emax regression model
+For \code{emaxnls} objects, returns raw residuals on the response scale. For
+\code{emaxlogistic} objects, Pearson or deviance residuals are available via
+the \code{type} argument.
+}
+\details{
+Pearson residuals are the raw residuals divided by \code{sqrt(mu * (1 - mu))},
+the estimated standard deviation of a Bernoulli observation, giving a
+standardized measure of discrepancy. Deviance residuals are the signed
+square root of each observation's contribution to the total binomial
+deviance; their sum of squares equals the model deviance returned by
+\code{deviance()}.
 }
 \examples{
 mod_c <- emax_nls(

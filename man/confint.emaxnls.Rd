@@ -25,7 +25,17 @@ for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in 
 (by default 2.5\% and 97.5\%).
 }
 \description{
-Confidence intervals for Emax regression model parameters
+Computes profile likelihood confidence intervals for the model parameters.
+Profile likelihood intervals are generally preferred over Wald intervals in
+nonlinear settings because they do not assume the likelihood surface is
+quadratic near the estimates.
+}
+\details{
+For \code{emaxnls} objects, this calls \code{stats::confint.nls()}. For
+\code{emaxlogistic} objects, the same profiling approach is applied to the
+final NLS fit from the IRLS algorithm at convergence. Setting
+\code{back_transform = TRUE} exponentiates the confidence limits for logEC50
+and logHill and drops the \code{log} prefix from their row names.
 }
 \examples{
 mod_c <- emax_nls(

@@ -28,12 +28,12 @@ covariate model for a structural parameter}
 An object of class \code{emaxlogistic} (which also inherits from \code{emaxnls})
 }
 \description{
-Estimate parameters for a logistic Emax regression model
+Fits a logistic Emax regression model for a binary response variable using
+iterative reweighted least squares (IRLS). For continuous outcomes, use
+\code{emax_nls()} instead.
 }
 \details{
-The \code{emax_logistic()} function estimates a logistic Emax regression model for
-binary outcomes. The structural Emax model is placed on the log-odds (logit)
-scale:
+The structural Emax model is placed on the log-odds (logit) scale:
 
 \code{logit(p) = E0 + Emax * x / (x + EC50)}  (hyperbolic)
 

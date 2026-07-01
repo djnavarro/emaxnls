@@ -26,34 +26,28 @@ emax_scm_history(mod)
 An object of class \code{emaxnls}
 }
 \description{
-Stepwise covariate modeling for Emax regression
+Performs stepwise covariate modeling by forward addition
+(\code{emax_scm_forward()}), backward elimination (\code{emax_scm_backward()}), or
+both in sequence. Use \code{emax_scm_history()} to retrieve the history of all
+models tested during the procedure.
 }
 \details{
-The emaxnls package supports stepwise covariate modeling via forward addition and
-backward elimination. The \code{emax_scm_forward()} function supports forward addition,
-the \code{emax_scm_backward()} function supports backward elimination, and the syntax
-is designed to allow forward-backward procedures by piping a base model to
-\code{emax_scm_forward()} and then to \code{emax_scm_backward()}. In both cases, the
-function takes an \code{emaxnls} regression object as the first argument, as well as
-a list of candidate \code{covariates} to be considered for addition (in the forward
-addition case) or deletion (backward elimination). The input must be a named list,
-with the names corresponding to the relevant structural parameter, and the values
-should be character vector specifying covariates of interest. See the examples for
-an illustration of how this argument should be specified.
+The \code{candidates} argument must be a named list whose names correspond to
+structural parameters (e.g. \code{E0}, \code{Emax}) and whose values are character
+vectors of covariate names to consider. See the examples for an
+illustration.
 
-As present, these functions only support stepwise regression using p-values as the
-criterion for addition or deletion. The \code{threshold} argument corresponds to the
-threshold p-value to be used. In future, other methods (e.g., selection on the
-basis of AIC values) may be supported.
+At present, covariate selection uses p-values as the criterion: a term is
+added if its p-value falls below \code{threshold} (forward) or removed if its
+p-value exceeds \code{threshold} (backward). Selection on AIC or other criteria
+may be supported in future.
 
-The \code{seed} argument is used to control the RNG state for stochastic components of
-the stepwise procedure. However, please note that the \code{seed} argument is currently
-experimental, and may be removed in future releases.
+The \code{seed} argument controls the RNG state for any stochastic components of
+the procedure. It is currently experimental and may be removed in future
+releases.
 
-A key feature of the stepwise covariate modeling functions is that they keep track
-of every tested model, and store information about this history internally within the
-\code{emaxnls} object that gets returned. Use the \code{emax_scm_history()} function to extract
-this history.
+Every model tested during the procedure is stored internally in the returned
+object. Use \code{emax_scm_history()} to extract this record.
 }
 \examples{
 base_model <- emax_nls(

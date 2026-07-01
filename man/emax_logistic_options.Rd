@@ -34,7 +34,9 @@ deviance between successive iterations falls below \code{tol} (default 1e-6).}
 A list of settings
 }
 \description{
-Settings used to estimate a logistic Emax model
+Constructs a settings object controlling the NLS optimizer and IRLS
+convergence for \code{emax_logistic()}. Pass the result to the \code{opts} argument
+of \code{emax_logistic()}.
 }
 \examples{
 # default options

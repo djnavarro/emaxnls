@@ -19,12 +19,9 @@ A data frame with columns \code{parameter}, \code{covariate}, \code{start},
 \code{lower}, and \code{upper}
 }
 \description{
-Construct an initial guess for logistic Emax model parameters
-}
-\details{
-Constructs starting values for the logistic Emax model on the logit scale
-using the same heuristic approach as \code{emax_nls_init()}, applied to the
-empirical logits of the binary response rather than to the raw response.
+Constructs a data frame of starting values and parameter bounds for the
+logistic Emax model, using the same heuristic approach as \code{emax_nls_init()}
+applied to the empirical logit scale rather than the raw response.
 }
 \examples{
 emax_logistic_init(

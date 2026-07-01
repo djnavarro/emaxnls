@@ -24,7 +24,16 @@ An object of class \code{logLik} with at least one attribute, \code{"df"}
 model.
 }
 \description{
-Log-likelihood for an Emax regression model
+Evaluates the log-likelihood of a fitted Emax model at the maximum
+likelihood estimates. The returned object is compatible with \code{AIC()},
+\code{BIC()}, and likelihood ratio tests via \code{anova()}.
+}
+\details{
+For \code{emaxnls} objects, the log-likelihood is computed under the assumption
+of normally distributed errors, as returned by \code{stats::logLik.nls()}. For
+\code{emaxlogistic} objects, it is the binomial log-likelihood evaluated at the
+fitted probabilities. The \code{logLik} object carries \code{df} (number of
+parameters) and \code{nobs} attributes.
 }
 \examples{
 mod_c <- emax_nls(

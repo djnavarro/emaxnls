@@ -10,19 +10,18 @@ emax_fun(mod)
 \item{mod}{An \code{emaxnls} object}
 }
 \value{
-A function \code{f} with arguments \code{data} and \code{params}. The \code{data}
-argument defaults to the data used to estimate the model, and the
-\code{params} argument defaults to the estimated parameter values. Both
-can be customized, as long as \code{data} contains columns corresponding
-to each of the variables used by the model, and \code{params} is a named
-numeric vector of the appropriate length. The names for \code{params}
-must exactly match the names of the vector returned by \code{coef(mod)}.
-
-The return value for \code{f} is a numeric vector of model predictions for
-each row in \code{data}, evaluated at parameters \code{params}.
+A function that evaluates the Emax model predictions for each row
+in \code{data} at the parameter values \code{param}.
 }
 \description{
-Construct Emax prediction function from model object
+Extracts a customizable prediction function from a fitted Emax model,
+allowing predictions to be evaluated at arbitrary data and parameter values.
+}
+\details{
+The extracted function accepts \code{data} and \code{param} arguments. Both default
+to the values used when fitting the model. When supplying custom values,
+\code{data} must contain all variables used by the model, and \code{param} must be a
+named numeric vector whose names exactly match those returned by \code{coef(mod)}.
 }
 \examples{
 
