@@ -7,6 +7,11 @@
                          level = 0.95, 
                          ...) {
 
+  # Coerce to base data.frame: .fgrad() uses [i, v] subsetting, which for
+  # tibble inputs returns a 1x1 tibble rather than a scalar, corrupting both
+  # the return type and gradient computation.
+  if (!is.null(newdata)) newdata <- as.data.frame(newdata)
+
   if (is.null(newdata)) {
     # when the user does not specify new data, we can
     # pull the value and gradient directly from the 

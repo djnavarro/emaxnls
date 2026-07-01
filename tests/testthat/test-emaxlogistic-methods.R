@@ -407,3 +407,13 @@ test_that("predict(se.fit = TRUE) fit matches predict() on response scale", {
   pr_lst <- predict(mod_base, se.fit = TRUE)
   expect_equal(pr_lst$fit, pr_vec, tolerance = 1e-8, ignore_attr = TRUE)
 })
+
+test_that("predict with tibble newdata gives identical results to data.frame", {
+  nd_df  <- data.frame(exp_1 = emax_df$exp_1[1:5], cnt_a = emax_df$cnt_a[1:5])
+  nd_tbl <- tibble::as_tibble(nd_df)
+
+  p_df  <- predict(mod_cov, newdata = nd_df)
+  p_tbl <- predict(mod_cov, newdata = nd_tbl)
+  expect_type(p_tbl, "double")
+  expect_equal(p_tbl, p_df)
+})

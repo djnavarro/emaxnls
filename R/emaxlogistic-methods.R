@@ -174,10 +174,6 @@ predict.emaxlogistic <- function(object,
   if (!.is_converged(object)) return(.nls_null())
   type <- match.arg(type)
 
-  # Coerce to base data.frame: .fgrad() uses [i, v] subsetting which returns
-  # a 1x1 tibble (not a scalar) for tibble inputs, breaking formula evaluation
-  if (!is.null(newdata)) newdata <- as.data.frame(newdata)
-
   out <- .predict_nls(
     object$env$model,
     newdata,
