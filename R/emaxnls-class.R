@@ -45,7 +45,8 @@
       control   = control,
       algorithm = algorithm,
       lower     = lower, 
-      upper     = upper
+      upper     = upper,
+      weights   = weights
     ),
     envir = obj$env
   )
@@ -111,7 +112,8 @@
       control   = obj$info$opts$optim_control, 
       algorithm = .nls_method(obj$info$opts$optim_method), 
       lower     = obj$info$init$lower,
-      upper     = obj$info$init$upper
+      upper     = obj$info$init$upper,
+      weights   = obj$info$opts$weights
     ), 
     parent = parent.frame()
   )
@@ -231,37 +233,27 @@
   paste0("(", x, ")")
 }
 
-.nls_call <- function(formula, data, start, control, algorithm, lower, upper) {
+.nls_call <- function(formula, data, start, control, algorithm, lower, upper,
+                      weights = NULL) {
+
+  # Build base argument list; only include weights when non-NULL because
+  # stats::nls() uses missing(weights) internally and behaves differently
+  # when weights is explicitly passed as NULL vs. not passed at all.
+  base_args <- list(formula = formula, data = data, start = start, control = control)
+  if (!is.null(weights)) base_args$weights <- weights
+
   if (algorithm %in% c("default", "plinear")) {
-    return(.nls_safe(
-      formula = formula,
-      data = data,
-      start = start,
-      control = control,
-      algorithm = algorithm
-    ))
+    return(do.call(.nls_safe, c(base_args, list(algorithm = algorithm))))
   }
   if (algorithm == "port") {
-    return(.nls_safe(
-      formula = formula,
-      data = data,
-      start = start,
-      control = control,
-      algorithm = algorithm,
-      lower = lower,
-      upper = upper
-    ))
+    return(do.call(.nls_safe, c(base_args,
+                                list(algorithm = algorithm,
+                                     lower = lower, upper = upper))))
   }
   if (algorithm == "LM") {
     .validate_optim_method("levenberg")
-    return(.nls_lm_safe(
-      formula = formula,
-      data = data,
-      start = start,
-      control = control,
-      algorithm = algorithm
-    ))
-  } 
+    return(do.call(.nls_lm_safe, base_args))
+  }
 }
 
 .nls_method <- function(optim_method) {

@@ -27,8 +27,8 @@
 #' covariate model includes `logHill ~ 1`, the model will estimate the value
 #' of the Hill parameter (with no covariates on it) from the data set.
 #' 
-#' At present, `emax_nls()` does not support binary response variables, nor
-#' is it possible to specify interaction terms in the covariate model. 
+#' For binary response variables, use `emax_logistic()` instead. It is not
+#' currently possible to specify interaction terms in the covariate model. 
 #' 
 #' When estimating model parameters, the `init` argument can be used to 
 #' specify the starting values for the optimization. If unspecified, 
@@ -391,4 +391,131 @@ emax_scm_history <- function(mod) {
 #' }
 emax_fun <- function(mod) {
   .emax_fun(mod)
+}
+
+
+#' Estimate parameters for a logistic Emax regression model
+#'
+#' @param structural_model A two-sided formula of the form response ~ exposure
+#' @param covariate_model A list of two-sided formulas, each specifying a 
+#' covariate model for a structural parameter
+#' @param data A data frame that includes all relevant variables
+#' @param init Initial values and bounds for parameters. See `emax_logistic_init()`
+#' @param opts Model fitting and optimization options. See `emax_logistic_options()`
+#'
+#' @details
+#' The `emax_logistic()` function estimates a logistic Emax regression model for
+#' binary outcomes. The structural Emax model is placed on the log-odds (logit)
+#' scale:
+#' 
+#' `logit(p) = E0 + Emax * x / (x + EC50)`  (hyperbolic)
+#' 
+#' `logit(p) = E0 + Emax * x^h / (x^h + EC50^h)`  (sigmoidal)
+#' 
+#' Estimation uses iterative reweighted least squares (IRLS). At each outer 
+#' iteration a weighted NLS problem is solved using working weights and a working
+#' response derived from the current parameter estimates. This is equivalent to
+#' Fisher scoring and produces maximum likelihood estimates at convergence.
+#' 
+#' The interface mirrors `emax_nls()` exactly: the `structural_model` and 
+#' `covariate_model` arguments have the same specification, including support
+#' for sigmoidal models via a `logHill` term. The response variable in 
+#' `structural_model` must be a binary (0/1) numeric vector.
+#' 
+#' @returns An object of class `emaxlogistic` (which also inherits from `emaxnls`)
+#'
+#' @seealso `emax_logistic_options()`, `emax_logistic_init()`, `emax_nls()`
+#'
+#' @examples
+#' emax_logistic(
+#'   structural_model = rsp_2 ~ exp_1,
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+#'   data = emax_df
+#' )
+#'
+#' @export
+emax_logistic <- function(structural_model,
+                          covariate_model,
+                          data,
+                          init = NULL,
+                          opts = NULL) {
+  .emax_logistic(
+    structural_model = structural_model,
+    covariate_model  = covariate_model,
+    data             = data,
+    init             = init,
+    opts             = opts
+  )
+}
+
+
+#' Settings used to estimate a logistic Emax model
+#'
+#' @param optim_method Character string specifying the algorithm used for the
+#' weighted NLS step within each IRLS iteration. Supported options are 
+#' `"gauss"` (default), `"port"`, and `"levenberg"`. See `emax_nls_options()` 
+#' for details on each.
+#' @param optim_control A list of arguments controlling the NLS optimizer.
+#' @param quiet When `TRUE`, convergence warnings are suppressed.
+#' @param na.action How should missing values in the data be handled?
+#' @param max_iter Maximum number of IRLS outer iterations (default 25).
+#' @param tol Convergence tolerance: IRLS stops when the change in binomial
+#' deviance between successive iterations falls below `tol` (default 1e-6).
+#'
+#' @returns A list of settings
+#'
+#' @seealso `emax_logistic()`, `emax_logistic_init()`
+#'
+#' @examples
+#' # default options
+#' emax_logistic_options()
+#'
+#' # increase maximum IRLS iterations
+#' emax_logistic_options(max_iter = 50)
+#'
+#' @export
+emax_logistic_options <- function(optim_method = "gauss",
+                                  optim_control = NULL,
+                                  quiet = FALSE,
+                                  na.action = options("na.action"),
+                                  max_iter = 25,
+                                  tol = 1e-6) {
+  .emax_logistic_options(
+    optim_method  = optim_method,
+    optim_control = optim_control,
+    quiet         = quiet,
+    na.action     = na.action,
+    max_iter      = max_iter,
+    tol           = tol
+  )
+}
+
+
+#' Construct an initial guess for logistic Emax model parameters
+#'
+#' @param structural_model A two-sided formula of the form response ~ exposure
+#' @param covariate_model A list of two-sided formulas, each specifying a 
+#' covariate model for a structural parameter
+#' @param data A data frame
+#'
+#' @returns A data frame with columns `parameter`, `covariate`, `start`, 
+#' `lower`, and `upper`
+#'
+#' @details
+#' Constructs starting values for the logistic Emax model on the logit scale
+#' using the same heuristic approach as `emax_nls_init()`, applied to the
+#' empirical logits of the binary response rather than to the raw response.
+#'
+#' @seealso `emax_logistic()`, `emax_logistic_options()`
+#'
+#' @examples
+#' emax_logistic_init(
+#'   structural_model = rsp_2 ~ exp_1,
+#'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+#'   data = emax_df
+#' )
+#'
+#' @export
+emax_logistic_init <- function(structural_model, covariate_model, data) {
+  .emax_logistic_init(structural_model, covariate_model, data)
 }

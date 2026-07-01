@@ -68,6 +68,10 @@
   object$formula$expanded
 }
 
+.get_irls <- function(object) {
+  object$env$irls
+}
+
 .get_short_formula <- function(object) {
   fml <- unlist(.map(
     .x = object$formula$covariate,

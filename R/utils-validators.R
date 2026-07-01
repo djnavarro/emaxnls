@@ -121,6 +121,7 @@
 }
 
 .is_emaxnls <- function(x) inherits(x, "emaxnls")
+.is_emaxlogistic <- function(x) inherits(x, "emaxlogistic")
 
 .is_scalar_num <- function(x) is.numeric(x) & length(x) == 1L
 .is_scalar_chr <- function(x) is.character(x) & length(x) == 1L

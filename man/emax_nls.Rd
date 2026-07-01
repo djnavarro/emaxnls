@@ -43,8 +43,8 @@ include a formula for the \code{logHill} parameter. For instance, if the
 covariate model includes \code{logHill ~ 1}, the model will estimate the value
 of the Hill parameter (with no covariates on it) from the data set.
 
-At present, \code{emax_nls()} does not support binary response variables, nor
-is it possible to specify interaction terms in the covariate model.
+For binary response variables, use \code{emax_logistic()} instead. It is not
+currently possible to specify interaction terms in the covariate model.
 
 When estimating model parameters, the \code{init} argument can be used to
 specify the starting values for the optimization. If unspecified,
