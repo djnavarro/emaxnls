@@ -10,6 +10,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/djnavarro/emaxnls/graph/badge.svg)](https://app.codecov.io/gh/djnavarro/emaxnls)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/emaxnls)](https://CRAN.R-project.org/package=emaxnls)
 <!-- badges: end -->
 
 The **emaxnls** package provides tools for nonlinear least squares
@@ -22,7 +24,13 @@ the Port library.
 
 ## Installation
 
-You can install the development version of emaxnls from
+You can install the latest CRAN release with:
+
+``` r
+install.packages("emaxnls")
+```
+
+Alternatively, you can install the development version of emaxnls from
 [GitHub](https://github.com/) with:
 
 ``` r
