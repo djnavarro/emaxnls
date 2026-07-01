@@ -39,7 +39,7 @@ test_that("print() uses z_statistic column not t_statistic", {
 })
 
 test_that("print() returns object invisibly", {
-  expect_invisible(print(mod))
+  capture.output(expect_invisible(print(mod)))
 })
 
 mod_bad <- suppressWarnings(emax_logistic(

@@ -295,7 +295,7 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(vcov(mod_cov))
   expect_no_error(residuals(mod_cov))
   expect_no_error(fitted(mod_cov))
-  expect_no_error(print(mod_cov))
+  expect_no_error(capture.output(print(mod_cov)))
   expect_no_error(simulate(mod_cov))
   expect_no_error(logLik(mod_cov))
   expect_no_error(AIC(mod_cov))
@@ -315,17 +315,13 @@ test_that("AIC(), BIC(), and anova() can take multiple objects", {
 })
 
 test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
-  expect_no_error(AIC(mod_base, mod_cov, mod_bad))
-  expect_no_error(BIC(mod_base, mod_cov, mod_bad))
-  expect_no_error(anova(mod_base, mod_cov, mod_bad))
-
   expect_warning(AIC(mod_base, mod_cov, mod_bad))
   expect_warning(BIC(mod_base, mod_cov, mod_bad))
   expect_warning(anova(mod_base, mod_cov, mod_bad))
 
-  expect_s3_class(AIC(mod_base, mod_cov, mod_bad), "data.frame")
-  expect_s3_class(BIC(mod_base, mod_cov, mod_bad), "data.frame")
-  expect_s3_class(anova(mod_base, mod_cov, mod_bad), "data.frame")
+  expect_s3_class(suppressWarnings(AIC(mod_base, mod_cov, mod_bad)), "data.frame")
+  expect_s3_class(suppressWarnings(BIC(mod_base, mod_cov, mod_bad)), "data.frame")
+  expect_s3_class(suppressWarnings(anova(mod_base, mod_cov, mod_bad)), "data.frame")
 })
 
 
