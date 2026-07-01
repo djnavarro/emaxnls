@@ -215,6 +215,17 @@ predict.emaxlogistic <- function(object,
 }
 
 
+#' @rdname emax_fun
+#' @export
+emax_fun.emaxlogistic <- function(mod, ...) {
+  if (!.is_converged(mod)) return(.nls_null())
+  .f <- .emax_fun(mod)
+  function(param = NULL, data = NULL) {
+    stats::plogis(.f(param = param, data = data))
+  }
+}
+
+
 #' @rdname simulate
 #' @exportS3Method stats::simulate
 simulate.emaxlogistic <- function(object, nsim = 1, seed = NULL, ...) {
@@ -229,19 +240,35 @@ simulate.emaxlogistic <- function(object, nsim = 1, seed = NULL, ...) {
   )
   if (!is.null(seed)) set.seed(seed)
 
-  mu_hat  <- stats::coef(mod)
-  sigma   <- stats::vcov(mod)
-  draws   <- mvtnorm::rmvnorm(n = nsim, mean = mu_hat, sigma = sigma)
+  cov <- vcov(mod)
+  est <- coef(mod)
+  lbl <- names(coef(mod))
+  nr  <- nrow(mod$data)
 
-  mod_fn  <- emax_fun(mod)
-  n       <- stats::nobs(mod)
-  out     <- matrix(NA_real_, nrow = n, ncol = nsim)
-  colnames(out) <- paste0("sim_", seq_len(nsim))
+  var <- unique(stats::na.omit(mod$info$variables$var_name))
+  dat <- mod$data[, var]
+  dat$dat_id <- 1L:nr
 
-  for (i in seq_len(nsim)) {
-    eta_i    <- mod_fn(param = draws[i, ])
-    prob_i   <- .expit(eta_i)
-    out[, i] <- as.numeric(stats::runif(n) < prob_i)
+  par <- mvtnorm::rmvnorm(nsim, mean = est, sigma = cov)
+  colnames(par) <- lbl
+
+  .f <- .emax_fun(mod)
+
+  sim <- list()
+  for (ss in 1L:nsim) {
+    prob_ss <- .expit(.f(param = par[ss, ]))
+    sim[[ss]] <- .tibble(
+      dat_id = 1L:nr,
+      sim_id = ss,
+      mu  = prob_ss,
+      val = as.numeric(stats::runif(nr) < prob_ss)
+    )
   }
-  as.data.frame(out)
+  sim <- do.call(rbind, sim)
+  par <- .as_tibble(par)
+  par$sim_id <- 1L:nsim
+
+  out <- .left_join(sim, par, by = "sim_id")
+  out <- .left_join(out, dat, by = "dat_id")
+  .as_tibble(out)
 }
