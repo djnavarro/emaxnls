@@ -1,6 +1,7 @@
 # Construct an initial guess for the Emax model parameters
 
-Construct an initial guess for the Emax model parameters
+Constructs a data frame of starting values and parameter bounds for the
+Emax NLS optimization, using heuristics derived from the data.
 
 ## Usage
 

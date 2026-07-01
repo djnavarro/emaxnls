@@ -1,6 +1,7 @@
 # Check Emax regression model for convergence status
 
-Check Emax regression model for convergence status
+Returns `TRUE` if the model converged during fitting and `FALSE`
+otherwise.
 
 ## Usage
 
@@ -16,10 +17,4 @@ emax_converged(mod)
 
 ## Value
 
-Logical value
-
-## Details
-
-This is a convenience function that takes an Emax regression object as
-input. It returns `TRUE` if the optimization routine converged during
-model fitting, and `FALSE` if it did not.
+A logical value
