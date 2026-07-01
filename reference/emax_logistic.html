@@ -98,10 +98,10 @@ covariate model for a structural parameter</p></dd>
 iteration a weighted NLS problem is solved using working weights and a working
 response derived from the current parameter estimates. This is equivalent to
 Fisher scoring and produces maximum likelihood estimates at convergence.</p>
-<p>The interface mirrors <code><a href="emax_nls.html">emax_nls()</a></code> exactly: the <code>structural_model</code> and
-<code>covariate_model</code> arguments have the same specification, including support
-for sigmoidal models via a <code>logHill</code> term. The response variable in
-<code>structural_model</code> must be a binary (0/1) numeric vector.</p>
+<p>The interface mirrors the <code><a href="emax_nls.html">emax_nls()</a></code> function for continuous response models:
+the <code>structural_model</code> and <code>covariate_model</code> arguments have the same specification,
+including support for sigmoidal models via a <code>logHill</code> term. The response variable
+in <code>structural_model</code> must be a binary (0/1) numeric vector.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -61,12 +61,12 @@ working response derived from the current parameter estimates. This is
 equivalent to Fisher scoring and produces maximum likelihood estimates
 at convergence.
 
-The interface mirrors
+The interface mirrors the
 [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md)
-exactly: the `structural_model` and `covariate_model` arguments have the
-same specification, including support for sigmoidal models via a
-`logHill` term. The response variable in `structural_model` must be a
-binary (0/1) numeric vector.
+function for continuous response models: the `structural_model` and
+`covariate_model` arguments have the same specification, including
+support for sigmoidal models via a `logHill` term. The response variable
+in `structural_model` must be a binary (0/1) numeric vector.
 
 ## See also
 

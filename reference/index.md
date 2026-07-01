@@ -35,14 +35,12 @@ Stepwise covariate modeling for Emax regression models
 
 S3 methods for `emaxnls` and `emaxlogistic` objects
 
-- [`print(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/print.emaxnls.md)
+- [`print(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/print.md)
+  [`print(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/print.md)
   : Print an Emax regression model object
-- [`print(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/print.emaxlogistic.md)
-  : Print a logistic Emax regression model object
-- [`summary(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxnls.md)
+- [`summary(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/summary.md)
+  [`summary(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/summary.md)
   : Summary of an Emax regression model
-- [`summary(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxlogistic.md)
-  : Summary of a logistic Emax regression model
 - [`coef(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/coef.emaxnls.md)
   : Coefficients for an Emax regression
 - [`vcov(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/vcov.emaxnls.md)

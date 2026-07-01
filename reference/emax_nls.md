@@ -19,8 +19,8 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 
 - covariate_model:
 
-  A list of two-sided formulas, each of specifying a covariate model for
-  a structural parameter
+  A list of two-sided formulas, each specifying a covariate model for a
+  structural parameter
 
 - data:
 
