@@ -361,10 +361,10 @@ emax_scm_history <- function(mod) {
 #' **Scale of predictions.** For `emaxnls` objects the returned function
 #' produces predictions on the response scale (the same scale as the outcome
 #' variable). For `emaxlogistic` objects the structural Emax model is
-#' parameterised on the logit scale — `logit(p) = E0 + Emax * x / (x + EC50)`
+#' parameterized on the logit scale — `logit(p) = E0 + Emax * x / (x + EC50)`
 #' — but `emax_fun()` applies the inverse-logit transformation before
 #' returning, so predictions are on the probability scale. This is consistent
-#' with the default behaviour of `fitted()` and `predict()` for `emaxlogistic`
+#' with the default behavior of `fitted()` and `predict()` for `emaxlogistic`
 #' objects. If you need the linear predictor (logit scale) directly, use
 #' `fitted(object, type = "link")` or `predict(object, type = "link")`.
 #'
