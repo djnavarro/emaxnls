@@ -69,7 +69,7 @@ For binary outcomes, the package provides the `emax_logistic()` function, which 
 
 ```{r}
 # estimate parameters for a logistic Emax regression with covariates
-emax_nls(
+emax_logistic(
   structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter

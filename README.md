@@ -111,7 +111,7 @@ squares procedure.
 
 ``` r
 # estimate parameters for a logistic Emax regression with covariates
-emax_nls(
+emax_logistic(
   structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
@@ -122,9 +122,10 @@ emax_nls(
 )
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_2 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_2 
+#>   Emax type:      hyperbolic 
+#>   Response type: binary (logit link)
 #> 
 #> Covariate model:
 #> 
@@ -134,11 +135,14 @@ emax_nls(
 #> 
 #> Coefficient table:
 #> 
-#>   label             estimate std_error t_statistic  p_value ci_lower ci_upper
-#> 1 E0_cnt_a            0.0943   0.00850       11.1  4.48e-25   0.0776    0.111
-#> 2 E0_Intercept       -0.240    0.0559        -4.30 2.17e- 5  -0.350    -0.131
-#> 3 Emax_Intercept      0.968    0.148          6.54 1.90e-10   0.740     1.34 
-#> 4 logEC50_Intercept   9.28     0.374         24.8  9.20e-83   8.62     10.0
+#>   label             estimate std_error z_statistic  p_value ci_lower ci_upper
+#> 1 E0_cnt_a             0.659    0.0800        8.24 1.79e-16    0.501    0.816
+#> 2 E0_Intercept        -5.00     0.578        -8.64 5.43e-18   -6.14    -3.87 
+#> 3 Emax_Intercept       8.12     2.27          3.58 3.45e- 4    5.08    17.6  
+#> 4 logEC50_Intercept    9.78     0.518        18.9  1.20e-79    8.89    11.0  
+#> 
+#> Deviance: 331.4698 
+#> AIC:      339.4698
 ```
 
 ## Stepwise covariate modeling
