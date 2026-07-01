@@ -7,22 +7,35 @@
 \method{nobs}{emaxnls}(object, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
 \item{...}{Ignored}
 }
 \value{
-Numeric
+A numeric scalar
 }
 \description{
-Number of observations for an Emax regression model
+Returns the number of observations used when fitting the model.
+}
+\details{
+This reflects the actual number of rows passed to the fitting algorithm
+after any missing-value handling specified via the \code{na.action} option in
+\code{emax_nls_options()} or \code{emax_logistic_options()}. The value is used
+internally by \code{BIC()} and \code{df.residual()}.
 }
 \examples{
-mod <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+mod_c <- emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
-nobs(mod)
+nobs(mod_c)
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+nobs(mod_b)
 
 }

@@ -226,6 +226,9 @@
 
 .anova_p <- function(obj1, obj2) {
   a <- stats::anova(obj1, obj2)
+  if (.is_emaxlogistic(obj1)) {
+    return(a$`Pr(>Chi)`[2L])
+  }
   return(a$`Pr(>F)`[2L])
 }
 

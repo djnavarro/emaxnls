@@ -16,7 +16,7 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(coef(mod))
   expect_no_error(vcov(mod))
   expect_no_error(residuals(mod))
-  expect_no_error(print(mod))
+  expect_no_error(capture.output(print(mod)))
   if(requireNamespace("mvtnorm", quietly = TRUE)) expect_no_error(simulate(mod))
   expect_no_error(logLik(mod))
   expect_no_error(AIC(mod))
@@ -67,7 +67,7 @@ test_that("residuals() returns numeric vector of the same size as the data", {
 })
 
 # does not converge
-mod_bad <- emax_nls(
+mod_bad <- suppressWarnings(emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df,
@@ -75,7 +75,7 @@ mod_bad <- emax_nls(
     optim_method = "gauss",
     optim_control = stats::nls.control(maxiter = 1)
   )
-)
+))
 
 test_that("methods return emaxnls_null for models that do not converge", {
   expect_s3_class(coef(mod_bad), "emaxnls_null")
@@ -97,18 +97,14 @@ test_that("methods return emaxnls_null for models that do not converge", {
 test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
   if (!.is_converged(mod)) skip_on_ci()
   if (!.is_converged(mod_base)) skip_on_ci()
-  expect_no_error(AIC(mod_base, mod, mod_bad))
-  expect_no_error(BIC(mod_base, mod, mod_bad))
-  expect_no_error(anova(mod_base, mod, mod_bad))
 
   expect_warning(AIC(mod_base, mod, mod_bad))
   expect_warning(BIC(mod_base, mod, mod_bad))
   expect_warning(anova(mod_base, mod, mod_bad))
 
-  expect_s3_class(AIC(mod_base, mod, mod_bad), "data.frame")
-  expect_s3_class(BIC(mod_base, mod, mod_bad), "data.frame")
-  expect_s3_class(anova(mod_base, mod, mod_bad), "data.frame")
-
+  expect_s3_class(suppressWarnings(AIC(mod_base, mod, mod_bad)), "data.frame")
+  expect_s3_class(suppressWarnings(BIC(mod_base, mod, mod_bad)), "data.frame")
+  expect_s3_class(suppressWarnings(anova(mod_base, mod, mod_bad)), "data.frame")
 })
 
 test_that("summary() matches .coef_table()", {

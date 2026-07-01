@@ -7,11 +7,11 @@
 \method{confint}{emaxnls}(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
 \item{parm}{A specification of which parameters are to be given confidence intervals,
-either a vector of numbers or a vector of names. If \code{parm = NULL}, all parameters are
-considered.}
+either a vector of numbers or a vector of names. If \code{parm = NULL}, all parameters
+are considered.}
 
 \item{level}{The confidence level required}
 
@@ -20,27 +20,44 @@ considered.}
 \item{...}{Ignored}
 }
 \value{
-A matrix (or vector) with columns giving lower and upper confidence limits for each
-parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in \% (by default
-2.5\% and 97.5\%).
+A matrix (or vector) with columns giving lower and upper confidence limits
+for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in \%
+(by default 2.5\% and 97.5\%).
 }
 \description{
-Confidence intervals for Emax regression model parameters
+Computes profile likelihood confidence intervals for the model parameters.
+Profile likelihood intervals are generally preferred over Wald intervals in
+nonlinear settings because they do not assume the likelihood surface is
+quadratic near the estimates.
+}
+\details{
+For \code{emaxnls} objects, this calls \code{stats::confint.nls()}. For
+\code{emaxlogistic} objects, the same profiling approach is applied to the
+final NLS fit from the IRLS algorithm at convergence. Setting
+\code{back_transform = TRUE} exponentiates the confidence limits for logEC50
+and logHill and drops the \code{log} prefix from their row names.
 }
 \examples{
-mod <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+mod_c <- emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
 
 # 95\% confidence interval on the estimation scale
-confint(mod)
+confint(mod_c)
 
 # 90\% confidence interval on the estimation scale
-confint(mod, level = 0.9)
+confint(mod_c, level = 0.9)
 
 # 95\% confidence interval with log-scale parameters back-transformed
-confint(mod, back_transform = TRUE)
+confint(mod_c, back_transform = TRUE)
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+confint(mod_b)
 
 }

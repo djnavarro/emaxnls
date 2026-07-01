@@ -3,36 +3,50 @@ template:
   package: waeponwifestre
   
 reference:
-- title: Build 
-  desc: Build Emax regression models
+- title: Build Emax NLS models
+  desc: Build and modify continuous response Emax regression models
 - contents:
   - emax_nls
   - emax_nls_options
   - emax_nls_init
-  - emax_converged
-  - emax_scm
-  - emax_update
-  - emax_fun
-- title: Methods
-  desc: Methods for Emax regression objects
+- title: Build Emax logistic models
+  desc: Build binary response Emax logistic regression models
+- contents:
+  - emax_logistic
+  - emax_logistic_options
+  - emax_logistic_init
+- title: Covariate selection
+  desc: Stepwise covariate modeling for Emax regression models
+- contents:
+  - emax_scm_forward
+  - emax_scm_backward
+  - emax_scm_history
+- title: Methods for Emax regression objects
+  desc: S3 methods for `emaxnls` and `emaxlogistic` objects
 - contents:
   - print.emaxnls
+  - print.emaxlogistic
   - summary.emaxnls
+  - summary.emaxlogistic
   - coef.emaxnls
   - vcov.emaxnls
   - confint.emaxnls
-  - residuals.emaxnls
-  - logLik.emaxnls
-  - AIC.emaxnls
-  - anova.emaxnls
-  - simulate.emaxnls
-  - predict.emaxnls
-  - deviance.emaxnls
-  - df.residual.emaxnls
-  - fitted.emaxnls 
   - nobs.emaxnls
   - sigma.emaxnls
+  - residuals
+  - fitted
+  - predict
+  - simulate
+  - logLik
+  - AIC
+  - anova
+  - deviance
+  - df.residual
 - title: Other
-  desc: Other exported objects
+  desc: Other exported functions and objects
 - contents:
   - emax_df
+  - emax_converged
+  - emax_add_term
+  - emax_remove_term
+  - emax_fun

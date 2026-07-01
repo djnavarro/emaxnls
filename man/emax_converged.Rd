@@ -10,13 +10,8 @@ emax_converged(mod)
 \item{mod}{An \code{emaxnls} object}
 }
 \value{
-Logical value
+A logical value
 }
 \description{
-Check Emax regression model for convergence status
-}
-\details{
-This is a convenience function that takes an Emax regression
-object as input. It returns \code{TRUE} if the optimization routine
-converged during model fitting, and \code{FALSE} if it did not.
+Returns \code{TRUE} if the model converged during fitting and \code{FALSE} otherwise.
 }

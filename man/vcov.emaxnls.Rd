@@ -7,22 +7,38 @@
 \method{vcov}{emaxnls}(object, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
 \item{...}{Ignored}
 }
 \value{
-A matrix
+A square numeric matrix with rows and columns named by the model
+parameters
 }
 \description{
-Variance-covariance matrix for an Emax regression
+Returns the estimated variance-covariance matrix of the model parameters.
+The square roots of the diagonal entries are the parameter standard errors.
+}
+\details{
+For \code{emaxnls} objects, the matrix is derived from the Hessian of the NLS
+objective at the parameter estimates (via \code{stats::vcov.nls()}). For
+\code{emaxlogistic} objects, it is derived from the Jacobian of the IRLS
+algorithm at convergence, which provides the correct asymptotic covariance
+matrix under binomial sampling.
 }
 \examples{
-mod <- emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-vcov(mod)
+vcov(mod_c)
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+vcov(mod_b)
 
 }

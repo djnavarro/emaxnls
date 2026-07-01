@@ -65,6 +65,30 @@ test_that("predict with newdata produces expected values", {
   expect_equal(pr_int_nd$upr, pr_int$upr[ii], tolerance = .00001)
 })
 
+test_that("predict with tibble newdata gives identical results to data.frame", {
+  if (!.is_converged(mod)) skip_on_ci()
+  nd_df  <- data.frame(exp_1 = emax_df$exp_1[120:125], cnt_a = emax_df$cnt_a[120:125])
+  nd_tbl <- tibble::as_tibble(nd_df)
+
+  # plain vector: tibble must not silently return a list
+  p_df  <- predict(mod, newdata = nd_df)
+  p_tbl <- predict(mod, newdata = nd_tbl)
+  expect_type(p_tbl, "double")
+  expect_equal(p_tbl, p_df)
+
+  # se.fit: $fit must be a numeric vector, not a list
+  ps_df  <- predict(mod, newdata = nd_df, se.fit = TRUE)
+  ps_tbl <- predict(mod, newdata = nd_tbl, se.fit = TRUE)
+  expect_type(ps_tbl$fit, "double")
+  expect_equal(ps_tbl, ps_df)
+
+  # interval: must not error with "non-numeric argument to binary operator"
+  pi_df  <- predict(mod, newdata = nd_df, interval = "confidence")
+  pi_tbl <- predict(mod, newdata = nd_tbl, interval = "confidence")
+  expect_s3_class(pi_tbl, "data.frame")
+  expect_equal(pi_tbl, pi_df)
+})
+
 # set up for a simpler nls model based loosely on SSlogis
 old_dat <- data.frame(
   conc = c(0.04, 0.04, 0.19, 0.19, 0.39, 0.39, 0.78, 0.78, 1.56, 1.56),

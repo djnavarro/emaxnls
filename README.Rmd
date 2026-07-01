@@ -34,7 +34,7 @@ pak::pak("djnavarro/emaxnls")
 
 ## Minimal example
 
-An Emax regression model is estimated using the `emax_nls()` function, using the `structural_model` argument to specify the exposure variable and the response variable, and the `covariate_model` argument to specify covariates to be estimated for structural parameters (e.g., E0, Emax).
+An Emax regression model for continuous response variables is estimated using the `emax_nls()` function, using the `structural_model` argument to specify the exposure variable and the response variable, and the `covariate_model` argument to specify covariates to be estimated for structural parameters (e.g., E0, Emax).
 
 ```{r}
 library(tibble)
@@ -47,6 +47,23 @@ emax_df
 # estimate parameters for an Emax regression with covariates
 emax_nls(
   structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
+  covariate_model = list(
+    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+    Emax ~ 1,    # no covariates on Emax
+    logEC50 ~ 1  # no covariates on logEC50
+  ), 
+  data = emax_df
+)
+```
+
+## Logistic Emax regression
+
+For binary outcomes, the package provides the `emax_logistic()` function, which estimates the parameters of a logistic Emax model. Under this model a logit-link function and binomial family is assumed, and the parameters are estimated using an iterative reweighted nonlinear least squares procedure.
+
+```{r}
+# estimate parameters for a logistic Emax regression with covariates
+emax_nls(
+  structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
     Emax ~ 1,    # no covariates on Emax

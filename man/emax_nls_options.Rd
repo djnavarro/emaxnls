@@ -32,7 +32,9 @@ specified, weighted least squares is used}
 A list of settings
 }
 \description{
-Settings used to estimate Emax model
+Constructs a settings object controlling the optimization algorithm and
+other aspects of model fitting for \code{emax_nls()}. Pass the result to the
+\code{opts} argument of \code{emax_nls()}.
 }
 \details{
 At present there are three supported values for \code{optim_method}:

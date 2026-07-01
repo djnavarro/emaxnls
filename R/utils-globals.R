@@ -34,5 +34,6 @@ utils::globalVariables(c(
   "param_name",
   "cov_logec50_terms",
   "cov_loghill_terms",
-  "param_type"
+  "param_type",
+  "weights"
 ))

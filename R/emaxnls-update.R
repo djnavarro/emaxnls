@@ -40,10 +40,10 @@
   )
 
   # re-run
-  updated <- .emax_nls(
+  updated <- .refit(
+    mod = mod,
     structural_model = structural_model,
     covariate_model = covariate_model,
-    data = .get_data(mod),
     init = init,
     opts = .get_options(mod)
   )
@@ -94,13 +94,34 @@
   )
 
   # re-run
-  updated <- .emax_nls(
+  updated <- .refit(
+    mod = mod,
     structural_model = structural_model,
     covariate_model = covariate_model,
-    data = .get_data(mod),
     init = init,
     opts = .get_options(mod)
   )
 
   return(updated)
+}
+
+
+# dispatch refitting to the correct engine based on class
+.refit <- function(mod, structural_model, covariate_model, init, opts) {
+  if (.is_emaxlogistic(mod)) {
+    return(.emax_logistic(
+      structural_model = structural_model,
+      covariate_model  = covariate_model,
+      data             = .get_data(mod),
+      init             = init,
+      opts             = opts
+    ))
+  }
+  .emax_nls(
+    structural_model = structural_model,
+    covariate_model  = covariate_model,
+    data             = .get_data(mod),
+    init             = init,
+    opts             = opts
+  )
 }
