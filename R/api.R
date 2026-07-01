@@ -274,7 +274,11 @@ emax_remove_term <- function(mod, formula) {
 #' @seealso `emax_nls()`
 #' 
 #' @examples
-#' base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
+#' base_model <- emax_nls(
+#'   structural_model = rsp_1 ~ exp_1, 
+#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
 #' 
 #' covariate_list <- list(
 #'   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
@@ -300,6 +304,27 @@ emax_remove_term <- function(mod, formula) {
 #' # show the history of all models tested during the forward addition
 #' # step and the backward deletion step
 #' emax_scm_history(final_model)
+#' 
+#' # example using binary outcomes
+#' base_model_logistic <- emax_nls(
+#'   structural_model = rsp_2 ~ exp_1, 
+#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#'   data = emax_df
+#' )
+#' forward_model_logistic <- emax_scm_forward(
+#'   mod = base_model_logistic,
+#'   candidates = covariate_list, 
+#'   threshold = .01
+#' )
+#' final_model_logistic <- emax_scm_backward(
+#'   mod = forward_model_logistic,
+#'   candidates = covariate_list, 
+#'   threshold = .001
+#' )
+#' 
+#' final_model_logistic
+#' 
+#' emax_scm_history(final_model_logistic)
 #' 
 #' @name emax_scm
 NULL
