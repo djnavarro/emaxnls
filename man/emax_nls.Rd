@@ -9,7 +9,7 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 \arguments{
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
-\item{covariate_model}{A list of two-sided formulas, each of specifying a
+\item{covariate_model}{A list of two-sided formulas, each specifying a
 covariate model for a structural parameter}
 
 \item{data}{A data frame that includes all relevant variables}

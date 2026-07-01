@@ -1,11 +1,5 @@
 
-#' Print a logistic Emax regression model object
-#'
-#' @param x An `emaxlogistic` object
-#' @param ... Ignored
-#'
-#' @returns Invisibly returns the original object
-#'
+#' @rdname print
 #' @exportS3Method base::print
 print.emaxlogistic <- function(x, ...) {
 
@@ -38,18 +32,7 @@ print.emaxlogistic <- function(x, ...) {
   return(invisible(x))
 }
 
-
-#' Summary of a logistic Emax regression model
-#'
-#' @param object An `emaxlogistic` object
-#' @param conf_level Confidence level for interval estimates
-#' @param back_transform Should log-scaled parameters (logEC50, logHill) be
-#'   back-transformed to the original scale?
-#' @param ... Ignored
-#'
-#' @returns A data frame containing a table of parameter estimates with
-#'   z-statistics, p-values, and confidence intervals
-#'
+#' @rdname summary
 #' @exportS3Method base::summary
 summary.emaxlogistic <- function(object, conf_level = 0.95,
                                  back_transform = FALSE, ...) {

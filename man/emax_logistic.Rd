@@ -44,10 +44,10 @@ iteration a weighted NLS problem is solved using working weights and a working
 response derived from the current parameter estimates. This is equivalent to
 Fisher scoring and produces maximum likelihood estimates at convergence.
 
-The interface mirrors \code{emax_nls()} exactly: the \code{structural_model} and
-\code{covariate_model} arguments have the same specification, including support
-for sigmoidal models via a \code{logHill} term. The response variable in
-\code{structural_model} must be a binary (0/1) numeric vector.
+The interface mirrors the \code{emax_nls()} function for continuous response models:
+the \code{structural_model} and \code{covariate_model} arguments have the same specification,
+including support for sigmoidal models via a \code{logHill} term. The response variable
+in \code{structural_model} must be a binary (0/1) numeric vector.
 }
 \examples{
 emax_logistic(

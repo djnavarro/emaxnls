@@ -24,10 +24,8 @@ reference:
 - title: Methods for Emax regression objects
   desc: S3 methods for `emaxnls` and `emaxlogistic` objects
 - contents:
-  - print.emaxnls
-  - print.emaxlogistic
-  - summary.emaxnls
-  - summary.emaxlogistic
+  - print
+  - summary
   - coef.emaxnls
   - vcov.emaxnls
   - confint.emaxnls

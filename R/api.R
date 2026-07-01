@@ -5,7 +5,7 @@
 #' nonlinear least squares. For binary outcomes, use `emax_logistic()` instead.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each of specifying a 
+#' @param covariate_model A list of two-sided formulas, each specifying a 
 #' covariate model for a structural parameter
 #' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_nls_init()`
@@ -440,10 +440,10 @@ emax_fun <- function(mod, ...) {
 #' response derived from the current parameter estimates. This is equivalent to
 #' Fisher scoring and produces maximum likelihood estimates at convergence.
 #' 
-#' The interface mirrors `emax_nls()` exactly: the `structural_model` and 
-#' `covariate_model` arguments have the same specification, including support
-#' for sigmoidal models via a `logHill` term. The response variable in 
-#' `structural_model` must be a binary (0/1) numeric vector.
+#' The interface mirrors the `emax_nls()` function for continuous response models: 
+#' the `structural_model` and `covariate_model` arguments have the same specification, 
+#' including support for sigmoidal models via a `logHill` term. The response variable 
+#' in `structural_model` must be a binary (0/1) numeric vector.
 #' 
 #' @returns An object of class `emaxlogistic` (which also inherits from `emaxnls`)
 #'
