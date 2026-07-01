@@ -252,3 +252,157 @@ test_that("emax_remove_term() preserves emaxlogistic class", {
   expect_s3_class(mod_updated, "emaxnls")
   expect_true(emax_converged(mod_updated))
 })
+
+test_that("emax_add_term() updates the covariate model and parameter count", {
+  mod_added <- emax_add_term(mod_base, E0 ~ cnt_a)
+  expect_true("E0_cnt_a" %in% names(coef(mod_added)))
+  expect_equal(length(coef(mod_added)), length(coef(mod_base)) + 1L)
+  expect_true("cnt_a" %in% all.vars(.get_covariate_formula(mod_added, "E0")))
+})
+
+test_that("emax_remove_term() updates the covariate model and parameter count", {
+  mod_removed <- emax_remove_term(mod_cov, E0 ~ cnt_a)
+  expect_false("E0_cnt_a" %in% names(coef(mod_removed)))
+  expect_equal(length(coef(mod_removed)), length(coef(mod_cov)) - 1L)
+  expect_false("cnt_a" %in% all.vars(.get_covariate_formula(mod_removed, "E0")))
+})
+
+test_that("adding and then removing a term leaves the model structure unchanged", {
+  mod_add <- emax_add_term(mod_base, E0 ~ bin_d)
+  mod_del <- emax_remove_term(mod_add, E0 ~ bin_d)
+  expect_equal(names(coef(mod_del)), names(coef(mod_base)))
+  expect_equal(
+    .get_covariate_formula(mod_del),
+    .get_covariate_formula(mod_base),
+    ignore_attr = TRUE
+  )
+})
+
+test_that("emax_add_term() messages when term already exists", {
+  expect_message(emax_add_term(mod_cov, E0 ~ cnt_a), class = "emaxnls_message")
+})
+
+test_that("emax_remove_term() messages when term is not present", {
+  expect_message(emax_remove_term(mod_base, E0 ~ cnt_a), class = "emaxnls_message")
+})
+
+
+# smoke test --------------------------------------------------------------
+
+test_that("methods do not throw errors with basic use", {
+  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
+  expect_no_error(coef(mod_cov))
+  expect_no_error(vcov(mod_cov))
+  expect_no_error(residuals(mod_cov))
+  expect_no_error(fitted(mod_cov))
+  expect_no_error(print(mod_cov))
+  expect_no_error(simulate(mod_cov))
+  expect_no_error(logLik(mod_cov))
+  expect_no_error(AIC(mod_cov))
+  expect_no_error(BIC(mod_cov))
+  expect_no_error(predict(mod_cov))
+  expect_no_error(confint(mod_cov))
+  expect_no_error(nobs(mod_cov))
+  expect_no_error(deviance(mod_cov))
+  expect_no_error(df.residual(mod_cov))
+  expect_no_error(anova(mod_base, mod_cov))
+})
+
+test_that("AIC(), BIC(), and anova() can take multiple objects", {
+  expect_no_error(AIC(mod_base, mod_cov))
+  expect_no_error(BIC(mod_base, mod_cov))
+  expect_no_error(anova(mod_base, mod_cov))
+})
+
+test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
+  expect_no_error(AIC(mod_base, mod_cov, mod_bad))
+  expect_no_error(BIC(mod_base, mod_cov, mod_bad))
+  expect_no_error(anova(mod_base, mod_cov, mod_bad))
+
+  expect_warning(AIC(mod_base, mod_cov, mod_bad))
+  expect_warning(BIC(mod_base, mod_cov, mod_bad))
+  expect_warning(anova(mod_base, mod_cov, mod_bad))
+
+  expect_s3_class(AIC(mod_base, mod_cov, mod_bad), "data.frame")
+  expect_s3_class(BIC(mod_base, mod_cov, mod_bad), "data.frame")
+  expect_s3_class(anova(mod_base, mod_cov, mod_bad), "data.frame")
+})
+
+
+# summary() ---------------------------------------------------------------
+
+test_that("summary() matches .coef_table_logistic()", {
+  expect_equal(summary(mod_base), .coef_table_logistic(mod_base))
+  expect_equal(summary(mod_base, conf_level = .99), .coef_table_logistic(mod_base, level = .99))
+  expect_equal(
+    summary(mod_base, back_transform = TRUE),
+    .coef_table_logistic(mod_base, back_transform = TRUE)
+  )
+})
+
+
+# vcov() ------------------------------------------------------------------
+
+test_that("vcov() is symmetric and has correct dimension names", {
+  v   <- vcov(mod_base)
+  lbl <- names(coef(mod_base))
+  expect_equal(rownames(v), lbl)
+  expect_equal(colnames(v), lbl)
+  expect_equal(v, t(v))
+})
+
+
+# simulate() --------------------------------------------------------------
+
+test_that("simulate() returns a data frame", {
+  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
+  sim <- simulate(mod_base)
+  expect_s3_class(sim, "data.frame")
+  expect_equal(nrow(sim), nrow(emax_df))
+})
+
+test_that("simulate() respects the nsim argument", {
+  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
+  sim <- simulate(mod_base, nsim = 5L)
+  expect_equal(ncol(sim), 5L)
+  expect_equal(nrow(sim), nrow(emax_df))
+})
+
+test_that("simulate() produces binary values", {
+  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
+  sim <- simulate(mod_base)
+  expect_true(all(sim[[1]] %in% c(0, 1)))
+})
+
+
+# predict() with se.fit and interval --------------------------------------
+
+test_that("predict(se.fit = TRUE) returns a list with fit, se.fit, and df", {
+  pr <- predict(mod_base, se.fit = TRUE)
+  expect_type(pr, "list")
+  expect_named(pr, c("fit", "se.fit", "df"))
+  expect_true(all(pr$fit > 0 & pr$fit < 1))
+  expect_true(is.numeric(pr$se.fit))
+  expect_length(pr$df, 1L)
+  expect_equal(length(pr$se.fit), nrow(emax_df))
+})
+
+test_that("predict(interval = 'confidence') returns a data frame of probabilities", {
+  pr <- predict(mod_base, interval = "confidence")
+  expect_s3_class(pr, "data.frame")
+  expect_named(pr, c("fit", "lwr", "upr"))
+  expect_equal(nrow(pr), nrow(emax_df))
+  expect_equal(pr$fit, predict(mod_base), tolerance = 1e-8, ignore_attr = TRUE)
+  # all columns should be on the probability scale after expit transformation
+  expect_true(all(pr$fit > 0 & pr$fit < 1))
+  expect_true(all(pr$lwr > 0 & pr$lwr < 1))
+  expect_true(all(pr$upr > 0 & pr$upr < 1))
+  expect_true(all(pr$lwr <= pr$fit))
+  expect_true(all(pr$fit <= pr$upr))
+})
+
+test_that("predict(se.fit = TRUE) fit matches predict() on response scale", {
+  pr_vec <- predict(mod_base)
+  pr_lst <- predict(mod_base, se.fit = TRUE)
+  expect_equal(pr_lst$fit, pr_vec, tolerance = 1e-8, ignore_attr = TRUE)
+})

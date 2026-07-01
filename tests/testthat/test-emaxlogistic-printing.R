@@ -80,3 +80,21 @@ test_that("summary(back_transform = TRUE) transforms log-scaled labels", {
 test_that("summary() returns nls_null for non-converged models", {
   expect_s3_class(summary(mod_bad), "emaxnls_null")
 })
+
+
+# .coef_table_logistic() --------------------------------------------------
+
+test_that(".coef_table_logistic() returns a data frame with expected structure", {
+  cc <- .coef_table_logistic(mod)
+  expect_s3_class(cc, "data.frame")
+  expect_named(cc, c("label", "estimate", "std_error", "z_statistic",
+                     "p_value", "ci_lower", "ci_upper"))
+  expect_equal(cc$label, .get_coefficient_names(mod))
+})
+
+test_that("print() output includes expected section headers", {
+  output <- utils::capture.output(print(mod))
+  expect_true(any(grepl("^Structural model:$", output)))
+  expect_true(any(grepl("^Covariate model:$", output)))
+  expect_true(any(grepl("^Coefficient table:$", output)))
+})
