@@ -1,8 +1,6 @@
-# Residual standard deviation for an Emax regression model
+# Residual standard deviation for Emax regression models
 
-Returns the estimated residual standard deviation from the NLS fit. This
-method is only available for `emaxnls` objects; there is no analogous
-quantity for `emaxlogistic` models.
+Residual standard deviation for Emax regression models
 
 ## Usage
 
@@ -23,14 +21,7 @@ sigma(object, ...)
 
 ## Value
 
-A numeric scalar
-
-## Details
-
-Under the assumption of normally distributed errors, `sigma` estimates
-the standard deviation of the error term in the Emax model. It is
-computed as the square root of the residual sum of squares divided by
-the residual degrees of freedom.
+Numeric
 
 ## Examples
 

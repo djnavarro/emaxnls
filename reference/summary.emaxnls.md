@@ -1,8 +1,6 @@
 # Summary of an Emax regression model
 
-Returns a tidy coefficient table for a fitted `emaxnls` model, combining
-parameter estimates, standard errors, t-statistics, p-values, and
-confidence intervals.
+Summary of an Emax regression model
 
 ## Usage
 
@@ -32,20 +30,11 @@ summary(object, conf_level = 0.95, back_transform = FALSE, ...)
 
 ## Value
 
-A data frame containing one row per model parameter with columns for the
-estimate, standard error, test statistic, p-value, and confidence
-interval bounds. The return format is experimental and may change in
-future releases.
-
-## Details
-
-The `back_transform` argument applies the same log-scale transformation
-as in [`coef()`](https://rdrr.io/r/stats/coef.html) and
-[`confint()`](https://rdrr.io/r/stats/confint.html), exponentiating
-logEC50 and logHill and renaming them. See
-[`summary.emaxlogistic()`](https://emaxnls.djnavarro.net/reference/summary.emaxlogistic.md)
-for the analogous method for binary response models, which reports
-z-statistics rather than t-statistics.
+A data frame or tibble containing a table of parameter estimates and
+other statistical summaries. Please note that the
+[`summary()`](https://rdrr.io/r/base/summary.html) method is
+experimental (moreso than other methods), and the return value may be
+modified in future releases as the package matures.
 
 ## Examples
 

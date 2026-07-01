@@ -1,19 +1,10 @@
 # Akaike information criterion / Bayesian information criterion
 
-Computes AIC or BIC for one or more fitted Emax models. Lower values
-indicate a better-fitting model; values are only meaningful in
-comparison to other models fitted to the same response variable and
-dataset.
+Akaike information criterion / Bayesian information criterion
 
 ## Usage
 
 ``` r
-# S3 method for class 'emaxlogistic'
-AIC(object, ..., k = 2)
-
-# S3 method for class 'emaxlogistic'
-BIC(object, ...)
-
 # S3 method for class 'emaxnls'
 AIC(object, ..., k = 2)
 
@@ -25,7 +16,7 @@ BIC(object, ...)
 
 - object:
 
-  An `emaxnls` or `emaxlogistic` object
+  An `emaxnls` object
 
 - ...:
 
@@ -40,27 +31,19 @@ BIC(object, ...)
 If just one object is provided, a numeric value with the corresponding
 AIC (or BIC). If multiple objects are provided, a data.frame with rows
 corresponding to the objects and columns representing the number of
-parameters in the model (`df`) and the AIC or BIC.
-
-## Details
-
-AIC applies a penalty of `2 * k` to minus twice the log-likelihood,
-where `k` is the number of estimated parameters. BIC applies
-`log(n) * k`, making it more conservative than AIC in large samples.
-When multiple models are passed, any non-converging models are dropped
-with a warning.
+parameters in the model (df) and the AIC or BIC.
 
 ## Examples
 
 ``` r
 mod_0 <- emax_nls(
-  structural_model = rsp_1 ~ exp_1,
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 mod_1 <- emax_nls(
-  structural_model = rsp_1 ~ exp_1,
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  structural_model = rsp_1 ~ exp_1, 
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 
@@ -87,24 +70,4 @@ BIC(mod_0, mod_1)
 #>        df       BIC
 #> mod_0 397 1297.0973
 #> mod_1 396  623.6004
-
-# emaxlogistic models
-mod_b0 <- emax_logistic(
-  structural_model = rsp_2 ~ exp_1,
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
-)
-mod_b1 <- emax_logistic(
-  structural_model = rsp_2 ~ exp_1,
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
-)
-AIC(mod_b0, mod_b1)
-#>        df      AIC
-#> mod_b0  3 444.4336
-#> mod_b1  4 339.4698
-BIC(mod_b0, mod_b1)
-#>        df      BIC
-#> mod_b0  3 456.4080
-#> mod_b1  4 355.4356
 ```

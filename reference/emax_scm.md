@@ -1,9 +1,6 @@
 # Stepwise covariate modeling for Emax regression
 
-Performs stepwise covariate modeling by forward addition
-(`emax_scm_forward()`), backward elimination (`emax_scm_backward()`), or
-both in sequence. Use `emax_scm_history()` to retrieve the history of
-all models tested during the procedure.
+Stepwise covariate modeling for Emax regression
 
 ## Usage
 
@@ -39,22 +36,35 @@ An object of class `emaxnls`
 
 ## Details
 
-The `candidates` argument must be a named list whose names correspond to
-structural parameters (e.g. `E0`, `Emax`) and whose values are character
-vectors of covariate names to consider. See the examples for an
-illustration.
+The emaxnls package supports stepwise covariate modeling via forward
+addition and backward elimination. The `emax_scm_forward()` function
+supports forward addition, the `emax_scm_backward()` function supports
+backward elimination, and the syntax is designed to allow
+forward-backward procedures by piping a base model to
+`emax_scm_forward()` and then to `emax_scm_backward()`. In both cases,
+the function takes an `emaxnls` regression object as the first argument,
+as well as a list of candidate `covariates` to be considered for
+addition (in the forward addition case) or deletion (backward
+elimination). The input must be a named list, with the names
+corresponding to the relevant structural parameter, and the values
+should be character vector specifying covariates of interest. See the
+examples for an illustration of how this argument should be specified.
 
-At present, covariate selection uses p-values as the criterion: a term
-is added if its p-value falls below `threshold` (forward) or removed if
-its p-value exceeds `threshold` (backward). Selection on AIC or other
-criteria may be supported in future.
+As present, these functions only support stepwise regression using
+p-values as the criterion for addition or deletion. The `threshold`
+argument corresponds to the threshold p-value to be used. In future,
+other methods (e.g., selection on the basis of AIC values) may be
+supported.
 
-The `seed` argument controls the RNG state for any stochastic components
-of the procedure. It is currently experimental and may be removed in
-future releases.
+The `seed` argument is used to control the RNG state for stochastic
+components of the stepwise procedure. However, please note that the
+`seed` argument is currently experimental, and may be removed in future
+releases.
 
-Every model tested during the procedure is stored internally in the
-returned object. Use `emax_scm_history()` to extract this record.
+A key feature of the stepwise covariate modeling functions is that they
+keep track of every tested model, and store information about this
+history internally within the `emaxnls` object that gets returned. Use
+the `emax_scm_history()` function to extract this history.
 
 ## See also
 
@@ -63,11 +73,7 @@ returned object. Use `emax_scm_history()` to extract this record.
 ## Examples
 
 ``` r
-base_model <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
-)
+base_model <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
 
 covariate_list <- list(
   E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
@@ -146,63 +152,6 @@ emax_scm_history(final_model)
 #>  9         1       8 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
 #> 10         1       9 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
 #> # ℹ 12 more rows
-#> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
-#> #   model_updated <lgl>
-
-# example using binary outcomes
-base_model_logistic <- emax_nls(
-  structural_model = rsp_2 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
-)
-forward_model_logistic <- emax_scm_forward(
-  mod = base_model_logistic,
-  candidates = covariate_list, 
-  threshold = .01
-)
-final_model_logistic <- emax_scm_backward(
-  mod = forward_model_logistic,
-  candidates = covariate_list, 
-  threshold = .001
-)
-
-final_model_logistic
-#> Structural model:
-#> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_2 
-#>   Emax type: hyperbolic 
-#> 
-#> Covariate model:
-#> 
-#>   E0:       E0 ~ 1 + cnt_a + bin_d 
-#>   Emax:     Emax ~ 1 
-#>   logEC50:  logEC50 ~ 1 
-#> 
-#> Coefficient table:
-#> 
-#>   label             estimate std_error t_statistic  p_value ci_lower ci_upper
-#> 1 E0_cnt_a            0.0932   0.00836       11.1  2.75e-25   0.0767    0.110
-#> 2 E0_bin_d            0.145    0.0373         3.88 1.22e- 4   0.0713    0.218
-#> 3 E0_Intercept       -0.293    0.0566        -5.18 3.62e- 7  -0.404    -0.182
-#> 4 Emax_Intercept      0.930    0.145          6.42 3.83e-10   0.707     1.29 
-#> 5 logEC50_Intercept   9.27     0.381         24.4  1.16e-80   8.60     10.0  
-
-emax_scm_history(final_model_logistic)
-#> # A tibble: 31 × 11
-#>    iteration attempt step       action term_tested  model_tested model_converged
-#>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
-#>  1         0       0 base model NA     NA           E0 ~ 1, Ema… TRUE           
-#>  2         1       1 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
-#>  3         1       2 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
-#>  4         1       3 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
-#>  5         1       4 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
-#>  6         1       5 forward    add    E0 ~ bin_d   E0 ~ 1 + bi… TRUE           
-#>  7         1       6 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
-#>  8         1       7 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
-#>  9         1       8 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
-#> 10         1       9 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
-#> # ℹ 21 more rows
 #> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
 #> #   model_updated <lgl>
 ```

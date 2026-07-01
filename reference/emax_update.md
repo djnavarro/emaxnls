@@ -1,7 +1,6 @@
 # Add or remove a covariate term from an Emax regression
 
-Add or remove a single covariate term from an existing Emax regression
-model, returning a new fitted model object.
+Add or remove a covariate term from an Emax regression
 
 ## Usage
 
@@ -27,9 +26,12 @@ An object of class `emaxnls`
 
 ## Details
 
-These functions are not typically called directly; they underpin the
-stepwise covariate modeling procedures that are very commonly used when
-building Emax regressions.
+The `emax_add_term()` and `emax_remove_term()` functions take an
+existing Emax regression object, and allow the user to add or remove a
+specific term to the model. It is not expected that users will need
+these functions very often, but they provide the basis for the stepwise
+covariate modeling procedures that are very commonly used when building
+Emax regressions.
 
 ## See also
 
