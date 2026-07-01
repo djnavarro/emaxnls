@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">emaxnls</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
 <div class="section level2">
 <h2 id="minimal-example">Minimal example<a class="anchor" aria-label="anchor" href="#minimal-example"></a>
 </h2>
-<p>An Emax regression model is estimated using the <code><a href="reference/emax_nls.html">emax_nls()</a></code> function, using the <code>structural_model</code> argument to specify the exposure variable and the response variable, and the <code>covariate_model</code> argument to specify covariates to be estimated for structural parameters (e.g., E0, Emax).</p>
+<p>An Emax regression model for continuous response variables is estimated using the <code><a href="reference/emax_nls.html">emax_nls()</a></code> function, using the <code>structural_model</code> argument to specify the exposure variable and the response variable, and the <code>covariate_model</code> argument to specify covariates to be estimated for structural parameters (e.g., E0, Emax).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/emaxnls" class="external-link">emaxnls</a></span><span class="op">)</span></span>
@@ -126,10 +126,45 @@
 <span><span class="co">#&gt; 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="logistic-emax-regression">Logistic Emax regression<a class="anchor" aria-label="anchor" href="#logistic-emax-regression"></a>
+</h2>
+<p>For binary outcomes, the package provides the <code><a href="reference/emax_logistic.html">emax_logistic()</a></code> function, which estimates the parameters of a logistic Emax model. Under this model a logit-link function and binomial family is assumed, and the parameters are estimated using an iterative reweighted nonlinear least squares procedure.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># estimate parameters for a logistic Emax regression with covariates</span></span>
+<span><span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
+<span>  structural_model <span class="op">=</span> <span class="va">rsp_2</span> <span class="op">~</span> <span class="va">exp_1</span>, <span class="co"># specify the response and exposure variables</span></span>
+<span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>,  <span class="co"># add a covariate on the E0 intercept parameter</span></span>
+<span>    <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>,    <span class="co"># no covariates on Emax</span></span>
+<span>    <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span>  <span class="co"># no covariates on logEC50</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">emax_df</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Structural model:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Exposure:  exp_1 </span></span>
+<span><span class="co">#&gt;   Response:  rsp_2 </span></span>
+<span><span class="co">#&gt;   Emax type: hyperbolic </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariate model:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   E0:       E0 ~ cnt_a </span></span>
+<span><span class="co">#&gt;   Emax:     Emax ~ 1 </span></span>
+<span><span class="co">#&gt;   logEC50:  logEC50 ~ 1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficient table:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   label             estimate std_error t_statistic  p_value ci_lower ci_upper</span></span>
+<span><span class="co">#&gt; 1 E0_cnt_a            0.0943   0.00850       11.1  4.48e-25   0.0776    0.111</span></span>
+<span><span class="co">#&gt; 2 E0_Intercept       -0.240    0.0559        -4.30 2.17e- 5  -0.350    -0.131</span></span>
+<span><span class="co">#&gt; 3 Emax_Intercept      0.968    0.148          6.54 1.90e-10   0.740     1.34 </span></span>
+<span><span class="co">#&gt; 4 logEC50_Intercept   9.28     0.374         24.8  9.20e-83   8.62     10.0</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="stepwise-covariate-modeling">Stepwise covariate modeling<a class="anchor" aria-label="anchor" href="#stepwise-covariate-modeling"></a>
 </h2>
 <p>The package supports stepwise covariate modeling via forward addition and backward elimination. The <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> function supports forward addition, the <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code> function supports backward elimination, and the syntax is designed to allow forward-backward procedures by piping a base model to <code><a href="reference/emax_scm.html">emax_scm_forward()</a></code> and then to <code><a href="reference/emax_scm.html">emax_scm_backward()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># base model with no covariates</span></span>
 <span><span class="va">base_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/emax_nls.html">emax_nls</a></span><span class="op">(</span></span>
 <span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span>
@@ -193,10 +228,10 @@
 <div class="section level2">
 <h2 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
 </h2>
-<p>The package also provides tools to assist in model-based simulations, using the <code><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate()</a></code> function. A simple example is shown below. Please see the package documentation for more details.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">final_mod</span>, nsim <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 400 × 8</span></span>
+<p>The package also provides tools to assist in model-based simulations, using the <code><a href="reference/simulate.html">simulate()</a></code> function. A simple example is shown below. Please see the package documentation for more details.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">final_mod</span>, nsim <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 400 × 11</span></span>
 <span><span class="co">#&gt;    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept</span></span>
 <span><span class="co">#&gt;     &lt;int&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt;  1      1      1 14.5  13.9     0.486         5.01           9.95</span></span>
@@ -210,12 +245,14 @@
 <span><span class="co">#&gt;  9      9      1  7.36  6.69    0.486         5.01           9.95</span></span>
 <span><span class="co">#&gt; 10     10      1 13.0  12.7     0.486         5.01           9.95</span></span>
 <span><span class="co">#&gt; # ℹ 390 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: logEC50_Intercept &lt;dbl&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; # ℹ 4 more variables: logEC50_Intercept &lt;dbl&gt;, rsp_1 &lt;dbl&gt;, exp_1 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   cnt_a &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=emaxnls" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/djnavarro/emaxnls/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/djnavarro/emaxnls/issues" class="external-link">Report a bug</a></li>
 </ul>

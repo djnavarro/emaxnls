@@ -22,7 +22,8 @@ pak::pak("djnavarro/emaxnls")
 
 ## Minimal example
 
-An Emax regression model is estimated using the
+An Emax regression model for continuous response variables is estimated
+using the
 [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md)
 function, using the `structural_model` argument to specify the exposure
 variable and the response variable, and the `covariate_model` argument
@@ -81,6 +82,48 @@ emax_nls(
 #> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
 #> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
+```
+
+## Logistic Emax regression
+
+For binary outcomes, the package provides the
+[`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+function, which estimates the parameters of a logistic Emax model. Under
+this model a logit-link function and binomial family is assumed, and the
+parameters are estimated using an iterative reweighted nonlinear least
+squares procedure.
+
+``` r
+
+# estimate parameters for a logistic Emax regression with covariates
+emax_nls(
+  structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
+  covariate_model = list(
+    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+    Emax ~ 1,    # no covariates on Emax
+    logEC50 ~ 1  # no covariates on logEC50
+  ), 
+  data = emax_df
+)
+#> Structural model:
+#> 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_2 
+#>   Emax type: hyperbolic 
+#> 
+#> Covariate model:
+#> 
+#>   E0:       E0 ~ cnt_a 
+#>   Emax:     Emax ~ 1 
+#>   logEC50:  logEC50 ~ 1 
+#> 
+#> Coefficient table:
+#> 
+#>   label             estimate std_error t_statistic  p_value ci_lower ci_upper
+#> 1 E0_cnt_a            0.0943   0.00850       11.1  4.48e-25   0.0776    0.111
+#> 2 E0_Intercept       -0.240    0.0559        -4.30 2.17e- 5  -0.350    -0.131
+#> 3 Emax_Intercept      0.968    0.148          6.54 1.90e-10   0.740     1.34 
+#> 4 logEC50_Intercept   9.28     0.374         24.8  9.20e-83   8.62     10.0
 ```
 
 ## Stepwise covariate modeling
@@ -162,14 +205,15 @@ final_mod
 ## Simulation
 
 The package also provides tools to assist in model-based simulations,
-using the [`simulate()`](https://rdrr.io/r/stats/simulate.html)
+using the
+[`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
 function. A simple example is shown below. Please see the package
 documentation for more details.
 
 ``` r
 
 simulate(final_mod, nsim = 1)
-#> # A tibble: 400 × 8
+#> # A tibble: 400 × 11
 #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
 #>  1      1      1 14.5  13.9     0.486         5.01           9.95
@@ -183,14 +227,15 @@ simulate(final_mod, nsim = 1)
 #>  9      9      1  7.36  6.69    0.486         5.01           9.95
 #> 10     10      1 13.0  12.7     0.486         5.01           9.95
 #> # ℹ 390 more rows
-#> # ℹ 1 more variable: logEC50_Intercept <dbl>
+#> # ℹ 4 more variables: logEC50_Intercept <dbl>, rsp_1 <dbl>, exp_1 <dbl>,
+#> #   cnt_a <dbl>
 ```
 
 # Package index
 
-## Build
+## Build Emax NLS models
 
-Build Emax regression models
+Build and modify continuous response Emax regression models
 
 - [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md) :
   Estimate parameters for an Emax regression model
@@ -198,61 +243,91 @@ Build Emax regression models
   : Settings used to estimate Emax model
 - [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
   : Construct an initial guess for the Emax model parameters
-- [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
-  : Check Emax regression model for convergence status
+
+## Build Emax logistic models
+
+Build binary response Emax logistic regression models
+
+- [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+  : Estimate parameters for a logistic Emax regression model
+- [`emax_logistic_options()`](https://emaxnls.djnavarro.net/reference/emax_logistic_options.md)
+  : Settings used to estimate a logistic Emax model
+- [`emax_logistic_init()`](https://emaxnls.djnavarro.net/reference/emax_logistic_init.md)
+  : Construct an initial guess for logistic Emax model parameters
+
+## Covariate selection
+
+Stepwise covariate modeling for Emax regression models
+
 - [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   : Stepwise covariate modeling for Emax regression
-- [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
-  [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
-  : Add or remove a covariate term from an Emax regression
-- [`emax_fun()`](https://emaxnls.djnavarro.net/reference/emax_fun.md) :
-  Construct Emax prediction function from model object
 
-## Methods
+## Methods for Emax regression objects
 
-Methods for Emax regression objects
+S3 methods for `emaxnls` and `emaxlogistic` objects
 
 - [`print(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/print.emaxnls.md)
   : Print an Emax regression model object
+- [`print(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/print.emaxlogistic.md)
+  : Print a logistic Emax regression model object
 - [`summary(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxnls.md)
   : Summary of an Emax regression model
+- [`summary(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/summary.emaxlogistic.md)
+  : Summary of a logistic Emax regression model
 - [`coef(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/coef.emaxnls.md)
   : Coefficients for an Emax regression
 - [`vcov(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/vcov.emaxnls.md)
   : Variance-covariance matrix for an Emax regression
 - [`confint(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/confint.emaxnls.md)
   : Confidence intervals for Emax regression model parameters
-- [`residuals(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/residuals.emaxnls.md)
-  : Residuals for an Emax regression
-- [`logLik(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/logLik.emaxnls.md)
-  : Log-likelihood for an Emax regression model
-- [`AIC(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
-  [`BIC(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
-  : Akaike information criterion / Bayesian information criterion
-- [`anova(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/anova.emaxnls.md)
-  : Analysis of variance for Emax regression models
-- [`simulate(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/simulate.emaxnls.md)
-  : Simulate responses from Emax regression model
-- [`predict(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/predict.emaxnls.md)
-  : Predicting from Emax regression models
-- [`deviance(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/deviance.emaxnls.md)
-  : Model deviance for an Emax regression
-- [`df.residual(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/df.residual.emaxnls.md)
-  : Residual degrees of freedom for an Emax regression model
-- [`fitted(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/fitted.emaxnls.md)
-  : Fitted values for an Emax regression
 - [`nobs(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/nobs.emaxnls.md)
   : Number of observations for an Emax regression model
 - [`sigma(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/sigma.emaxnls.md)
-  : Residual standard deviation for Emax regression models
+  : Residual standard deviation for an Emax regression model
+- [`residuals(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/residuals.md)
+  [`residuals(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/residuals.md)
+  : Residuals for an Emax regression model
+- [`fitted(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/fitted.md)
+  [`fitted(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/fitted.md)
+  : Fitted values for an Emax regression model
+- [`predict(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/predict.md)
+  [`predict(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/predict.md)
+  : Predicting from Emax regression models
+- [`simulate(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/simulate.md)
+  [`simulate(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/simulate.md)
+  : Simulate responses from an Emax regression model
+- [`logLik(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/logLik.md)
+  [`logLik(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/logLik.md)
+  : Log-likelihood for an Emax regression model
+- [`AIC(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
+  [`BIC(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
+  [`AIC(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
+  [`BIC(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/AIC.md)
+  : Akaike information criterion / Bayesian information criterion
+- [`anova(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/anova.md)
+  [`anova(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/anova.md)
+  : Analysis of variance for Emax regression models
+- [`deviance(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/deviance.md)
+  [`deviance(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/deviance.md)
+  : Model deviance for an Emax regression model
+- [`df.residual(`*`<emaxlogistic>`*`)`](https://emaxnls.djnavarro.net/reference/df.residual.md)
+  [`df.residual(`*`<emaxnls>`*`)`](https://emaxnls.djnavarro.net/reference/df.residual.md)
+  : Residual degrees of freedom for an Emax regression model
 
 ## Other
 
-Other exported objects
+Other exported functions and objects
 
 - [`emax_df`](https://emaxnls.djnavarro.net/reference/emax_df.md) :
   Sample simulated data for Emax exposure-response models with
   covariates.
+- [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
+  : Check Emax regression model for convergence status
+- [`emax_add_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
+  [`emax_remove_term()`](https://emaxnls.djnavarro.net/reference/emax_update.md)
+  : Add or remove a covariate term from an Emax regression
+- [`emax_fun()`](https://emaxnls.djnavarro.net/reference/emax_fun.md) :
+  Construct Emax prediction function from model object
 

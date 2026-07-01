@@ -1,6 +1,10 @@
 # Settings used to estimate Emax model
 
-Settings used to estimate Emax model
+Constructs a settings object controlling the optimization algorithm and
+other aspects of model fitting for
+[`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md).
+Pass the result to the `opts` argument of
+[`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md).
 
 ## Usage
 

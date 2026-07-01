@@ -22,7 +22,8 @@ pak::pak("djnavarro/emaxnls")
 
 ## Minimal example
 
-An Emax regression model is estimated using the
+An Emax regression model for continuous response variables is estimated
+using the
 [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md)
 function, using the `structural_model` argument to specify the exposure
 variable and the response variable, and the `covariate_model` argument
@@ -81,6 +82,48 @@ emax_nls(
 #> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
 #> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
 #> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
+```
+
+## Logistic Emax regression
+
+For binary outcomes, the package provides the
+[`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+function, which estimates the parameters of a logistic Emax model. Under
+this model a logit-link function and binomial family is assumed, and the
+parameters are estimated using an iterative reweighted nonlinear least
+squares procedure.
+
+``` r
+
+# estimate parameters for a logistic Emax regression with covariates
+emax_nls(
+  structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
+  covariate_model = list(
+    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+    Emax ~ 1,    # no covariates on Emax
+    logEC50 ~ 1  # no covariates on logEC50
+  ), 
+  data = emax_df
+)
+#> Structural model:
+#> 
+#>   Exposure:  exp_1 
+#>   Response:  rsp_2 
+#>   Emax type: hyperbolic 
+#> 
+#> Covariate model:
+#> 
+#>   E0:       E0 ~ cnt_a 
+#>   Emax:     Emax ~ 1 
+#>   logEC50:  logEC50 ~ 1 
+#> 
+#> Coefficient table:
+#> 
+#>   label             estimate std_error t_statistic  p_value ci_lower ci_upper
+#> 1 E0_cnt_a            0.0943   0.00850       11.1  4.48e-25   0.0776    0.111
+#> 2 E0_Intercept       -0.240    0.0559        -4.30 2.17e- 5  -0.350    -0.131
+#> 3 Emax_Intercept      0.968    0.148          6.54 1.90e-10   0.740     1.34 
+#> 4 logEC50_Intercept   9.28     0.374         24.8  9.20e-83   8.62     10.0
 ```
 
 ## Stepwise covariate modeling
@@ -162,14 +205,15 @@ final_mod
 ## Simulation
 
 The package also provides tools to assist in model-based simulations,
-using the [`simulate()`](https://rdrr.io/r/stats/simulate.html)
+using the
+[`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
 function. A simple example is shown below. Please see the package
 documentation for more details.
 
 ``` r
 
 simulate(final_mod, nsim = 1)
-#> # A tibble: 400 × 8
+#> # A tibble: 400 × 11
 #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
 #>  1      1      1 14.5  13.9     0.486         5.01           9.95
@@ -183,5 +227,6 @@ simulate(final_mod, nsim = 1)
 #>  9      9      1  7.36  6.69    0.486         5.01           9.95
 #> 10     10      1 13.0  12.7     0.486         5.01           9.95
 #> # ℹ 390 more rows
-#> # ℹ 1 more variable: logEC50_Intercept <dbl>
+#> # ℹ 4 more variables: logEC50_Intercept <dbl>, rsp_1 <dbl>, exp_1 <dbl>,
+#> #   cnt_a <dbl>
 ```

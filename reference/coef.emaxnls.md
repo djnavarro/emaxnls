@@ -1,6 +1,8 @@
 # Coefficients for an Emax regression
 
-Coefficients for an Emax regression
+Returns the named vector of fitted parameter values. Parameters
+involving a log transformation (logEC50, logHill) are returned on the
+log scale by default, which is the scale on which they are estimated.
 
 ## Usage
 
@@ -13,7 +15,7 @@ coef(object, back_transform = FALSE, ...)
 
 - object:
 
-  An `emaxnls` object
+  An `emaxnls` or `emaxlogistic` object
 
 - back_transform:
 
@@ -26,24 +28,42 @@ coef(object, back_transform = FALSE, ...)
 
 ## Value
 
-A vector of coefficients
+A named numeric vector of parameter estimates
+
+## Details
+
+Setting `back_transform = TRUE` exponentiates logEC50 and logHill and
+drops the `log` prefix from their names, giving more interpretable
+units. This transformation is not applied automatically to the
+corresponding confidence intervals or standard errors returned by
+[`confint()`](https://rdrr.io/r/stats/confint.html) and
+[`vcov()`](https://rdrr.io/r/stats/vcov.html).
 
 ## Examples
 
 ``` r
-mod <- emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 
 # coefficients on the estimation scale
-coef(mod)
+coef(mod_c)
 #>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept 
 #>         0.4861467         5.0548075         9.9697250         8.2688405 
 
 # coefficients with log-scale parameters back-transformed
-coef(mod, back_transform = TRUE)
+coef(mod_c, back_transform = TRUE)
 #>       E0_cnt_a   E0_Intercept Emax_Intercept EC50_Intercept 
 #>      0.4861467      5.0548075      9.9697250   3900.4236534 
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+coef(mod_b)
+#>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept 
+#>         0.6587629        -5.0003872         8.1156731         9.7832270 
 ```

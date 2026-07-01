@@ -1,6 +1,9 @@
 # Estimate parameters for an Emax regression model
 
-Estimate parameters for an Emax regression model
+Fits an Emax regression model for a continuous response variable using
+nonlinear least squares. For binary outcomes, use
+[`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+instead.
 
 ## Usage
 
@@ -39,41 +42,25 @@ An object of class `emaxnls`
 
 ## Details
 
-The `emax_nls()` function is the workhorse function for estimating an
-Emax regression model. Pass a two-sided formula to the
-`structural_model` argument to specify the exposure variable and the
-response variable (e.g., `response ~ exposure`), and pass a list of
-formulas to the `covariate_model` argument to specify covariates of
-interest. At a minimum the covariate model requires specification of the
-covariate model for the E0 parameter, the Emax parameter, and the
-logEC50 parameter. For example, a formula like `E0 ~ age + group` would
-indicate that `age` and `group` should both be included as covariates on
-the baseline response E0. When no covariates are to be added, use a
-formula like `Emax ~ 1`.
+Pass a two-sided formula to `structural_model` to specify the response
+and exposure variables (e.g., `response ~ exposure`), and a list of
+formulas to `covariate_model` to specify covariates. At a minimum the
+covariate model requires formulas for E0, Emax, and logEC50. A formula
+like `E0 ~ age + group` includes `age` and `group` as covariates on the
+baseline response; use `Emax ~ 1` when no covariates are to be added for
+a parameter.
 
-The `emax_nls()` function can support sigmoidal emax models as well as
-hyperbolic models. To build a sigmoidal model (where the Hill parameter)
-is estimated from the data, the `covariate_model` argument must also
-include a formula for the `logHill` parameter. For instance, if the
-covariate model includes `logHill ~ 1`, the model will estimate the
-value of the Hill parameter (with no covariates on it) from the data
-set.
+To fit a sigmoidal Emax model (estimating the Hill parameter), include a
+formula for `logHill` in `covariate_model`, e.g. `logHill ~ 1`. Without
+this term a hyperbolic model is fitted. Interaction terms in the
+covariate model are not currently supported.
 
-At present, `emax_nls()` does not support binary response variables, nor
-is it possible to specify interaction terms in the covariate model.
-
-When estimating model parameters, the `init` argument can be used to
-specify the starting values for the optimization. If unspecified, the
+Starting values are constructed automatically via
 [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
-function is used to automatically guess sensible starting values. Please
-see the documentation of that function for additional details on
-manually specifying the initial values.
-
-The `emax_nls()` function currently supports three optimization methods:
-the Gauss-Newton algorithm, the Levenberg-Marquardt algorithm, and the
-'nl2sol' algorithm from the Port library. For more information on how to
-customize the optimization procedure, please see the documentation for
-[`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md).
+unless the `init` argument is supplied manually. Three optimization
+algorithms are available; see
+[`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
+for details.
 
 ## See also
 
