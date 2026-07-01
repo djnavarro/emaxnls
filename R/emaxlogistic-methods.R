@@ -5,13 +5,7 @@
 # the NLS Jacobian at convergence gives the correct asymptotic vcov.
 
 
-#' Residual degrees of freedom for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param ... Ignored
-#'
-#' @returns Numeric
-#'
+#' @rdname df.residual
 #' @exportS3Method stats::df.residual
 df.residual.emaxlogistic <- function(object, ...) {
   if (!.is_converged(object)) return(.nls_null())
@@ -19,15 +13,7 @@ df.residual.emaxlogistic <- function(object, ...) {
 }
 
 
-#' Fitted values for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param type `"response"` (default) returns fitted probabilities;
-#'   `"link"` returns the linear predictor on the logit scale
-#' @param ... Ignored
-#'
-#' @returns Numeric vector
-#'
+#' @rdname fitted
 #' @exportS3Method stats::fitted
 fitted.emaxlogistic <- function(object, type = c("response", "link"), ...) {
   if (!.is_converged(object)) return(.nls_null())
@@ -38,14 +24,7 @@ fitted.emaxlogistic <- function(object, type = c("response", "link"), ...) {
 }
 
 
-#' Residuals for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param type `"pearson"` (default) or `"deviance"`
-#' @param ... Ignored
-#'
-#' @returns Numeric vector
-#'
+#' @rdname residuals
 #' @exportS3Method stats::residuals
 residuals.emaxlogistic <- function(object, type = c("pearson", "deviance"), ...) {
   if (!.is_converged(object)) return(.nls_null())
@@ -63,14 +42,7 @@ residuals.emaxlogistic <- function(object, type = c("pearson", "deviance"), ...)
 }
 
 
-#' Log-likelihood for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param REML Ignored (included for S3 compatibility only)
-#' @param ... Ignored
-#'
-#' @returns An object of class `logLik`
-#'
+#' @rdname logLik
 #' @exportS3Method stats::logLik
 logLik.emaxlogistic <- function(object, REML = FALSE, ...) {
   if (!.is_converged(object)) return(.nls_null())
@@ -83,13 +55,7 @@ logLik.emaxlogistic <- function(object, REML = FALSE, ...) {
 }
 
 
-#' Model deviance for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param ... Ignored
-#'
-#' @returns Numeric
-#'
+#' @rdname deviance
 #' @exportS3Method stats::deviance
 deviance.emaxlogistic <- function(object, ...) {
   if (!.is_converged(object)) return(.nls_null())
@@ -97,14 +63,7 @@ deviance.emaxlogistic <- function(object, ...) {
 }
 
 
-#' AIC for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param ... Optionally more fitted model objects
-#' @param k Penalty per parameter (default 2 for AIC)
-#'
-#' @returns Numeric, or a data frame when multiple models are supplied
-#'
+#' @rdname AIC
 #' @exportS3Method stats::AIC
 AIC.emaxlogistic <- function(object, ..., k = 2) {
   emaxlogistic_mods <- list(object, ...)
@@ -136,13 +95,7 @@ AIC.emaxlogistic <- function(object, ..., k = 2) {
 }
 
 
-#' BIC for a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param ... Optionally more fitted model objects
-#'
-#' @returns Numeric, or a data frame when multiple models are supplied
-#'
+#' @rdname AIC
 #' @exportS3Method stats::BIC
 BIC.emaxlogistic <- function(object, ...) {
   emaxlogistic_mods <- list(object, ...)
@@ -175,19 +128,7 @@ BIC.emaxlogistic <- function(object, ...) {
 }
 
 
-#' Likelihood ratio test for logistic Emax regression models
-#'
-#' @param object An `emaxlogistic` object
-#' @param ... Additional fitted `emaxlogistic` model objects
-#'
-#' @details
-#' Computes a likelihood ratio chi-squared test comparing a sequence of nested
-#' logistic Emax models. The test statistic is the difference in deviances;
-#' the reference distribution is chi-squared with degrees of freedom equal to
-#' the difference in the number of parameters.
-#'
-#' @returns A data frame with columns `Df`, `Deviance`, `Df_diff`, `LRT`, and `Pr(>Chi)`
-#'
+#' @rdname anova
 #' @exportS3Method stats::anova
 anova.emaxlogistic <- function(object, ...) {
   emaxlogistic_mods <- list(object, ...)
@@ -221,21 +162,7 @@ anova.emaxlogistic <- function(object, ...) {
 }
 
 
-#' Predict from a logistic Emax regression
-#'
-#' @param object An `emaxlogistic` object
-#' @param newdata A data frame of new values to predict at. If `NULL`, returns
-#'   predictions at the original data.
-#' @param type `"response"` (default) returns predicted probabilities;
-#'   `"link"` returns the linear predictor on the logit scale
-#' @param se.fit Whether to return standard errors
-#' @param interval Type of interval: `"none"`, `"confidence"`, or `"prediction"`
-#' @param level Confidence level
-#' @param ... Ignored
-#'
-#' @returns Numeric vector (or matrix if intervals requested), on the scale
-#'   specified by `type`
-#'
+#' @rdname predict
 #' @exportS3Method stats::predict
 predict.emaxlogistic <- function(object,
                                  newdata = NULL,
@@ -288,21 +215,7 @@ predict.emaxlogistic <- function(object,
 }
 
 
-#' Simulate responses from a logistic Emax regression model
-#'
-#' @param object An `emaxlogistic` object
-#' @param nsim Number of replicates
-#' @param seed Used to set RNG seed
-#' @param ... Ignored
-#'
-#' @details
-#' Simulates new binary responses by (1) sampling parameter values from the
-#' multivariate normal distribution implied by the estimated covariance matrix,
-#' (2) computing predicted probabilities from each parameter draw, and (3)
-#' drawing binary outcomes from `Bernoulli(p)` for each observation.
-#'
-#' @returns A data frame of simulated binary responses
-#'
+#' @rdname simulate
 #' @exportS3Method stats::simulate
 simulate.emaxlogistic <- function(object, nsim = 1, seed = NULL, ...) {
   if (!.is_converged(object)) return(.nls_null())

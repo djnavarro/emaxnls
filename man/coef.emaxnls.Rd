@@ -7,7 +7,7 @@
 \method{coef}{emaxnls}(object, back_transform = FALSE, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
 \item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
 
@@ -20,16 +20,23 @@ A vector of coefficients
 Coefficients for an Emax regression
 }
 \examples{
-mod <- emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
 
 # coefficients on the estimation scale
-coef(mod)
+coef(mod_c)
 
 # coefficients with log-scale parameters back-transformed
-coef(mod, back_transform = TRUE)
+coef(mod_c, back_transform = TRUE)
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+coef(mod_b)
 
 }

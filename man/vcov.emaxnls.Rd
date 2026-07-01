@@ -7,7 +7,7 @@
 \method{vcov}{emaxnls}(object, ...)
 }
 \arguments{
-\item{object}{An \code{emaxnls} object}
+\item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
 \item{...}{Ignored}
 }
@@ -18,11 +18,18 @@ A matrix
 Variance-covariance matrix for an Emax regression
 }
 \examples{
-mod <- emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
   data = emax_df
 )
-vcov(mod)
+vcov(mod_c)
+
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
+  data = emax_df
+)
+vcov(mod_b)
 
 }

@@ -21,41 +21,27 @@ reference:
   - emax_scm_forward
   - emax_scm_backward
   - emax_scm_history
-- title: Methods for emaxnls objects
-  desc: Methods for continuous response Emax regression objects
+- title: Methods for Emax regression objects
+  desc: S3 methods for `emaxnls` and `emaxlogistic` objects
 - contents:
   - print.emaxnls
+  - print.emaxlogistic
   - summary.emaxnls
+  - summary.emaxlogistic
   - coef.emaxnls
   - vcov.emaxnls
   - confint.emaxnls
-  - residuals.emaxnls
-  - logLik.emaxnls
-  - AIC.emaxnls
-  - BIC.emaxnls
-  - anova.emaxnls
-  - simulate.emaxnls
-  - predict.emaxnls
-  - deviance.emaxnls
-  - df.residual.emaxnls
-  - fitted.emaxnls
   - nobs.emaxnls
   - sigma.emaxnls
-- title: Methods for emaxlogistic objects
-  desc: Methods for binary response Emax logistic regression objects
-- contents:
-  - print.emaxlogistic
-  - summary.emaxlogistic
-  - residuals.emaxlogistic
-  - logLik.emaxlogistic
-  - AIC.emaxlogistic
-  - BIC.emaxlogistic
-  - anova.emaxlogistic
-  - simulate.emaxlogistic
-  - predict.emaxlogistic
-  - deviance.emaxlogistic
-  - df.residual.emaxlogistic
-  - fitted.emaxlogistic
+  - residuals
+  - fitted
+  - predict
+  - simulate
+  - logLik
+  - AIC
+  - anova
+  - deviance
+  - df.residual
 - title: Other
   desc: Other exported functions and objects
 - contents:
