@@ -3,13 +3,13 @@ template:
   package: waeponwifestre
   
 reference:
-- title: Build Emax NLS models
-  desc: Build and modify continuous response Emax regression models
+- title: Emax regression
+  desc: Build continuous response Emax regression models
 - contents:
   - emax_nls
   - emax_nls_options
   - emax_nls_init
-- title: Build Emax logistic models
+- title: Emax logistic regression
   desc: Build binary response Emax logistic regression models
 - contents:
   - emax_logistic
