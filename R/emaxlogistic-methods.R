@@ -262,13 +262,27 @@ predict.emaxlogistic <- function(object,
 
   if (type == "link") return(out)
 
-  # transform to probability scale
-  if (is.list(out)) {
-    out$fit <- .expit(out$fit)
+  # transform to probability scale.
+  # .predict_nls() has four possible return types depending on se.fit/interval:
+  #   - numeric vector      (se.fit=FALSE, interval="none")
+  #   - data.frame fit/lwr/upr  (se.fit=FALSE, interval="confidence")
+  #   - list(fit, se.fit, df) with numeric fit  (se.fit=TRUE, interval="none")
+  #   - list(fit, se.fit, df) with data.frame fit  (se.fit=TRUE, interval="confidence")
+  # The data.frame case must be checked before is.list() because data.frames are lists.
+  if (is.data.frame(out)) {
+    # all three columns (fit, lwr, upr) are on the link scale
+    for (col in names(out)) out[[col]] <- .expit(out[[col]])
     return(out)
   }
-  if (is.matrix(out)) {
-    return(.expit(out))
+  if (is.list(out)) {
+    # $fit may be a numeric vector (no interval) or a data.frame (with interval);
+    # $se.fit remains on the link scale in both cases
+    if (is.data.frame(out$fit)) {
+      for (col in names(out$fit)) out$fit[[col]] <- .expit(out$fit[[col]])
+    } else {
+      out$fit <- .expit(out$fit)
+    }
+    return(out)
   }
   .expit(out)
 }
