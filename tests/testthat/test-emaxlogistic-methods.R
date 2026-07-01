@@ -354,24 +354,25 @@ test_that("vcov() is symmetric and has correct dimension names", {
 
 # simulate() --------------------------------------------------------------
 
-test_that("simulate() returns a data frame", {
+test_that("simulate() returns a data frame with one row per observation", {
   skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
   sim <- simulate(mod_base)
   expect_s3_class(sim, "data.frame")
-  expect_equal(nrow(sim), nrow(emax_df))
+  expect_equal(nrow(sim), nrow(emax_df))  # nsim = 1: long format gives n * 1 rows
 })
 
 test_that("simulate() respects the nsim argument", {
   skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
   sim <- simulate(mod_base, nsim = 5L)
-  expect_equal(ncol(sim), 5L)
-  expect_equal(nrow(sim), nrow(emax_df))
+  # long format: one row per observation per simulation replicate
+  expect_equal(nrow(sim), 5L * nrow(emax_df))
+  expect_equal(sort(unique(sim$sim_id)), 1:5)
 })
 
-test_that("simulate() produces binary values", {
+test_that("simulate() produces binary values in the val column", {
   skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not installed")
   sim <- simulate(mod_base)
-  expect_true(all(sim[[1]] %in% c(0, 1)))
+  expect_true(all(sim$val %in% c(0, 1)))
 })
 
 
