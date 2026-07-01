@@ -1,8 +1,8 @@
 # Package index
 
-## Build Emax NLS models
+## Emax regression
 
-Build and modify continuous response Emax regression models
+Build continuous response Emax regression models
 
 - [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md) :
   Estimate parameters for an Emax regression model
@@ -11,7 +11,7 @@ Build and modify continuous response Emax regression models
 - [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
   : Construct an initial guess for the Emax model parameters
 
-## Build Emax logistic models
+## Emax logistic regression
 
 Build binary response Emax logistic regression models
 
