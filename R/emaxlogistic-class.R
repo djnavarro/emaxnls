@@ -8,6 +8,9 @@
   .validate_structural_formula(structural_model, names(data))
   .validate_covariate_formula(covariate_model, names(data))
 
+  rsp_name <- as.character(structural_model[[2L]])
+  .validate_binary_response(data[[rsp_name]], rsp_name)
+
   names(covariate_model) <- .map_chr(covariate_model, function(x) as.character(x[[2]]))
 
   if (is.null(opts)) opts <- emax_logistic_options()

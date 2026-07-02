@@ -96,6 +96,17 @@
   )
 }
 
+.validate_binary_response <- function(response, name) {
+  valid_vals <- all(response %in% c(0, 1, NA))
+  .assert(
+    valid_vals,
+    paste0(
+      "response variable '", name, "' must be binary (0/1); ",
+      "for continuous outcomes use emax_nls() instead"
+    )
+  )
+}
+
 .is_same <- function(mod1, mod2) {
   identical(
     .get_coefficient_names(mod1), 
