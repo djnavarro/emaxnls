@@ -321,22 +321,20 @@ AIC.emaxnls <- function(object, ..., k = 2) {
     emaxnls_mods <- emaxnls_mods[converged]
     mod_names <- mod_names[converged]
   }
-  if (length(emaxnls_mods) == 1L) return(stats::AIC(.get_nls(object))) 
-  nls_mods <- .map(
-    .x = emaxnls_mods, 
-    .f = function(mm) {
-      nls_mod <- .get_nls(mm)
-      if (is.null(nls_mod)) nls_mod <- .nls_null()
-      nls_mod
-    }
-  )
+  if (length(emaxnls_mods) == 1L) {
+    ll <- stats::logLik(emaxnls_mods[[1L]])
+    return(as.numeric(-2 * ll + k * attr(ll, "df")))
+  }
   aic_vals <- unlist(.map(
-    .x = nls_mods,
-    .f = stats::AIC
+    .x = emaxnls_mods,
+    .f = function(mm) {
+      ll <- stats::logLik(mm)
+      as.numeric(-2 * ll + k * attr(ll, "df"))
+    }
   ))
   df_vals <- unlist(.map(
     .x = emaxnls_mods,
-    .f = function(mm) evalq(stats::df.residual(model), envir = mm$env)
+    .f = function(mm) attr(stats::logLik(mm), "df")
   ))
   out <- data.frame(df = df_vals, AIC = aic_vals, row.names = mod_names)
   out
@@ -356,22 +354,22 @@ BIC.emaxnls <- function(object, ...) {
     emaxnls_mods <- emaxnls_mods[converged]
     mod_names <- mod_names[converged]
   }
-  if (length(emaxnls_mods) == 1L) return(stats::BIC(.get_nls(object))) 
-  nls_mods <- .map(
-    .x = emaxnls_mods, 
-    .f = function(mm) {
-      nls_mod <- .get_nls(mm)
-      if (is.null(nls_mod)) nls_mod <- .nls_null()
-      nls_mod
-    }
-  )
+  if (length(emaxnls_mods) == 1L) {
+    ll <- stats::logLik(emaxnls_mods[[1L]])
+    n  <- attr(ll, "nobs")
+    return(as.numeric(-2 * ll + log(n) * attr(ll, "df")))
+  }
   bic_vals <- unlist(.map(
-    .x = nls_mods,
-    .f = stats::BIC
+    .x = emaxnls_mods,
+    .f = function(mm) {
+      ll <- stats::logLik(mm)
+      n  <- attr(ll, "nobs")
+      as.numeric(-2 * ll + log(n) * attr(ll, "df"))
+    }
   ))
   df_vals <- unlist(.map(
     .x = emaxnls_mods,
-    .f = function(mm) evalq(stats::df.residual(model), envir = mm$env)
+    .f = function(mm) attr(stats::logLik(mm), "df")
   ))
   out <- data.frame(df = df_vals, BIC = bic_vals, row.names = mod_names)
   out
