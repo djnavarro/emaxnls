@@ -6,56 +6,137 @@
 \alias{summary.emaxnls}
 \title{Summary of an Emax regression model}
 \usage{
-\method{summary}{emaxlogistic}(object, conf_level = 0.95, back_transform = FALSE, ...)
+\method{summary}{emaxlogistic}(
+  object,
+  conf_level = 0.95,
+  back_transform = FALSE,
+  p_adjust = "none",
+  simultaneous = FALSE,
+  suppress_nonsensical = TRUE,
+  ...
+)
 
-\method{summary}{emaxnls}(object, conf_level = 0.95, back_transform = FALSE, ...)
+\method{summary}{emaxnls}(
+  object,
+  conf_level = 0.95,
+  back_transform = FALSE,
+  p_adjust = "none",
+  simultaneous = FALSE,
+  suppress_nonsensical = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
-\item{conf_level}{Confidence level for interval estimates}
+\item{conf_level}{Confidence level for interval estimates. Defaults to 0.95.}
 
-\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
+\item{back_transform}{Should logEC50 and logHill parameters be
+back-transformed to the concentration scale? If \code{TRUE}, these parameters
+are exponentiated and renamed to \code{EC50} and \code{Hill} respectively, and
+their confidence intervals are transformed accordingly. Standard errors
+and test statistics on the back-transformed scale are not available and
+are set to \code{NA}.}
+
+\item{p_adjust}{Method for adjusting p-values for multiple comparisons,
+passed to \code{\link[stats:p.adjust]{stats::p.adjust()}}. Defaults to \code{"none"}. Parameters with
+suppressed p-values (see \code{suppress_nonsensical}) are excluded from the
+adjustment set.}
+
+\item{simultaneous}{If \code{TRUE}, compute simultaneous (joint) confidence
+intervals using the multivariate normal distribution via
+\code{\link[mvtnorm:qmvnorm]{mvtnorm::qmvnorm()}}. This gives wider intervals that provide joint
+coverage at \code{conf_level} across all parameters simultaneously. Defaults
+to \code{FALSE}.}
+
+\item{suppress_nonsensical}{If \code{TRUE} (the default), suppress the test
+statistic and p-value for \code{logEC50_Intercept}. The logEC50 intercept is
+estimated on the log-concentration scale, and testing \code{H0: logEC50 = 0}
+is equivalent to testing whether EC50 equals 1 on the concentration
+scale — a threshold with no general pharmacometric meaning. The
+confidence interval for logEC50 is always reported regardless of this
+setting. Pass \code{suppress_nonsensical = FALSE} to restore the raw test
+results.}
 
 \item{...}{Ignored}
 }
 \value{
-A data frame containing one row per model parameter with columns
-for the estimate, standard error, test statistic, p-value, and confidence
-interval bounds. The return format is experimental and may change in
-future releases.
+A tibble with one row per model parameter and columns for the
+estimate, standard error, test statistic, p-value, and confidence
+interval bounds. The column for the test statistic is named
+\code{t_statistic} for \code{emaxnls} models and \code{z_statistic} for \code{emaxlogistic}
+models. The return format is experimental and may change in future
+releases.
 }
 \description{
-Returns a tidy coefficient table for a fitted \code{emaxnls} model, combining
-parameter estimates, standard errors, test statistics, p-values, and
-confidence intervals.
+Returns a tidy coefficient table for a fitted \code{emaxnls} or \code{emaxlogistic}
+model, combining parameter estimates, standard errors, test statistics,
+p-values, and confidence intervals.
 }
 \details{
-The \code{back_transform} argument applies the same log-scale transformation as
-in \code{coef()} and \code{confint()}, exponentiating logEC50 and logHill and
-renaming them. For continuous Emax regressions, the test statistic is a
-t-statistic, whereas binary Emax models report z-statistics.
+\subsection{Which tests are reported by default}{
+
+Most parameters have a meaningful point null at zero:
+\itemize{
+\item \code{Emax_Intercept}: tests whether any exposure-response relationship exists.
+\item \code{logHill_Intercept}: tests whether logHill = 0, i.e., whether the Hill
+parameter equals 1 on the concentration scale, which would mean the
+sigmoidal model reduces to a hyperbolic one.
+\item \code{E0_Intercept}: tests whether the baseline response is zero. This is
+informative when the outcome is expressed as change from baseline, a
+common convention in pharmacometrics.
+\item Covariate beta terms: test whether a given covariate has any effect on
+the corresponding structural parameter.
+}
+
+The one exception is \code{logEC50_Intercept}. The model is parameterized in
+terms of logEC50 (on the log-concentration scale), not EC50 directly, so
+the null \code{H0: logEC50 = 0} corresponds to testing EC50 = 1 on the
+concentration scale — a value with no intrinsic pharmacometric meaning.
+By default, the test statistic and p-value for \code{logEC50_Intercept} are
+suppressed (set to \code{NA}), while the confidence interval for logEC50 is
+retained. To work with the EC50 on the concentration scale, use
+\code{back_transform = TRUE}.
+}
+
+\subsection{Simultaneous intervals}{
+
+When \code{simultaneous = TRUE}, a single critical value is derived from the
+joint multivariate normal distribution of the standardized parameter
+estimates, using the correlation matrix implied by \code{vcov()}. The resulting
+intervals have simultaneous coverage at \code{conf_level} and will be wider
+than the individual (pointwise) intervals.
+}
 }
 \examples{
 mod_c <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  structural_model = rsp_1 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
 
-# standard summary
+# standard summary (logEC50_Intercept p-value suppressed by default)
 summary(mod_c)
 
-# summary with adjusted confidence level
+# show all tests, including the logEC50 intercept
+summary(mod_c, suppress_nonsensical = FALSE)
+
+# Bonferroni-adjusted p-values
+summary(mod_c, p_adjust = "bonferroni")
+
+# simultaneous confidence intervals
+summary(mod_c, simultaneous = TRUE)
+
+# adjusted confidence level
 summary(mod_c, conf_level = 0.99)
 
-# summary with log-scale parameters transformed to original scale
+# back-transform logEC50 and logHill to concentration scale
 summary(mod_c, back_transform = TRUE)
 
 # logistic emax equivalent
 mod_b <- emax_logistic(
-  structural_model = rsp_2 ~ exp_1, 
-  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
 summary(mod_b)

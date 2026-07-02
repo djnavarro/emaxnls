@@ -26,9 +26,12 @@ print.emaxnls_null <- function(x, ...) {
 #'
 #' @details
 #' Setting `back_transform = TRUE` exponentiates logEC50 and logHill and drops
-#' the `log` prefix from their names, giving more interpretable units. This
-#' transformation is not applied automatically to the corresponding confidence
-#' intervals or standard errors returned by `confint()` and `vcov()`.
+#' the `log` prefix from their names, expressing them on the concentration scale
+#' rather than the log-concentration scale on which they are estimated.
+#' `confint()` and `vcov()` are not affected by this argument and always return
+#' results on the log-concentration scale. The `summary()` method also accepts
+#' `back_transform = TRUE` and applies the same transformation to its
+#' coefficient table, including the confidence interval columns.
 #'
 #' @returns A named numeric vector of parameter estimates
 #' 
@@ -648,9 +651,14 @@ fitted.emaxnls <- function(object, ...) {
 #' @details
 #' For `emaxnls` objects, this calls `stats::confint.nls()`. For
 #' `emaxlogistic` objects, the same profiling approach is applied to the
-#' final NLS fit from the IRLS algorithm at convergence. Setting
-#' `back_transform = TRUE` exponentiates the confidence limits for logEC50
-#' and logHill and drops the `log` prefix from their row names.
+#' final NLS fit from the IRLS algorithm at convergence. If profile likelihood
+#' computation fails (which can occur for sigmoidal models), a warning is
+#' issued and Wald intervals are returned instead.
+#'
+#' Setting `back_transform = TRUE` exponentiates the confidence limits for
+#' logEC50 and logHill, expressing them on the concentration scale rather
+#' than the log-concentration scale on which they are estimated, and drops
+#' the `log` prefix from their row names.
 #'
 #' @returns A matrix (or vector) with columns giving lower and upper confidence limits
 #'   for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in %
@@ -682,18 +690,33 @@ fitted.emaxnls <- function(object, ...) {
 #' @exportS3Method stats::confint
 confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = FALSE, ...) {
   if (!.is_converged(object)) return(.nls_null())
-  if (is.null(parm)) {
-    ci <- .confint_quiet(.get_nls(object), level = level, ...)
-  } else {
-    ci <- .confint_quiet(.get_nls(object), parm = parm, level = level, ...)
-  }
-  ci <- ci$result
+
+  nls_obj <- .get_nls(object)
+
+  ci <- tryCatch(
+    {
+      if (is.null(parm)) {
+        .confint_quiet(nls_obj, level = level, ...)$result
+      } else {
+        .confint_quiet(nls_obj, parm = parm, level = level, ...)$result
+      }
+    },
+    error = function(e) {
+      .warn(paste0(
+        "Profile likelihood confidence intervals failed; ",
+        "falling back to Wald intervals."
+      ))
+      df     <- if (.is_emaxlogistic(object)) NULL else stats::df.residual(nls_obj)
+      all_ci <- .wald_ci(nls_obj, level = level, df = df)
+      if (is.null(parm)) all_ci else all_ci[parm, , drop = FALSE]
+    }
+  )
 
   if (back_transform) {
     trans_cases <- grep("^log", rownames(ci))
     rownames(ci) <- gsub("^log", "", rownames(ci))
-    ci[trans_cases,] <- exp(ci[trans_cases,])
-  } 
+    ci[trans_cases, ] <- exp(ci[trans_cases, ])
+  }
 
   ci
 }

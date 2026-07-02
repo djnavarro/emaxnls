@@ -6,12 +6,15 @@
 \alias{print.emaxnls}
 \title{Print an Emax regression model object}
 \usage{
-\method{print}{emaxlogistic}(x, ...)
+\method{print}{emaxlogistic}(x, conf_level = 0.95, ...)
 
-\method{print}{emaxnls}(x, ...)
+\method{print}{emaxnls}(x, conf_level = 0.95, ...)
 }
 \arguments{
 \item{x}{An \code{emaxnls} or \code{emaxlogistic} object}
+
+\item{conf_level}{Confidence level for the coefficient intervals shown in
+the printed table. Defaults to 0.95.}
 
 \item{...}{Ignored}
 }
@@ -19,9 +22,11 @@
 Invisibly returns the original object
 }
 \description{
-The \code{print()} method for \code{emaxnls} and \code{emaxlogistic} regression models
-reports the structural and covariate model along with a table of
-coefficients, test statistics, and confidence intervals
+The \code{print()} method for \code{emaxnls} and \code{emaxlogistic} objects provides a
+concise model overview: the structural and covariate formulas, key fit
+statistics, and a coefficient table showing estimates and confidence
+intervals. Hypothesis tests are deliberately omitted from the printed
+output; use \code{summary()} for inferential results.
 }
 \examples{
 mod_c <- emax_nls(

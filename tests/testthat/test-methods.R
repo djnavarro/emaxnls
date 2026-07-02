@@ -109,9 +109,9 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
 
 test_that("summary() matches .coef_table()", {
   if (!.is_converged(mod)) skip_on_ci()
-  expect_equal(summary(mod), .coef_table(mod))
-  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99))
-  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE))
+  expect_equal(summary(mod), .coef_table(mod, suppress_nonsensical = TRUE))
+  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99, suppress_nonsensical = TRUE))
+  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE, suppress_nonsensical = TRUE))
 })
 
 test_that("back_transform works for confint()", {
@@ -129,4 +129,21 @@ test_that("back_transform works for coef()", {
   expect_equal(cc1[-4], cc2[-4])
   expect_equal(unname(cc1[4]), unname(log(cc2[4])))
 }) 
+
+test_that("confint() falls back to Wald intervals with a warning for sigmoidal models", {
+  mod_sig <- emax_nls(
+    structural_model = rsp_1 ~ exp_1,
+    covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
+    data             = emax_df
+  )
+  if (!.is_converged(mod_sig)) skip()
+  # profile CI fails for this sigmoidal model; expect a warning and a valid result
+  expect_warning(
+    ci <- confint(mod_sig),
+    "falling back to Wald intervals"
+  )
+  expect_true(is.matrix(ci))
+  expect_equal(nrow(ci), length(coef(mod_sig)))
+  expect_true(all(ci[, 1] < ci[, 2]))
+})
 
