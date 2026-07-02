@@ -413,3 +413,20 @@ test_that("predict with tibble newdata gives identical results to data.frame", {
   expect_type(p_tbl, "double")
   expect_equal(p_tbl, p_df)
 })
+
+test_that("confint() falls back to Wald intervals with a warning for sigmoidal models", {
+  mod_sig <- emax_logistic(
+    structural_model = rsp_2 ~ exp_1,
+    covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
+    data             = emax_df
+  )
+  if (!.is_converged(mod_sig)) skip()
+  # profile CI fails for this sigmoidal logistic model; expect a warning and a valid result
+  expect_warning(
+    ci <- confint(mod_sig),
+    "falling back to Wald intervals"
+  )
+  expect_true(is.matrix(ci))
+  expect_equal(nrow(ci), length(coef(mod_sig)))
+  expect_true(all(ci[, 1] < ci[, 2]))
+})
