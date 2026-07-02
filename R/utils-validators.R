@@ -1,7 +1,7 @@
 
 .validate_structural_formula <- function(formula, names = NULL) {
 
-  errmsg <- "`structural_formula` must be a two-sided formula of the form `response ~ exposure`"
+  errmsg <- "`structural_model` must be a two-sided formula of the form `response ~ exposure`"
   .assert(inherits(formula, "formula"), errmsg)
   .assert(length(formula) == 3L, errmsg)
   .assert(length(all.vars(formula)) == 2L, errmsg)
@@ -13,7 +13,7 @@
 
 .validate_covariate_formula <- function(formula, names = NULL) {
 
-  errmsg <- "`covariate_formula` must be a list of 3 or 4 two-sided formulas"
+  errmsg <- "`covariate_model` must be a list of 3 or 4 two-sided formulas"
   .assert(inherits(formula, "list"), errmsg)
   .assert(length(formula) %in% 3:4, errmsg)
   .assert(all(.map_lgl(formula, function(x) .is_formula(x, sides = 2L))), errmsg)
