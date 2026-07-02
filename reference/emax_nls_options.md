@@ -14,7 +14,7 @@ emax_nls_options(
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
-  na.action = options("na.action")
+  na.action = getOption("na.action")
 )
 ```
 
@@ -126,9 +126,10 @@ emax_nls_options()
 #> NULL
 #> 
 #> $na.action
-#> $na.action$na.action
-#> [1] "na.omit"
-#> 
+#> function (object, ...) 
+#> UseMethod("na.omit")
+#> <bytecode: 0x55f6dfb911b8>
+#> <environment: namespace:stats>
 #> 
 
 # switch to levenberg-marquardt
@@ -172,9 +173,10 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 #> NULL
 #> 
 #> $na.action
-#> $na.action$na.action
-#> [1] "na.omit"
-#> 
+#> function (object, ...) 
+#> UseMethod("na.omit")
+#> <bytecode: 0x55f6dfb911b8>
+#> <environment: namespace:stats>
 #> 
 
 ```

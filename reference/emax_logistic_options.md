@@ -13,7 +13,7 @@ emax_logistic_options(
   optim_method = "gauss",
   optim_control = NULL,
   quiet = FALSE,
-  na.action = options("na.action"),
+  na.action = getOption("na.action"),
   max_iter = 25,
   tol = 1e-06
 )
@@ -97,9 +97,10 @@ emax_logistic_options()
 #> NULL
 #> 
 #> $na.action
-#> $na.action$na.action
-#> [1] "na.omit"
-#> 
+#> function (object, ...) 
+#> UseMethod("na.omit")
+#> <bytecode: 0x55f6dfb911b8>
+#> <environment: namespace:stats>
 #> 
 #> $max_iter
 #> [1] 25
@@ -143,9 +144,10 @@ emax_logistic_options(max_iter = 50)
 #> NULL
 #> 
 #> $na.action
-#> $na.action$na.action
-#> [1] "na.omit"
-#> 
+#> function (object, ...) 
+#> UseMethod("na.omit")
+#> <bytecode: 0x55f6dfb911b8>
+#> <environment: namespace:stats>
 #> 
 #> $max_iter
 #> [1] 50
