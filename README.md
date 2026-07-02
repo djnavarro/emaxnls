@@ -71,7 +71,7 @@ emax_df
 #> # ℹ 390 more rows
 
 # estimate parameters for an Emax regression with covariates
-emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
@@ -80,6 +80,7 @@ emax_nls(
   ), 
   data = emax_df
 )
+mod_c
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 
@@ -92,13 +93,32 @@ emax_nls(
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
+#>   Observations:         400 
+#>   Residual df:          396 
+#>   Residual std. error:  0.5108 
+#>   AIC:                  603.6431 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+#> 
+#> Use summary() for hypothesis tests.
+
+# hypothesis tests produced by summary()
+summary(mod_c)
+#> # A tibble: 4 × 7
+#>   label             estimate std_error t_statistic    p_value ci_lower ci_upper
+#>   <chr>                <dbl>     <dbl>       <dbl>      <dbl>    <dbl>    <dbl>
+#> 1 E0_cnt_a             0.486    0.0116        42.1  3.63e-148    0.463    0.509
+#> 2 E0_Intercept         5.05     0.0759        66.6  4.16e-217    4.91     5.20 
+#> 3 Emax_Intercept       9.97     0.112         89.3  2.11e-264    9.75    10.2  
+#> 4 logEC50_Intercept    8.27     0.0394        NA   NA            8.19     8.35
 ```
 
 ## Logistic Emax regression
@@ -111,7 +131,7 @@ squares procedure.
 
 ``` r
 # estimate parameters for a logistic Emax regression with covariates
-emax_logistic(
+mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
@@ -120,6 +140,7 @@ emax_logistic(
   ), 
   data = emax_df
 )
+mod_b
 #> Structural model:
 #> 
 #>   Exposure:       exp_1 
@@ -133,16 +154,32 @@ emax_logistic(
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error z_statistic  p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.659    0.0800        8.24 1.79e-16    0.501    0.816
-#> 2 E0_Intercept        -5.00     0.578        -8.64 5.43e-18   -6.14    -3.87 
-#> 3 Emax_Intercept       8.12     2.27          3.58 3.45e- 4    5.08    17.6  
-#> 4 logEC50_Intercept    9.78     0.518        18.9  1.20e-79    8.89    11.0  
+#>   Observations:  400 
+#>   Residual df:   396 
+#>   Deviance:      331.4698 
+#>   AIC:           339.4698 
 #> 
-#> Deviance: 331.4698 
-#> AIC:      339.4698
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error  lower  upper
+#> 1 E0_cnt_a             0.659    0.0800  0.501  0.816
+#> 2 E0_Intercept        -5.00     0.578  -6.14  -3.87 
+#> 3 Emax_Intercept       8.12     2.27    5.08  17.6  
+#> 4 logEC50_Intercept    9.78     0.518   8.89  11.0  
+#> 
+#> Use summary() for hypothesis tests.
+
+# hypothesis tests produced by summary()
+summary(mod_b)
+#> # A tibble: 4 × 7
+#>   label             estimate std_error z_statistic   p_value ci_lower ci_upper
+#>   <chr>                <dbl>     <dbl>       <dbl>     <dbl>    <dbl>    <dbl>
+#> 1 E0_cnt_a             0.659    0.0800        8.24  1.79e-16    0.501    0.816
+#> 2 E0_Intercept        -5.00     0.578        -8.64  5.43e-18   -6.14    -3.87 
+#> 3 Emax_Intercept       8.12     2.27          3.58  3.45e- 4    5.08    17.6  
+#> 4 logEC50_Intercept    9.78     0.518        NA    NA           8.89    11.0
 ```
 
 ## Stepwise covariate modeling
@@ -207,13 +244,22 @@ final_mod
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35
+#>   Observations:         400 
+#>   Residual df:          396 
+#>   Residual std. error:  0.5108 
+#>   AIC:                  603.6431 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+#> 
+#> Use summary() for hypothesis tests.
 ```
 
 ## Simulation

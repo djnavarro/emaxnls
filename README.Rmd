@@ -52,7 +52,7 @@ set.seed(123)
 emax_df
 
 # estimate parameters for an Emax regression with covariates
-emax_nls(
+mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
@@ -61,6 +61,10 @@ emax_nls(
   ), 
   data = emax_df
 )
+mod_c
+
+# hypothesis tests produced by summary()
+summary(mod_c)
 ```
 
 ## Logistic Emax regression
@@ -69,7 +73,7 @@ For binary outcomes, the package provides the `emax_logistic()` function, which 
 
 ```{r}
 # estimate parameters for a logistic Emax regression with covariates
-emax_logistic(
+mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
   covariate_model = list(
     E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
@@ -78,6 +82,10 @@ emax_logistic(
   ), 
   data = emax_df
 )
+mod_b
+
+# hypothesis tests produced by summary()
+summary(mod_b)
 ```
 
 ## Stepwise covariate modeling
