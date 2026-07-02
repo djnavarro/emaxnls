@@ -141,5 +141,7 @@
 }
 
 .binomial_deviance <- function(y, mu) {
+  eps <- .Machine$double.eps
+  mu  <- pmin(pmax(mu, eps), 1 - eps)
   -2 * sum(y * log(mu) + (1 - y) * log(1 - mu))
 }
