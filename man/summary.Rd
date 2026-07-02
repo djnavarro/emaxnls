@@ -103,9 +103,8 @@ retained. To work with the EC50 on the concentration scale, use
 
 When \code{simultaneous = TRUE}, a single critical value is derived from the
 joint multivariate normal distribution of the standardized parameter
-estimates, using the covariance matrix returned by \code{vcov()}. The resulting
-intervals have simultaneous coverage at \code{conf_level} and will be wider
-than the individual (pointwise) intervals.
+estimates. The resulting intervals have simultaneous coverage at
+\code{conf_level} and will be wider than the individual (pointwise) intervals.
 }
 }
 \examples{

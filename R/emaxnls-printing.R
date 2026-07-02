@@ -131,9 +131,8 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
 #'
 #' When `simultaneous = TRUE`, a single critical value is derived from the
 #' joint multivariate normal distribution of the standardized parameter
-#' estimates, using the covariance matrix returned by `vcov()`. The resulting
-#' intervals have simultaneous coverage at `conf_level` and will be wider
-#' than the individual (pointwise) intervals.
+#' estimates. The resulting intervals have simultaneous coverage at 
+#' `conf_level` and will be wider than the individual (pointwise) intervals.
 #'
 #' @returns A tibble with one row per model parameter and columns for the
 #'   estimate, standard error, test statistic, p-value, and confidence
