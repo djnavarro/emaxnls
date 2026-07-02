@@ -70,7 +70,7 @@
 }
 
 .construct_design <- function(structural_model, covariate_model, data,
-                              na.action = na.pass) {
+                              na.action = stats::na.pass) {
 
   # construct flat formula 
   ss <- deparse(structural_model)
