@@ -38,7 +38,10 @@ residuals.emaxlogistic <- function(object, type = c("pearson", "deviance"), ...)
     return((y - mu) / sqrt(mu * (1 - mu)))
   }
   # deviance residuals: signed sqrt of per-observation deviance contribution
-  sign(y - mu) * sqrt(-2 * (y * log(mu) + (1 - y) * log(1 - mu)))
+  # clamp mu away from 0/1 to avoid log(0) = -Inf -> NaN
+  eps <- .Machine$double.eps
+  mu_clamped <- pmin(pmax(mu, eps), 1 - eps)
+  sign(y - mu) * sqrt(-2 * (y * log(mu_clamped) + (1 - y) * log(1 - mu_clamped)))
 }
 
 
