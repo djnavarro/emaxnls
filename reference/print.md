@@ -52,6 +52,8 @@ print(mod_c)
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
+#>   Response type:  continuous
+#> 
 #> Covariate model:
 #> 
 #>   E0:       E0 ~ cnt_a 
@@ -86,7 +88,7 @@ print(mod_b)
 #>   Exposure:       exp_1 
 #>   Response:       rsp_2 
 #>   Emax type:      hyperbolic 
-#>   Response type: binary (logit link)
+#>   Response type:  binary (logit link)
 #> 
 #> Covariate model:
 #> 

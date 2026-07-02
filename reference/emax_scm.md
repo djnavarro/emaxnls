@@ -87,6 +87,8 @@ forward_model
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
+#>   Response type:  continuous
+#> 
 #> Covariate model:
 #> 
 #>   E0:       E0 ~ 1 + cnt_a 
@@ -122,6 +124,8 @@ final_model
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
+#> 
+#>   Response type:  continuous
 #> 
 #> Covariate model:
 #> 
@@ -189,6 +193,8 @@ final_model_logistic
 #>   Exposure:  exp_1 
 #>   Response:  rsp_2 
 #>   Emax type: hyperbolic 
+#> 
+#>   Response type:  continuous
 #> 
 #> Covariate model:
 #> 

@@ -87,7 +87,7 @@ emax_logistic(
 #>   Exposure:       exp_1 
 #>   Response:       rsp_2 
 #>   Emax type:      hyperbolic 
-#>   Response type: binary (logit link)
+#>   Response type:  binary (logit link)
 #> 
 #> Covariate model:
 #> 

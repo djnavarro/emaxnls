@@ -81,6 +81,8 @@ emax_nls(
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
 #> 
+#>   Response type:  continuous
+#> 
 #> Covariate model:
 #> 
 #>   E0:       E0 ~ cnt_a 

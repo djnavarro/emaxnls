@@ -72,12 +72,15 @@ mod_c <- emax_nls(
   ), 
   data = emax_df
 )
+
 mod_c
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
+#> 
+#>   Response type:  continuous
 #> 
 #> Covariate model:
 #> 
@@ -134,13 +137,14 @@ mod_b <- emax_logistic(
   ), 
   data = emax_df
 )
+
 mod_b
 #> Structural model:
 #> 
 #>   Exposure:       exp_1 
 #>   Response:       rsp_2 
 #>   Emax type:      hyperbolic 
-#>   Response type: binary (logit link)
+#>   Response type:  binary (logit link)
 #> 
 #> Covariate model:
 #> 
@@ -236,6 +240,8 @@ final_mod
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
+#> 
+#>   Response type:  continuous
 #> 
 #> Covariate model:
 #> 
