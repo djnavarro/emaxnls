@@ -254,6 +254,7 @@
     .validate_optim_method("levenberg")
     return(do.call(.nls_lm_safe, base_args))
   }
+  .abort(paste0("unknown algorithm: '", algorithm, "'"))
 }
 
 .nls_method <- function(optim_method) {

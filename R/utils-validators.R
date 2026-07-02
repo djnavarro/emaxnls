@@ -90,10 +90,12 @@
     is.null(param) | (is.numeric(param) & length(param) == length(coef(mod))) , 
     "`param` must be a named numeric vector of parameters or NULL"
   )
-  .assert(
-    names(param) == names(coef(mod)), 
-    "`param` names must match those of the model coefficients"
-  )
+  if (!is.null(param)) {
+    .assert(
+      identical(names(param), names(coef(mod))),
+      "`param` names must match those of the model coefficients"
+    )
+  }
 }
 
 .validate_binary_response <- function(response, name) {
