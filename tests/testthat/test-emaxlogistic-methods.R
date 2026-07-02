@@ -328,11 +328,11 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
 # summary() ---------------------------------------------------------------
 
 test_that("summary() matches .coef_table_logistic()", {
-  expect_equal(summary(mod_base), .coef_table_logistic(mod_base))
-  expect_equal(summary(mod_base, conf_level = .99), .coef_table_logistic(mod_base, level = .99))
+  expect_equal(summary(mod_base), .coef_table_logistic(mod_base, suppress_nonsensical = TRUE))
+  expect_equal(summary(mod_base, conf_level = .99), .coef_table_logistic(mod_base, level = .99, suppress_nonsensical = TRUE))
   expect_equal(
     summary(mod_base, back_transform = TRUE),
-    .coef_table_logistic(mod_base, back_transform = TRUE)
+    .coef_table_logistic(mod_base, back_transform = TRUE, suppress_nonsensical = TRUE)
   )
 })
 

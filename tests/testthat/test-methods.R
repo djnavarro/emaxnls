@@ -109,9 +109,9 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
 
 test_that("summary() matches .coef_table()", {
   if (!.is_converged(mod)) skip_on_ci()
-  expect_equal(summary(mod), .coef_table(mod))
-  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99))
-  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE))
+  expect_equal(summary(mod), .coef_table(mod, suppress_nonsensical = TRUE))
+  expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99, suppress_nonsensical = TRUE))
+  expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE, suppress_nonsensical = TRUE))
 })
 
 test_that("back_transform works for confint()", {
