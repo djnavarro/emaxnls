@@ -33,9 +33,14 @@ quadratic near the estimates.
 \details{
 For \code{emaxnls} objects, this calls \code{stats::confint.nls()}. For
 \code{emaxlogistic} objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. Setting
-\code{back_transform = TRUE} exponentiates the confidence limits for logEC50
-and logHill and drops the \code{log} prefix from their row names.
+final NLS fit from the IRLS algorithm at convergence. If profile likelihood
+computation fails (which can occur for sigmoidal models), a warning is
+issued and Wald intervals are returned instead.
+
+Setting \code{back_transform = TRUE} exponentiates the confidence limits for
+logEC50 and logHill, expressing them on the concentration scale rather
+than the log-concentration scale on which they are estimated, and drops
+the \code{log} prefix from their row names.
 }
 \examples{
 mod_c <- emax_nls(
