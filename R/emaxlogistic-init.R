@@ -80,6 +80,14 @@
   n_total    <- length(exposure)
   n_dosed    <- n_total - n_placebo
 
+  if (n_dosed == 0L) {
+    stop(
+      "cannot initialise Emax parameters: data contains no dosed observations ",
+      "(all exposure values are 0)",
+      call. = FALSE
+    )
+  }
+
   log_exp_dosed  <- log(exposure[!is_placebo])
   rsp_logit_dosed <- response_logit[!is_placebo]
 
