@@ -61,6 +61,7 @@ mod_c <- emax_nls(
   ), 
   data = emax_df
 )
+
 mod_c
 
 # hypothesis tests produced by summary()
@@ -82,6 +83,7 @@ mod_b <- emax_logistic(
   ), 
   data = emax_df
 )
+
 mod_b
 
 # hypothesis tests produced by summary()

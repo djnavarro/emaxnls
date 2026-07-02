@@ -37,6 +37,7 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
   cat("  Exposure: ", as.character(.get_exposure_name(x)), "\n")
   cat("  Response: ", as.character(.get_response_name(x)), "\n")
   cat("  Emax type:", .get_model_type(x), "\n\n")
+  cat("  Response type:  continuous\n\n")
   cat("Covariate model:\n\n")
   cat("  E0:      ", deparse(.get_covariate_formula(x, "E0")), "\n")
   cat("  Emax:    ", deparse(.get_covariate_formula(x, "Emax")), "\n")
