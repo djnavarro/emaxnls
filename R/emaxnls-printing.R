@@ -117,7 +117,7 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
 #' - Covariate beta terms: test whether a given covariate has any effect on
 #'   the corresponding structural parameter.
 #'
-#' The one exception is `logEC50_Intercept`. The model is parameterised in
+#' The one exception is `logEC50_Intercept`. The model is parameterized in
 #' terms of logEC50 (on the log-concentration scale), not EC50 directly, so
 #' the null `H0: logEC50 = 0` corresponds to testing EC50 = 1 on the
 #' concentration scale — a value with no intrinsic pharmacometric meaning.
@@ -129,7 +129,7 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
 #' ## Simultaneous intervals
 #'
 #' When `simultaneous = TRUE`, a single critical value is derived from the
-#' joint multivariate normal distribution of the standardised parameter
+#' joint multivariate normal distribution of the standardized parameter
 #' estimates, using the correlation matrix implied by `vcov()`. The resulting
 #' intervals have simultaneous coverage at `conf_level` and will be wider
 #' than the individual (pointwise) intervals.
