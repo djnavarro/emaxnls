@@ -111,7 +111,7 @@ emax_nls_options <- function(optim_method = "gauss",
                              optim_control = NULL,
                              quiet = FALSE,
                              weights = NULL,
-                             na.action = options("na.action")) {
+                             na.action = getOption("na.action")) {
   .emax_nls_options(
     optim_method = optim_method,
     optim_control = optim_control,
@@ -504,7 +504,7 @@ emax_logistic <- function(structural_model,
 emax_logistic_options <- function(optim_method = "gauss",
                                   optim_control = NULL,
                                   quiet = FALSE,
-                                  na.action = options("na.action"),
+                                  na.action = getOption("na.action"),
                                   max_iter = 25,
                                   tol = 1e-6) {
   .emax_logistic_options(
