@@ -1,8 +1,16 @@
 # emaxnls 0.1.1.9000
 
-* Adds `emax_logistic()` for fitting binary-outcome models with iterative reweighted least squares
+## New features
 
-* Redesigns `print()` and `summary()` methods for `emaxnls` and `emaxlogistic` objects:
+* Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
+  reweighted least squares (IRLS), along with `emax_logistic_init()` and
+  `emax_logistic_options()` for initialization and configuration. All standard
+  S3 methods (`coef()`, `vcov()`, `confint()`, `residuals()`, `fitted()`,
+  `predict()`, `anova()`, `logLik()`, `AIC()`, `BIC()`, `deviance()`,
+  `simulate()`) are supported for the new `emaxlogistic` class.
+
+* Redesigns `print()` and `summary()` methods for `emaxnls` and `emaxlogistic`
+  objects:
 
   - `print()` is now a concise model overview showing structural and covariate
     formulas, fit statistics (observations, residual df, sigma or deviance, AIC),
@@ -33,13 +41,119 @@
 * `confint()` now falls back to Wald intervals with a warning if profile
   likelihood computation fails (which can occur for sigmoidal models).
 
+## Bug fixes
+
+* Fixes `AIC()` and `BIC()` when called with multiple model arguments (#37).
+
+* Fixes `na.action` parameter not being passed through correctly in
+  `emax_nls()` and `emax_logistic()` (#38).
+
+* Fixes `predict()` omitting `residual.scale` from the return value when
+  `se.fit = TRUE` (#39).
+
+* Fixes crashes in `emax_logistic_init()` and prevents `Inf` parameter bounds
+  arising during initialisation (#40).
+
+* Hardens `.nls_call()` to avoid cryptic errors when optimisation fails, and
+  tightens argument validation in `emax_fun()` (#41).
+
+* Adds input validation for the binary response variable in `emax_logistic()`,
+  with informative errors for non-binary or out-of-range values (#42).
+
+* Fixes validator error messages to reference public API parameter names rather
+  than internal names (#43).
+
+* Fixes `NaN` produced by `.binomial_deviance()` when predicted probabilities
+  are exactly 0 or 1 (boundary cases) (#44).
+
+
 # emaxnls 0.1.1
 
 * Expanded description of package.
-* Fixes bug when `emax_nls_init()` is called manually
+* Fixes bug when `emax_nls_init()` is called manually.
+* `anova()` now warns rather than errors when fewer than two converged models
+  are supplied.
 * Additional examples in documentation.
-* Improves unit tests.
+* Improved unit tests.
+
 
 # emaxnls 0.1.0
 
-* Initial CRAN submission.
+Initial CRAN submission. The package provides tools for fitting and analysing
+Emax dose-response models via nonlinear least squares.
+
+## Model fitting
+
+* `emax_nls()` fits continuous-response Emax models using NLS, supporting both
+  the hyperbolic (`E0 + Emax * x / (EC50 + x)`) and sigmoidal
+  (`E0 + Emax * x^Hill / (EC50^Hill + x^Hill)`) model forms.
+
+* `emax_nls_options()` configures the optimisation algorithm and control
+  parameters. Three algorithms are supported via the `optim_method` argument:
+  `"gauss"` (Gauss-Newton, default), `"port"` (bounded nl2sol), and
+  `"levenberg"` (Levenberg-Marquardt via `minpack.lm`).
+
+* `emax_nls_init()` generates starting values and parameter bounds
+  automatically from the data, including support for categorical covariates.
+  Users can also call it directly to inspect or override the initialisation
+  before fitting.
+
+## Covariate modeling
+
+* Covariates can be added to any structural parameter (E0, Emax, logEC50,
+  logHill) via a formula interface, e.g. `emax_nls(rsp ~ dose, data = df, E0 = ~ group + age)`.
+
+* `emax_add_term()` and `emax_remove_term()` update a fitted model by adding
+  or removing a single covariate term without refitting from scratch.
+
+## Stepwise covariate modeling (SCM)
+
+* `emax_scm_forward()` performs forward covariate selection, adding one term
+  at a time while the likelihood-ratio test p-value stays below a threshold.
+
+* `emax_scm_backward()` performs backward elimination, removing terms while
+  the p-value exceeds a threshold.
+
+* `emax_scm_history()` returns the sequence of models tested during an SCM
+  procedure, including AIC, BIC, and convergence status for each candidate.
+
+## S3 methods
+
+* `print()` displays a brief model summary.
+
+* `summary()` produces a coefficient table with standard errors, confidence
+  intervals, and hypothesis tests. A `back_transform = TRUE` argument
+  re-expresses log-scaled parameters (logEC50, logHill) on their natural
+  scales (EC50, Hill) in the output.
+
+* `coef()` extracts the parameter vector; supports `back_transform = TRUE`.
+
+* `vcov()` returns the estimated variance-covariance matrix.
+
+* `confint()` computes profile-likelihood confidence intervals.
+
+* `residuals()` and `fitted()` return model residuals and fitted values.
+
+* `predict()` generates predictions, optionally with standard errors.
+
+* `anova()` compares nested models by likelihood-ratio test.
+
+* `logLik()`, `AIC()`, `BIC()`, `sigma()`, `nobs()`, and `df.residual()`
+  return standard model-fit statistics.
+
+* `simulate()` draws Monte Carlo replicates by resampling parameters from
+  the asymptotic normal distribution of the estimates (requires `mvtnorm`).
+
+* `emax_fun()` extracts a standalone prediction function from a fitted model
+  that can be evaluated at arbitrary dose values and parameter vectors.
+
+* `emax_converged()` returns `TRUE` or `FALSE` indicating whether the
+  optimiser converged. All S3 methods handle non-convergent models gracefully
+  by returning an `emaxnls_null` object rather than erroring.
+
+## Data
+
+* `emax_df`: a synthetic dataset of 400 observations across four dose groups
+  (0, 100, 200, 300), with a continuous response, a binary response, two
+  exposure metrics, continuous and binary covariates, and a categorical
+  covariate.
