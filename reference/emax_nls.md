@@ -77,9 +77,9 @@ emax_nls(
 )
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_1 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:

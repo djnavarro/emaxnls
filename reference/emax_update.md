@@ -45,9 +45,9 @@ mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_d
 if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_1 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -76,9 +76,9 @@ if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_1 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:

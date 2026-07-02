@@ -84,9 +84,9 @@ forward_model <- emax_scm_forward(
 forward_model
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_1 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -121,9 +121,9 @@ final_model <- emax_scm_backward(
 final_model
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_1 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -189,9 +189,9 @@ final_model_logistic <- emax_scm_backward(
 final_model_logistic
 #> Structural model:
 #> 
-#>   Exposure:  exp_1 
-#>   Response:  rsp_2 
-#>   Emax type: hyperbolic 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_2 
+#>   Emax type:      hyperbolic 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
