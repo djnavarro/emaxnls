@@ -9,7 +9,7 @@ emax_nls_options(
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
-  na.action = options("na.action")
+  na.action = getOption("na.action")
 )
 }
 \arguments{
