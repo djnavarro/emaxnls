@@ -15,7 +15,8 @@
 
   if (is.null(opts)) opts <- emax_logistic_options()
 
-  tmp <- .construct_design(structural_model, covariate_model, data)
+  tmp <- .construct_design(structural_model, covariate_model, data,
+                           na.action = opts$na.action)
 
   obj <- list(
     formula = list(

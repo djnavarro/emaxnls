@@ -33,7 +33,9 @@
   covariate_model[[str_param]] <- new
 
   # initial parameter guess for updated model
-  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod))
+  na_action <- .get_options(mod)$na.action
+  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod),
+                           na.action = na_action)
   init <- .guess_init(
     variables = .construct_variables(structural_model, covariate_model, tmp$lookup),
     design = tmp$design
@@ -87,7 +89,9 @@
   covariate_model[[str_param]] <- new
 
   # initial parameter guess for updated model
-  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod))
+  na_action <- .get_options(mod)$na.action
+  tmp <- .construct_design(structural_model, covariate_model, .get_data(mod),
+                           na.action = na_action)
   init <- .guess_init(
     variables = .construct_variables(structural_model, covariate_model, tmp$lookup),
     design = tmp$design

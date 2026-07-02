@@ -12,6 +12,9 @@
     if (optim_method == "levenberg") optim_control <- minpack.lm::nls.lm.control()
   }
 
+  # Resolve na.action to a function: accept a character name or a function
+  if (is.character(na.action)) na.action <- match.fun(na.action)
+
   opts <- list(
     optim_method = optim_method,
     optim_control = optim_control,

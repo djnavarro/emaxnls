@@ -12,7 +12,8 @@
   
   if (is.null(opts)) opts <- emax_nls_options()
 
-  tmp <- .construct_design(structural_model, covariate_model, data)
+  tmp <- .construct_design(structural_model, covariate_model, data,
+                           na.action = opts$na.action)
 
   obj <- list(
     formula = list( 
@@ -68,7 +69,8 @@
   stop("invalid covariate model", call. = FALSE)
 }
 
-.construct_design <- function(structural_model, covariate_model, data) {
+.construct_design <- function(structural_model, covariate_model, data,
+                              na.action = stats::na.pass) {
 
   # construct flat formula 
   ss <- deparse(structural_model)
@@ -83,8 +85,13 @@
     ff <- stats::as.formula(paste(ss, cc, sep = "+"))
   }
 
+  # Use model.frame to apply the na.action consistently across all variables
+  # (including the response) before building the model matrix. This prevents
+  # a dimension mismatch between the model matrix and the response column.
+  mf <- stats::model.frame(ff, data = data, na.action = na.action)
+
   # model matrix
-  mm <- stats::model.matrix(ff, data)
+  mm <- stats::model.matrix(ff, data = mf)
 
   preds <- all.vars(ff)        # variables required, including response
   terms <- colnames(mm)[-1]    # terms in the model, dropping intercept
@@ -95,7 +102,7 @@
 
   lookup <- .tibble(var_name = preds[index], term = terms)
   design <- stats::setNames(.as_tibble(mm), terms)
-  design[[preds[1]]] <- data[[preds[1]]]
+  design[[preds[1]]] <- mf[[preds[1]]]
      
   return(list(design = design, lookup = lookup))
 }

@@ -8,7 +8,7 @@ emax_logistic_options(
   optim_method = "gauss",
   optim_control = NULL,
   quiet = FALSE,
-  na.action = options("na.action"),
+  na.action = getOption("na.action"),
   max_iter = 25,
   tol = 1e-06
 )
