@@ -374,10 +374,10 @@ test_that("simulate() produces binary values in the val column", {
 
 # predict() with se.fit and interval --------------------------------------
 
-test_that("predict(se.fit = TRUE) returns a list with fit, se.fit, and df", {
+test_that("predict(se.fit = TRUE) returns a list with fit, se.fit, residual.scale, and df", {
   pr <- predict(mod_base, se.fit = TRUE)
   expect_type(pr, "list")
-  expect_named(pr, c("fit", "se.fit", "df"))
+  expect_named(pr, c("fit", "se.fit", "residual.scale", "df"))
   expect_true(all(pr$fit > 0 & pr$fit < 1))
   expect_true(is.numeric(pr$se.fit))
   expect_length(pr$df, 1L)

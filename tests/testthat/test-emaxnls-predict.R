@@ -18,7 +18,7 @@ test_that("predict with se.fit returns list", {
   pr_vec <- predict(mod)
   pr_lst <- predict(mod, se.fit = TRUE)
   expect_type(pr_lst, "list")
-  expect_named(pr_lst, c("fit", "se.fit", "df"))
+  expect_named(pr_lst, c("fit", "se.fit", "residual.scale", "df"))
   expect_equal(pr_lst$fit, pr_vec)
   expect_true(is.numeric(pr_lst$se))
   expect_true(is.numeric(pr_lst$df))
@@ -114,6 +114,7 @@ test_that(".predict_nls matches default predict method for nls objects", {
 xgx_1 <- list(
   fit = c(0.1452964, 0.1605549, 0.1774132),
   se.fit = c(0.02331904, 0.02490512, 0.02647756),
+  residual.scale = 0.07637093,
   df = 8L
 )
 
@@ -125,6 +126,7 @@ xgx_2 <- list(
     upr = c(0.1990702, 0.2179862, 0.2384706)
   ),
   se.fit = c(0.02331904, 0.02490512, 0.02647756),
+  residual.scale = 0.07637093,
   df = 8L
 )
 
