@@ -55,13 +55,22 @@ if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
+#>   Observations:         400 
+#>   Residual df:          396 
+#>   Residual std. error:  0.5108 
+#>   AIC:                  603.6431 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+#> 
+#> Use summary() for hypothesis tests.
 
 if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #> Structural model:
@@ -76,10 +85,19 @@ if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_Intercept          7.42    0.119         62.4 2.52e-207     7.19     7.66
-#> 2 Emax_Intercept        9.86    0.251         39.3 7.30e-139     9.37    10.4 
-#> 3 logEC50_Intercept     8.16    0.0931        87.6 7.62e-262     7.97     8.35
+#>   Observations:         400 
+#>   Residual df:          397 
+#>   Residual std. error:  1.1927 
+#>   AIC:                  1281.131 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower upper
+#> 1 E0_Intercept          7.42    0.119   7.19  7.66
+#> 2 Emax_Intercept        9.86    0.251   9.37 10.4 
+#> 3 logEC50_Intercept     8.16    0.0931  7.97  8.35
+#> 
+#> Use summary() for hypothesis tests.
 ```

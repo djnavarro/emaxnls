@@ -94,9 +94,13 @@ for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in 
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>For <code>emaxnls</code> objects, this calls <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">stats::confint.nls()</a></code>. For
 <code>emaxlogistic</code> objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. Setting
-<code>back_transform = TRUE</code> exponentiates the confidence limits for logEC50
-and logHill and drops the <code>log</code> prefix from their row names.</p>
+final NLS fit from the IRLS algorithm at convergence. If profile likelihood
+computation fails (which can occur for sigmoidal models), a warning is
+issued and Wald intervals are returned instead.</p>
+<p>Setting <code>back_transform = TRUE</code> exponentiates the confidence limits for
+logEC50 and logHill, expressing them on the concentration scale rather
+than the log-concentration scale on which they are estimated, and drops
+the <code>log</code> prefix from their row names.</p>
     </div>
 
     <div class="section level2">

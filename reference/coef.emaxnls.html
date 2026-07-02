@@ -78,9 +78,12 @@ default, which is the scale on which they are estimated.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Setting <code>back_transform = TRUE</code> exponentiates logEC50 and logHill and drops
-the <code>log</code> prefix from their names, giving more interpretable units. This
-transformation is not applied automatically to the corresponding confidence
-intervals or standard errors returned by <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> and <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>.</p>
+the <code>log</code> prefix from their names, expressing them on the concentration scale
+rather than the log-concentration scale on which they are estimated.
+<code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> and <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> are not affected by this argument and always return
+results on the log-concentration scale. The <code><a href="summary.html">summary()</a></code> method also accepts
+<code>back_transform = TRUE</code> and applies the same transformation to its
+coefficient table, including the confidence interval columns.</p>
     </div>
 
     <div class="section level2">

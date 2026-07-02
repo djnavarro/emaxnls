@@ -139,13 +139,22 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Emax:     Emax ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   logEC50:  logEC50 ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient table:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model fit:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error t_statistic   p_value ci_lower ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a             0.486    0.011<span style="text-decoration: underline;">6</span>        42.1 3.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>    0.463    0.509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_Intercept         5.05     0.075<span style="text-decoration: underline;">9</span>        66.6 4.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-217</span>    4.91     5.20 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax_Intercept       9.97     0.112         89.3 2.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-264</span>    9.75    10.2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50_Intercept    8.27     0.039<span style="text-decoration: underline;">4</span>       210.  0   <span style="color: #949494;"> </span>        8.19     8.35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations:         400 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual df:          396 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual std. error:  0.5108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   AIC:                  603.6431 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients (95% CI):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error lower  upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a             0.486    0.011<span style="text-decoration: underline;">6</span> 0.463  0.509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_Intercept         5.05     0.075<span style="text-decoration: underline;">9</span> 4.91   5.20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax_Intercept       9.97     0.112  9.75  10.2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50_Intercept    8.27     0.039<span style="text-decoration: underline;">4</span> 8.19   8.35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Use summary() for hypothesis tests.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># remove covariates from the forward model using backward deletion</span></span></span>
 <span class="r-in"><span><span class="va">final_model</span> <span class="op">&lt;-</span> <span class="fu">emax_scm_backward</span><span class="op">(</span></span></span>
@@ -166,13 +175,22 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Emax:     Emax ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   logEC50:  logEC50 ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient table:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model fit:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error t_statistic   p_value ci_lower ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a             0.486    0.011<span style="text-decoration: underline;">6</span>        42.1 3.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>    0.463    0.509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_Intercept         5.05     0.075<span style="text-decoration: underline;">9</span>        66.6 4.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-217</span>    4.91     5.20 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax_Intercept       9.97     0.112         89.3 2.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-264</span>    9.75    10.2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50_Intercept    8.27     0.039<span style="text-decoration: underline;">4</span>       210.  0   <span style="color: #949494;"> </span>        8.19     8.35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations:         400 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual df:          396 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual std. error:  0.5108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   AIC:                  603.6431 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients (95% CI):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error lower  upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a             0.486    0.011<span style="text-decoration: underline;">6</span> 0.463  0.509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_Intercept         5.05     0.075<span style="text-decoration: underline;">9</span> 4.91   5.20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Emax_Intercept       9.97     0.112  9.75  10.2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> logEC50_Intercept    8.27     0.039<span style="text-decoration: underline;">4</span> 8.19   8.35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Use summary() for hypothesis tests.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># show the history of all models tested during the forward addition</span></span></span>
 <span class="r-in"><span><span class="co"># step and the backward deletion step</span></span></span>
@@ -224,14 +242,23 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Emax:     Emax ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   logEC50:  logEC50 ~ 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient table:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model fit:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error t_statistic  p_value ci_lower ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a            0.093<span style="text-decoration: underline;">2</span>   0.008<span style="text-decoration: underline;">36</span>       11.1  2.75<span style="color: #949494;">e</span><span style="color: #BB0000;">-25</span>   0.076<span style="text-decoration: underline;">7</span>    0.110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_bin_d            0.145    0.037<span style="text-decoration: underline;">3</span>         3.88 1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span>   0.071<span style="text-decoration: underline;">3</span>    0.218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> E0_Intercept       -<span style="color: #BB0000;">0.293</span>    0.056<span style="text-decoration: underline;">6</span>        -<span style="color: #BB0000;">5.18</span> 3.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>  -<span style="color: #BB0000;">0.404</span>    -<span style="color: #BB0000;">0.182</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Emax_Intercept      0.930    0.145          6.42 3.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>   0.707     1.29 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> logEC50_Intercept   9.27     0.381         24.4  1.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-80</span>   8.60     10.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations:         400 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual df:          395 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Residual std. error:  0.3696 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   AIC:                  345.9516 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients (95% CI):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label             estimate std_error   lower  upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> E0_cnt_a            0.093<span style="text-decoration: underline;">2</span>   0.008<span style="text-decoration: underline;">36</span>  0.076<span style="text-decoration: underline;">7</span>  0.110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> E0_bin_d            0.145    0.037<span style="text-decoration: underline;">3</span>   0.071<span style="text-decoration: underline;">3</span>  0.218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> E0_Intercept       -<span style="color: #BB0000;">0.293</span>    0.056<span style="text-decoration: underline;">6</span>  -<span style="color: #BB0000;">0.404</span>  -<span style="color: #BB0000;">0.182</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Emax_Intercept      0.930    0.145    0.707   1.29 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> logEC50_Intercept   9.27     0.381    8.60   10.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Use summary() for hypothesis tests.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">final_model_logistic</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 31 × 11</span></span>

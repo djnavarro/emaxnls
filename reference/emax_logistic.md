@@ -95,14 +95,20 @@ emax_logistic(
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error z_statistic  p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.659    0.0800        8.24 1.79e-16    0.501    0.816
-#> 2 E0_Intercept        -5.00     0.578        -8.64 5.43e-18   -6.14    -3.87 
-#> 3 Emax_Intercept       8.12     2.27          3.58 3.45e- 4    5.08    17.6  
-#> 4 logEC50_Intercept    9.78     0.518        18.9  1.20e-79    8.89    11.0  
+#>   Observations:  400 
+#>   Residual df:   396 
+#>   Deviance:      331.4698 
+#>   AIC:           339.4698 
 #> 
-#> Deviance: 331.4698 
-#> AIC:      339.4698 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error  lower  upper
+#> 1 E0_cnt_a             0.659    0.0800  0.501  0.816
+#> 2 E0_Intercept        -5.00     0.578  -6.14  -3.87 
+#> 3 Emax_Intercept       8.12     2.27    5.08  17.6  
+#> 4 logEC50_Intercept    9.78     0.518   8.89  11.0  
+#> 
+#> Use summary() for hypothesis tests.
 ```

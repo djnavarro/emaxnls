@@ -33,11 +33,15 @@ A named numeric vector of parameter estimates
 ## Details
 
 Setting `back_transform = TRUE` exponentiates logEC50 and logHill and
-drops the `log` prefix from their names, giving more interpretable
-units. This transformation is not applied automatically to the
-corresponding confidence intervals or standard errors returned by
-[`confint()`](https://rdrr.io/r/stats/confint.html) and
-[`vcov()`](https://rdrr.io/r/stats/vcov.html).
+drops the `log` prefix from their names, expressing them on the
+concentration scale rather than the log-concentration scale on which
+they are estimated. [`confint()`](https://rdrr.io/r/stats/confint.html)
+and [`vcov()`](https://rdrr.io/r/stats/vcov.html) are not affected by
+this argument and always return results on the log-concentration scale.
+The [`summary()`](https://emaxnls.djnavarro.net/reference/summary.md)
+method also accepts `back_transform = TRUE` and applies the same
+transformation to its coefficient table, including the confidence
+interval columns.
 
 ## Examples
 

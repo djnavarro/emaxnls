@@ -48,9 +48,14 @@ limits for each parameter. These will be labeled as (1-level)/2 and 1 -
 For `emaxnls` objects, this calls
 [`stats::confint.nls()`](https://rdrr.io/r/stats/confint.html). For
 `emaxlogistic` objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. Setting
-`back_transform = TRUE` exponentiates the confidence limits for logEC50
-and logHill and drops the `log` prefix from their row names.
+final NLS fit from the IRLS algorithm at convergence. If profile
+likelihood computation fails (which can occur for sigmoidal models), a
+warning is issued and Wald intervals are returned instead.
+
+Setting `back_transform = TRUE` exponentiates the confidence limits for
+logEC50 and logHill, expressing them on the concentration scale rather
+than the log-concentration scale on which they are estimated, and drops
+the `log` prefix from their row names.
 
 ## Examples
 

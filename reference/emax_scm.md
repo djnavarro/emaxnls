@@ -94,13 +94,22 @@ forward_model
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
+#>   Observations:         400 
+#>   Residual df:          396 
+#>   Residual std. error:  0.5108 
+#>   AIC:                  603.6431 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+#> 
+#> Use summary() for hypothesis tests.
 
 # remove covariates from the forward model using backward deletion
 final_model <- emax_scm_backward(
@@ -121,13 +130,22 @@ final_model
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic   p_value ci_lower ci_upper
-#> 1 E0_cnt_a             0.486    0.0116        42.1 3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6 4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3 2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394       210.  0            8.19     8.35 
+#>   Observations:         400 
+#>   Residual df:          396 
+#>   Residual std. error:  0.5108 
+#>   AIC:                  603.6431 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+#> 
+#> Use summary() for hypothesis tests.
 
 # show the history of all models tested during the forward addition
 # step and the backward deletion step
@@ -179,14 +197,23 @@ final_model_logistic
 #>   Emax:     Emax ~ 1 
 #>   logEC50:  logEC50 ~ 1 
 #> 
-#> Coefficient table:
+#> Model fit:
 #> 
-#>   label             estimate std_error t_statistic  p_value ci_lower ci_upper
-#> 1 E0_cnt_a            0.0932   0.00836       11.1  2.75e-25   0.0767    0.110
-#> 2 E0_bin_d            0.145    0.0373         3.88 1.22e- 4   0.0713    0.218
-#> 3 E0_Intercept       -0.293    0.0566        -5.18 3.62e- 7  -0.404    -0.182
-#> 4 Emax_Intercept      0.930    0.145          6.42 3.83e-10   0.707     1.29 
-#> 5 logEC50_Intercept   9.27     0.381         24.4  1.16e-80   8.60     10.0  
+#>   Observations:         400 
+#>   Residual df:          395 
+#>   Residual std. error:  0.3696 
+#>   AIC:                  345.9516 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error   lower  upper
+#> 1 E0_cnt_a            0.0932   0.00836  0.0767  0.110
+#> 2 E0_bin_d            0.145    0.0373   0.0713  0.218
+#> 3 E0_Intercept       -0.293    0.0566  -0.404  -0.182
+#> 4 Emax_Intercept      0.930    0.145    0.707   1.29 
+#> 5 logEC50_Intercept   9.27     0.381    8.60   10.0  
+#> 
+#> Use summary() for hypothesis tests.
 
 emax_scm_history(final_model_logistic)
 #> # A tibble: 31 × 11
