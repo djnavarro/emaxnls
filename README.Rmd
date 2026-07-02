@@ -42,7 +42,7 @@ pak::pak("djnavarro/emaxnls")
 ## Minimal example
 
 An Emax regression model for continuous response variables is estimated using the `emax_nls()` function, using the `structural_model` argument to specify the exposure variable and the response variable, and the `covariate_model` argument to specify covariates to be estimated for structural parameters (e.g., E0, Emax).
-
+ 
 ```{r}
 library(tibble)
 library(emaxnls)
