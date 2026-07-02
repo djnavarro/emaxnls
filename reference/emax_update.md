@@ -48,7 +48,6 @@ if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -80,7 +79,6 @@ if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:

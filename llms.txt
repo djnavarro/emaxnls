@@ -79,7 +79,6 @@ mod_c
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -240,7 +239,6 @@ final_mod
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -272,7 +270,7 @@ final_mod
 The package also provides tools to assist in model-based simulations,
 using the
 [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
-function. A simple example is shown below. Please see the package
+function. A simple example is shown below. See the function
 documentation for more details.
 
 ``` r

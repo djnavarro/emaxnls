@@ -80,13 +80,13 @@ forward_model <- emax_scm_forward(
   candidates = covariate_list, 
   threshold = .01
 )
+#> Warning: `nls()` did not converge
 forward_model
 #> Structural model:
 #> 
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -124,7 +124,6 @@ final_model
 #>   Exposure:  exp_1 
 #>   Response:  rsp_1 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:
@@ -193,7 +192,6 @@ final_model_logistic
 #>   Exposure:  exp_1 
 #>   Response:  rsp_2 
 #>   Emax type: hyperbolic 
-#> 
 #>   Response type:  continuous
 #> 
 #> Covariate model:

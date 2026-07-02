@@ -99,6 +99,6 @@ confint(mod_b)
 #>                         2.5%      97.5%
 #> E0_cnt_a           0.5014985  0.8160269
 #> E0_Intercept      -6.1357553 -3.8667186
-#> Emax_Intercept     5.0800762 17.6084131
-#> logEC50_Intercept  8.8920970 11.0482721
+#> Emax_Intercept     5.0800762 17.6084133
+#> logEC50_Intercept  8.8920970 11.0482722
 ```
