@@ -72,9 +72,9 @@ AIC(mod_1)
 
 # calculate AIC for a sequence of models
 AIC(mod_0, mod_1)
-#>        df       AIC
-#> mod_0 397 1281.1314
-#> mod_1 396  603.6431
+#>       df       AIC
+#> mod_0  4 1281.1314
+#> mod_1  5  603.6431
 
 # calculate BIC for individual models
 BIC(mod_0)
@@ -84,9 +84,9 @@ BIC(mod_1)
 
 # calculate BIC for a sequence of models
 BIC(mod_0, mod_1)
-#>        df       BIC
-#> mod_0 397 1297.0973
-#> mod_1 396  623.6004
+#>       df       BIC
+#> mod_0  4 1297.0973
+#> mod_1  5  623.6004
 
 # emaxlogistic models
 mod_b0 <- emax_logistic(

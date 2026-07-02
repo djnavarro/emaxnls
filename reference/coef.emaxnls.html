@@ -94,12 +94,12 @@ intervals or standard errors returned by <code><a href="https://rdrr.io/r/stats/
 <span class="r-in"><span><span class="co"># coefficients on the estimation scale</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">mod_c</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0.4861467         5.0548075         9.9697250         8.2688405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0.4861467         5.0548076         9.9697250         8.2688405 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># coefficients with log-scale parameters back-transformed</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">mod_c</span>, back_transform <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       E0_cnt_a   E0_Intercept Emax_Intercept EC50_Intercept </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.4861467      5.0548075      9.9697250   3900.4236534 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.4861467      5.0548076      9.9697250   3900.4236542 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_logistic.html">emax_logistic</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_2</span> <span class="op">~</span> <span class="va">exp_1</span>,</span></span>
