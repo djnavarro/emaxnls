@@ -19,7 +19,7 @@ options(digits = 4)
 library(emaxnls)
 library(tibble)
 library(ggplot2)
-theme_set(theme_minimal())
+theme_set(theme_bw())
 set.seed(123)
 ```
 

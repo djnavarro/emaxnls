@@ -19,7 +19,7 @@ options(digits = 4)
 library(emaxnls)
 library(tibble)
 library(ggplot2)
-theme_set(theme_minimal())
+theme_set(theme_bw())
 set.seed(123)
 ```
 
@@ -33,7 +33,7 @@ a separate article.
 
 ## The Emax model
 
-The Emax model is the workhorse exposure-response model in pharmacometrics. It
+The Emax model is a widely used exposure-response model in pharmacometrics. It
 describes a smooth, saturating relationship between a measure of drug
 *exposure* (a dose, a concentration, an AUC) and a *response*. As exposure
 increases the response moves away from a baseline value and asymptotes towards a
