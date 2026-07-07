@@ -1,6 +1,10 @@
 ---
 title: "Fitting Emax models for binary outcomes"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Fitting Emax models for binary outcomes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

@@ -1,6 +1,10 @@
 ---
 title: "Stepwise covariate modelling"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Stepwise covariate modelling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
