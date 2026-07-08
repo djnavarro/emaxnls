@@ -4,6 +4,18 @@
 
 ### Bug fixes
 
+- [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
+  and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
+  now degrade gracefully on platforms where the `mvtnorm` shared object
+  is installed but fails to link at runtime (observed on some
+  clang-based Rhub builders). A warning is issued and the computation
+  continues using base-R fallbacks: Cholesky-based multivariate normal
+  sampling for
+  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md),
+  and a Bonferroni-corrected normal quantile for simultaneous confidence
+  intervals. The fallback intervals are conservative but valid
+  ([\#52](https://github.com/djnavarro/emaxnls/issues/52)).
+
 - The tibble package is now listed under `Suggests` rather than
   `Imports`, making it a genuine optional dependency. All package
   functionality works with or without tibble installed
@@ -113,10 +125,10 @@
 
 - Fixes crashes in
   [`emax_logistic_init()`](https://emaxnls.djnavarro.net/reference/emax_logistic_init.md)
-  and prevents `Inf` parameter bounds arising during initialisation
+  and prevents `Inf` parameter bounds arising during initialization
   ([\#40](https://github.com/djnavarro/emaxnls/issues/40)).
 
-- Hardens `.nls_call()` to avoid cryptic errors when optimisation fails,
+- Hardens `.nls_call()` to avoid cryptic errors when optimization fails,
   and tightens argument validation in
   [`emax_fun()`](https://emaxnls.djnavarro.net/reference/emax_fun.md)
   ([\#41](https://github.com/djnavarro/emaxnls/issues/41)).
@@ -161,7 +173,7 @@ CRAN release: 2026-06-30
 ## emaxnls 0.1.0
 
 Initial CRAN submission. The package provides tools for fitting and
-analysing Emax dose-response models via nonlinear least squares.
+analyzing Emax dose-response models via nonlinear least squares.
 
 ### Model fitting
 
@@ -171,7 +183,7 @@ analysing Emax dose-response models via nonlinear least squares.
   (`E0 + Emax * x^Hill / (EC50^Hill + x^Hill)`) model forms.
 
 - [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
-  configures the optimisation algorithm and control parameters. Three
+  configures the optimization algorithm and control parameters. Three
   algorithms are supported via the `optim_method` argument: `"gauss"`
   (Gauss-Newton, default), `"port"` (bounded nl2sol), and `"levenberg"`
   (Levenberg-Marquardt via `minpack.lm`).
@@ -179,7 +191,7 @@ analysing Emax dose-response models via nonlinear least squares.
 - [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
   generates starting values and parameter bounds automatically from the
   data, including support for categorical covariates. Users can also
-  call it directly to inspect or override the initialisation before
+  call it directly to inspect or override the initialization before
   fitting.
 
 ### Covariate modeling
@@ -255,7 +267,7 @@ analysing Emax dose-response models via nonlinear least squares.
   be evaluated at arbitrary dose values and parameter vectors.
 
 - [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
-  returns `TRUE` or `FALSE` indicating whether the optimiser converged.
+  returns `TRUE` or `FALSE` indicating whether the optimizer converged.
   All S3 methods handle non-convergent models gracefully by returning an
   `emaxnls_null` object rather than erroring.
 

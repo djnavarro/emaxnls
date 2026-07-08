@@ -49,7 +49,8 @@
 <h2 class="pkg-version" data-toc-text="0.1.1.9000" id="emaxnls-0119000">emaxnls 0.1.1.9000<a class="anchor" aria-label="anchor" href="#emaxnls-0119000"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-1-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000"></a></h3>
-<ul><li>The tibble package is now listed under <code>Suggests</code> rather than <code>Imports</code>, making it a genuine optional dependency. All package functionality works with or without tibble installed (<a href="https://github.com/djnavarro/emaxnls/issues/24" class="external-link">#24</a>).</li>
+<ul><li><p><code><a href="../reference/simulate.html">simulate()</a></code> and <code>confint(simultaneous = TRUE)</code> / <code>summary(simultaneous = TRUE)</code> now degrade gracefully on platforms where the <code>mvtnorm</code> shared object is installed but fails to link at runtime (observed on some clang-based Rhub builders). A warning is issued and the computation continues using base-R fallbacks: Cholesky-based multivariate normal sampling for <code><a href="../reference/simulate.html">simulate()</a></code>, and a Bonferroni-corrected normal quantile for simultaneous confidence intervals. The fallback intervals are conservative but valid (<a href="https://github.com/djnavarro/emaxnls/issues/52" class="external-link">#52</a>).</p></li>
+<li><p>The tibble package is now listed under <code>Suggests</code> rather than <code>Imports</code>, making it a genuine optional dependency. All package functionality works with or without tibble installed (<a href="https://github.com/djnavarro/emaxnls/issues/24" class="external-link">#24</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-1-1-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1-9000"></a></h3>
@@ -79,8 +80,8 @@
 <ul><li><p>Fixes <code><a href="../reference/AIC.html">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> when called with multiple model arguments (<a href="https://github.com/djnavarro/emaxnls/issues/37" class="external-link">#37</a>).</p></li>
 <li><p>Fixes <code>na.action</code> parameter not being passed through correctly in <code><a href="../reference/emax_nls.html">emax_nls()</a></code> and <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code> (<a href="https://github.com/djnavarro/emaxnls/issues/38" class="external-link">#38</a>).</p></li>
 <li><p>Fixes <code><a href="../reference/predict.html">predict()</a></code> omitting <code>residual.scale</code> from the return value when <code>se.fit = TRUE</code> (<a href="https://github.com/djnavarro/emaxnls/issues/39" class="external-link">#39</a>).</p></li>
-<li><p>Fixes crashes in <code><a href="../reference/emax_logistic_init.html">emax_logistic_init()</a></code> and prevents <code>Inf</code> parameter bounds arising during initialisation (<a href="https://github.com/djnavarro/emaxnls/issues/40" class="external-link">#40</a>).</p></li>
-<li><p>Hardens <code>.nls_call()</code> to avoid cryptic errors when optimisation fails, and tightens argument validation in <code><a href="../reference/emax_fun.html">emax_fun()</a></code> (<a href="https://github.com/djnavarro/emaxnls/issues/41" class="external-link">#41</a>).</p></li>
+<li><p>Fixes crashes in <code><a href="../reference/emax_logistic_init.html">emax_logistic_init()</a></code> and prevents <code>Inf</code> parameter bounds arising during initialization (<a href="https://github.com/djnavarro/emaxnls/issues/40" class="external-link">#40</a>).</p></li>
+<li><p>Hardens <code>.nls_call()</code> to avoid cryptic errors when optimization fails, and tightens argument validation in <code><a href="../reference/emax_fun.html">emax_fun()</a></code> (<a href="https://github.com/djnavarro/emaxnls/issues/41" class="external-link">#41</a>).</p></li>
 <li><p>Adds input validation for the binary response variable in <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code>, with informative errors for non-binary or out-of-range values (<a href="https://github.com/djnavarro/emaxnls/issues/42" class="external-link">#42</a>).</p></li>
 <li><p>Fixes validator error messages to reference public API parameter names rather than internal names (<a href="https://github.com/djnavarro/emaxnls/issues/43" class="external-link">#43</a>).</p></li>
 <li><p>Fixes <code>NaN</code> produced by <code>.binomial_deviance()</code> when predicted probabilities are exactly 0 or 1 (boundary cases) (<a href="https://github.com/djnavarro/emaxnls/issues/44" class="external-link">#44</a>).</p></li>
@@ -98,12 +99,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="emaxnls-010">emaxnls 0.1.0<a class="anchor" aria-label="anchor" href="#emaxnls-010"></a></h2>
-<p>Initial CRAN submission. The package provides tools for fitting and analysing Emax dose-response models via nonlinear least squares.</p>
+<p>Initial CRAN submission. The package provides tools for fitting and analyzing Emax dose-response models via nonlinear least squares.</p>
 <div class="section level3">
 <h3 id="model-fitting-0-1-0">Model fitting<a class="anchor" aria-label="anchor" href="#model-fitting-0-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/emax_nls.html">emax_nls()</a></code> fits continuous-response Emax models using NLS, supporting both the hyperbolic (<code>E0 + Emax * x / (EC50 + x)</code>) and sigmoidal (<code>E0 + Emax * x^Hill / (EC50^Hill + x^Hill)</code>) model forms.</p></li>
-<li><p><code><a href="../reference/emax_nls_options.html">emax_nls_options()</a></code> configures the optimisation algorithm and control parameters. Three algorithms are supported via the <code>optim_method</code> argument: <code>"gauss"</code> (Gauss-Newton, default), <code>"port"</code> (bounded nl2sol), and <code>"levenberg"</code> (Levenberg-Marquardt via <code>minpack.lm</code>).</p></li>
-<li><p><code><a href="../reference/emax_nls_init.html">emax_nls_init()</a></code> generates starting values and parameter bounds automatically from the data, including support for categorical covariates. Users can also call it directly to inspect or override the initialisation before fitting.</p></li>
+<li><p><code><a href="../reference/emax_nls_options.html">emax_nls_options()</a></code> configures the optimization algorithm and control parameters. Three algorithms are supported via the <code>optim_method</code> argument: <code>"gauss"</code> (Gauss-Newton, default), <code>"port"</code> (bounded nl2sol), and <code>"levenberg"</code> (Levenberg-Marquardt via <code>minpack.lm</code>).</p></li>
+<li><p><code><a href="../reference/emax_nls_init.html">emax_nls_init()</a></code> generates starting values and parameter bounds automatically from the data, including support for categorical covariates. Users can also call it directly to inspect or override the initialization before fitting.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="covariate-modeling-0-1-0">Covariate modeling<a class="anchor" aria-label="anchor" href="#covariate-modeling-0-1-0"></a></h3>
@@ -129,7 +130,7 @@
 <li><p><code><a href="../reference/logLik.html">logLik()</a></code>, <code><a href="../reference/AIC.html">AIC()</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>, <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code>, <code><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs()</a></code>, and <code><a href="../reference/df.residual.html">df.residual()</a></code> return standard model-fit statistics.</p></li>
 <li><p><code><a href="../reference/simulate.html">simulate()</a></code> draws Monte Carlo replicates by resampling parameters from the asymptotic normal distribution of the estimates (requires <code>mvtnorm</code>).</p></li>
 <li><p><code><a href="../reference/emax_fun.html">emax_fun()</a></code> extracts a standalone prediction function from a fitted model that can be evaluated at arbitrary dose values and parameter vectors.</p></li>
-<li><p><code><a href="../reference/emax_converged.html">emax_converged()</a></code> returns <code>TRUE</code> or <code>FALSE</code> indicating whether the optimiser converged. All S3 methods handle non-convergent models gracefully by returning an <code>emaxnls_null</code> object rather than erroring.</p></li>
+<li><p><code><a href="../reference/emax_converged.html">emax_converged()</a></code> returns <code>TRUE</code> or <code>FALSE</code> indicating whether the optimizer converged. All S3 methods handle non-convergent models gracefully by returning an <code>emaxnls_null</code> object rather than erroring.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="data-0-1-0">Data<a class="anchor" aria-label="anchor" href="#data-0-1-0"></a></h3>

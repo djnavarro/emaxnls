@@ -55,7 +55,7 @@ mod_c <- emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
-if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod_c)
+simulate(mod_c)
 #> # A tibble: 400 × 11
 #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
@@ -78,7 +78,7 @@ mod_b <- emax_logistic(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
-if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod_b)
+simulate(mod_b)
 #> # A tibble: 400 × 11
 #>    dat_id sim_id      mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int>   <dbl> <dbl>    <dbl>        <dbl>          <dbl>
