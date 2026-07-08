@@ -47,3 +47,26 @@ is_gcc_version <- function(major) {
 
 # the one I care about
 is_gcc15 <- function() is_gcc_version(15)
+
+
+# check whether mvtnorm is actually callable, not just installed -------------
+#
+# On some clang-based Rhub builders, mvtnorm is installed and its namespace can
+# be registered, but the shared object fails to link at runtime.  In that case
+# requireNamespace("mvtnorm") returns TRUE, yet any call to a mvtnorm function
+# errors.  This helper detects that case by actually invoking rmvnorm() with a
+# trivial argument and catching any error.
+#
+# The result is memoised so the probe is only run once per test session.
+mvtnorm_usable <- local({
+  result <- NULL
+  function() {
+    if (is.null(result)) {
+      result <<- tryCatch({
+        mvtnorm::rmvnorm(1L, mean = c(0, 0), sigma = diag(2))
+        TRUE
+      }, error = function(e) FALSE)
+    }
+    result
+  }
+})
