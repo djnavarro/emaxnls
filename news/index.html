@@ -76,6 +76,7 @@
 <li><p>Adds input validation for the binary response variable in <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code>, with informative errors for non-binary or out-of-range values (<a href="https://github.com/djnavarro/emaxnls/issues/42" class="external-link">#42</a>).</p></li>
 <li><p>Fixes validator error messages to reference public API parameter names rather than internal names (<a href="https://github.com/djnavarro/emaxnls/issues/43" class="external-link">#43</a>).</p></li>
 <li><p>Fixes <code>NaN</code> produced by <code>.binomial_deviance()</code> when predicted probabilities are exactly 0 or 1 (boundary cases) (<a href="https://github.com/djnavarro/emaxnls/issues/44" class="external-link">#44</a>).</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> now accepts a <code>simultaneous</code> argument, mirroring <code><a href="../reference/summary.html">summary()</a></code>. Previously <code>confint(object, simultaneous = TRUE)</code> silently ignored the argument (swallowed by <code>...</code>) and returned pointwise intervals. Setting <code>simultaneous = TRUE</code> now returns simultaneous (joint) Wald intervals that match those reported by <code>summary(object, simultaneous = TRUE)</code> (<a href="https://github.com/djnavarro/emaxnls/issues/46" class="external-link">#46</a>).</p></li>
 </ul></div>
 </div>
     <div class="section level2">

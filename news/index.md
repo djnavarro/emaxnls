@@ -112,6 +112,16 @@
   probabilities are exactly 0 or 1 (boundary cases)
   ([\#44](https://github.com/djnavarro/emaxnls/issues/44)).
 
+- [`confint()`](https://rdrr.io/r/stats/confint.html) now accepts a
+  `simultaneous` argument, mirroring
+  [`summary()`](https://emaxnls.djnavarro.net/reference/summary.md).
+  Previously `confint(object, simultaneous = TRUE)` silently ignored the
+  argument (swallowed by `...`) and returned pointwise intervals.
+  Setting `simultaneous = TRUE` now returns simultaneous (joint) Wald
+  intervals that match those reported by
+  `summary(object, simultaneous = TRUE)`
+  ([\#46](https://github.com/djnavarro/emaxnls/issues/46)).
+
 ## emaxnls 0.1.1
 
 CRAN release: 2026-06-30

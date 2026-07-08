@@ -62,7 +62,14 @@ quadratic near the estimates.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'emaxnls'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">object</span>, parm <span class="op">=</span> <span class="cn">NULL</span>, level <span class="op">=</span> <span class="fl">0.95</span>, back_transform <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  parm <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  back_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  simultaneous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -87,6 +94,12 @@ are considered.</p></dd>
 <dd><p>Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?</p></dd>
 
 
+<dt id="arg-simultaneous">simultaneous<a class="anchor" aria-label="anchor" href="#arg-simultaneous"></a></dt>
+<dd><p>If <code>TRUE</code>, return simultaneous (joint) Wald confidence
+intervals rather than the default profile likelihood intervals. Defaults
+to <code>FALSE</code>.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Ignored</p></dd>
 
@@ -99,11 +112,18 @@ for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in 
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For <code>emaxnls</code> objects, this calls <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">stats::confint.nls()</a></code>. For
-<code>emaxlogistic</code> objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. If profile likelihood
-computation fails (which can occur for sigmoidal models), a warning is
-issued and Wald intervals are returned instead.</p>
+    <p>By default, and when <code>simultaneous = FALSE</code>, this calls
+<code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">stats::confint.nls()</a></code> for <code>emaxnls</code> objects. For <code>emaxlogistic</code> objects,
+the same profiling approach is applied to the final NLS fit from the IRLS
+algorithm at convergence. If profile likelihood computation fails (which can
+occur for sigmoidal models), a warning is issued and Wald intervals are
+returned instead.</p>
+<p>When <code>simultaneous = TRUE</code>, a single critical value is derived from the
+joint multivariate normal distribution of the standardized parameter
+estimates (via <code><a href="https://rdrr.io/pkg/mvtnorm/man/qmvnorm.html" class="external-link">mvtnorm::qmvnorm()</a></code>). The resulting intervals have
+simultaneous coverage at <code>level</code> across all parameters and will be wider
+than the individual (pointwise) intervals. This matches the intervals
+produced by <code>summary(object, simultaneous = TRUE)</code>.</p>
 <p>Setting <code>back_transform = TRUE</code> exponentiates the confidence limits for
 logEC50 and logHill, expressing them on the concentration scale rather
 than the log-concentration scale on which they are estimated, and drops
@@ -141,6 +161,14 @@ the <code>log</code> prefix from their row names.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> E0_Intercept      4.9055018    5.2041150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept    9.7525268   10.1914700</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EC50_Intercept 3607.9625359 4211.0361735</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># simultaneous (joint) confidence intervals</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mod_c</span>, simultaneous <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        2.5%     97.5%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_cnt_a          0.4579834  0.514310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E0_Intercept      4.8697415  5.239874</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Emax_Intercept    9.6975604 10.241890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logEC50_Intercept 8.1729527  8.364728</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_logistic.html">emax_logistic</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_2</span> <span class="op">~</span> <span class="va">exp_1</span>,</span></span>

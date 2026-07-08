@@ -9,7 +9,14 @@ likelihood surface is quadratic near the estimates.
 
 ``` r
 # S3 method for class 'emaxnls'
-confint(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
+confint(
+  object,
+  parm = NULL,
+  level = 0.95,
+  back_transform = FALSE,
+  simultaneous = FALSE,
+  ...
+)
 ```
 
 ## Arguments
@@ -33,6 +40,12 @@ confint(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
   Should log-scaled parameters (logEC50, logHill) be back-transformed to
   original scale?
 
+- simultaneous:
+
+  If `TRUE`, return simultaneous (joint) Wald confidence intervals
+  rather than the default profile likelihood intervals. Defaults to
+  `FALSE`.
+
 - ...:
 
   Ignored
@@ -45,12 +58,22 @@ limits for each parameter. These will be labeled as (1-level)/2 and 1 -
 
 ## Details
 
-For `emaxnls` objects, this calls
-[`stats::confint.nls()`](https://rdrr.io/r/stats/confint.html). For
-`emaxlogistic` objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. If profile
-likelihood computation fails (which can occur for sigmoidal models), a
-warning is issued and Wald intervals are returned instead.
+By default, and when `simultaneous = FALSE`, this calls
+[`stats::confint.nls()`](https://rdrr.io/r/stats/confint.html) for
+`emaxnls` objects. For `emaxlogistic` objects, the same profiling
+approach is applied to the final NLS fit from the IRLS algorithm at
+convergence. If profile likelihood computation fails (which can occur
+for sigmoidal models), a warning is issued and Wald intervals are
+returned instead.
+
+When `simultaneous = TRUE`, a single critical value is derived from the
+joint multivariate normal distribution of the standardized parameter
+estimates (via
+[`mvtnorm::qmvnorm()`](https://rdrr.io/pkg/mvtnorm/man/qmvnorm.html)).
+The resulting intervals have simultaneous coverage at `level` across all
+parameters and will be wider than the individual (pointwise) intervals.
+This matches the intervals produced by
+`summary(object, simultaneous = TRUE)`.
 
 Setting `back_transform = TRUE` exponentiates the confidence limits for
 logEC50 and logHill, expressing them on the concentration scale rather
@@ -89,6 +112,14 @@ confint(mod_c, back_transform = TRUE)
 #> E0_Intercept      4.9055018    5.2041150
 #> Emax_Intercept    9.7525268   10.1914700
 #> EC50_Intercept 3607.9625359 4211.0361735
+
+# simultaneous (joint) confidence intervals
+confint(mod_c, simultaneous = TRUE)
+#>                        2.5%     97.5%
+#> E0_cnt_a          0.4579834  0.514310
+#> E0_Intercept      4.8697415  5.239874
+#> Emax_Intercept    9.6975604 10.241890
+#> logEC50_Intercept 8.1729527  8.364728
 
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
