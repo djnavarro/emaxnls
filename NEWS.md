@@ -1,5 +1,9 @@
 # emaxnls 0.1.1.9000
 
+## Bug fixes
+
+* The tibble package is now listed under `Suggests` rather than `Imports`, making it a genuine optional dependency. All package functionality works with or without tibble installed (#24).
+
 ## New features
 
 * Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
