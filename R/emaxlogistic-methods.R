@@ -248,7 +248,7 @@ simulate.emaxlogistic <- function(object, nsim = 1, seed = NULL, ...) {
   dat <- mod$data[, var]
   dat$dat_id <- 1L:nr
 
-  par <- mvtnorm::rmvnorm(nsim, mean = est, sigma = cov)
+  par <- .rmvnorm(nsim, mean = est, sigma = cov)
   colnames(par) <- lbl
 
   .f <- .emax_fun(mod)

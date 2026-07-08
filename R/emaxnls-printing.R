@@ -369,7 +369,7 @@ summary.emaxnls <- function(object, conf_level = 0.95, back_transform = FALSE,
   cov_mat <- stats::vcov(nls_obj)
   se      <- sqrt(diag(cov_mat))
   cor_mat <- stats::cov2cor(cov_mat)
-  crit    <- mvtnorm::qmvnorm(level, sigma = cor_mat, tail = "both.tails")$quantile
+  crit    <- .qmvnorm(level, sigma = cor_mat, tail = "both.tails")$quantile
   ci      <- cbind(est - crit * se, est + crit * se)
   rownames(ci) <- names(est)
   alpha        <- (1 - level) / 2
