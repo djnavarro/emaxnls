@@ -11,9 +11,23 @@
 # behaviour.
 
 # .rmvnorm() ---------------------------------------------------------------
-# Fallback: draw n samples from N(mean, sigma) via Cholesky decomposition.
-# This is equivalent to mvtnorm::rmvnorm(..., method = "chol") and requires
-# only base-R (stats::rnorm + chol + matrix arithmetic).
+# Fallback: draw n samples from N(mean, sigma) via Cholesky decomposition,
+# using only base-R (stats::rnorm + chol + matrix arithmetic).
+#
+# Two numerical properties are intentionally preserved:
+#   1. The z matrix is filled row-by-row (byrow = TRUE).  Filling column-by-
+#      column (the R default) is the same pathology as MASS::mvrnorm(): adding
+#      extra samples would reshuffle *all* existing rows.  Filling row-by-row
+#      means the first n_old rows are stable when n grows (the mvtnorm
+#      behaviour).
+#   2. plain chol() (not chol(pivot = TRUE)) is used.  For a strictly positive
+#      definite matrix the unpivoted Cholesky factor is unique (positive
+#      diagonal is enforced by LAPACK), so there is no eigenvector sign-flip
+#      hazard of the kind documented for MASS::mvrnorm().  The pivoted form
+#      used by mvtnorm::rmvnorm(method = "chol") adds extra stability for
+#      near-singular matrices, but emaxnls covariance matrices from a
+#      converged NLS fit are always strictly positive definite, so the
+#      difference is immaterial in practice.
 
 .rmvnorm <- function(n, mean, sigma, ...) {
   tryCatch(
@@ -27,7 +41,9 @@
       )
       p <- length(mean)
       L <- chol(sigma)  # upper-triangular: L'L == sigma
-      z <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+      # byrow = TRUE: fills each sample's p variates consecutively so that
+      # row i is unchanged when n increases (see comment above).
+      z <- matrix(stats::rnorm(n * p), nrow = n, ncol = p, byrow = TRUE)
       sweep(z %*% L, 2L, mean, "+")
     }
   )

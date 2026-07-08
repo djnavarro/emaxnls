@@ -71,6 +71,25 @@ test_that(".rmvnorm() fallback is reproducible with the same seed", {
   expect_equal(r1, r2)
 })
 
+test_that(".rmvnorm() fallback is stable when n increases (row-fill property)", {
+  # Filling the z matrix column-by-column (the MASS bug) causes existing rows
+  # to change when n grows.  byrow = TRUE means the first n_old rows are
+  # stable, which is the behaviour mvtnorm::rmvnorm() provides.
+  local_mocked_bindings(
+    rmvnorm = function(...) stop("simulated .so linking failure"),
+    .package = "mvtnorm"
+  )
+
+  set.seed(2288)
+  suppressWarnings(r2 <- .rmvnorm(2L, mean = mean_vec, sigma = sigma_mat))
+  set.seed(2288)
+  suppressWarnings(r3 <- .rmvnorm(3L, mean = mean_vec, sigma = sigma_mat))
+
+  # First two rows must be identical regardless of whether we asked for 2 or 3
+  expect_equal(r2[1L, ], r3[1L, ])
+  expect_equal(r2[2L, ], r3[2L, ])
+})
+
 test_that(".rmvnorm() fallback column means are close to the requested mean", {
   local_mocked_bindings(
     rmvnorm = function(...) stop("simulated .so linking failure"),
