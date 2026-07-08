@@ -115,11 +115,11 @@ confint(mod_c, back_transform = TRUE)
 
 # simultaneous (joint) confidence intervals
 confint(mod_c, simultaneous = TRUE)
-#>                        2.5%     97.5%
-#> E0_cnt_a          0.4579834  0.514310
-#> E0_Intercept      4.8697415  5.239874
-#> Emax_Intercept    9.6975604 10.241890
-#> logEC50_Intercept 8.1729527  8.364728
+#>                        2.5%      97.5%
+#> E0_cnt_a          0.4579834  0.5143099
+#> E0_Intercept      4.8697415  5.2398736
+#> Emax_Intercept    9.6975604 10.2418897
+#> logEC50_Intercept 8.1729527  8.3647282
 
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
@@ -130,6 +130,6 @@ confint(mod_b)
 #>                         2.5%      97.5%
 #> E0_cnt_a           0.5014985  0.8160269
 #> E0_Intercept      -6.1357553 -3.8667186
-#> Emax_Intercept     5.0800762 17.6084133
-#> logEC50_Intercept  8.8920970 11.0482722
+#> Emax_Intercept     5.0800762 17.6084131
+#> logEC50_Intercept  8.8920970 11.0482721
 ```

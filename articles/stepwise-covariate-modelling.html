@@ -215,8 +215,7 @@ with the native pipe:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_model</span> <span class="op">&lt;-</span> <span class="va">base_model</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/emax_scm.html">emax_scm_forward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">candidates</span>, threshold <span class="op">=</span> <span class="fl">0.01</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/emax_scm.html">emax_scm_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">candidates</span>, threshold <span class="op">=</span> <span class="fl">0.001</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `nls()` did not converge</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/emax_scm.html">emax_scm_backward</a></span><span class="op">(</span>candidates <span class="op">=</span> <span class="va">candidates</span>, threshold <span class="op">=</span> <span class="fl">0.001</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>A few things are worth unpacking here.</p>
 <p><strong>How terms are chosen.</strong> Selection is based on a
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
@@ -374,7 +373,7 @@ trail it is usually most useful to see all rows at once:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>         2 forward     add    Emax ~ cnt…    7.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      606. FALSE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>         2 forward     add    E0 ~ cnt_b     9.93<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      606. FALSE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>         2 forward     add    Emax ~ cnt…    4.92<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      605. FALSE        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>         2 forward     add    Emax ~ bin…   <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>           <span style="color: #BB0000;">NA</span>  FALSE        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>         2 forward     add    Emax ~ bin…    9.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      606. FALSE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span>         2 forward     add    Emax ~ bin…    9.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      606. FALSE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span>         2 forward     add    E0 ~ bin_d     5.39<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      605. FALSE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span>         2 forward     add    Emax ~ cnt…    6.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span>      605. FALSE        </span></span>
@@ -540,7 +539,7 @@ transparent and reproducible.</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

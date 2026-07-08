@@ -200,7 +200,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5557d51be288>
+#> <bytecode: 0x56496fce2748>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
@@ -349,7 +349,7 @@ parameters (`logEC50`, and `logHill` if present), returning
 
 coef(mod, back_transform = TRUE)
 #>       E0_cnt_a   E0_Intercept Emax_Intercept EC50_Intercept 
-#>         0.6588        -5.0004         8.1157     17733.7870
+#>         0.6588        -5.0004         8.1157     17733.7869
 ```
 
 The estimated baseline (`E0_Intercept` near the true $`-4.5`$) and the

@@ -48,6 +48,10 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1.9000" id="emaxnls-0119000">emaxnls 0.1.1.9000<a class="anchor" aria-label="anchor" href="#emaxnls-0119000"></a></h2>
 <div class="section level3">
+<h3 id="bug-fixes-0-1-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000"></a></h3>
+<ul><li>The tibble package is now listed under <code>Suggests</code> rather than <code>Imports</code>, making it a genuine optional dependency. All package functionality works with or without tibble installed (<a href="https://github.com/djnavarro/emaxnls/issues/24" class="external-link">#24</a>).</li>
+</ul></div>
+<div class="section level3">
 <h3 id="new-features-0-1-1-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1-9000"></a></h3>
 <ul><li><p>Adds <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code> for fitting binary-outcome Emax models using iterative reweighted least squares (IRLS), along with <code><a href="../reference/emax_logistic_init.html">emax_logistic_init()</a></code> and <code><a href="../reference/emax_logistic_options.html">emax_logistic_options()</a></code> for initialization and configuration. All standard S3 methods (<code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code>, <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code>, <code><a href="../reference/residuals.html">residuals()</a></code>, <code><a href="../reference/fitted.html">fitted()</a></code>, <code><a href="../reference/predict.html">predict()</a></code>, <code><a href="../reference/anova.html">anova()</a></code>, <code><a href="../reference/logLik.html">logLik()</a></code>, <code><a href="../reference/AIC.html">AIC()</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>, <code><a href="../reference/deviance.html">deviance()</a></code>, <code><a href="../reference/simulate.html">simulate()</a></code>) are supported for the new <code>emaxlogistic</code> class.</p></li>
 <li>
@@ -71,7 +75,7 @@
 <ul><li>Expands the <code><a href="../reference/summary.html">summary()</a></code> documentation to explain the relationship between the <code>p_adjust</code> and <code>simultaneous</code> arguments. The two are independent tools for multiplicity — <code>p_adjust</code> corrects the hypothesis-test p-values, while <code>simultaneous</code> widens the confidence intervals — and they use different machinery, so their reject/retain decisions need not agree. The new “Multiplicity: p-value adjustment versus simultaneous intervals” section spells out what each argument changes, why the adjusted p-values and the simultaneous intervals may disagree, and which tool to reach for (<a href="https://github.com/djnavarro/emaxnls/issues/47" class="external-link">#47</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-1-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000"></a></h3>
+<h3 id="bug-fixes-0-1-1-9000-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000-1"></a></h3>
 <ul><li><p>Fixes <code><a href="../reference/AIC.html">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> when called with multiple model arguments (<a href="https://github.com/djnavarro/emaxnls/issues/37" class="external-link">#37</a>).</p></li>
 <li><p>Fixes <code>na.action</code> parameter not being passed through correctly in <code><a href="../reference/emax_nls.html">emax_nls()</a></code> and <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code> (<a href="https://github.com/djnavarro/emaxnls/issues/38" class="external-link">#38</a>).</p></li>
 <li><p>Fixes <code><a href="../reference/predict.html">predict()</a></code> omitting <code>residual.scale</code> from the return value when <code>se.fit = TRUE</code> (<a href="https://github.com/djnavarro/emaxnls/issues/39" class="external-link">#39</a>).</p></li>
@@ -142,7 +146,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
