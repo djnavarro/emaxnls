@@ -71,6 +71,21 @@
   Wald intervals with a warning if profile likelihood computation fails
   (which can occur for sigmoidal models).
 
+### Documentation
+
+- Expands the
+  [`summary()`](https://emaxnls.djnavarro.net/reference/summary.md)
+  documentation to explain the relationship between the `p_adjust` and
+  `simultaneous` arguments. The two are independent tools for
+  multiplicity — `p_adjust` corrects the hypothesis-test p-values, while
+  `simultaneous` widens the confidence intervals — and they use
+  different machinery, so their reject/retain decisions need not agree.
+  The new “Multiplicity: p-value adjustment versus simultaneous
+  intervals” section spells out what each argument changes, why the
+  adjusted p-values and the simultaneous intervals may disagree, and
+  which tool to reach for
+  ([\#47](https://github.com/djnavarro/emaxnls/issues/47)).
+
 ### Bug fixes
 
 - Fixes [`AIC()`](https://emaxnls.djnavarro.net/reference/AIC.md) and

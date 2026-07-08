@@ -106,7 +106,9 @@ are set to <code>NA</code>.</p></dd>
 <dd><p>Method for adjusting p-values for multiple comparisons,
 passed to <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust()</a></code>. Defaults to <code>"none"</code>. Parameters with
 suppressed p-values (see <code>suppress_nonsensical</code>) are excluded from the
-adjustment set.</p></dd>
+adjustment set. This affects only the <code>p_value</code> column and is independent
+of <code>simultaneous</code>; see the "Multiplicity: p-value adjustment versus
+simultaneous intervals" section below.</p></dd>
 
 
 <dt id="arg-simultaneous">simultaneous<a class="anchor" aria-label="anchor" href="#arg-simultaneous"></a></dt>
@@ -114,7 +116,9 @@ adjustment set.</p></dd>
 intervals using the multivariate normal distribution via
 <code><a href="https://rdrr.io/pkg/mvtnorm/man/qmvnorm.html" class="external-link">mvtnorm::qmvnorm()</a></code>. This gives wider intervals that provide joint
 coverage at <code>conf_level</code> across all parameters simultaneously. Defaults
-to <code>FALSE</code>.</p></dd>
+to <code>FALSE</code>. This affects only the confidence-interval columns and is
+independent of <code>p_adjust</code>; see the "Multiplicity: p-value adjustment
+versus simultaneous intervals" section below.</p></dd>
 
 
 <dt id="arg-suppress-nonsensical">suppress_nonsensical<a class="anchor" aria-label="anchor" href="#arg-suppress-nonsensical"></a></dt>
@@ -175,6 +179,68 @@ retained. To work with the EC50 on the concentration scale, use
 joint multivariate normal distribution of the standardized parameter
 estimates. The resulting intervals have simultaneous coverage at
 <code>conf_level</code> and will be wider than the individual (pointwise) intervals.</p>
+</div>
+
+<div class="section">
+<h3 id="multiplicity-p-value-adjustment-versus-simultaneous-intervals">Multiplicity: p-value adjustment versus simultaneous intervals<a class="anchor" aria-label="anchor" href="#multiplicity-p-value-adjustment-versus-simultaneous-intervals"></a></h3>
+
+
+<p>A model with several parameters raises a multiple-comparisons problem: the
+more quantities you inspect, the more likely at least one spurious result
+appears by chance. <code>summary()</code> offers two, deliberately separate, tools for
+this, and it is worth being clear about how they differ because they are
+easy to conflate.</p><ul><li><p><code>p_adjust</code> acts on the <strong>hypothesis tests</strong>. It takes the marginal
+(per-parameter) p-values and feeds them through <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust()</a></code>,
+which applies a sequential rule such as Holm or a Bonferroni scaling.
+These rules look only at the <em>set of p-values</em>; they do not use the
+estimated correlations between the parameters. Only the <code>p_value</code> column
+changes. The estimates, standard errors, test statistics, and confidence
+intervals are untouched.</p></li>
+<li><p><code>simultaneous</code> acts on the <strong>interval estimates</strong>. It replaces the
+per-parameter critical value with a single, larger critical value taken
+from the joint multivariate normal distribution of the estimates (via
+<code><a href="https://rdrr.io/pkg/mvtnorm/man/qmvnorm.html" class="external-link">mvtnorm::qmvnorm()</a></code>), which <em>does</em> use the correlation structure from
+<code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>. Only the <code>ci_lower</code> and <code>ci_upper</code> columns change. The
+p-values and test statistics are untouched.</p></li>
+</ul><p>The two arguments are fully independent: you may set either, both, or
+neither, and each does exactly the one thing described above. Neither
+argument modifies the other's output.</p><div class="section">
+<h4 id="why-the-adjusted-p-values-and-the-intervals-may-disagree">Why the adjusted p-values and the intervals may disagree<a class="anchor" aria-label="anchor" href="#why-the-adjusted-p-values-and-the-intervals-may-disagree"></a></h4>
+
+
+<p>Because the two corrections use different machinery, they will not, in
+general, agree on which parameters are "significant". A parameter can have
+a Holm-adjusted p-value below <code>1 - conf_level</code> while its simultaneous
+confidence interval still contains zero, or the reverse. This is not a bug.
+The familiar duality — "the 95% interval excludes zero if and only if the
+two-sided test rejects at the 5% level" — holds only for a <em>single</em>,
+unadjusted Wald comparison. It breaks as soon as a multiplicity correction
+enters, for two reasons:</p><ul><li><p>the corrections answer different questions (a step-down rule on the
+p-values versus a joint critical region for the intervals), and</p></li>
+<li><p>they use different information (<code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">p.adjust()</a></code> ignores the parameter
+correlations that the simultaneous interval is built from).</p></li>
+</ul><p>A further, smaller source of discrepancy: unless the profile-likelihood
+computation falls back to Wald intervals, the default (pointwise) intervals
+are profile-likelihood based, whereas the reported test statistics and
+p-values are Wald quantities, so even <em>without</em> any adjustment the two need
+not correspond exactly in nonlinear models.</p>
+</div>
+
+<div class="section">
+<h4 id="which-one-to-use">Which one to use<a class="anchor" aria-label="anchor" href="#which-one-to-use"></a></h4>
+
+
+<p>Pick the tool that matches the claim you want to make, and interpret its
+output on its own terms rather than cross-checking one against the other:</p><ul><li><p>To report <strong>interval estimates</strong> that are jointly valid across all
+parameters, use <code>simultaneous = TRUE</code>.</p></li>
+<li><p>To control the family-wise (or false-discovery) error rate of a set of
+<strong>hypothesis tests</strong>, choose a <code>p_adjust</code> method.</p></li>
+</ul><p>Setting both is legitimate, but the adjusted p-values and the simultaneous
+intervals are then two separate summaries of multiplicity, not two views of
+the same one, and should be read as such.</p>
+</div>
+
+
 </div>
 
     </div>

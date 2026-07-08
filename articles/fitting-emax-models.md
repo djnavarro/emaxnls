@@ -275,7 +275,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x556ddce8b288>
+#> <bytecode: 0x56118f17c288>
 #> <environment: namespace:stats>
 ```
 

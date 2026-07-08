@@ -67,6 +67,10 @@
 <li><p><code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> now falls back to Wald intervals with a warning if profile likelihood computation fails (which can occur for sigmoidal models).</p></li>
 </ul></div>
 <div class="section level3">
+<h3 id="documentation-0-1-1-9000">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-1-9000"></a></h3>
+<ul><li>Expands the <code><a href="../reference/summary.html">summary()</a></code> documentation to explain the relationship between the <code>p_adjust</code> and <code>simultaneous</code> arguments. The two are independent tools for multiplicity — <code>p_adjust</code> corrects the hypothesis-test p-values, while <code>simultaneous</code> widens the confidence intervals — and they use different machinery, so their reject/retain decisions need not agree. The new “Multiplicity: p-value adjustment versus simultaneous intervals” section spells out what each argument changes, why the adjusted p-values and the simultaneous intervals may disagree, and which tool to reach for (<a href="https://github.com/djnavarro/emaxnls/issues/47" class="external-link">#47</a>).</li>
+</ul></div>
+<div class="section level3">
 <h3 id="bug-fixes-0-1-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000"></a></h3>
 <ul><li><p>Fixes <code><a href="../reference/AIC.html">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> when called with multiple model arguments (<a href="https://github.com/djnavarro/emaxnls/issues/37" class="external-link">#37</a>).</p></li>
 <li><p>Fixes <code>na.action</code> parameter not being passed through correctly in <code><a href="../reference/emax_nls.html">emax_nls()</a></code> and <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code> (<a href="https://github.com/djnavarro/emaxnls/issues/38" class="external-link">#38</a>).</p></li>
