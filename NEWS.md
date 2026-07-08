@@ -67,9 +67,9 @@
   `se.fit = TRUE` (#39).
 
 * Fixes crashes in `emax_logistic_init()` and prevents `Inf` parameter bounds
-  arising during initialisation (#40).
+  arising during initialization (#40).
 
-* Hardens `.nls_call()` to avoid cryptic errors when optimisation fails, and
+* Hardens `.nls_call()` to avoid cryptic errors when optimization fails, and
   tightens argument validation in `emax_fun()` (#41).
 
 * Adds input validation for the binary response variable in `emax_logistic()`,
@@ -100,7 +100,7 @@
 
 # emaxnls 0.1.0
 
-Initial CRAN submission. The package provides tools for fitting and analysing
+Initial CRAN submission. The package provides tools for fitting and analyzing
 Emax dose-response models via nonlinear least squares.
 
 ## Model fitting
@@ -109,14 +109,14 @@ Emax dose-response models via nonlinear least squares.
   the hyperbolic (`E0 + Emax * x / (EC50 + x)`) and sigmoidal
   (`E0 + Emax * x^Hill / (EC50^Hill + x^Hill)`) model forms.
 
-* `emax_nls_options()` configures the optimisation algorithm and control
+* `emax_nls_options()` configures the optimization algorithm and control
   parameters. Three algorithms are supported via the `optim_method` argument:
   `"gauss"` (Gauss-Newton, default), `"port"` (bounded nl2sol), and
   `"levenberg"` (Levenberg-Marquardt via `minpack.lm`).
 
 * `emax_nls_init()` generates starting values and parameter bounds
   automatically from the data, including support for categorical covariates.
-  Users can also call it directly to inspect or override the initialisation
+  Users can also call it directly to inspect or override the initialization
   before fitting.
 
 ## Covariate modeling
@@ -169,7 +169,7 @@ Emax dose-response models via nonlinear least squares.
   that can be evaluated at arbitrary dose values and parameter vectors.
 
 * `emax_converged()` returns `TRUE` or `FALSE` indicating whether the
-  optimiser converged. All S3 methods handle non-convergent models gracefully
+  optimizer converged. All S3 methods handle non-convergent models gracefully
   by returning an `emaxnls_null` object rather than erroring.
 
 ## Data
