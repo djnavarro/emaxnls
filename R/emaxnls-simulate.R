@@ -45,9 +45,6 @@ emax_fun.emaxnls <- function(mod, ...) {
   dat <- mod$data[, var]
   dat$dat_id <- 1L:nr
 
-  if (!requireNamespace("mvtnorm", quietly = TRUE)) {
-    .abort("package mvtnorm is required for simulate()")
-  }
   par <- .rmvnorm(nsim, mean = est, sigma = cov)
   colnames(par) <- lbl
 
