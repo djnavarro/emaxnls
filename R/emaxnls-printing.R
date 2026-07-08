@@ -88,12 +88,16 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
 #' @param p_adjust Method for adjusting p-values for multiple comparisons,
 #'   passed to [stats::p.adjust()]. Defaults to `"none"`. Parameters with
 #'   suppressed p-values (see `suppress_nonsensical`) are excluded from the
-#'   adjustment set.
+#'   adjustment set. This affects only the `p_value` column and is independent
+#'   of `simultaneous`; see the "Multiplicity: p-value adjustment versus
+#'   simultaneous intervals" section below.
 #' @param simultaneous If `TRUE`, compute simultaneous (joint) confidence
 #'   intervals using the multivariate normal distribution via
 #'   [mvtnorm::qmvnorm()]. This gives wider intervals that provide joint
 #'   coverage at `conf_level` across all parameters simultaneously. Defaults
-#'   to `FALSE`.
+#'   to `FALSE`. This affects only the confidence-interval columns and is
+#'   independent of `p_adjust`; see the "Multiplicity: p-value adjustment
+#'   versus simultaneous intervals" section below.
 #' @param suppress_nonsensical If `TRUE` (the default), suppress the test
 #'   statistic and p-value for `logEC50_Intercept`. The logEC50 intercept is
 #'   estimated on the log-concentration scale, and testing `H0: logEC50 = 0`
@@ -131,8 +135,70 @@ print.emaxnls <- function(x, conf_level = 0.95, ...) {
 #'
 #' When `simultaneous = TRUE`, a single critical value is derived from the
 #' joint multivariate normal distribution of the standardized parameter
-#' estimates. The resulting intervals have simultaneous coverage at 
+#' estimates. The resulting intervals have simultaneous coverage at
 #' `conf_level` and will be wider than the individual (pointwise) intervals.
+#'
+#' ## Multiplicity: p-value adjustment versus simultaneous intervals
+#'
+#' A model with several parameters raises a multiple-comparisons problem: the
+#' more quantities you inspect, the more likely at least one spurious result
+#' appears by chance. `summary()` offers two, deliberately separate, tools for
+#' this, and it is worth being clear about how they differ because they are
+#' easy to conflate.
+#'
+#' - `p_adjust` acts on the **hypothesis tests**. It takes the marginal
+#'   (per-parameter) p-values and feeds them through [stats::p.adjust()],
+#'   which applies a sequential rule such as Holm or a Bonferroni scaling.
+#'   These rules look only at the *set of p-values*; they do not use the
+#'   estimated correlations between the parameters. Only the `p_value` column
+#'   changes. The estimates, standard errors, test statistics, and confidence
+#'   intervals are untouched.
+#' - `simultaneous` acts on the **interval estimates**. It replaces the
+#'   per-parameter critical value with a single, larger critical value taken
+#'   from the joint multivariate normal distribution of the estimates (via
+#'   [mvtnorm::qmvnorm()]), which *does* use the correlation structure from
+#'   `vcov()`. Only the `ci_lower` and `ci_upper` columns change. The
+#'   p-values and test statistics are untouched.
+#'
+#' The two arguments are fully independent: you may set either, both, or
+#' neither, and each does exactly the one thing described above. Neither
+#' argument modifies the other's output.
+#'
+#' ### Why the adjusted p-values and the intervals may disagree
+#'
+#' Because the two corrections use different machinery, they will not, in
+#' general, agree on which parameters are "significant". A parameter can have
+#' a Holm-adjusted p-value below `1 - conf_level` while its simultaneous
+#' confidence interval still contains zero, or the reverse. This is not a bug.
+#' The familiar duality — "the 95% interval excludes zero if and only if the
+#' two-sided test rejects at the 5% level" — holds only for a *single*,
+#' unadjusted Wald comparison. It breaks as soon as a multiplicity correction
+#' enters, for two reasons:
+#'
+#' - the corrections answer different questions (a step-down rule on the
+#'   p-values versus a joint critical region for the intervals), and
+#' - they use different information (`p.adjust()` ignores the parameter
+#'   correlations that the simultaneous interval is built from).
+#'
+#' A further, smaller source of discrepancy: unless the profile-likelihood
+#' computation falls back to Wald intervals, the default (pointwise) intervals
+#' are profile-likelihood based, whereas the reported test statistics and
+#' p-values are Wald quantities, so even *without* any adjustment the two need
+#' not correspond exactly in nonlinear models.
+#'
+#' ### Which one to use
+#'
+#' Pick the tool that matches the claim you want to make, and interpret its
+#' output on its own terms rather than cross-checking one against the other:
+#'
+#' - To report **interval estimates** that are jointly valid across all
+#'   parameters, use `simultaneous = TRUE`.
+#' - To control the family-wise (or false-discovery) error rate of a set of
+#'   **hypothesis tests**, choose a `p_adjust` method.
+#'
+#' Setting both is legitimate, but the adjusted p-values and the simultaneous
+#' intervals are then two separate summaries of multiplicity, not two views of
+#' the same one, and should be read as such.
 #'
 #' @returns A tibble with one row per model parameter and columns for the
 #'   estimate, standard error, test statistic, p-value, and confidence
