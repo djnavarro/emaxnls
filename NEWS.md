@@ -2,6 +2,14 @@
 
 ## Bug fixes
 
+* `simulate()` and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
+  now degrade gracefully on platforms where the `mvtnorm` shared object is
+  installed but fails to link at runtime (observed on some clang-based Rhub
+  builders). A warning is issued and the computation continues using base-R
+  fallbacks: Cholesky-based multivariate normal sampling for `simulate()`, and
+  a Bonferroni-corrected normal quantile for simultaneous confidence intervals.
+  The fallback intervals are conservative but valid (#52).
+
 * The tibble package is now listed under `Suggests` rather than `Imports`, making it a genuine optional dependency. All package functionality works with or without tibble installed (#24).
 
 ## New features
