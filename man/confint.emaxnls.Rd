@@ -4,7 +4,14 @@
 \alias{confint.emaxnls}
 \title{Confidence intervals for Emax regression model parameters}
 \usage{
-\method{confint}{emaxnls}(object, parm = NULL, level = 0.95, back_transform = FALSE, ...)
+\method{confint}{emaxnls}(
+  object,
+  parm = NULL,
+  level = 0.95,
+  back_transform = FALSE,
+  simultaneous = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
@@ -16,6 +23,10 @@ are considered.}
 \item{level}{The confidence level required}
 
 \item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
+
+\item{simultaneous}{If \code{TRUE}, return simultaneous (joint) Wald confidence
+intervals rather than the default profile likelihood intervals. Defaults
+to \code{FALSE}.}
 
 \item{...}{Ignored}
 }
@@ -31,11 +42,19 @@ nonlinear settings because they do not assume the likelihood surface is
 quadratic near the estimates.
 }
 \details{
-For \code{emaxnls} objects, this calls \code{stats::confint.nls()}. For
-\code{emaxlogistic} objects, the same profiling approach is applied to the
-final NLS fit from the IRLS algorithm at convergence. If profile likelihood
-computation fails (which can occur for sigmoidal models), a warning is
-issued and Wald intervals are returned instead.
+By default, and when \code{simultaneous = FALSE}, this calls
+\code{stats::confint.nls()} for \code{emaxnls} objects. For \code{emaxlogistic} objects,
+the same profiling approach is applied to the final NLS fit from the IRLS
+algorithm at convergence. If profile likelihood computation fails (which can
+occur for sigmoidal models), a warning is issued and Wald intervals are
+returned instead.
+
+When \code{simultaneous = TRUE}, a single critical value is derived from the
+joint multivariate normal distribution of the standardized parameter
+estimates (via \code{\link[mvtnorm:qmvnorm]{mvtnorm::qmvnorm()}}). The resulting intervals have
+simultaneous coverage at \code{level} across all parameters and will be wider
+than the individual (pointwise) intervals. This matches the intervals
+produced by \code{summary(object, simultaneous = TRUE)}.
 
 Setting \code{back_transform = TRUE} exponentiates the confidence limits for
 logEC50 and logHill, expressing them on the concentration scale rather
@@ -57,6 +76,9 @@ confint(mod_c, level = 0.9)
 
 # 95\% confidence interval with log-scale parameters back-transformed
 confint(mod_c, back_transform = TRUE)
+
+# simultaneous (joint) confidence intervals
+confint(mod_c, simultaneous = TRUE)
 
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,

@@ -130,6 +130,43 @@ test_that("back_transform works for coef()", {
   expect_equal(unname(cc1[4]), unname(log(cc2[4])))
 }) 
 
+test_that("confint(simultaneous = TRUE) matches summary(simultaneous = TRUE)", {
+  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_installed("mvtnorm")
+  # qmvnorm() uses randomised quasi-Monte Carlo, so the critical value varies
+  # slightly between calls; compare with a tolerance rather than exactly.
+  ci <- confint(mod, simultaneous = TRUE)
+  s  <- summary(mod, simultaneous = TRUE)
+  expect_equal(unname(ci[, 1]), unname(s$ci_lower), tolerance = 1e-2)
+  expect_equal(unname(ci[, 2]), unname(s$ci_upper), tolerance = 1e-2)
+})
+
+test_that("confint(simultaneous = TRUE) gives wider intervals than pointwise", {
+  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_installed("mvtnorm")
+  ci_sim <- confint(mod, simultaneous = TRUE)
+  est    <- stats::coef(mod)
+  se     <- sqrt(diag(stats::vcov(mod)))
+  t_crit <- stats::qt(0.975, df = stats::df.residual(mod))
+  expect_true(all(ci_sim[, 1] <= est - t_crit * se))
+  expect_true(all(ci_sim[, 2] >= est + t_crit * se))
+})
+
+test_that("confint(simultaneous = TRUE) respects parm and back_transform", {
+  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_installed("mvtnorm")
+  full <- confint(mod, simultaneous = TRUE)
+  parm <- rownames(full)[1:2]
+  sub  <- confint(mod, parm = parm, simultaneous = TRUE)
+  expect_equal(nrow(sub), 2L)
+  expect_equal(rownames(sub), parm)
+
+  bt <- confint(mod, simultaneous = TRUE, back_transform = TRUE)
+  # log-scale rows are exponentiated; row name loses its "log" prefix
+  expect_true(any(grepl("^EC50", rownames(bt))))
+  expect_false(any(grepl("^logEC50", rownames(bt))))
+})
+
 test_that("confint() falls back to Wald intervals with a warning for sigmoidal models", {
   mod_sig <- emax_nls(
     structural_model = rsp_1 ~ exp_1,

@@ -646,14 +646,25 @@ fitted.emaxnls <- function(object, ...) {
 #'   are considered.
 #' @param level The confidence level required
 #' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
+#' @param simultaneous If `TRUE`, return simultaneous (joint) Wald confidence
+#'   intervals rather than the default profile likelihood intervals. Defaults
+#'   to `FALSE`.
 #' @param ... Ignored
 #'
 #' @details
-#' For `emaxnls` objects, this calls `stats::confint.nls()`. For
-#' `emaxlogistic` objects, the same profiling approach is applied to the
-#' final NLS fit from the IRLS algorithm at convergence. If profile likelihood
-#' computation fails (which can occur for sigmoidal models), a warning is
-#' issued and Wald intervals are returned instead.
+#' By default, and when `simultaneous = FALSE`, this calls
+#' `stats::confint.nls()` for `emaxnls` objects. For `emaxlogistic` objects,
+#' the same profiling approach is applied to the final NLS fit from the IRLS
+#' algorithm at convergence. If profile likelihood computation fails (which can
+#' occur for sigmoidal models), a warning is issued and Wald intervals are
+#' returned instead.
+#'
+#' When `simultaneous = TRUE`, a single critical value is derived from the
+#' joint multivariate normal distribution of the standardized parameter
+#' estimates (via [mvtnorm::qmvnorm()]). The resulting intervals have
+#' simultaneous coverage at `level` across all parameters and will be wider
+#' than the individual (pointwise) intervals. This matches the intervals
+#' produced by `summary(object, simultaneous = TRUE)`.
 #'
 #' Setting `back_transform = TRUE` exponentiates the confidence limits for
 #' logEC50 and logHill, expressing them on the concentration scale rather
@@ -680,6 +691,9 @@ fitted.emaxnls <- function(object, ...) {
 #' # 95% confidence interval with log-scale parameters back-transformed
 #' confint(mod_c, back_transform = TRUE)
 #'
+#' # simultaneous (joint) confidence intervals
+#' confint(mod_c, simultaneous = TRUE)
+#'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
@@ -688,29 +702,35 @@ fitted.emaxnls <- function(object, ...) {
 #' confint(mod_b)
 #'
 #' @exportS3Method stats::confint
-confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = FALSE, ...) {
+confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = FALSE,
+                            simultaneous = FALSE, ...) {
   if (!.is_converged(object)) return(.nls_null())
 
   nls_obj <- .get_nls(object)
 
-  ci <- tryCatch(
-    {
-      if (is.null(parm)) {
-        .confint_quiet(nls_obj, level = level, ...)$result
-      } else {
-        .confint_quiet(nls_obj, parm = parm, level = level, ...)$result
+  if (simultaneous) {
+    ci <- .simultaneous_ci(object, level = level)
+    if (!is.null(parm)) ci <- ci[parm, , drop = FALSE]
+  } else {
+    ci <- tryCatch(
+      {
+        if (is.null(parm)) {
+          .confint_quiet(nls_obj, level = level, ...)$result
+        } else {
+          .confint_quiet(nls_obj, parm = parm, level = level, ...)$result
+        }
+      },
+      error = function(e) {
+        .warn(paste0(
+          "Profile likelihood confidence intervals failed; ",
+          "falling back to Wald intervals."
+        ))
+        df     <- if (.is_emaxlogistic(object)) NULL else stats::df.residual(nls_obj)
+        all_ci <- .wald_ci(nls_obj, level = level, df = df)
+        if (is.null(parm)) all_ci else all_ci[parm, , drop = FALSE]
       }
-    },
-    error = function(e) {
-      .warn(paste0(
-        "Profile likelihood confidence intervals failed; ",
-        "falling back to Wald intervals."
-      ))
-      df     <- if (.is_emaxlogistic(object)) NULL else stats::df.residual(nls_obj)
-      all_ci <- .wald_ci(nls_obj, level = level, df = df)
-      if (is.null(parm)) all_ci else all_ci[parm, , drop = FALSE]
-    }
-  )
+    )
+  }
 
   if (back_transform) {
     trans_cases <- grep("^log", rownames(ci))

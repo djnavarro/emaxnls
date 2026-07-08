@@ -66,6 +66,12 @@
 * Fixes `NaN` produced by `.binomial_deviance()` when predicted probabilities
   are exactly 0 or 1 (boundary cases) (#44).
 
+* `confint()` now accepts a `simultaneous` argument, mirroring `summary()`.
+  Previously `confint(object, simultaneous = TRUE)` silently ignored the
+  argument (swallowed by `...`) and returned pointwise intervals. Setting
+  `simultaneous = TRUE` now returns simultaneous (joint) Wald intervals that
+  match those reported by `summary(object, simultaneous = TRUE)` (#46).
+
 
 # emaxnls 0.1.1
 
