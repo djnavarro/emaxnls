@@ -113,7 +113,6 @@ test_that("summary() p_adjust excludes suppressed p-values from adjustment set",
 
 test_that("summary() simultaneous CIs are wider than pointwise Wald CIs", {
   if (!.is_converged(mod)) skip()
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   # Both are Wald-based, so the comparison is valid: simultaneous uses a
   # larger critical value from the joint MVN than the pointwise t-quantile.
   s_sim  <- summary(mod, simultaneous = TRUE)
