@@ -33,7 +33,6 @@ n_obs <- nrow(emax_df)
 # simulate() – emaxnls -----------------------------------------------------
 
 test_that("simulate() returns a data frame with correct structure for emaxnls", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_c), "Skip if convergence fails on this architecture")
 
   sim <- simulate(mod_c, nsim = 3, seed = 1)
@@ -45,7 +44,6 @@ test_that("simulate() returns a data frame with correct structure for emaxnls", 
 })
 
 test_that("simulate() dat_id indexes into the original data for emaxnls", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_c), "Skip if convergence fails on this architecture")
 
   sim <- simulate(mod_c, nsim = 1, seed = 1)
@@ -54,7 +52,6 @@ test_that("simulate() dat_id indexes into the original data for emaxnls", {
 })
 
 test_that("simulate() is reproducible given the same seed for emaxnls", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_c), "Skip if convergence fails on this architecture")
 
   sim1 <- simulate(mod_c, nsim = 2, seed = 42)
@@ -67,7 +64,6 @@ test_that("simulate() is reproducible given the same seed for emaxnls", {
 # simulate() – emaxlogistic ------------------------------------------------
 
 test_that("simulate() returns a data frame with correct structure for emaxlogistic", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_b), "Skip if convergence fails on this architecture")
 
   sim <- simulate(mod_b, nsim = 3, seed = 1)
@@ -79,7 +75,6 @@ test_that("simulate() returns a data frame with correct structure for emaxlogist
 })
 
 test_that("simulate() mu column is on probability scale for emaxlogistic", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_b), "Skip if convergence fails on this architecture")
 
   sim <- simulate(mod_b, nsim = 2, seed = 1)
@@ -88,7 +83,6 @@ test_that("simulate() mu column is on probability scale for emaxlogistic", {
 })
 
 test_that("simulate() val column is binary for emaxlogistic", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_b), "Skip if convergence fails on this architecture")
 
   sim <- simulate(mod_b, nsim = 2, seed = 1)
@@ -97,7 +91,6 @@ test_that("simulate() val column is binary for emaxlogistic", {
 })
 
 test_that("simulate() is reproducible given the same seed for emaxlogistic", {
-  skip_if_not(requireNamespace("mvtnorm", quietly = TRUE), "mvtnorm not available")
   skip_if(!.is_converged(mod_b), "Skip if convergence fails on this architecture")
 
   sim1 <- simulate(mod_b, nsim = 2, seed = 42)

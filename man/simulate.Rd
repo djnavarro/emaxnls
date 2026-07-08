@@ -42,13 +42,13 @@ mod_c <- emax_nls(
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
-if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod_c)
+simulate(mod_c)
 
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
   data = emax_df
 )
-if (requireNamespace("mvtnorm", quietly = TRUE)) simulate(mod_b)
+simulate(mod_b)
 
 }

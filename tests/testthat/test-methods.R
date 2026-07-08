@@ -17,7 +17,7 @@ test_that("methods do not throw errors with basic use", {
   expect_no_error(vcov(mod))
   expect_no_error(residuals(mod))
   expect_no_error(capture.output(print(mod)))
-  if(requireNamespace("mvtnorm", quietly = TRUE)) expect_no_error(simulate(mod))
+  expect_no_error(simulate(mod))
   expect_no_error(logLik(mod))
   expect_no_error(AIC(mod))
   expect_no_error(BIC(mod))
@@ -81,7 +81,7 @@ test_that("methods return emaxnls_null for models that do not converge", {
   expect_s3_class(coef(mod_bad), "emaxnls_null")
   expect_s3_class(vcov(mod_bad), "emaxnls_null")
   expect_s3_class(residuals(mod_bad), "emaxnls_null")
-  if(requireNamespace("mvtnorm", quietly = TRUE)) expect_s3_class(simulate(mod_bad), "emaxnls_null")
+  expect_s3_class(simulate(mod_bad), "emaxnls_null")
   expect_s3_class(logLik(mod_bad), "emaxnls_null")
   expect_s3_class(AIC(mod_bad), "emaxnls_null")
   expect_s3_class(BIC(mod_bad), "emaxnls_null")
@@ -132,7 +132,6 @@ test_that("back_transform works for coef()", {
 
 test_that("confint(simultaneous = TRUE) matches summary(simultaneous = TRUE)", {
   if (!.is_converged(mod)) skip_on_ci()
-  skip_if_not_installed("mvtnorm")
   # qmvnorm() uses randomised quasi-Monte Carlo, so the critical value varies
   # slightly between calls; compare with a tolerance rather than exactly.
   ci <- confint(mod, simultaneous = TRUE)
@@ -143,7 +142,6 @@ test_that("confint(simultaneous = TRUE) matches summary(simultaneous = TRUE)", {
 
 test_that("confint(simultaneous = TRUE) gives wider intervals than pointwise", {
   if (!.is_converged(mod)) skip_on_ci()
-  skip_if_not_installed("mvtnorm")
   ci_sim <- confint(mod, simultaneous = TRUE)
   est    <- stats::coef(mod)
   se     <- sqrt(diag(stats::vcov(mod)))
@@ -154,7 +152,6 @@ test_that("confint(simultaneous = TRUE) gives wider intervals than pointwise", {
 
 test_that("confint(simultaneous = TRUE) respects parm and back_transform", {
   if (!.is_converged(mod)) skip_on_ci()
-  skip_if_not_installed("mvtnorm")
   full <- confint(mod, simultaneous = TRUE)
   parm <- rownames(full)[1:2]
   sub  <- confint(mod, parm = parm, simultaneous = TRUE)

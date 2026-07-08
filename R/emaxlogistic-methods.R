@@ -233,10 +233,6 @@ simulate.emaxlogistic <- function(object, nsim = 1, seed = NULL, ...) {
 }
 
 .emax_logistic_resample <- function(mod, nsim, seed) {
-  rlang::check_installed(
-    pkg = "mvtnorm",
-    reason = "`simulate()` for logistic Emax models requires the mvtnorm package"
-  )
   if (!is.null(seed)) set.seed(seed)
 
   cov <- vcov(mod)
