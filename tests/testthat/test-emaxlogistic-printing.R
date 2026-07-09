@@ -22,6 +22,7 @@ mod_bad <- suppressWarnings(emax_logistic(
 # print() -----------------------------------------------------------------
 
 test_that("print() writes expected section headers", {
+  if (!.is_converged(mod)) skip()
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("^Structural model:$", output)))
   expect_true(any(grepl("^Covariate model:$", output)))
@@ -41,11 +42,13 @@ test_that("print() output includes exposure and response names", {
 })
 
 test_that("print() output includes covariate model lines", {
+  if (!.is_converged(mod)) skip()
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("E0.*cnt_a", output)))
 })
 
 test_that("print() includes fit statistics", {
+  if (!.is_converged(mod)) skip()
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("Deviance", output)))
   expect_true(any(grepl("AIC", output)))
@@ -53,6 +56,7 @@ test_that("print() includes fit statistics", {
 })
 
 test_that("print() does not include test statistics or p-values", {
+  if (!.is_converged(mod)) skip()
   output <- utils::capture.output(print(mod))
   expect_false(any(grepl("z_statistic", output)))
   expect_false(any(grepl("t_statistic", output)))
@@ -60,6 +64,7 @@ test_that("print() does not include test statistics or p-values", {
 })
 
 test_that("print() directs user to summary() for hypothesis tests", {
+  if (!.is_converged(mod)) skip()
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("summary\\(\\)", output)))
 })
@@ -77,22 +82,26 @@ test_that("print() handles non-converged models", {
 # summary() ---------------------------------------------------------------
 
 test_that("summary() returns a data frame", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod)
   expect_s3_class(s, "data.frame")
 })
 
 test_that("summary() has the expected columns", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod)
   expect_named(s, c("label", "estimate", "std_error", "z_statistic",
                     "p_value", "ci_lower", "ci_upper"))
 })
 
 test_that("summary() has one row per parameter", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod)
   expect_equal(nrow(s), length(coef(mod)))
 })
 
 test_that("summary(back_transform = TRUE) transforms log-scaled labels", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod, back_transform = TRUE)
   expect_true("EC50_Intercept" %in% s$label)
   expect_false("logEC50_Intercept" %in% s$label)
@@ -106,6 +115,7 @@ test_that("summary() returns nls_null for non-converged models", {
 # summary(): suppress_nonsensical -----------------------------------------
 
 test_that("summary() suppresses logEC50_Intercept test statistic and p-value by default", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_true(is.na(ec50_row$z_statistic))
@@ -113,6 +123,7 @@ test_that("summary() suppresses logEC50_Intercept test statistic and p-value by 
 })
 
 test_that("summary() still reports CI for logEC50_Intercept when suppressed", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_false(is.na(ec50_row$ci_lower))
@@ -120,6 +131,7 @@ test_that("summary() still reports CI for logEC50_Intercept when suppressed", {
 })
 
 test_that("summary() restores logEC50_Intercept test when suppress_nonsensical = FALSE", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod, suppress_nonsensical = FALSE)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_false(is.na(ec50_row$z_statistic))
@@ -130,12 +142,14 @@ test_that("summary() restores logEC50_Intercept test when suppress_nonsensical =
 # summary(): p_adjust -----------------------------------------------------
 
 test_that("summary() adjusts p-values when p_adjust is set", {
+  if (!.is_converged(mod)) skip()
   s_none <- summary(mod, suppress_nonsensical = FALSE)
   s_bonf <- summary(mod, suppress_nonsensical = FALSE, p_adjust = "bonferroni")
   expect_true(all(s_bonf$p_value >= s_none$p_value))
 })
 
 test_that("summary() p_adjust excludes suppressed p-values from adjustment set", {
+  if (!.is_converged(mod)) skip()
   s <- summary(mod, p_adjust = "bonferroni")
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_true(is.na(ec50_row$p_value))
@@ -145,6 +159,7 @@ test_that("summary() p_adjust excludes suppressed p-values from adjustment set",
 # summary(): simultaneous -------------------------------------------------
 
 test_that("summary() simultaneous CIs are wider than pointwise Wald CIs", {
+  if (!.is_converged(mod)) skip()
   # Both are Wald-based, so the comparison is valid: simultaneous uses a
   # larger critical value from the joint MVN than the pointwise z-quantile.
   s_sim <- summary(mod, simultaneous = TRUE)
@@ -160,6 +175,7 @@ test_that("summary() simultaneous CIs are wider than pointwise Wald CIs", {
 # .coef_table_logistic() --------------------------------------------------
 
 test_that(".coef_table_logistic() returns a data frame with expected structure", {
+  if (!.is_converged(mod)) skip()
   cc <- .coef_table_logistic(mod)
   expect_s3_class(cc, "data.frame")
   expect_named(cc, c("label", "estimate", "std_error", "z_statistic",

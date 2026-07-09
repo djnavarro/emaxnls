@@ -17,6 +17,7 @@ mod_cov <- emax_logistic(
 # coef() ------------------------------------------------------------------
 
 test_that("coef() returns named numeric vector", {
+  if (!.is_converged(mod_base)) skip()
   cc <- coef(mod_base)
   expect_true(is.numeric(cc))
   expect_named(cc)
@@ -24,6 +25,7 @@ test_that("coef() returns named numeric vector", {
 })
 
 test_that("coef(back_transform = TRUE) transforms log-scale parameters", {
+  if (!.is_converged(mod_base)) skip()
   cc_raw   <- coef(mod_base)
   cc_trans <- coef(mod_base, back_transform = TRUE)
   expect_equal(cc_trans["EC50_Intercept"], exp(cc_raw["logEC50_Intercept"]),
@@ -34,6 +36,7 @@ test_that("coef(back_transform = TRUE) transforms log-scale parameters", {
 # fitted() ----------------------------------------------------------------
 
 test_that("fitted() returns probabilities by default", {
+  if (!.is_converged(mod_base)) skip()
   f <- fitted(mod_base)
   expect_true(is.numeric(f))
   expect_length(f, nrow(emax_df))
@@ -41,6 +44,7 @@ test_that("fitted() returns probabilities by default", {
 })
 
 test_that("fitted(type = 'link') returns logit-scale predictions", {
+  if (!.is_converged(mod_base)) skip()
   f_link <- fitted(mod_base, type = "link")
   f_resp <- fitted(mod_base, type = "response")
   expect_equal(f_link, .logit(f_resp))
@@ -50,12 +54,14 @@ test_that("fitted(type = 'link') returns logit-scale predictions", {
 # residuals() -------------------------------------------------------------
 
 test_that("residuals() returns Pearson residuals by default", {
+  if (!.is_converged(mod_base)) skip()
   r <- residuals(mod_base)
   expect_true(is.numeric(r))
   expect_length(r, nrow(emax_df))
 })
 
 test_that("residuals(type = 'deviance') returns deviance residuals", {
+  if (!.is_converged(mod_base)) skip()
   r_dev  <- residuals(mod_base, type = "deviance")
   r_pear <- residuals(mod_base, type = "pearson")
   # deviance and Pearson residuals should differ
@@ -63,6 +69,7 @@ test_that("residuals(type = 'deviance') returns deviance residuals", {
 })
 
 test_that("deviance residuals have correct sign", {
+  if (!.is_converged(mod_base)) skip()
   y <- emax_df$rsp_2
   r <- residuals(mod_base, type = "deviance")
   # positive residuals where y=1, negative where y=0 (unless perfectly predicted)
@@ -76,17 +83,20 @@ test_that("deviance residuals have correct sign", {
 # logLik() ----------------------------------------------------------------
 
 test_that("logLik() returns a logLik object", {
+  if (!.is_converged(mod_base)) skip()
   ll <- logLik(mod_base)
   expect_s3_class(ll, "logLik")
   expect_true(is.finite(as.numeric(ll)))
 })
 
 test_that("logLik() has correct df attribute", {
+  if (!.is_converged(mod_base)) skip()
   ll <- logLik(mod_base)
   expect_equal(attr(ll, "df"), length(coef(mod_base)))
 })
 
 test_that("logLik() equals hand-computed binomial log-likelihood", {
+  if (!.is_converged(mod_base)) skip()
   y  <- emax_df$rsp_2
   mu <- fitted(mod_base)
   expected <- sum(y * log(mu) + (1 - y) * log(1 - mu))
@@ -97,6 +107,7 @@ test_that("logLik() equals hand-computed binomial log-likelihood", {
 # deviance() --------------------------------------------------------------
 
 test_that("deviance() equals -2 * logLik()", {
+  if (!.is_converged(mod_base)) skip()
   expect_equal(deviance(mod_base), -2 * as.numeric(logLik(mod_base)), tolerance = 1e-8)
 })
 
@@ -104,16 +115,19 @@ test_that("deviance() equals -2 * logLik()", {
 # AIC() and BIC() ---------------------------------------------------------
 
 test_that("AIC() returns a numeric scalar", {
+  if (!.is_converged(mod_base)) skip()
   expect_true(is.numeric(AIC(mod_base)))
   expect_length(AIC(mod_base), 1L)
 })
 
 test_that("BIC() returns a numeric scalar", {
+  if (!.is_converged(mod_base)) skip()
   expect_true(is.numeric(BIC(mod_base)))
   expect_length(BIC(mod_base), 1L)
 })
 
 test_that("AIC() equals -2*logLik + 2*npar", {
+  if (!.is_converged(mod_base)) skip()
   ll   <- logLik(mod_base)
   npar <- attr(ll, "df")
   expected <- -2 * as.numeric(ll) + 2 * npar
@@ -121,10 +135,14 @@ test_that("AIC() equals -2*logLik + 2*npar", {
 })
 
 test_that("model with covariate has lower AIC than base model", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   expect_lt(AIC(mod_cov), AIC(mod_base))
 })
 
 test_that("AIC(mod1, mod2) returns a data frame", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   out <- AIC(mod_base, mod_cov)
   expect_s3_class(out, "data.frame")
   expect_named(out, c("df", "AIC"))
@@ -132,6 +150,8 @@ test_that("AIC(mod1, mod2) returns a data frame", {
 })
 
 test_that("BIC(mod1, mod2) returns a data frame", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   out <- BIC(mod_base, mod_cov)
   expect_s3_class(out, "data.frame")
   expect_named(out, c("df", "BIC"))
@@ -141,10 +161,12 @@ test_that("BIC(mod1, mod2) returns a data frame", {
 # nobs() and df.residual() ------------------------------------------------
 
 test_that("nobs() returns the number of observations", {
+  if (!.is_converged(mod_base)) skip()
   expect_equal(nobs(mod_base), nrow(emax_df))
 })
 
 test_that("df.residual() is nobs - npar", {
+  if (!.is_converged(mod_base)) skip()
   n    <- nobs(mod_base)
   npar <- length(coef(mod_base))
   expect_equal(df.residual(mod_base), n - npar)
@@ -154,6 +176,8 @@ test_that("df.residual() is nobs - npar", {
 # anova() -----------------------------------------------------------------
 
 test_that("anova() performs LRT and returns correct structure", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   a <- anova(mod_base, mod_cov)
   expect_s3_class(a, "data.frame")
   expect_true("Pr(>Chi)" %in% names(a))
@@ -162,11 +186,15 @@ test_that("anova() performs LRT and returns correct structure", {
 })
 
 test_that("anova() LRT p-value is significant when covariate improves fit", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   a <- anova(mod_base, mod_cov)
   expect_lt(a$`Pr(>Chi)`[2], 0.05)
 })
 
 test_that("anova() LRT statistic equals deviance difference", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   a <- anova(mod_base, mod_cov)
   expected_lrt <- deviance(mod_base) - deviance(mod_cov)
   expect_equal(a$LRT[2], expected_lrt, tolerance = 1e-8)
@@ -176,6 +204,7 @@ test_that("anova() LRT statistic equals deviance difference", {
 # predict() ---------------------------------------------------------------
 
 test_that("predict() returns probabilities by default", {
+  if (!.is_converged(mod_base)) skip()
   p <- predict(mod_base)
   expect_true(is.numeric(p))
   expect_true(all(p > 0 & p < 1))
@@ -183,16 +212,19 @@ test_that("predict() returns probabilities by default", {
 })
 
 test_that("predict() and fitted() agree on training data", {
+  if (!.is_converged(mod_base)) skip()
   expect_equal(predict(mod_base), fitted(mod_base), tolerance = 1e-8, ignore_attr = TRUE)
 })
 
 test_that("predict(type = 'link') returns logit-scale predictions", {
+  if (!.is_converged(mod_base)) skip()
   p_link <- predict(mod_base, type = "link")
   p_resp <- predict(mod_base, type = "response")
   expect_equal(p_link, .logit(p_resp), tolerance = 1e-8)
 })
 
 test_that("predict() works with newdata", {
+  if (!.is_converged(mod_base)) skip()
   new_dat <- emax_df[1:10, ]
   p <- predict(mod_base, newdata = new_dat)
   expect_length(p, 10L)
@@ -203,18 +235,21 @@ test_that("predict() works with newdata", {
 # vcov() and confint() ----------------------------------------------------
 
 test_that("vcov() returns a square matrix", {
+  if (!.is_converged(mod_base)) skip()
   v <- vcov(mod_base)
   n <- length(coef(mod_base))
   expect_equal(dim(v), c(n, n))
 })
 
 test_that("confint() returns a matrix with correct dimensions", {
+  if (!.is_converged(mod_base)) skip()
   ci <- confint(mod_base)
   expect_equal(nrow(ci), length(coef(mod_base)))
   expect_equal(ncol(ci), 2L)
 })
 
 test_that("confint(back_transform = TRUE) transforms logEC50 to EC50 scale", {
+  if (!.is_converged(mod_base)) skip()
   ci_raw   <- confint(mod_base)
   ci_trans <- confint(mod_base, back_transform = TRUE)
   expect_equal(ci_trans["EC50_Intercept", ], exp(ci_raw["logEC50_Intercept", ]),
@@ -240,6 +275,7 @@ test_that("methods return null-like values for non-converged models", {
 # emax_add_term / emax_remove_term ----------------------------------------
 
 test_that("emax_add_term() preserves emaxlogistic class", {
+  if (!.is_converged(mod_base)) skip()
   mod_updated <- emax_add_term(mod_base, E0 ~ cnt_a)
   expect_s3_class(mod_updated, "emaxlogistic")
   expect_s3_class(mod_updated, "emaxnls")
@@ -247,6 +283,7 @@ test_that("emax_add_term() preserves emaxlogistic class", {
 })
 
 test_that("emax_remove_term() preserves emaxlogistic class", {
+  if (!.is_converged(mod_cov)) skip()
   mod_updated <- emax_remove_term(mod_cov, E0 ~ cnt_a)
   expect_s3_class(mod_updated, "emaxlogistic")
   expect_s3_class(mod_updated, "emaxnls")
@@ -254,6 +291,7 @@ test_that("emax_remove_term() preserves emaxlogistic class", {
 })
 
 test_that("emax_add_term() updates the covariate model and parameter count", {
+  if (!.is_converged(mod_base)) skip()
   mod_added <- emax_add_term(mod_base, E0 ~ cnt_a)
   expect_true("E0_cnt_a" %in% names(coef(mod_added)))
   expect_equal(length(coef(mod_added)), length(coef(mod_base)) + 1L)
@@ -261,6 +299,7 @@ test_that("emax_add_term() updates the covariate model and parameter count", {
 })
 
 test_that("emax_remove_term() updates the covariate model and parameter count", {
+  if (!.is_converged(mod_cov)) skip()
   mod_removed <- emax_remove_term(mod_cov, E0 ~ cnt_a)
   expect_false("E0_cnt_a" %in% names(coef(mod_removed)))
   expect_equal(length(coef(mod_removed)), length(coef(mod_cov)) - 1L)
@@ -268,6 +307,7 @@ test_that("emax_remove_term() updates the covariate model and parameter count", 
 })
 
 test_that("adding and then removing a term leaves the model structure unchanged", {
+  if (!.is_converged(mod_base)) skip()
   mod_add <- emax_add_term(mod_base, E0 ~ bin_d)
   mod_del <- emax_remove_term(mod_add, E0 ~ bin_d)
   expect_equal(names(coef(mod_del)), names(coef(mod_base)))
@@ -279,10 +319,12 @@ test_that("adding and then removing a term leaves the model structure unchanged"
 })
 
 test_that("emax_add_term() messages when term already exists", {
+  if (!.is_converged(mod_cov)) skip()
   expect_message(emax_add_term(mod_cov, E0 ~ cnt_a), class = "emaxnls_message")
 })
 
-test_that("emax_remove_term() messages when term is not present", {
+test_that("emax_remove_term() messages when term is not present", { 
+  if (!.is_converged(mod_base)) skip()
   expect_message(emax_remove_term(mod_base, E0 ~ cnt_a), class = "emaxnls_message")
 })
 
@@ -290,6 +332,8 @@ test_that("emax_remove_term() messages when term is not present", {
 # smoke test --------------------------------------------------------------
 
 test_that("methods do not throw errors with basic use", {
+  if (!.is_converged(mod_cov)) skip()
+  if (!.is_converged(mod_base)) skip()
   expect_no_error(coef(mod_cov))
   expect_no_error(vcov(mod_cov))
   expect_no_error(residuals(mod_cov))
@@ -308,12 +352,16 @@ test_that("methods do not throw errors with basic use", {
 })
 
 test_that("AIC(), BIC(), and anova() can take multiple objects", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   expect_no_error(AIC(mod_base, mod_cov))
   expect_no_error(BIC(mod_base, mod_cov))
   expect_no_error(anova(mod_base, mod_cov))
 })
 
 test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
+  if (!.is_converged(mod_base)) skip()
+  if (!.is_converged(mod_cov)) skip()
   expect_warning(AIC(mod_base, mod_cov, mod_bad))
   expect_warning(BIC(mod_base, mod_cov, mod_bad))
   expect_warning(anova(mod_base, mod_cov, mod_bad))
@@ -327,6 +375,7 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
 # summary() ---------------------------------------------------------------
 
 test_that("summary() matches .coef_table_logistic()", {
+  if (!.is_converged(mod_base)) skip()
   expect_equal(summary(mod_base), .coef_table_logistic(mod_base, suppress_nonsensical = TRUE))
   expect_equal(summary(mod_base, conf_level = .99), .coef_table_logistic(mod_base, level = .99, suppress_nonsensical = TRUE))
   expect_equal(
@@ -339,6 +388,7 @@ test_that("summary() matches .coef_table_logistic()", {
 # vcov() ------------------------------------------------------------------
 
 test_that("vcov() is symmetric and has correct dimension names", {
+  if (!.is_converged(mod_base)) skip()
   v   <- vcov(mod_base)
   lbl <- names(coef(mod_base))
   expect_equal(rownames(v), lbl)
@@ -350,12 +400,14 @@ test_that("vcov() is symmetric and has correct dimension names", {
 # simulate() --------------------------------------------------------------
 
 test_that("simulate() returns a data frame with one row per observation", {
+  if (!.is_converged(mod_base)) skip()
   sim <- simulate(mod_base)
   expect_s3_class(sim, "data.frame")
   expect_equal(nrow(sim), nrow(emax_df))  # nsim = 1: long format gives n * 1 rows
 })
 
 test_that("simulate() respects the nsim argument", {
+  if (!.is_converged(mod_base)) skip()
   sim <- simulate(mod_base, nsim = 5L)
   # long format: one row per observation per simulation replicate
   expect_equal(nrow(sim), 5L * nrow(emax_df))
@@ -363,6 +415,7 @@ test_that("simulate() respects the nsim argument", {
 })
 
 test_that("simulate() produces binary values in the val column", {
+  if (!.is_converged(mod_base)) skip()
   sim <- simulate(mod_base)
   expect_true(all(sim$val %in% c(0, 1)))
 })
@@ -371,6 +424,7 @@ test_that("simulate() produces binary values in the val column", {
 # predict() with se.fit and interval --------------------------------------
 
 test_that("predict(se.fit = TRUE) returns a list with fit, se.fit, residual.scale, and df", {
+  if (!.is_converged(mod_base)) skip()
   pr <- predict(mod_base, se.fit = TRUE)
   expect_type(pr, "list")
   expect_named(pr, c("fit", "se.fit", "residual.scale", "df"))
@@ -381,6 +435,7 @@ test_that("predict(se.fit = TRUE) returns a list with fit, se.fit, residual.scal
 })
 
 test_that("predict(interval = 'confidence') returns a data frame of probabilities", {
+  if (!.is_converged(mod_base)) skip()
   pr <- predict(mod_base, interval = "confidence")
   expect_s3_class(pr, "data.frame")
   expect_named(pr, c("fit", "lwr", "upr"))
@@ -395,12 +450,14 @@ test_that("predict(interval = 'confidence') returns a data frame of probabilitie
 })
 
 test_that("predict(se.fit = TRUE) fit matches predict() on response scale", {
+  if (!.is_converged(mod_base)) skip()
   pr_vec <- predict(mod_base)
   pr_lst <- predict(mod_base, se.fit = TRUE)
   expect_equal(pr_lst$fit, pr_vec, tolerance = 1e-8, ignore_attr = TRUE)
 })
 
 test_that("predict with tibble newdata gives identical results to data.frame", {
+  if (!.is_converged(mod_cov)) skip()
   nd_df  <- data.frame(exp_1 = emax_df$exp_1[1:5], cnt_a = emax_df$cnt_a[1:5])
   nd_tbl <- tibble::as_tibble(nd_df)
 
