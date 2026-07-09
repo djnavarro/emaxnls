@@ -47,6 +47,13 @@
 
 }
 
+.validate_max_time <- function(max_time) {
+  .assert(
+    .is_scalar_num(max_time) && max_time > 0,
+    "`max_time` must be a single positive number (use `Inf` for no time limit)"
+  )
+}
+
 .validate_optim_method <- function(optim_method) {
   .assert(
     expr = optim_method %in% c("gauss", "port", "levenberg"),

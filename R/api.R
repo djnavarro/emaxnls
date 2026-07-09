@@ -71,6 +71,10 @@ emax_nls <- function(structural_model,
 #' @param weights Numeric vector providing the weights for observations. When
 #' specified, weighted least squares is used
 #' @param na.action How should missing values in the data be handled?
+#' @param max_time Maximum elapsed time in seconds allowed for the model fit.
+#' If the optimizer has not converged within this time, it is terminated and
+#' the model is treated as non-converged (the same outcome as any other
+#' convergence failure). Defaults to `Inf` (no time limit).
 #'
 #' @details
 #' At present there are three supported values for `optim_method`:
@@ -111,13 +115,15 @@ emax_nls_options <- function(optim_method = "gauss",
                              optim_control = NULL,
                              quiet = FALSE,
                              weights = NULL,
-                             na.action = getOption("na.action")) {
+                             na.action = getOption("na.action"),
+                             max_time = Inf) {
   .emax_nls_options(
     optim_method = optim_method,
     optim_control = optim_control,
     quiet = quiet,
     weights = weights,
-    na.action = na.action
+    na.action = na.action,
+    max_time = max_time
   )
 }
 
@@ -488,6 +494,10 @@ emax_logistic <- function(structural_model,
 #' @param max_iter Maximum number of IRLS outer iterations (default 25).
 #' @param tol Convergence tolerance: IRLS stops when the change in binomial
 #' deviance between successive iterations falls below `tol` (default 1e-6).
+#' @param max_time Maximum elapsed time in seconds allowed for the entire model
+#' fit (including all IRLS iterations). If the optimizer has not converged
+#' within this time, it is terminated and the model is treated as
+#' non-converged. Defaults to `Inf` (no time limit).
 #'
 #' @returns A list of settings
 #'
@@ -506,14 +516,16 @@ emax_logistic_options <- function(optim_method = "gauss",
                                   quiet = FALSE,
                                   na.action = getOption("na.action"),
                                   max_iter = 25,
-                                  tol = 1e-6) {
+                                  tol = 1e-6,
+                                  max_time = Inf) {
   .emax_logistic_options(
     optim_method  = optim_method,
     optim_control = optim_control,
     quiet         = quiet,
     na.action     = na.action,
     max_iter      = max_iter,
-    tol           = tol
+    tol           = tol,
+    max_time      = max_time
   )
 }
 
