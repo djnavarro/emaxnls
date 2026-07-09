@@ -123,11 +123,11 @@
     data = list(
       formula   = obj$formula$expanded,
       design    = obj$info$design,
-      start     = setNames(init$start, coef_nms),
+      start     = stats::setNames(init$start, coef_nms),
       control   = obj$info$opts$optim_control,
       algorithm = .nls_method(obj$info$opts$optim_method),
-      lower     = setNames(init$lower, coef_nms),
-      upper     = setNames(init$upper, coef_nms),
+      lower     = stats::setNames(init$lower, coef_nms),
+      upper     = stats::setNames(init$upper, coef_nms),
       weights   = obj$info$opts$weights
     ),
     parent = parent.frame()
