@@ -67,6 +67,7 @@ test_that("predict with newdata produces expected values", {
 
 test_that("predict with tibble newdata gives identical results to data.frame", {
   skip_if_not_converged(mod)
+  skip_if_not_installed("tibble")
   nd_df  <- data.frame(exp_1 = emax_df$exp_1[120:125], cnt_a = emax_df$cnt_a[120:125])
   nd_tbl <- tibble::as_tibble(nd_df)
 

@@ -458,6 +458,7 @@ test_that("predict(se.fit = TRUE) fit matches predict() on response scale", {
 
 test_that("predict with tibble newdata gives identical results to data.frame", {
   skip_if_not_converged(mod_cov)
+  skip_if_not_installed("tibble")
   nd_df  <- data.frame(exp_1 = emax_df$exp_1[1:5], cnt_a = emax_df$cnt_a[1:5])
   nd_tbl <- tibble::as_tibble(nd_df)
 
