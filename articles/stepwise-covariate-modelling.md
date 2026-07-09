@@ -159,7 +159,6 @@ native pipe:
 final_model <- base_model |>
   emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 1) |>
   emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 1)
-#> Warning: `nls()` did not converge
 ```
 
 A few things are worth unpacking here.
@@ -303,7 +302,7 @@ print(
 #> 14         2 forward     add    Emax ~ cnt…    7.32e-  1      606. FALSE        
 #> 15         2 forward     add    E0 ~ cnt_b     9.93e-  1      606. FALSE        
 #> 16         2 forward     add    Emax ~ cnt…    4.92e-  1      605. FALSE        
-#> 17         2 forward     add    Emax ~ bin…   NA               NA  FALSE        
+#> 17         2 forward     add    Emax ~ bin…    9.94e-  1      606. FALSE        
 #> 18         2 forward     add    Emax ~ bin…    9.40e-  1      606. FALSE        
 #> 19         2 forward     add    E0 ~ bin_d     5.39e-  1      605. FALSE        
 #> 20         2 forward     add    Emax ~ cnt…    6.09e-  1      605. FALSE        
