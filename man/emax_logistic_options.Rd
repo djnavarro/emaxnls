@@ -10,7 +10,8 @@ emax_logistic_options(
   quiet = FALSE,
   na.action = getOption("na.action"),
   max_iter = 25,
-  tol = 1e-06
+  tol = 1e-06,
+  max_time = Inf
 )
 }
 \arguments{
@@ -29,6 +30,11 @@ for details on each.}
 
 \item{tol}{Convergence tolerance: IRLS stops when the change in binomial
 deviance between successive iterations falls below \code{tol} (default 1e-6).}
+
+\item{max_time}{Maximum elapsed time in seconds allowed for the entire model
+fit (including all IRLS iterations). If the optimizer has not converged
+within this time, it is terminated and the model is treated as
+non-converged. Defaults to \code{Inf} (no time limit).}
 }
 \value{
 A list of settings
