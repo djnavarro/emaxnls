@@ -4,18 +4,20 @@
 mod <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 mod_sig <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 mod_bad <- suppressWarnings(emax_logistic(
   rsp_2 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df,
-  opts = emax_logistic_options(optim_control = stats::nls.control(maxiter = 1), quiet = TRUE)
+  opts = test_logistic_opts(optim_control = stats::nls.control(maxiter = 1), quiet = TRUE)
 ))
 
 

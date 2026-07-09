@@ -28,8 +28,9 @@ stepwise covariate modeling procedures that are very commonly used when
 building Emax regressions.
 }
 \examples{
-mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
-mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
+opts <- emax_nls_options(max_time = 10)
+mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df, opts = opts)
+mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df, opts = opts)
 
 if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 

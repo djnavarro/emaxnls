@@ -2,14 +2,16 @@
 mod <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = test_nls_opts()
 )
 lbl <- .get_coefficient_names(mod)
 
 mod_sig <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = test_nls_opts()
 )
 
 

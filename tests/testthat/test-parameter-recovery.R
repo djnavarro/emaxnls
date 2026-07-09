@@ -35,7 +35,8 @@ sim_cont   <- data.frame(
 mod_cont <- emax_nls(
   structural_model = rsp ~ dose,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data             = sim_cont
+  data             = sim_cont,
+  opts             = test_nls_opts()
 )
 
 test_that("hyperbolic emax_nls converges on simulated data", {
@@ -78,7 +79,8 @@ sim_sig   <- data.frame(
 mod_sig <- emax_nls(
   structural_model = rsp ~ dose,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
-  data             = sim_sig
+  data             = sim_sig,
+  opts             = test_nls_opts()
 )
 
 test_that("sigmoidal emax_nls converges on simulated data", {
@@ -120,7 +122,8 @@ sim_bin   <- data.frame(
 mod_bin <- emax_logistic(
   structural_model = rsp ~ dose,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data             = sim_bin
+  data             = sim_bin,
+  opts             = test_logistic_opts()
 )
 
 test_that("logistic emax_logistic converges on simulated data", {
@@ -174,7 +177,8 @@ sim_cov <- data.frame(
 mod_cov <- emax_nls(
   structural_model = rsp ~ dose,
   covariate_model  = list(E0 ~ cov, Emax ~ 1, logEC50 ~ 1),
-  data             = sim_cov
+  data             = sim_cov,
+  opts             = test_nls_opts()
 )
 
 test_that("covariate model emax_nls converges on simulated data", {

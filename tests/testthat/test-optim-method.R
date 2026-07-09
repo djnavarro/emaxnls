@@ -15,7 +15,7 @@ test_that("example base model converges with 'gauss'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -23,7 +23,7 @@ test_that("example base model converges with 'gauss'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -51,7 +51,7 @@ test_that("example base model converges with 'port'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -59,7 +59,7 @@ test_that("example base model converges with 'port'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -88,7 +88,7 @@ test_that("example base model converges with 'levenberg'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -96,7 +96,7 @@ test_that("example base model converges with 'levenberg'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -130,7 +130,7 @@ test_that("example covariate model converges with 'gauss'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -138,7 +138,7 @@ test_that("example covariate model converges with 'gauss'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -166,7 +166,7 @@ test_that("example covariate model converges with 'port'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -174,7 +174,7 @@ test_that("example covariate model converges with 'port'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -203,7 +203,7 @@ test_that("example covariate model converges with 'levenberg'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   expect_no_warning(
@@ -211,7 +211,7 @@ test_that("example covariate model converges with 'levenberg'", {
       structural_model = str_mod, 
       covariate_model = cov_mod, 
       data = emax_df,
-      opts = emax_nls_options(optim_method = mm)
+      opts = test_nls_opts(optim_method = mm)
     )
   )
   mod <- emax_nls(
@@ -236,7 +236,7 @@ test_that("emax_nls errors for unknown optim_method", {
         structural_model = str_mod, 
         covariate_model = cov_mod, 
         data = emax_df,
-        opts = emax_nls_options(optim_method = "mm")
+        opts = test_nls_opts(optim_method = "mm")
       ),
       class = "emaxnls_error"
     )
