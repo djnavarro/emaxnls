@@ -62,10 +62,6 @@
     covariate != "Intercept" & parameter == "logHill" ~ loghill_max
   ))
       
-  names(ini$start) <- coefficient_vec
-  names(ini$lower) <- coefficient_vec
-  names(ini$upper) <- coefficient_vec
-
   return(ini)
 }
 

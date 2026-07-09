@@ -22,14 +22,18 @@ test_that("emax_logistic_init() start values are within lower/upper bounds", {
   expect_true(all(init$start <= init$upper))
 })
 
-test_that("emax_logistic_init() start values are named correctly", {
+test_that("emax_logistic_init() parameter and covariate columns encode correct names", {
+  # The coefficient names are encoded in the parameter and covariate columns.
+  # Base R data.frame strips element names from numeric columns, so we cannot
+  # rely on names(init$start); the parameter/covariate columns are the
+  # authoritative source. See issue #57.
   init <- emax_logistic_init(
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
     data             = emax_df
   )
   coef_names <- paste(init$parameter, init$covariate, sep = "_")
-  expect_equal(names(init$start), coef_names)
+  expect_equal(coef_names, c("E0_Intercept", "Emax_Intercept", "logEC50_Intercept"))
 })
 
 test_that("emax_logistic_init() handles sigmoidal models", {
@@ -39,8 +43,9 @@ test_that("emax_logistic_init() handles sigmoidal models", {
     data             = emax_df
   )
   expect_equal(nrow(init), 4L)
-  expect_true("logHill_Intercept" %in% names(init$start))
-  expect_equal(init$start["logHill_Intercept"], 0, ignore_attr = TRUE)
+  loghill_row <- init[init$parameter == "logHill" & init$covariate == "Intercept", ]
+  expect_equal(nrow(loghill_row), 1L)
+  expect_equal(loghill_row$start, 0)
 })
 
 test_that("emax_logistic_init() validates inputs", {

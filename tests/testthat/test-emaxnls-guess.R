@@ -26,6 +26,31 @@ test_that(".emax_nls_init returns expected data frame", {
   }
 })
 
+test_that(".emax_nls_init parameter and covariate columns encode correct names", {
+  # The coefficient names are encoded in the parameter and covariate columns.
+  # Base R data.frame strips element names from numeric columns, so the
+  # parameter/covariate columns are the authoritative source. See issue #57.
+  gg <- .emax_nls_init(
+    rsp_1 ~ exp_1,
+    list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
+    emax_df
+  )
+  coef_names <- paste(gg$parameter, gg$covariate, sep = "_")
+  expect_equal(coef_names, c("E0_Intercept", "Emax_Intercept", "logEC50_Intercept"))
+})
+
+test_that(".emax_nls_init handles sigmoidal models: logHill row present with start = 0", {
+  gg <- .emax_nls_init(
+    rsp_1 ~ exp_1,
+    list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
+    emax_df
+  )
+  expect_equal(nrow(gg), 4L)
+  loghill_row <- gg[gg$parameter == "logHill" & gg$covariate == "Intercept", ]
+  expect_equal(nrow(loghill_row), 1L)
+  expect_equal(loghill_row$start, 0)
+})
+
 test_that(".guess_init scales logEC50 with exposure", {
 
   gg1 <- .emax_nls_init(str_model, cov_model, dfs$unmodified)
