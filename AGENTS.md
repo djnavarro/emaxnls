@@ -52,6 +52,9 @@ vignettes/articles/     # Four long-form articles
   fitting-logistic-emax-models.Rmd
   simulating-from-emax-models.Rmd
   stepwise-covariate-modelling.Rmd
+
+dev/                    # Developer-focused notes (not part of the package)
+  # Informal notes to track ongoing investigations, platform quirks, etc.
 ```
 
 ---
