@@ -55,12 +55,12 @@ mod_c <- emax_nls(
 # coefficients on the estimation scale
 coef(mod_c)
 #>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept 
-#>         0.4861467         5.0548076         9.9697250         8.2688405 
+#>         0.4861467         5.0548075         9.9697250         8.2688405 
 
 # coefficients with log-scale parameters back-transformed
 coef(mod_c, back_transform = TRUE)
 #>       E0_cnt_a   E0_Intercept Emax_Intercept EC50_Intercept 
-#>      0.4861467      5.0548076      9.9697250   3900.4236542 
+#>      0.4861467      5.0548075      9.9697250   3900.4236534 
 
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
