@@ -4,13 +4,15 @@
 mod <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 mod_cov <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 test_that("emax_logistic() returns an emaxlogistic object", {
@@ -48,7 +50,7 @@ test_that("emax_logistic() handles non-convergence gracefully", {
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
     data             = emax_df,
-    opts             = emax_logistic_options(
+    opts             = test_logistic_opts(
       optim_control = stats::nls.control(maxiter = 1),
       quiet         = TRUE
     )
@@ -62,7 +64,7 @@ test_that("emax_logistic() issues a warning when IRLS nls step fails", {
       structural_model = rsp_2 ~ exp_1,
       covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
       data             = emax_df,
-      opts             = emax_logistic_options(
+      opts             = test_logistic_opts(
         optim_control = stats::nls.control(maxiter = 1)
       )
     ),
@@ -82,7 +84,8 @@ test_that("sigmoidal logistic Emax model fits successfully", {
   mod_sig <- emax_logistic(
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
-    data             = emax_df
+    data             = emax_df,
+    opts             = test_logistic_opts()
   )
   skip_if_not_converged(mod_sig)
   expect_true(emax_converged(mod_sig))
@@ -110,7 +113,8 @@ test_that("emax_logistic() works with binary covariates", {
   expect_no_error(emax_logistic(
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ bin_d, Emax ~ 1, logEC50 ~ 1),
-    data             = emax_df
+    data             = emax_df,
+    opts             = test_logistic_opts()
   ))
 })
 
@@ -118,6 +122,7 @@ test_that("emax_logistic() works with categorical covariates", {
   expect_no_error(emax_logistic(
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ cat_f, Emax ~ 1, logEC50 ~ 1),
-    data             = emax_df
+    data             = emax_df,
+    opts             = test_logistic_opts()
   ))
 })

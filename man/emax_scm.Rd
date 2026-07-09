@@ -53,7 +53,8 @@ object. Use \code{emax_scm_history()} to extract this record.
 base_model <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 
 covariate_list <- list(
@@ -85,7 +86,8 @@ emax_scm_history(final_model)
 base_model_logistic <- emax_nls(
   structural_model = rsp_2 ~ exp_1, 
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 forward_model_logistic <- emax_scm_forward(
   mod = base_model_logistic,

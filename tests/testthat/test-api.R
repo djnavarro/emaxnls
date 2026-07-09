@@ -3,7 +3,8 @@ test_that("emax_nls works with test data", {
   expect_no_error(emax_nls(
     structural_model = rsp_1 ~ exp_1, 
     covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-    data = emax_df
+    data = emax_df,
+    opts = test_nls_opts()
   ))
 })
 
@@ -12,7 +13,8 @@ cov_mod <- list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1)
 mod <- emax_nls(
   structural_model = str_mod, 
   covariate_model = cov_mod, 
-  data = emax_df
+  data = emax_df,
+  opts = test_nls_opts()
 )
 
 test_that("emax_nls_init works with test data", {

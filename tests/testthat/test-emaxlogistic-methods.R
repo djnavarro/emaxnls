@@ -4,13 +4,15 @@
 mod_base <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 mod_cov <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model  = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
+  data             = emax_df,
+  opts             = test_logistic_opts()
 )
 
 
@@ -261,7 +263,7 @@ test_that("confint(back_transform = TRUE) transforms logEC50 to EC50 scale", {
 
 mod_bad <- suppressWarnings(emax_logistic(
   rsp_2 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df,
-  opts = emax_logistic_options(optim_control = stats::nls.control(maxiter = 1), quiet = TRUE)
+  opts = test_logistic_opts(optim_control = stats::nls.control(maxiter = 1), quiet = TRUE)
 ))
 
 test_that("methods return null-like values for non-converged models", {
@@ -472,7 +474,8 @@ test_that("confint() falls back to Wald intervals with a warning for sigmoidal m
   mod_sig <- emax_logistic(
     structural_model = rsp_2 ~ exp_1,
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
-    data             = emax_df
+    data             = emax_df,
+    opts             = test_logistic_opts()
   )
   skip_if_not_converged(mod_sig)
   # profile CI fails for this sigmoidal logistic model; expect a warning and a valid result

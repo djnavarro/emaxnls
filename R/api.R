@@ -37,7 +37,8 @@
 #' emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #'  
 #' @export
@@ -168,7 +169,8 @@ emax_nls_options <- function(optim_method = "gauss",
 #' coef(emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' ))
 #' 
 emax_nls_init <- function(structural_model, covariate_model, data) {
@@ -209,8 +211,9 @@ emax_converged <- function(mod) {
 #' An object of class `emaxnls`
 #'
 #' @examples
-#' mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df)
-#' mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df)
+#' opts <- emax_nls_options(max_time = 10)
+#' mod_0 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), emax_df, opts = opts)
+#' mod_1 <- emax_nls(rsp_1 ~ exp_1, list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), emax_df, opts = opts)
 #' 
 #' if (emax_converged(mod_0)) emax_add_term(mod_0, E0 ~ cnt_a)
 #' 
@@ -270,7 +273,8 @@ emax_remove_term <- function(mod, formula) {
 #' base_model <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' 
 #' covariate_list <- list(
@@ -302,7 +306,8 @@ emax_remove_term <- function(mod, formula) {
 #' base_model_logistic <- emax_nls(
 #'   structural_model = rsp_2 ~ exp_1, 
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' forward_model_logistic <- emax_scm_forward(
 #'   mod = base_model_logistic,
@@ -387,7 +392,8 @@ emax_scm_history <- function(mod) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' 
 #' if (emax_converged(mod_c)) {
@@ -409,7 +415,8 @@ emax_scm_history <- function(mod) {
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' 
 #' if (emax_converged(mod_b)) {
@@ -459,7 +466,8 @@ emax_fun <- function(mod, ...) {
 #' emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #'
 #' @export

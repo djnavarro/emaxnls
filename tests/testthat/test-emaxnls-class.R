@@ -1,7 +1,8 @@
 mod <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
+  data = emax_df,
+  opts = test_nls_opts()
 )
 
 test_that("emax_nls object has expected top-level structure", {
@@ -32,7 +33,8 @@ test_that("emax_nls works with binary covariates", {
   expect_no_error(emax_nls(
     structural_model = rsp_1 ~ exp_1, 
     covariate_model = list(E0 ~ bin_d, Emax ~ 1, logEC50 ~ 1), 
-    data = emax_df
+    data = emax_df,
+    opts = test_nls_opts()
   ))
 })
 
@@ -40,7 +42,8 @@ test_that("emax_nls works with categorical covariates", {
   expect_no_error(emax_nls(
     structural_model = rsp_1 ~ exp_1, 
     covariate_model = list(E0 ~ cat_f, Emax ~ 1, logEC50 ~ 1), 
-    data = emax_df
+    data = emax_df,
+    opts = test_nls_opts()
   ))
 })
 
@@ -48,7 +51,8 @@ test_that("emax_nls works with sigmoidal structure", {
   expect_no_error(emax_nls(
     structural_model = rsp_1 ~ exp_1, 
     covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1), 
-    data = emax_df
+    data = emax_df,
+    opts = test_nls_opts()
   ))
 })
 

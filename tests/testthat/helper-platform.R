@@ -57,6 +57,15 @@ skip_if_not_converged <- function(mod) {
 }
 
 
+# default options for use in tests: adds a max_time limit so that model fits
+# on slow builders (clang, gcc15) cannot stall the test suite indefinitely.
+# all other arguments are forwarded to the underlying options function, so
+# tests that need specific settings (e.g., optim_method, optim_control) can
+# still pass them and they will override the defaults.
+test_nls_opts <- function(...) emax_nls_options(..., max_time = 10)
+test_logistic_opts <- function(...) emax_logistic_options(..., max_time = 10)
+
+
 # check whether mvtnorm is actually callable, not just installed -------------
 #
 # On some clang-based Rhub builders, mvtnorm is installed and its namespace can
