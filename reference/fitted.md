@@ -46,7 +46,8 @@ curve evaluated at each observation's exposure and covariate values.
 mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 fitted(mod_c)[1:20]
 #>  [1] 14.500646 15.591349  5.647906 13.402470 13.561531 16.851552 17.150410
@@ -56,7 +57,8 @@ fitted(mod_c)[1:20]
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 fitted(mod_b)[1:20]
 #>  [1] 0.70363536 0.90572875 0.01482219 0.39544147 0.53245238 0.98428451

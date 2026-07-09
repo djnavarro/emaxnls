@@ -50,7 +50,8 @@ object carries `df` (number of parameters) and `nobs` attributes.
 mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 logLik(mod_c)
 #> 'log Lik.' -296.8216 (df=5)
@@ -58,7 +59,8 @@ logLik(mod_c)
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 logLik(mod_b)
 #> 'log Lik.' -165.7349 (df=4)

@@ -275,7 +275,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55eb51ccc748>
+#> <bytecode: 0x563407999288>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -572,7 +572,7 @@ mod_sig <- emax_nls(
 )
 coef(mod_sig, back_transform = TRUE)
 #>       E0_cnt_a   E0_Intercept Emax_Intercept EC50_Intercept Hill_Intercept 
-#>         0.4864         5.0544         9.9068      3866.1767         1.0173
+#>         0.4864         5.0544         9.9068      3866.1810         1.0173
 ```
 
 The data were generated with a Hill coefficient of $`1`$, so the
