@@ -14,6 +14,14 @@
 
 ## New features
 
+* Adds a `max_time` argument to `emax_nls_options()` and
+  `emax_logistic_options()` that sets a maximum elapsed time (in seconds) for
+  model fitting. If the optimizer has not converged within the limit it is
+  terminated and the model is treated as non-converged, consistent with any
+  other convergence failure. Defaults to `Inf` (no limit). This is particularly
+  useful when running many models in an SCM procedure, where a single
+  pathological fit can otherwise stall the entire covariate search (#16).
+
 * Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
   reweighted least squares (IRLS), along with `emax_logistic_init()` and
   `emax_logistic_options()` for initialization and configuration. All standard

@@ -37,6 +37,14 @@
   obj$env <- .construct_env(obj)
 
 
+  # Apply elapsed time limit if requested. The on.exit() reset ensures the
+  # limit is cleared when this function returns normally (without a timeout),
+  # because setTimeLimit() with transient = TRUE only auto-clears on timeout.
+  if (is.finite(opts$max_time)) {
+    on.exit(setTimeLimit(elapsed = Inf), add = TRUE)
+    setTimeLimit(elapsed = opts$max_time, transient = TRUE)
+  }
+
   # estimate the nls model
   tmp <- evalq(
     .nls_call(

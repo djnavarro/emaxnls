@@ -39,8 +39,25 @@
   obj$formula$expanded <- .construct_expanded_formula(obj$info$variables)
   obj$env <- .construct_env(obj)
 
+  # Apply elapsed time limit if requested. The on.exit() reset ensures the
+  # limit is cleared when this function returns normally (without a timeout).
+  # The tryCatch around .irls_loop() handles the edge case where a timeout
+  # fires in IRLS bookkeeping code between NLS calls (rather than inside
+  # nls() itself, which is already caught by .nls_safe()).
+  if (is.finite(opts$max_time)) {
+    on.exit(setTimeLimit(elapsed = Inf), add = TRUE)
+    setTimeLimit(elapsed = opts$max_time, transient = TRUE)
+  }
+
   # run IRLS
-  irls_out <- .irls_loop(obj, opts)
+  irls_out <- tryCatch(
+    .irls_loop(obj, opts),
+    error = function(e) list(
+      result = NULL,
+      error  = e,
+      irls   = list(iter = NA_integer_, converged = FALSE)
+    )
+  )
 
   # store results
   obj$env$model <- irls_out$result

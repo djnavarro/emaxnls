@@ -9,7 +9,8 @@ emax_nls_options(
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
-  na.action = getOption("na.action")
+  na.action = getOption("na.action"),
+  max_time = Inf
 )
 }
 \arguments{
@@ -27,6 +28,11 @@ algorithm is used}
 specified, weighted least squares is used}
 
 \item{na.action}{How should missing values in the data be handled?}
+
+\item{max_time}{Maximum elapsed time in seconds allowed for the model fit.
+If the optimizer has not converged within this time, it is terminated and
+the model is treated as non-converged (the same outcome as any other
+convergence failure). Defaults to \code{Inf} (no time limit).}
 }
 \value{
 A list of settings

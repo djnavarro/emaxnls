@@ -4,9 +4,11 @@
                                    quiet,
                                    na.action,
                                    max_iter,
-                                   tol) {
+                                   tol,
+                                   max_time) {
 
   .validate_optim_method(optim_method)
+  .validate_max_time(max_time)
 
   if (is.null(optim_control)) {
     if (optim_method == "gauss") optim_control <- stats::nls.control()
@@ -24,7 +26,8 @@
     weights = NULL,   # always NULL for logistic; computed internally by IRLS
     na.action = na.action,
     max_iter = max_iter,
-    tol = tol
+    tol = tol,
+    max_time = max_time
   )
   return(opts)
 }
