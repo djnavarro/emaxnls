@@ -72,7 +72,8 @@ emax_nls_init(
 coef(emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 ))
 #>          E0_cnt_a      E0_Intercept    Emax_Intercept logEC50_Intercept 
 #>         0.4861467         5.0548075         9.9697250         8.2688405 

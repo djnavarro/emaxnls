@@ -80,7 +80,8 @@ in `structural_model` must be a binary (0/1) numeric vector.
 emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 #> Structural model:
 #> 

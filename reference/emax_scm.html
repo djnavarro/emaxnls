@@ -118,7 +118,8 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">base_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_1</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span>,</span></span>
+<span class="r-in"><span>  opts <span class="op">=</span> <span class="fu"><a href="emax_nls_options.html">emax_nls_options</a></span><span class="op">(</span>max_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">covariate_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
@@ -225,7 +226,8 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-in"><span><span class="va">base_model_logistic</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_2</span> <span class="op">~</span> <span class="va">exp_1</span>, </span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span>,</span></span>
+<span class="r-in"><span>  opts <span class="op">=</span> <span class="fu"><a href="emax_nls_options.html">emax_nls_options</a></span><span class="op">(</span>max_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">forward_model_logistic</span> <span class="op">&lt;-</span> <span class="fu">emax_scm_forward</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  mod <span class="op">=</span> <span class="va">base_model_logistic</span>,</span></span>

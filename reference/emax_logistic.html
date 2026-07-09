@@ -120,7 +120,8 @@ in <code>structural_model</code> must be a binary (0/1) numeric vector.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">emax_logistic</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  structural_model <span class="op">=</span> <span class="va">rsp_2</span> <span class="op">~</span> <span class="va">exp_1</span>,</span></span>
 <span class="r-in"><span>  covariate_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">E0</span> <span class="op">~</span> <span class="va">cnt_a</span>, <span class="va">Emax</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">logEC50</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">emax_df</span>,</span></span>
+<span class="r-in"><span>  opts <span class="op">=</span> <span class="fu"><a href="emax_logistic_options.html">emax_logistic_options</a></span><span class="op">(</span>max_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Structural model:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
