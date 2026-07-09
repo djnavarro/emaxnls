@@ -111,17 +111,25 @@
 # is that everything you need to construct env should be elsewhere
 # in the model object
 .construct_env <- function(obj) {
+  # Reconstruct named vectors from the parameter/covariate columns rather than
+  # relying on element names surviving data.frame column storage. Base R
+  # data.frame silently strips element names from numeric columns, so any names
+  # set on init$start/lower/upper at construction time are lost when tibble is
+  # unavailable. The parameter and covariate columns always encode this
+  # information reliably. See issue #57.
+  init    <- obj$info$init
+  coef_nms <- paste(init$parameter, init$covariate, sep = "_")
   rlang::new_environment(
     data = list(
-      formula   = obj$formula$expanded, 
-      design    = obj$info$design, 
-      start     = obj$info$init$start, 
-      control   = obj$info$opts$optim_control, 
-      algorithm = .nls_method(obj$info$opts$optim_method), 
-      lower     = obj$info$init$lower,
-      upper     = obj$info$init$upper,
+      formula   = obj$formula$expanded,
+      design    = obj$info$design,
+      start     = stats::setNames(init$start, coef_nms),
+      control   = obj$info$opts$optim_control,
+      algorithm = .nls_method(obj$info$opts$optim_method),
+      lower     = stats::setNames(init$lower, coef_nms),
+      upper     = stats::setNames(init$upper, coef_nms),
       weights   = obj$info$opts$weights
-    ), 
+    ),
     parent = parent.frame()
   )
 }
