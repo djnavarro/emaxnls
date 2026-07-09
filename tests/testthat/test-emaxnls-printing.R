@@ -16,7 +16,7 @@ mod_sig <- emax_nls(
 # print() -----------------------------------------------------------------
 
 test_that("print() writes expected section headers and returns object invisibly", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   con <- textConnection("text_connection", "w")
   sink(con)
   val <- print(mod)
@@ -31,14 +31,14 @@ test_that("print() writes expected section headers and returns object invisibly"
 })
 
 test_that("print() does not include test statistics or p-values", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   output <- utils::capture.output(print(mod))
   expect_false(any(grepl("t_statistic", output)))
   expect_false(any(grepl("p_value", output)))
 })
 
 test_that("print() includes fit statistics", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("Observations", output)))
   expect_true(any(grepl("Residual", output)))
@@ -46,7 +46,7 @@ test_that("print() includes fit statistics", {
 })
 
 test_that("print() directs user to summary() for hypothesis tests", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   output <- utils::capture.output(print(mod))
   expect_true(any(grepl("summary\\(\\)", output)))
 })
@@ -55,7 +55,7 @@ test_that("print() directs user to summary() for hypothesis tests", {
 # .coef_table() -----------------------------------------------------------
 
 test_that(".coef_table() returns a data frame with the expected structure", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   cc <- .coef_table(mod)
   expect_s3_class(cc, class = "data.frame")
   expect_named(cc, c("label", "estimate", "std_error", "t_statistic", "p_value",
@@ -67,7 +67,7 @@ test_that(".coef_table() returns a data frame with the expected structure", {
 # summary(): suppress_nonsensical -----------------------------------------
 
 test_that("summary() suppresses logEC50_Intercept test statistic and p-value by default", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   s <- summary(mod)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_true(is.na(ec50_row$t_statistic))
@@ -75,7 +75,7 @@ test_that("summary() suppresses logEC50_Intercept test statistic and p-value by 
 })
 
 test_that("summary() still reports CI for logEC50_Intercept when suppressed", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   s <- summary(mod)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_false(is.na(ec50_row$ci_lower))
@@ -83,7 +83,7 @@ test_that("summary() still reports CI for logEC50_Intercept when suppressed", {
 })
 
 test_that("summary() restores logEC50_Intercept test when suppress_nonsensical = FALSE", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   s <- summary(mod, suppress_nonsensical = FALSE)
   ec50_row <- s[s$label == "logEC50_Intercept", ]
   expect_false(is.na(ec50_row$t_statistic))
@@ -94,14 +94,14 @@ test_that("summary() restores logEC50_Intercept test when suppress_nonsensical =
 # summary(): p_adjust -----------------------------------------------------
 
 test_that("summary() adjusts p-values when p_adjust is set", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   s_none <- summary(mod, suppress_nonsensical = FALSE)
   s_bonf <- summary(mod, suppress_nonsensical = FALSE, p_adjust = "bonferroni")
   expect_true(all(s_bonf$p_value >= s_none$p_value))
 })
 
 test_that("summary() p_adjust excludes suppressed p-values from adjustment set", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   s_none <- summary(mod, p_adjust = "bonferroni")
   # logEC50_Intercept p-value should remain NA even after adjustment
   ec50_row <- s_none[s_none$label == "logEC50_Intercept", ]
@@ -112,7 +112,7 @@ test_that("summary() p_adjust excludes suppressed p-values from adjustment set",
 # summary(): simultaneous -------------------------------------------------
 
 test_that("summary() simultaneous CIs are wider than pointwise Wald CIs", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   # Both are Wald-based, so the comparison is valid: simultaneous uses a
   # larger critical value from the joint MVN than the pointwise t-quantile.
   s_sim  <- summary(mod, simultaneous = TRUE)
@@ -129,7 +129,7 @@ test_that("summary() simultaneous CIs are wider than pointwise Wald CIs", {
 # sigmoidal model ---------------------------------------------------------
 
 test_that("sigmoidal: logHill_Intercept is tested and logEC50_Intercept is suppressed", {
-  if (!.is_converged(mod_sig)) skip()
+  skip_if_not_converged(mod_sig)
   s <- suppressWarnings(summary(mod_sig))
 
   hill_row <- s[s$label == "logHill_Intercept", ]

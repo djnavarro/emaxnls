@@ -5,7 +5,7 @@ mod <- emax_nls(
 )
 
 test_that("predict without se.fit, interval, or newdata returns vector", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   pr_vec <- predict(mod)
   expect_equal(length(pr_vec), nrow(emax_df))
   expect_type(pr_vec, "double")
@@ -14,7 +14,7 @@ test_that("predict without se.fit, interval, or newdata returns vector", {
 })
 
 test_that("predict with se.fit returns list", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   pr_vec <- predict(mod)
   pr_lst <- predict(mod, se.fit = TRUE)
   expect_type(pr_lst, "list")
@@ -27,7 +27,7 @@ test_that("predict with se.fit returns list", {
 })
 
 test_that("predict with interval but not se.fit returns data.frame", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   pr_vec <- predict(mod)
   pr_int <- predict(mod, interval = "confidence")
   expect_s3_class(pr_int, "data.frame")
@@ -40,7 +40,7 @@ test_that("predict with interval but not se.fit returns data.frame", {
 })
 
 test_that("predict with newdata produces expected values", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   ii <- 120:125
   nd <- data.frame(
     exp_1 = emax_df$exp_1[ii], 
@@ -66,7 +66,7 @@ test_that("predict with newdata produces expected values", {
 })
 
 test_that("predict with tibble newdata gives identical results to data.frame", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   nd_df  <- data.frame(exp_1 = emax_df$exp_1[120:125], cnt_a = emax_df$cnt_a[120:125])
   nd_tbl <- tibble::as_tibble(nd_df)
 
@@ -102,7 +102,7 @@ mod <- stats::nls(
 )
 
 test_that(".predict_nls matches default predict method for nls objects", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   
   pred_nls <- c(predict(mod, newdata = new_dat))
   pred_new <- .predict_nls(mod, newdata = new_dat)
@@ -131,7 +131,7 @@ xgx_2 <- list(
 )
 
 test_that(".predict_nls matches xgxr::predict.nls", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   
   prd_1 <- .predict_nls(mod, newdata = new_dat, se.fit = TRUE)
   prd_2 <- .predict_nls(mod, newdata = new_dat, se.fit = TRUE, interval = "confidence")

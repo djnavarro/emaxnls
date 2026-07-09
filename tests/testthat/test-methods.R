@@ -12,7 +12,7 @@ mod_base <- emax_nls(
 )
 
 test_that("methods do not throw errors with basic use", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   expect_no_error(coef(mod))
   expect_no_error(vcov(mod))
   expect_no_error(residuals(mod))
@@ -31,15 +31,15 @@ test_that("methods do not throw errors with basic use", {
 })
 
 test_that("AIC(), BIC(), and anova() can take multiple objects", {
-  if (!.is_converged(mod)) skip_on_ci()
-  if (!.is_converged(mod_base)) skip_on_ci()
+  skip_if_not_converged(mod)
+  skip_if_not_converged(mod_base)
   expect_no_error(AIC(mod_base, mod))
   expect_no_error(BIC(mod_base, mod))
   expect_no_error(anova(mod_base, mod))
 })
 
 test_that("coef() returns numeric vector with correct length and names", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   cc <- coef(mod)
   expect_true(is.vector(cc))
   expect_true(is.numeric(cc))
@@ -48,7 +48,7 @@ test_that("coef() returns numeric vector with correct length and names", {
 })
 
 test_that("vcov() returns symmetric numeric matrix with correct row/col names", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   vv <- vcov(mod)
   expect_true(is.matrix(vv))
   expect_true(is.numeric(vv))
@@ -60,7 +60,7 @@ test_that("vcov() returns symmetric numeric matrix with correct row/col names", 
 })
 
 test_that("residuals() returns numeric vector of the same size as the data", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   rr <- residuals(mod)
   expect_true(is.numeric(rr))
   expect_length(rr, nrow(emax_df))
@@ -95,8 +95,8 @@ test_that("methods return emaxnls_null for models that do not converge", {
 })
 
 test_that("AIC(), BIC(), and anova() handle cases where some models do not converge", {
-  if (!.is_converged(mod)) skip_on_ci()
-  if (!.is_converged(mod_base)) skip_on_ci()
+  skip_if_not_converged(mod)
+  skip_if_not_converged(mod_base)
 
   expect_warning(AIC(mod_base, mod, mod_bad))
   expect_warning(BIC(mod_base, mod, mod_bad))
@@ -108,14 +108,14 @@ test_that("AIC(), BIC(), and anova() handle cases where some models do not conve
 })
 
 test_that("summary() matches .coef_table()", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   expect_equal(summary(mod), .coef_table(mod, suppress_nonsensical = TRUE))
   expect_equal(summary(mod, conf_level = .99), .coef_table(mod, level = .99, suppress_nonsensical = TRUE))
   expect_equal(summary(mod, back_transform = TRUE), .coef_table(mod, back_transform = TRUE, suppress_nonsensical = TRUE))
 })
 
 test_that("back_transform works for confint()", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   ci1 <- confint(mod)
   ci2 <- confint(mod, back_transform = TRUE)
   expect_equal(ci1[-4,], ci2[-4,])
@@ -123,7 +123,7 @@ test_that("back_transform works for confint()", {
 }) 
 
 test_that("back_transform works for coef()", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   cc1 <- coef(mod)
   cc2 <- coef(mod, back_transform = TRUE)
   expect_equal(cc1[-4], cc2[-4])
@@ -131,7 +131,7 @@ test_that("back_transform works for coef()", {
 }) 
 
 test_that("confint(simultaneous = TRUE) matches summary(simultaneous = TRUE)", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   # qmvnorm() uses randomised quasi-Monte Carlo, so the critical value varies
   # slightly between calls; compare with a tolerance rather than exactly.
   ci <- confint(mod, simultaneous = TRUE)
@@ -141,7 +141,7 @@ test_that("confint(simultaneous = TRUE) matches summary(simultaneous = TRUE)", {
 })
 
 test_that("confint(simultaneous = TRUE) gives wider intervals than pointwise", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   ci_sim <- confint(mod, simultaneous = TRUE)
   est    <- stats::coef(mod)
   se     <- sqrt(diag(stats::vcov(mod)))
@@ -151,7 +151,7 @@ test_that("confint(simultaneous = TRUE) gives wider intervals than pointwise", {
 })
 
 test_that("confint(simultaneous = TRUE) respects parm and back_transform", {
-  if (!.is_converged(mod)) skip_on_ci()
+  skip_if_not_converged(mod)
   full <- confint(mod, simultaneous = TRUE)
   parm <- rownames(full)[1:2]
   sub  <- confint(mod, parm = parm, simultaneous = TRUE)
@@ -170,7 +170,7 @@ test_that("confint() falls back to Wald intervals with a warning for sigmoidal m
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
     data             = emax_df
   )
-  if (!.is_converged(mod_sig)) skip()
+  skip_if_not_converged(mod_sig)
   # profile CI fails for this sigmoidal model; expect a warning and a valid result
   expect_warning(
     ci <- confint(mod_sig),
