@@ -200,7 +200,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x555707e3e288>
+#> <bytecode: 0x560b24e4e288>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
