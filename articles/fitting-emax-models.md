@@ -275,8 +275,11 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55ef5a427288>
+#> <bytecode: 0x55933fe2e288>
 #> <environment: namespace:stats>
+#> 
+#> $max_time
+#> [1] Inf
 ```
 
 ## Fitting the model

@@ -64,7 +64,8 @@ of <code><a href="emax_logistic.html">emax_logistic()</a></code>.</p>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"na.action"</span><span class="op">)</span>,</span>
 <span>  max_iter <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  tol <span class="op">=</span> <span class="fl">1e-06</span></span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  max_time <span class="op">=</span> <span class="cn">Inf</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,6 +99,13 @@ for details on each.</p></dd>
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
 <dd><p>Convergence tolerance: IRLS stops when the change in binomial
 deviance between successive iterations falls below <code>tol</code> (default 1e-6).</p></dd>
+
+
+<dt id="arg-max-time">max_time<a class="anchor" aria-label="anchor" href="#arg-max-time"></a></dt>
+<dd><p>Maximum elapsed time in seconds allowed for the entire model
+fit (including all IRLS iterations). If the optimizer has not converged
+within this time, it is terminated and the model is treated as
+non-converged. Defaults to <code>Inf</code> (no time limit).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -148,7 +156,7 @@ deviance between successive iterations falls below <code>tol</code> (default 1e-
 <span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (object, ...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UseMethod("na.omit")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55ea2aa6c1b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d7a988a1b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:stats&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max_iter</span>
@@ -156,6 +164,9 @@ deviance between successive iterations falls below <code>tol</code> (default 1e-
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tol</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># increase maximum IRLS iterations</span></span></span>
@@ -195,7 +206,7 @@ deviance between successive iterations falls below <code>tol</code> (default 1e-
 <span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (object, ...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UseMethod("na.omit")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55ea2aa6c1b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d7a988a1b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:stats&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max_iter</span>
@@ -203,6 +214,9 @@ deviance between successive iterations falls below <code>tol</code> (default 1e-
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tol</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

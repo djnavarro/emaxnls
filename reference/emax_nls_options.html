@@ -63,7 +63,8 @@ other aspects of model fitting for <code><a href="emax_nls.html">emax_nls()</a><
 <span>  optim_control <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"na.action"</span><span class="op">)</span></span>
+<span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"na.action"</span><span class="op">)</span>,</span>
+<span>  max_time <span class="op">=</span> <span class="cn">Inf</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,6 +95,13 @@ specified, weighted least squares is used</p></dd>
 
 <dt id="arg-na-action">na.action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
 <dd><p>How should missing values in the data be handled?</p></dd>
+
+
+<dt id="arg-max-time">max_time<a class="anchor" aria-label="anchor" href="#arg-max-time"></a></dt>
+<dd><p>Maximum elapsed time in seconds allowed for the model fit.
+If the optimizer has not converged within this time, it is terminated and
+the model is treated as non-converged (the same outcome as any other
+convergence failure). Defaults to <code>Inf</code> (no time limit).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -160,8 +168,11 @@ the respective optimization methods:</p><ul><li><p>For "gauss" and "port": the l
 <span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (object, ...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UseMethod("na.omit")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55ea2aa6c1b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d7a988a1b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:stats&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># switch to levenberg-marquardt</span></span></span>
@@ -207,8 +218,11 @@ the respective optimization methods:</p><ul><li><p>For "gauss" and "port": the l
 <span class="r-out co"><span class="r-pr">#&gt;</span> $na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (object, ...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UseMethod("na.omit")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55ea2aa6c1b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d7a988a1b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:stats&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

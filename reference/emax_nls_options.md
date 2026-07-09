@@ -14,7 +14,8 @@ emax_nls_options(
   optim_control = NULL,
   quiet = FALSE,
   weights = NULL,
-  na.action = getOption("na.action")
+  na.action = getOption("na.action"),
+  max_time = Inf
 )
 ```
 
@@ -43,6 +44,13 @@ emax_nls_options(
 - na.action:
 
   How should missing values in the data be handled?
+
+- max_time:
+
+  Maximum elapsed time in seconds allowed for the model fit. If the
+  optimizer has not converged within this time, it is terminated and the
+  model is treated as non-converged (the same outcome as any other
+  convergence failure). Defaults to `Inf` (no time limit).
 
 ## Value
 
@@ -128,8 +136,11 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55ea2aa6c1b8>
+#> <bytecode: 0x55d7a988a1b8>
 #> <environment: namespace:stats>
+#> 
+#> $max_time
+#> [1] Inf
 #> 
 
 # switch to levenberg-marquardt
@@ -175,8 +186,11 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55ea2aa6c1b8>
+#> <bytecode: 0x55d7a988a1b8>
 #> <environment: namespace:stats>
+#> 
+#> $max_time
+#> [1] Inf
 #> 
 
 ```
