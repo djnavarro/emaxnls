@@ -19,3 +19,20 @@ test_that(".tibble functions are tibble-like when tibble missing", {
   expect_equal(.add_row(xx, a = 2, .no_tibble = TRUE), data.frame(a = 1:2))
 })
 
+test_that(".tibble() errors on cross-column references", {
+  # direct call
+  expect_error(
+    .tibble(a = 1:3, b = a * 2),
+    "cross-column references"
+  )
+  # through ...: must still be caught (regression guard)
+  wrapper <- function(...) .tibble(...)
+  expect_error(
+    wrapper(a = 1:3, b = a * 2),
+    "cross-column references"
+  )
+  # references to outer-scope variables that don't share a column name are fine
+  val <- 1:3
+  expect_no_error(.tibble(a = val, b = val * 2, .no_tibble = TRUE))
+})
+

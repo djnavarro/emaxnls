@@ -1,5 +1,26 @@
 
 .tibble <- function(..., .no_tibble = FALSE) {
+  # detect cross-column references: the data.frame fallback does not support
+  # them, so we error unconditionally to prevent regression regardless of
+  # whether tibble happens to be available in the current session
+  exprs    <- rlang::enexprs(...)
+  nms      <- names(exprs)
+  for (k in seq_along(exprs)) {
+    if (k < 2L) next
+    prior_nms <- nms[seq_len(k - 1L)]
+    prior_nms <- prior_nms[nzchar(prior_nms)]
+    if (length(prior_nms) == 0L) next
+    refs <- intersect(all.vars(exprs[[k]]), prior_nms)
+    if (length(refs) > 0L) {
+      stop(
+        "`.tibble()` does not support cross-column references: column `",
+        nms[[k]], "` references `", refs[[1L]], "`, which is defined ",
+        "earlier in the same call. Pre-compute intermediate values before ",
+        "calling `.tibble()`.",
+        call. = FALSE
+      )
+    }
+  }
   if (rlang::is_installed("tibble") & !.no_tibble) {
     return(tibble::tibble(...))
   }  
