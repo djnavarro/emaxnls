@@ -52,11 +52,12 @@ emax_fun.emaxnls <- function(mod, ...) {
 
   sim <- list()
   for (ss in 1L:nsim) {
+    mu_ss <- .f(param = par[ss,])
     sim[[ss]] <- .tibble(
       dat_id = 1L:nr,
       sim_id = ss,
-      mu = .f(param = par[ss,]),
-      val = mu + stats::rnorm(nr, 0, sd = sig)
+      mu  = mu_ss,
+      val = mu_ss + stats::rnorm(nr, 0, sd = sig)
     )
   }
   sim <- do.call(rbind, sim)

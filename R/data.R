@@ -29,54 +29,56 @@
   }
 
   .simulate_dose_data <- function(dose, n, par) {
-    out <- .tibble(
-      dose = dose,
-      exp_1 = .simulate_exposure(dose, n = n),
-      exp_2 = 0.7 * exp_1 + 0.3 * .simulate_exposure(dose, n = n),
+    exp_1    <- .simulate_exposure(dose, n = n)
+    exp_2    <- 0.7 * exp_1 + 0.3 * .simulate_exposure(dose, n = n)
+    cnt_a    <- .continuous_covariate(n = n)
+    cnt_b    <- .continuous_covariate(n = n)
+    cnt_c    <- .continuous_covariate(n = n)
+    bin_d    <- .binary_covariate(n = n, p = .5)
+    bin_e    <- .binary_covariate(n = n, p = .7)
+    cat_f    <- .categorical_covariate(n = n, g = 3)
 
-      # add continuous and binary covariates
-      cnt_a = .continuous_covariate(n = n),
-      cnt_b = .continuous_covariate(n = n),
-      cnt_c = .continuous_covariate(n = n),
-      bin_d = .binary_covariate(n = n, p = .5),
-      bin_e = .binary_covariate(n = n, p = .7),
-      cat_f = .categorical_covariate(n = n, g = 3),
+    # response 1 is continuous
+    rsp_1 <- .emf(
+      exp_1,
+      emax  = par$emax_1,
+      ec50  = par$ec50_1,
+      e0    = par$e0_1,
+      gamma = par$gamma_1
+    ) +
+      par$coef_a1 * cnt_a +
+      par$coef_b1 * cnt_b +
+      par$coef_c1 * cnt_c +
+      par$coef_d1 * bin_d +
+      stats::rnorm(n, 0, par$sigma_1)
 
-      # response 1 is continuous
-      rsp_1 = .emf(
-        exp_1,
-        emax = par$emax_1,
-        ec50 = par$ec50_1,
-        e0 = par$e0_1,
-        gamma = par$gamma_1
-      ) +
-        par$coef_a1 * cnt_a +
-        par$coef_b1 * cnt_b +
-        par$coef_c1 * cnt_c +
-        par$coef_d1 * bin_d +
-        stats::rnorm(n, 0, par$sigma_1),
+    # response 2 is binary; compute via predictor -> probability -> draw
+    bin_pred <- .emf(
+      exp_1,
+      emax  = par$emax_2,
+      ec50  = par$ec50_2,
+      e0    = par$e0_2,
+      gamma = par$gamma_2
+    ) +
+      par$coef_a2 * cnt_a +
+      par$coef_b2 * cnt_b +
+      par$coef_c2 * cnt_c +
+      par$coef_d2 * bin_d
+    rsp_2 <- as.numeric(stats::runif(n) < (1 / (1 + exp(-bin_pred))))
 
-      # response 2 is binary; start with the predictor
-      bin_pred = .emf(
-        exp_1,
-        emax = par$emax_2,
-        ec50 = par$ec50_2,
-        e0 = par$e0_2,
-        gamma = par$gamma_2
-      ) +
-        par$coef_a2 * cnt_a +
-        par$coef_b2 * cnt_b +
-        par$coef_c2 * cnt_c +
-        par$coef_d2 * bin_d,
-
-      # convert
-      bin_prob = 1 / (1 + exp(-bin_pred)),
-      rsp_2 = as.numeric(stats::runif(n) < bin_prob)
+    .tibble(
+      dose  = dose,
+      exp_1 = exp_1,
+      exp_2 = exp_2,
+      cnt_a = cnt_a,
+      cnt_b = cnt_b,
+      cnt_c = cnt_c,
+      bin_d = bin_d,
+      bin_e = bin_e,
+      cat_f = cat_f,
+      rsp_1 = rsp_1,
+      rsp_2 = rsp_2
     )
-    out$bin_pred <- NULL
-    out$bin_prob <- NULL
-
-    return(out)
   }
 
   set.seed(seed)
