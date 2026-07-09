@@ -19,7 +19,7 @@ test_that("emax_logistic() returns an emaxlogistic object", {
 })
 
 test_that("emax_logistic() object has correct structure", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   expect_named(mod, c("formula", "data", "info", "env"))
   expect_named(mod$formula, c("structural", "covariate", "expanded"))
   expect_named(mod$info, c("opts", "init", "design", "model_type", "variables"))
@@ -28,14 +28,14 @@ test_that("emax_logistic() object has correct structure", {
 })
 
 test_that("emax_converged() works for emaxlogistic objects", {
-  if (!.is_converged(mod)) skip() # not ideal in this case
-  if (!.is_converged(mod_cov)) skip()
+  skip_if_not_converged(mod)
+  skip_if_not_converged(mod_cov)
   expect_true(emax_converged(mod))
   expect_true(emax_converged(mod_cov))
 })
 
 test_that("IRLS diagnostics are stored correctly", {
-  if (!.is_converged(mod)) skip()
+  skip_if_not_converged(mod)
   irls <- .get_irls(mod)
   expect_true(irls$converged)
   expect_true(irls$iter >= 1L)
@@ -84,7 +84,7 @@ test_that("sigmoidal logistic Emax model fits successfully", {
     covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1, logHill ~ 1),
     data             = emax_df
   )
-  if (!.is_converged(mod_sig)) skip() # again, not ideal here
+  skip_if_not_converged(mod_sig)
   expect_true(emax_converged(mod_sig))
   expect_equal(.get_model_type(mod_sig), "sigmoidal")
   expect_length(coef(mod_sig), 4L)

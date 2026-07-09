@@ -49,6 +49,14 @@ is_gcc_version <- function(major) {
 is_gcc15 <- function() is_gcc_version(15)
 
 
+# skip a test that assumes model convergence if the model did not converge;
+# used throughout the test suite to guard tests that use a fitted model but
+# are not themselves testing convergence
+skip_if_not_converged <- function(mod) {
+  skip_if(!.is_converged(mod), "Skip: model did not converge on this architecture")
+}
+
+
 # check whether mvtnorm is actually callable, not just installed -------------
 #
 # On some clang-based Rhub builders, mvtnorm is installed and its namespace can
