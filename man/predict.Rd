@@ -73,7 +73,8 @@ probability scale.
 mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 
 # return a vector of predictions
@@ -86,7 +87,8 @@ predict(mod_c, interval = "confidence", se.fit = FALSE)
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 predict(mod_b)[1:20]
 predict(mod_b, type = "link")[1:20]

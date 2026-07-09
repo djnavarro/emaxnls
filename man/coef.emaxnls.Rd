@@ -34,7 +34,8 @@ coefficient table, including the confidence interval columns.
 mod_c <- emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 
 # coefficients on the estimation scale
@@ -46,7 +47,8 @@ coef(mod_c, back_transform = TRUE)
 mod_b <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 coef(mod_b)
 

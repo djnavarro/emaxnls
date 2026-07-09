@@ -39,7 +39,8 @@ print.emaxnls_null <- function(x, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' 
 #' # coefficients on the estimation scale
@@ -51,7 +52,8 @@ print.emaxnls_null <- function(x, ...) {
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' coef(mod_b)
 #'
@@ -89,14 +91,16 @@ coef.emaxnls <- function(object, back_transform = FALSE, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' vcov(mod_c)
 #' 
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' vcov(mod_b)
 #'
@@ -132,14 +136,16 @@ vcov.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' residuals(mod_c)[1:20]
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' residuals(mod_b)[1:20]
 #' residuals(mod_b, type = "deviance")[1:20]
@@ -177,14 +183,16 @@ residuals.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' simulate(mod_c)
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' simulate(mod_b)
 #'
@@ -226,14 +234,16 @@ simulate.emaxnls <- function(object, nsim = 1, seed = NULL, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' logLik(mod_c)
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' logLik(mod_b)
 #'
@@ -271,12 +281,14 @@ logLik.emaxnls <- function(object, REML = FALSE, ...) {
 #' mod_0 <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' mod_1 <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #'
 #' # calculate AIC for individual models
@@ -297,12 +309,14 @@ logLik.emaxnls <- function(object, REML = FALSE, ...) {
 #' mod_b0 <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' mod_b1 <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' AIC(mod_b0, mod_b1)
 #' BIC(mod_b0, mod_b1)
@@ -405,12 +419,14 @@ BIC.emaxnls <- function(object, ...) {
 #' mod_0 <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' mod_1 <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' anova(mod_0, mod_1)
 #'
@@ -418,12 +434,14 @@ BIC.emaxnls <- function(object, ...) {
 #' mod_b0 <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' mod_b1 <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' anova(mod_b0, mod_b1)
 #'
@@ -466,7 +484,8 @@ anova.emaxnls <- function(object, ...) {
 #' mod <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' sigma(mod)
 #'
@@ -496,14 +515,16 @@ sigma.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' nobs(mod_c)
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' nobs(mod_b)
 #'
@@ -533,14 +554,16 @@ nobs.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' df.residual(mod_c)
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' df.residual(mod_b)
 #'
@@ -571,7 +594,8 @@ df.residual.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' deviance(mod_c)
 #'
@@ -579,7 +603,8 @@ df.residual.emaxnls <- function(object, ...) {
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' deviance(mod_b)
 #'
@@ -613,14 +638,16 @@ deviance.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #' fitted(mod_c)[1:20]
 #'
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' fitted(mod_b)[1:20]
 #' fitted(mod_b, type = "link")[1:20]
@@ -679,7 +706,8 @@ fitted.emaxnls <- function(object, ...) {
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #'
 #' # 95% confidence interval on the estimation scale
@@ -697,7 +725,8 @@ fitted.emaxnls <- function(object, ...) {
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' confint(mod_b)
 #'
@@ -781,7 +810,8 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 #' mod_c <- emax_nls(
 #'   structural_model = rsp_1 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
 #' )
 #'
 #' # return a vector of predictions
@@ -794,7 +824,8 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 #' mod_b <- emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-#'   data = emax_df
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' predict(mod_b)[1:20]
 #' predict(mod_b, type = "link")[1:20]

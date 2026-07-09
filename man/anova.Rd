@@ -38,12 +38,14 @@ each successive model genuinely adds parameters to the previous one.
 mod_0 <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 mod_1 <- emax_nls(
   structural_model = rsp_1 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
 )
 anova(mod_0, mod_1)
 
@@ -51,12 +53,14 @@ anova(mod_0, mod_1)
 mod_b0 <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 mod_b1 <- emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
-  data = emax_df
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
 )
 anova(mod_b0, mod_b1)
 
