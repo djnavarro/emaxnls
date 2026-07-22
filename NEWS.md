@@ -14,6 +14,24 @@
 
 ## New features
 
+* Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic` objects
+  work seamlessly with `erplots::er_plot_add_model()`, `er_plot_add_summary()`,
+  `er_plot_add_quantiles()`, and the VPC pipeline. Three S3 methods are
+  registered lazily at load time (no hard dependency on erplots):
+
+  - `er_predict()` returns point predictions and confidence intervals on a
+    user-supplied exposure grid, with predictions on the probability scale for
+    `emaxlogistic` models.
+  - `er_simulate()` returns `nsim` mean-curve draws reflecting parameter
+    uncertainty only (no residual noise), suitable for spaghetti/ribbon plots.
+  - `er_summary()` returns a coefficient table and a model-level glance row;
+    `p_value` is always `NULL` because Emax models have no single privileged
+    parameter.
+
+  Covariates present in the model but absent from the exposure grid passed by
+  erplots are filled in automatically with reference values (numeric: column
+  mean; factor/character: first factor level) (#65).
+
 * Adds a `max_time` argument to `emax_nls_options()` and
   `emax_logistic_options()` that sets a maximum elapsed time (in seconds) for
   model fitting. If the optimizer has not converged within the limit it is
