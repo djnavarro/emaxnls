@@ -29,7 +29,11 @@ internally (`logEC50`, `logHill`), with back-transformation available
 via `back_transform = TRUE`.
 
 The package is on CRAN at version 0.1.1; the development version is
-0.1.1.9000.  
+0.1.1.9000. It also integrates with the pre-CRAN **erplots** package
+(GitHub: `djnavarro/erplots`) for ggplot2-based visualisation of Emax
+models (see
+[`erplots::er_plot_add_model()`](https://erplots.djnavarro.net/reference/er_plot_add_model.html)
+etc.).  
 Package website: <https://emaxnls.djnavarro.net/>
 
 ------------------------------------------------------------------------
@@ -48,6 +52,7 @@ Package website: <https://emaxnls.djnavarro.net/>
       emaxnls-scm.R         # Stepwise covariate modelling
       emaxnls-update.R      # emax_add_term() / emax_remove_term()
       emaxlogistic-*.R      # Binary response equivalents of each of the above
+      er-methods.R          # erplots interface: er_predict/er_simulate/er_summary + .onLoad()
       data.R                # emax_df dataset documentation
       utils-*.R             # Internal helpers: validators, mappers, safe wrappers
 
@@ -92,6 +97,14 @@ Models expose the standard S3 interface:
 [`deviance()`](https://emaxnls.djnavarro.net/reference/deviance.md),
 [`nobs()`](https://rdrr.io/r/stats/nobs.html),
 [`df.residual()`](https://emaxnls.djnavarro.net/reference/df.residual.md).
+
+When erplots is loaded, models also respond to
+[`erplots::er_predict()`](https://erplots.djnavarro.net/reference/er_model_interface.html),
+[`erplots::er_simulate()`](https://erplots.djnavarro.net/reference/er_model_interface.html),
+and
+[`erplots::er_summary()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+(registered lazily via `.onLoad()` in `R/er-methods.R`; no hard
+dependency on erplots).
 
 ------------------------------------------------------------------------
 
@@ -138,19 +151,23 @@ hangs. The default in tests is 10 seconds via `test_nls_opts()`.
 - `mvtnorm` (used for simultaneous confidence intervals) has runtime
   failures on some platforms; the package degrades gracefully when it is
   unavailable
+- `test-er-methods.R` gates all tests on
+  `skip_if_not_installed("erplots")` — no erplots needed for the base
+  test suite to pass
 
 ------------------------------------------------------------------------
 
 ## Key dependencies
 
-| Package          | Role                                              |
-|------------------|---------------------------------------------------|
-| `minpack.lm`     | Levenberg-Marquardt optimiser                     |
-| `Deriv`          | Symbolic differentiation for gradient computation |
-| `mvtnorm`        | Multivariate normal sampling for simultaneous CIs |
-| `rlang`          | Error/condition signalling                        |
-| `stats`, `utils` | Base R (NLS, formula handling, etc.)              |
-| `tibble`         | Suggested (optional); package works without it    |
+| Package | Role |
+|----|----|
+| `minpack.lm` | Levenberg-Marquardt optimiser |
+| `Deriv` | Symbolic differentiation for gradient computation |
+| `mvtnorm` | Multivariate normal sampling for simultaneous CIs |
+| `rlang` | Error/condition signalling |
+| `stats`, `utils` | Base R (NLS, formula handling, etc.) |
+| `tibble` | Suggested (optional); package works without it |
+| `erplots` | Suggested (optional, pre-CRAN); enables `er_plot` visualisation pipeline |
 
 ------------------------------------------------------------------------
 

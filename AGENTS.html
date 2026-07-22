@@ -61,7 +61,7 @@
 <li>
 <strong>Simulation</strong> from fitted models (<code><a href="reference/simulate.html">simulate()</a></code>)</li>
 </ul><p>The Emax model has parameters <code>E0</code> (baseline), <code>Emax</code> (maximum effect), <code>EC50</code> (half-maximal concentration), and optionally <code>Hill</code> (sigmoidal shape). Parameters <code>EC50</code> and <code>Hill</code> are estimated on the log scale internally (<code>logEC50</code>, <code>logHill</code>), with back-transformation available via <code>back_transform = TRUE</code>.</p>
-<p>The package is on CRAN at version 0.1.1; the development version is 0.1.1.9000.<br>
+<p>The package is on CRAN at version 0.1.1; the development version is 0.1.1.9000. It also integrates with the pre-CRAN <strong>erplots</strong> package (GitHub: <code>djnavarro/erplots</code>) for ggplot2-based visualisation of Emax models (see <code><a href="https://erplots.djnavarro.net/reference/er_plot_add_model.html" class="external-link">erplots::er_plot_add_model()</a></code> etc.).<br>
 Package website: <a href="https://emaxnls.djnavarro.net/" class="uri">https://emaxnls.djnavarro.net/</a></p>
 <hr></div>
 <div class="section level2">
@@ -78,6 +78,7 @@ Package website: <a href="https://emaxnls.djnavarro.net/" class="uri">https://em
   emaxnls-scm.R         # Stepwise covariate modelling
   emaxnls-update.R      # emax_add_term() / emax_remove_term()
   emaxlogistic-*.R      # Binary response equivalents of each of the above
+  er-methods.R          # erplots interface: er_predict/er_simulate/er_summary + .onLoad()
   data.R                # emax_df dataset documentation
   utils-*.R             # Internal helpers: validators, mappers, safe wrappers
 
@@ -105,6 +106,7 @@ dev/                    # Developer-focused notes (not part of the package)
 </tr><tr><td><code>emaxnls_null</code></td>
 <td>Returned when model fails to converge (graceful failure)</td>
 </tr></tbody></table><p>Models expose the standard S3 interface: <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code>, <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code>, <code><a href="reference/residuals.html">residuals()</a></code>, <code><a href="reference/fitted.html">fitted()</a></code>, <code><a href="reference/predict.html">predict()</a></code>, <code><a href="reference/simulate.html">simulate()</a></code>, <code><a href="reference/logLik.html">logLik()</a></code>, <code><a href="reference/AIC.html">AIC()</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>, <code><a href="reference/anova.html">anova()</a></code>, <code><a href="reference/print.html">print()</a></code>, <code><a href="reference/summary.html">summary()</a></code>, <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code>, <code><a href="reference/deviance.html">deviance()</a></code>, <code><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs()</a></code>, <code><a href="reference/df.residual.html">df.residual()</a></code>.</p>
+<p>When erplots is loaded, models also respond to <code><a href="https://erplots.djnavarro.net/reference/er_model_interface.html" class="external-link">erplots::er_predict()</a></code>, <code><a href="https://erplots.djnavarro.net/reference/er_model_interface.html" class="external-link">erplots::er_simulate()</a></code>, and <code><a href="https://erplots.djnavarro.net/reference/er_model_interface.html" class="external-link">erplots::er_summary()</a></code> (registered lazily via <code>.onLoad()</code> in <code>R/er-methods.R</code>; no hard dependency on erplots).</p>
 <hr></div>
 <div class="section level2">
 <h2 id="naming-conventions">Naming conventions<a class="anchor" aria-label="anchor" href="#naming-conventions"></a></h2>
@@ -152,10 +154,12 @@ dev/                    # Developer-focused notes (not part of the package)
 </li>
 <li>
 <code>mvtnorm</code> (used for simultaneous confidence intervals) has runtime failures on some platforms; the package degrades gracefully when it is unavailable</li>
+<li>
+<code>test-er-methods.R</code> gates all tests on <code>skip_if_not_installed("erplots")</code> — no erplots needed for the base test suite to pass</li>
 </ul><hr></div>
 <div class="section level2">
 <h2 id="key-dependencies">Key dependencies<a class="anchor" aria-label="anchor" href="#key-dependencies"></a></h2>
-<table class="table"><thead><tr><th>Package</th>
+<table class="table"><colgroup><col width="60%"><col width="40%"></colgroup><thead><tr><th>Package</th>
 <th>Role</th>
 </tr></thead><tbody><tr><td><code>minpack.lm</code></td>
 <td>Levenberg-Marquardt optimiser</td>
@@ -171,6 +175,8 @@ dev/                    # Developer-focused notes (not part of the package)
 <td>Base R (NLS, formula handling, etc.)</td>
 </tr><tr><td><code>tibble</code></td>
 <td>Suggested (optional); package works without it</td>
+</tr><tr><td><code>erplots</code></td>
+<td>Suggested (optional, pre-CRAN); enables <code>er_plot</code> visualisation pipeline</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
