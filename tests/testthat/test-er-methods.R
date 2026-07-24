@@ -144,6 +144,30 @@ test_that("er_simulate() does not leak filled-in covariate columns", {
   expect_false("cnt_a" %in% names(result))
 })
 
+test_that("er_simulate() has a sim_resp column for emaxnls (continuous, noisy)", {
+  skip_if_not_converged(mod_c_cov)
+  result <- erplots::er_simulate(mod_c_cov, newdata = newdata_exp, nsim = 5L, seed = 11L)
+  expect_true("sim_resp" %in% names(result))
+  expect_type(result$sim_resp, "double")
+  # sim_resp adds residual noise on top of fit_resp -- shouldn't collapse
+  # onto it exactly
+  expect_false(isTRUE(all.equal(result$sim_resp, result$fit_resp)))
+})
+
+test_that("er_simulate() has a sim_resp column for emaxlogistic (0/1 draws)", {
+  skip_if_not_converged(mod_b_cov)
+  result <- erplots::er_simulate(mod_b_cov, newdata = newdata_exp, nsim = 5L, seed = 12L)
+  expect_true("sim_resp" %in% names(result))
+  expect_true(all(result$sim_resp %in% c(0, 1)))
+})
+
+test_that("er_simulate()'s sim_resp is reproducible with the same seed", {
+  skip_if_not_converged(mod_c_cov)
+  r1 <- erplots::er_simulate(mod_c_cov, newdata = newdata_exp, nsim = 5L, seed = 42L)
+  r2 <- erplots::er_simulate(mod_c_cov, newdata = newdata_exp, nsim = 5L, seed = 42L)
+  expect_equal(r1$sim_resp, r2$sim_resp)
+})
+
 
 # er_summary() ------------------------------------------------------------
 

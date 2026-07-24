@@ -126,11 +126,26 @@ er_simulate.emaxnls <- function(model, newdata, nsim = 100, seed = NULL, ...) {
   # - emax_fun.emaxlogistic() wraps it in plogis(), giving probabilities
   f <- emax_fun(model)
 
+  # `sim_resp` is erplots' er_vpc_plot(model = ...) contract addition (see
+  # `erplots::er_model_interface`): a full response-scale draw, adding
+  # observation-level noise on top of `fit_resp`, mirroring the noise
+  # models already used by simulate.emaxnls()/simulate.emaxlogistic()
+  # (.emax_resample()/.emax_logistic_resample() in emaxnls-simulate.R /
+  # emaxlogistic-methods.R): Bernoulli(fit_resp) for emaxlogistic,
+  # Normal(fit_resp, sigma(model)) for emaxnls.
+  is_binary <- inherits(model, "emaxlogistic")
+  resid_sd  <- if (is_binary) NA_real_ else stats::sigma(model)
+
   reps <- vector("list", nsim)
   for (i in seq_len(nsim)) {
     row            <- newdata
     row$sim_id     <- i
     row$fit_resp   <- f(param = draws[i, ], data = aug)
+    row$sim_resp   <- if (is_binary) {
+      stats::rbinom(nrow(row), size = 1, prob = row$fit_resp)
+    } else {
+      stats::rnorm(nrow(row), mean = row$fit_resp, sd = resid_sd)
+    }
     reps[[i]]      <- row
   }
   do.call(rbind, reps)
