@@ -106,6 +106,22 @@ and
 (registered lazily via `.onLoad()` in `R/er-methods.R`; no hard
 dependency on erplots).
 
+**`sim_resp` addition (feature/er-simulate-sim-resp branch, not yet
+merged).** erplots’ `er_vpc_plot()` used to require a bespoke,
+model-package-specific simulation helper rather than going through the
+shared `er_predict()`/`er_simulate()`/`er_summary()` interface – a
+design gap on the erplots side, closed by widening erplots’
+`er_simulate()` contract additively: a method may now return an optional
+`sim_resp` column (a full response-scale draw, including
+observation-level noise) alongside the existing `fit_resp` (expected
+response under parameter uncertainty only). `er_simulate.emaxnls()` now
+computes `sim_resp` too, reusing the same noise models already used by
+[`simulate.emaxnls()`](https://emaxnls.djnavarro.net/reference/simulate.md)/[`simulate.emaxlogistic()`](https://emaxnls.djnavarro.net/reference/simulate.md)
+(`.emax_resample()`/ `.emax_logistic_resample()`):
+`Normal(fit_resp, sigma(model))` for `emaxnls`, `Bernoulli(fit_resp)`
+for `emaxlogistic`. See erplots’ `?er_model_interface` for the updated
+contract this satisfies.
+
 ------------------------------------------------------------------------
 
 ## Naming conventions
