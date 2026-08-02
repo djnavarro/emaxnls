@@ -275,7 +275,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x562f4ba752e8>
+#> <bytecode: 0x55bf782d22e8>
 #> <environment: namespace:stats>
 #> 
 #> $max_time

@@ -23,6 +23,19 @@
 
 ### New features
 
+- [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md),
+  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md),
+  [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md),
+  and
+  [`emax_logistic_init()`](https://emaxnls.djnavarro.net/reference/emax_logistic_init.md)
+  now have `covariate_model = NULL` as a default. When `covariate_model`
+  is omitted, an intercept-only hyperbolic Emax model is fitted —
+  equivalent to supplying `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`
+  explicitly. Sigmoidal models still require an explicit `logHill ~ 1`
+  term in the covariate model. All existing calls that supply
+  `covariate_model` explicitly continue to work without modification
+  ([\#69](https://github.com/djnavarro/emaxnls/issues/69)).
+
 - [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
   now returns a **named** logical scalar. The `names` attribute holds a
   short description of the outcome: `"converged"` on success,
