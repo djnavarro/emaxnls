@@ -275,7 +275,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55ec06d5c2e8>
+#> <bytecode: 0x562f4ba752e8>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -308,7 +308,8 @@ placeholder rather than misleading numbers:
 ``` r
 
 emax_converged(mod)
-#> [1] TRUE
+#> converged 
+#>      TRUE
 ```
 
 Printing the object gives a compact summary: the structural model, the

@@ -232,7 +232,7 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># show the history of all models tested, including which criterion was used</span></span></span>
 <span class="r-in"><span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration attempt step       criterion action term_tested  model_tested      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         0       0 base model <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           E0 ~ 1, Emax ~ 1,…</span>
@@ -246,8 +246,8 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         1       8 forward    p-value   add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         1       9 forward    p-value   add    Emax ~ bin_e E0 ~ 1, Emax ~ 1 …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: model_converged &lt;lgl&gt;, term_p_value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: model_converged &lt;lgl&gt;, convergence_reason &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   term_p_value &lt;dbl&gt;, model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># AIC-based forward addition</span></span></span>
 <span class="r-in"><span><span class="va">forward_aic</span> <span class="op">&lt;-</span> <span class="fu">emax_scm_forward</span><span class="op">(</span></span></span>
@@ -265,7 +265,7 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">final_bic</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration attempt step       criterion action term_tested  model_tested      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         0       0 base model <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           E0 ~ 1, Emax ~ 1,…</span>
@@ -279,8 +279,8 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         1       8 forward    aic       add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         1       9 forward    aic       add    E0 ~ bin_e   E0 ~ 1 + bin_e, E…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: model_converged &lt;lgl&gt;, term_p_value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: model_converged &lt;lgl&gt;, convergence_reason &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   term_p_value &lt;dbl&gt;, model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example using binary outcomes</span></span></span>
 <span class="r-in"><span><span class="va">base_model_logistic</span> <span class="op">&lt;-</span> <span class="fu"><a href="emax_nls.html">emax_nls</a></span><span class="op">(</span></span></span>
@@ -333,7 +333,7 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Use summary() for hypothesis tests.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">emax_scm_history</span><span class="op">(</span><span class="va">final_model_logistic</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 31 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 31 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration attempt step       criterion action term_tested  model_tested      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         0       0 base model <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           E0 ~ 1, Emax ~ 1,…</span>
@@ -347,8 +347,8 @@ object. Use <code>emax_scm_history()</code> to extract this record.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         1       8 forward    p-value   add    Emax ~ cnt_c E0 ~ 1, Emax ~ 1 …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         1       9 forward    p-value   add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 21 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: model_converged &lt;lgl&gt;, term_p_value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: model_converged &lt;lgl&gt;, convergence_reason &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   term_p_value &lt;dbl&gt;, model_aic &lt;dbl&gt;, model_bic &lt;dbl&gt;, model_updated &lt;lgl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

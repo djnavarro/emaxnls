@@ -308,9 +308,11 @@ the audit log for the run.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/emax_scm.html">emax_scm_history</a></span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">history</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "iteration"       "attempt"         "step"            "criterion"      </span></span>
-<span><span class="co">#&gt;  [5] "action"          "term_tested"     "model_tested"    "model_converged"</span></span>
-<span><span class="co">#&gt;  [9] "term_p_value"    "model_aic"       "model_bic"       "model_updated"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "iteration"          "attempt"            "step"              </span></span>
+<span><span class="co">#&gt;  [4] "criterion"          "action"             "term_tested"       </span></span>
+<span><span class="co">#&gt;  [7] "model_tested"       "model_converged"    "convergence_reason"</span></span>
+<span><span class="co">#&gt; [10] "term_p_value"       "model_aic"          "model_bic"         </span></span>
+<span><span class="co">#&gt; [13] "model_updated"</span></span></code></pre></div>
 <p>The columns are:</p>
 <ul>
 <li>

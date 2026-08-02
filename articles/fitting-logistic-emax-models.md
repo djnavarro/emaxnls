@@ -200,7 +200,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5586df2762e8>
+#> <bytecode: 0x555c537992e8>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
@@ -280,7 +280,8 @@ and that the outer IRLS loop reached its deviance tolerance.
 ``` r
 
 emax_converged(mod)
-#> [1] TRUE
+#> converged 
+#>      TRUE
 ```
 
 Printing the object reports the structural and covariate models, notes

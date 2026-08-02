@@ -23,6 +23,20 @@
 
 ### New features
 
+- [`emax_converged()`](https://emaxnls.djnavarro.net/reference/emax_converged.md)
+  now returns a **named** logical scalar. The `names` attribute holds a
+  short description of the outcome: `"converged"` on success,
+  `"maximum time exceeded"` when the `max_time` limit was hit,
+  `"maximum iterations exceeded"` when the optimizer ran out of
+  iterations, or the raw optimizer error message for any other failure.
+  The value itself is still `TRUE`/`FALSE`, so all existing code that
+  checks `if (emax_converged(mod))` continues to work without
+  modification. The SCM history returned by
+  [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  gains a new `convergence_reason` column (character) that records this
+  information for every model tested during the procedure
+  ([\#62](https://github.com/djnavarro/emaxnls/issues/62)).
+
 - [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   and
   [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)

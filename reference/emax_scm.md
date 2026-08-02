@@ -187,7 +187,7 @@ final_model
 
 # show the history of all models tested, including which criterion was used
 emax_scm_history(final_model)
-#> # A tibble: 22 × 12
+#> # A tibble: 22 × 13
 #>    iteration attempt step       criterion action term_tested  model_tested      
 #>        <int>   <int> <chr>      <chr>     <chr>  <chr>        <chr>             
 #>  1         0       0 base model NA        NA     NA           E0 ~ 1, Emax ~ 1,…
@@ -201,8 +201,8 @@ emax_scm_history(final_model)
 #>  9         1       8 forward    p-value   add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …
 #> 10         1       9 forward    p-value   add    Emax ~ bin_e E0 ~ 1, Emax ~ 1 …
 #> # ℹ 12 more rows
-#> # ℹ 5 more variables: model_converged <lgl>, term_p_value <dbl>,
-#> #   model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
+#> # ℹ 6 more variables: model_converged <lgl>, convergence_reason <chr>,
+#> #   term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
 
 # AIC-based forward addition
 forward_aic <- emax_scm_forward(
@@ -220,7 +220,7 @@ final_bic <- emax_scm_backward(
 )
 
 emax_scm_history(final_bic)
-#> # A tibble: 22 × 12
+#> # A tibble: 22 × 13
 #>    iteration attempt step       criterion action term_tested  model_tested      
 #>        <int>   <int> <chr>      <chr>     <chr>  <chr>        <chr>             
 #>  1         0       0 base model NA        NA     NA           E0 ~ 1, Emax ~ 1,…
@@ -234,8 +234,8 @@ emax_scm_history(final_bic)
 #>  9         1       8 forward    aic       add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …
 #> 10         1       9 forward    aic       add    E0 ~ bin_e   E0 ~ 1 + bin_e, E…
 #> # ℹ 12 more rows
-#> # ℹ 5 more variables: model_converged <lgl>, term_p_value <dbl>,
-#> #   model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
+#> # ℹ 6 more variables: model_converged <lgl>, convergence_reason <chr>,
+#> #   term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
 
 # example using binary outcomes
 base_model_logistic <- emax_nls(
@@ -288,7 +288,7 @@ final_model_logistic
 #> Use summary() for hypothesis tests.
 
 emax_scm_history(final_model_logistic)
-#> # A tibble: 31 × 12
+#> # A tibble: 31 × 13
 #>    iteration attempt step       criterion action term_tested  model_tested      
 #>        <int>   <int> <chr>      <chr>     <chr>  <chr>        <chr>             
 #>  1         0       0 base model NA        NA     NA           E0 ~ 1, Emax ~ 1,…
@@ -302,6 +302,6 @@ emax_scm_history(final_model_logistic)
 #>  9         1       8 forward    p-value   add    Emax ~ cnt_c E0 ~ 1, Emax ~ 1 …
 #> 10         1       9 forward    p-value   add    Emax ~ bin_d E0 ~ 1, Emax ~ 1 …
 #> # ℹ 21 more rows
-#> # ℹ 5 more variables: model_converged <lgl>, term_p_value <dbl>,
-#> #   model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
+#> # ℹ 6 more variables: model_converged <lgl>, convergence_reason <chr>,
+#> #   term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
 ```
