@@ -5,8 +5,10 @@
 #' nonlinear least squares. For binary outcomes, use `emax_logistic()` instead.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each specifying a 
-#' covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each specifying a
+#' covariate model for a structural parameter. When `NULL` (the default), an
+#' intercept-only hyperbolic Emax model is fitted — equivalent to
+#' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_nls_init()`
 #' @param opts Model fitting and optimization options. See `emax_nls_options()`
@@ -34,6 +36,14 @@
 #' @seealso `emax_nls_options()`, `emax_nls_init()`
 #' 
 #' @examples
+#' # simplest call: hyperbolic Emax with no covariates
+#' emax_nls(
+#'   structural_model = rsp_1 ~ exp_1,
+#'   data = emax_df,
+#'   opts = emax_nls_options(max_time = 10)
+#' )
+#' 
+#' # with a covariate on the baseline parameter
 #' emax_nls(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
@@ -43,10 +53,13 @@
 #'  
 #' @export
 emax_nls <- function(structural_model,
-                     covariate_model,
+                     covariate_model = NULL,
                      data,
                      init = NULL,
-                     opts = NULL) {  
+                     opts = NULL) {
+  if (is.null(covariate_model)) {
+    covariate_model <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
+  }
   .emax_nls(
     structural_model = structural_model,
     covariate_model = covariate_model,
@@ -134,8 +147,10 @@ emax_nls_options <- function(optim_method = "gauss",
 #' Emax NLS optimization, using heuristics derived from the data.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each of specifying a 
-#' covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each specifying a
+#' covariate model for a structural parameter. When `NULL` (the default), an
+#' intercept-only hyperbolic Emax model is assumed — equivalent to
+#' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame
 #'
 #' @returns A data frame
@@ -152,13 +167,18 @@ emax_nls_options <- function(optim_method = "gauss",
 #' using the appropriate values for the `structural_model`, the `covariate_model`,
 #' and the `data`. 
 #' 
-#' @export
+#' @export 
 #' 
 #' @seealso `emax_nls()`, `emax_nls_options()`
 #' 
 #' @examples
-#' # use a heuristic to construct sensible start values, and plausible
-#' # upper and lower bounds within which the estimate is expected to fall 
+#' # intercept-only hyperbolic Emax (default covariate_model)
+#' emax_nls_init(
+#'   structural_model = rsp_1 ~ exp_1,
+#'   data = emax_df
+#' )
+#' 
+#' # with a covariate on E0
 #' emax_nls_init(
 #'   structural_model = rsp_1 ~ exp_1, 
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 
@@ -173,7 +193,10 @@ emax_nls_options <- function(optim_method = "gauss",
 #'   opts = emax_nls_options(max_time = 10)
 #' ))
 #' 
-emax_nls_init <- function(structural_model, covariate_model, data) {
+emax_nls_init <- function(structural_model, covariate_model = NULL, data) {
+  if (is.null(covariate_model)) {
+    covariate_model <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
+  }
   .emax_nls_init(structural_model, covariate_model, data)
 }
 
@@ -312,8 +335,7 @@ emax_remove_term <- function(mod, formula) {
 #' 
 #' @examples
 #' base_model <- emax_nls(
-#'   structural_model = rsp_1 ~ exp_1, 
-#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#'   structural_model = rsp_1 ~ exp_1,
 #'   data = emax_df,
 #'   opts = emax_nls_options(max_time = 10)
 #' )
@@ -359,11 +381,10 @@ emax_remove_term <- function(mod, formula) {
 #' emax_scm_history(final_bic)
 #' 
 #' # example using binary outcomes
-#' base_model_logistic <- emax_nls(
-#'   structural_model = rsp_2 ~ exp_1, 
-#'   covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+#' base_model_logistic <- emax_logistic(
+#'   structural_model = rsp_2 ~ exp_1,
 #'   data = emax_df,
-#'   opts = emax_nls_options(max_time = 10)
+#'   opts = emax_logistic_options(max_time = 10)
 #' )
 #' forward_model_logistic <- emax_scm_forward(
 #'   mod = base_model_logistic,
@@ -493,8 +514,10 @@ emax_fun <- function(mod, ...) {
 #' `emax_nls()` instead.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each specifying a 
-#' covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each specifying a
+#' covariate model for a structural parameter. When `NULL` (the default), an
+#' intercept-only hyperbolic Emax model is fitted — equivalent to
+#' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_logistic_init()`
 #' @param opts Model fitting and optimization options. See `emax_logistic_options()`
@@ -521,6 +544,14 @@ emax_fun <- function(mod, ...) {
 #' @seealso `emax_logistic_options()`, `emax_logistic_init()`, `emax_nls()`
 #'
 #' @examples
+#' # simplest call: hyperbolic Emax with no covariates
+#' emax_logistic(
+#'   structural_model = rsp_2 ~ exp_1,
+#'   data = emax_df,
+#'   opts = emax_logistic_options(max_time = 10)
+#' )
+#'
+#' # with a covariate on the baseline parameter
 #' emax_logistic(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
@@ -530,10 +561,13 @@ emax_fun <- function(mod, ...) {
 #'
 #' @export
 emax_logistic <- function(structural_model,
-                          covariate_model,
+                          covariate_model = NULL,
                           data,
                           init = NULL,
                           opts = NULL) {
+  if (is.null(covariate_model)) {
+    covariate_model <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
+  }
   .emax_logistic(
     structural_model = structural_model,
     covariate_model  = covariate_model,
@@ -603,8 +637,10 @@ emax_logistic_options <- function(optim_method = "gauss",
 #' applied to the empirical logit scale rather than the raw response.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
-#' @param covariate_model A list of two-sided formulas, each specifying a 
-#' covariate model for a structural parameter
+#' @param covariate_model A list of two-sided formulas, each specifying a
+#' covariate model for a structural parameter. When `NULL` (the default), an
+#' intercept-only hyperbolic Emax model is assumed — equivalent to
+#' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame
 #'
 #' @returns A data frame with columns `parameter`, `covariate`, `start`, 
@@ -613,6 +649,13 @@ emax_logistic_options <- function(optim_method = "gauss",
 #' @seealso `emax_logistic()`, `emax_logistic_options()`
 #'
 #' @examples
+#' # intercept-only hyperbolic Emax (default covariate_model)
+#' emax_logistic_init(
+#'   structural_model = rsp_2 ~ exp_1,
+#'   data = emax_df
+#' )
+#'
+#' # with a covariate on E0
 #' emax_logistic_init(
 #'   structural_model = rsp_2 ~ exp_1,
 #'   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),
@@ -620,6 +663,9 @@ emax_logistic_options <- function(optim_method = "gauss",
 #' )
 #'
 #' @export
-emax_logistic_init <- function(structural_model, covariate_model, data) {
+emax_logistic_init <- function(structural_model, covariate_model = NULL, data) {
+  if (is.null(covariate_model)) {
+    covariate_model <- list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)
+  }
   .emax_logistic_init(structural_model, covariate_model, data)
 }
