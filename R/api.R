@@ -243,7 +243,10 @@ emax_remove_term <- function(mod, formula) {
 #'
 #' @param mod An `emaxnls` object
 #' @param candidates A list of candidate covariates
-#' @param threshold Threshold for addition or removal
+#' @param threshold Threshold for addition or removal. Used only when
+#'   `criterion = "p-value"` (the default); ignored otherwise.
+#' @param criterion Model selection criterion. One of `"p-value"` (default),
+#'   `"aic"`, or `"bic"`.
 #' @param seed Seed for the RNG state
 #'
 #' @returns
@@ -255,10 +258,24 @@ emax_remove_term <- function(mod, formula) {
 #' vectors of covariate names to consider. See the examples for an
 #' illustration.
 #' 
-#' At present, covariate selection uses p-values as the criterion: a term is
-#' added if its p-value falls below `threshold` (forward) or removed if its
-#' p-value exceeds `threshold` (backward). Selection on AIC or other criteria
-#' may be supported in future.
+#' Three model selection criteria are available via the `criterion` argument:
+#' 
+#' - `"p-value"` (default): a term is added if its ANOVA p-value falls below
+#'   `threshold` (forward) or removed if its p-value exceeds `threshold`
+#'   (backward). When multiple candidates satisfy the threshold, the one with
+#'   the most extreme p-value is chosen.
+#' - `"aic"`: a term is added (forward) or removed (backward) if doing so
+#'   strictly decreases AIC. When multiple candidates improve AIC, the one
+#'   yielding the lowest AIC is chosen.
+#' - `"bic"`: same as `"aic"` but using BIC as the criterion.
+#' 
+#' When `criterion` is `"aic"` or `"bic"`, the `threshold` argument has no
+#' effect and is ignored.
+#' 
+#' The history returned by `emax_scm_history()` always records AIC and BIC for
+#' every model tested (columns `model_aic` and `model_bic`), regardless of
+#' which criterion was used for selection. The `criterion` column records which
+#' criterion drove each forward or backward step.
 #' 
 #' The `seed` argument controls the RNG state for any stochastic components of
 #' the procedure. It is currently experimental and may be removed in future
@@ -282,7 +299,7 @@ emax_remove_term <- function(mod, formula) {
 #'   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 #' )
 #' 
-#' # add covariates to the base model using forward addition
+#' # add covariates to the base model using forward addition (p-value criterion)
 #' forward_model <- emax_scm_forward(
 #'   mod = base_model,
 #'   candidates = covariate_list, 
@@ -298,9 +315,24 @@ emax_remove_term <- function(mod, formula) {
 #' ) 
 #' final_model
 #' 
-#' # show the history of all models tested during the forward addition
-#' # step and the backward deletion step
+#' # show the history of all models tested, including which criterion was used
 #' emax_scm_history(final_model)
+#' 
+#' # AIC-based forward addition
+#' forward_aic <- emax_scm_forward(
+#'   mod = base_model,
+#'   candidates = covariate_list,
+#'   criterion = "aic"
+#' )
+#' 
+#' # BIC-based backward elimination
+#' final_bic <- emax_scm_backward(
+#'   mod = forward_aic,
+#'   candidates = covariate_list,
+#'   criterion = "bic"
+#' )
+#' 
+#' emax_scm_history(final_bic)
 #' 
 #' # example using binary outcomes
 #' base_model_logistic <- emax_nls(
@@ -329,22 +361,24 @@ NULL
 
 #' @export
 #' @rdname emax_scm
-emax_scm_forward <- function(mod, candidates, threshold = .01, seed = NULL) {
+emax_scm_forward <- function(mod, candidates, threshold = .01, criterion = "p-value", seed = NULL) {
   .emax_scm_forward(
     mod = mod,
     candidates = candidates,
     threshold = threshold,
+    criterion = criterion,
     seed = seed
   )
 }
 
 #' @export
 #' @rdname emax_scm
-emax_scm_backward <- function(mod, candidates, threshold = .001, seed = NULL) {
+emax_scm_backward <- function(mod, candidates, threshold = .001, criterion = "p-value", seed = NULL) {
   .emax_scm_backward(
     mod = mod,
     candidates = candidates,
     threshold = threshold,
+    criterion = criterion,
     seed = seed
   )
 }

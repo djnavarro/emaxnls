@@ -7,9 +7,21 @@
 \alias{emax_scm_history}
 \title{Stepwise covariate modeling for Emax regression}
 \usage{
-emax_scm_forward(mod, candidates, threshold = 0.01, seed = NULL)
+emax_scm_forward(
+  mod,
+  candidates,
+  threshold = 0.01,
+  criterion = "p-value",
+  seed = NULL
+)
 
-emax_scm_backward(mod, candidates, threshold = 0.001, seed = NULL)
+emax_scm_backward(
+  mod,
+  candidates,
+  threshold = 0.001,
+  criterion = "p-value",
+  seed = NULL
+)
 
 emax_scm_history(mod)
 }
@@ -18,7 +30,11 @@ emax_scm_history(mod)
 
 \item{candidates}{A list of candidate covariates}
 
-\item{threshold}{Threshold for addition or removal}
+\item{threshold}{Threshold for addition or removal. Used only when
+\code{criterion = "p-value"} (the default); ignored otherwise.}
+
+\item{criterion}{Model selection criterion. One of \code{"p-value"} (default),
+\code{"aic"}, or \code{"bic"}.}
 
 \item{seed}{Seed for the RNG state}
 }
@@ -37,10 +53,25 @@ structural parameters (e.g. \code{E0}, \code{Emax}) and whose values are charact
 vectors of covariate names to consider. See the examples for an
 illustration.
 
-At present, covariate selection uses p-values as the criterion: a term is
-added if its p-value falls below \code{threshold} (forward) or removed if its
-p-value exceeds \code{threshold} (backward). Selection on AIC or other criteria
-may be supported in future.
+Three model selection criteria are available via the \code{criterion} argument:
+\itemize{
+\item \code{"p-value"} (default): a term is added if its ANOVA p-value falls below
+\code{threshold} (forward) or removed if its p-value exceeds \code{threshold}
+(backward). When multiple candidates satisfy the threshold, the one with
+the most extreme p-value is chosen.
+\item \code{"aic"}: a term is added (forward) or removed (backward) if doing so
+strictly decreases AIC. When multiple candidates improve AIC, the one
+yielding the lowest AIC is chosen.
+\item \code{"bic"}: same as \code{"aic"} but using BIC as the criterion.
+}
+
+When \code{criterion} is \code{"aic"} or \code{"bic"}, the \code{threshold} argument has no
+effect and is ignored.
+
+The history returned by \code{emax_scm_history()} always records AIC and BIC for
+every model tested (columns \code{model_aic} and \code{model_bic}), regardless of
+which criterion was used for selection. The \code{criterion} column records which
+criterion drove each forward or backward step.
 
 The \code{seed} argument controls the RNG state for any stochastic components of
 the procedure. It is currently experimental and may be removed in future
@@ -62,7 +93,7 @@ covariate_list <- list(
   Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
 )
 
-# add covariates to the base model using forward addition
+# add covariates to the base model using forward addition (p-value criterion)
 forward_model <- emax_scm_forward(
   mod = base_model,
   candidates = covariate_list, 
@@ -78,9 +109,24 @@ final_model <- emax_scm_backward(
 ) 
 final_model
 
-# show the history of all models tested during the forward addition
-# step and the backward deletion step
+# show the history of all models tested, including which criterion was used
 emax_scm_history(final_model)
+
+# AIC-based forward addition
+forward_aic <- emax_scm_forward(
+  mod = base_model,
+  candidates = covariate_list,
+  criterion = "aic"
+)
+
+# BIC-based backward elimination
+final_bic <- emax_scm_backward(
+  mod = forward_aic,
+  candidates = covariate_list,
+  criterion = "bic"
+)
+
+emax_scm_history(final_bic)
 
 # example using binary outcomes
 base_model_logistic <- emax_nls(

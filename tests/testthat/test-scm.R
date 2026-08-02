@@ -74,3 +74,80 @@ test_that("scm stores history in mod$info", {
   expect_equal(.filter(h_bck, step != "backward"), h_fwd)
 })
 
+test_that("scm history has a criterion column with correct values", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list, threshold = .05)
+  h <- fwd$info$history
+  expect_true("criterion" %in% names(h))
+
+  # base model row has NA criterion
+  expect_true(is.na(h$criterion[h$step == "base model"]))
+
+  # forward rows have the correct criterion label
+  expect_true(all(h$criterion[h$step == "forward"] == "p-value"))
+})
+
+test_that("invalid criterion is rejected", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  expect_error(
+    .emax_scm_forward(mod_0, cov_list, threshold = .01, criterion = "likelihood"),
+    regexp = "criterion"
+  )
+  expect_error(
+    .emax_scm_backward(mod_1, cov_list, threshold = .001, criterion = "bic2"),
+    regexp = "criterion"
+  )
+})
+
+test_that("aic criterion adds expected term in .emax_once_forward", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+  skip_if(!.is_converged(mod_1), "Skip if convergence fails on this architecture")
+
+  # cnt_a is a real predictor so adding E0 ~ cnt_a should reduce AIC
+  fwd_aic <- .emax_once_forward(mod_0, cov_list, threshold = .01, criterion = "aic")
+  expect_equal(sort(.get_coefficient_names(fwd_aic)), sort(.get_coefficient_names(mod_1)))
+})
+
+test_that("bic criterion adds expected term in .emax_once_forward", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+  skip_if(!.is_converged(mod_1), "Skip if convergence fails on this architecture")
+
+  fwd_bic <- .emax_once_forward(mod_0, cov_list, threshold = .01, criterion = "bic")
+  expect_equal(sort(.get_coefficient_names(fwd_bic)), sort(.get_coefficient_names(mod_1)))
+})
+
+test_that("aic and bic criteria record correct criterion label in history", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+  skip_if(!.is_converged(mod_1), "Skip if convergence fails on this architecture")
+
+  fwd_aic <- .emax_once_forward(mod_0, cov_list, threshold = .01, criterion = "aic")
+  h_aic <- fwd_aic$info$history
+  expect_true(all(h_aic$criterion[h_aic$step == "forward"] == "aic"))
+
+  bck_bic <- .emax_once_backward(mod_1, cov_list, threshold = .001, criterion = "bic")
+  h_bic <- bck_bic$info$history
+  expect_true(all(h_bic$criterion[h_bic$step == "backward"] == "bic"))
+})
+
+test_that("aic criterion full forward/backward scm does not error and returns a model", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list_big, criterion = "aic", threshold = .01)
+  skip_if_not_converged(fwd)
+  bck <- .emax_scm_backward(mod = fwd, candidates = cov_list_big, criterion = "aic", threshold = .001)
+  skip_if_not_converged(bck)
+  expect_true(.is_emaxnls(bck))
+})
+
+test_that("emax_scm_history criterion column is NA for base and final model rows", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- emax_scm_forward(mod = mod_0, candidates = cov_list, threshold = .05)
+  skip_if_not_converged(fwd)
+  h <- emax_scm_history(fwd)
+
+  expect_true(is.na(h$criterion[h$step == "base model"]))
+  expect_true(is.na(h$criterion[h$step == "final model"]))
+})
