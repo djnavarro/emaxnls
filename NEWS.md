@@ -14,6 +14,15 @@
 
 ## New features
 
+* `emax_scm_forward()` and `emax_scm_backward()` now accept a `criterion`
+  argument (`"p-value"`, `"aic"`, or `"bic"`). When `criterion = "aic"` or
+  `"bic"`, terms are added or removed based on whether they strictly improve
+  the information criterion rather than a p-value threshold, and the
+  `threshold` argument is ignored. The default remains `"p-value"`, preserving
+  existing behavior. The history returned by `emax_scm_history()` gains a
+  `criterion` column recording which selection rule was applied in each step
+  (#68).
+
 * Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic` objects
   work seamlessly with `erplots::er_plot_add_model()`, `er_plot_add_summary()`,
   `er_plot_add_quantiles()`, and the VPC pipeline. Three S3 methods are
