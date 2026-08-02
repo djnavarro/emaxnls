@@ -14,6 +14,14 @@
 
 ## New features
 
+* `emax_nls()`, `emax_logistic()`, `emax_nls_init()`, and `emax_logistic_init()`
+  now have `covariate_model = NULL` as a default. When `covariate_model` is
+  omitted, an intercept-only hyperbolic Emax model is fitted — equivalent to
+  supplying `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)` explicitly. Sigmoidal models
+  still require an explicit `logHill ~ 1` term in the covariate model. All
+  existing calls that supply `covariate_model` explicitly continue to work
+  without modification (#69).
+
 * `emax_converged()` now returns a **named** logical scalar. The `names`
   attribute holds a short description of the outcome: `"converged"` on
   success, `"maximum time exceeded"` when the `max_time` limit was hit,
