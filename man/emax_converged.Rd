@@ -10,8 +10,16 @@ emax_converged(mod)
 \item{mod}{An \code{emaxnls} object}
 }
 \value{
-A logical value
+A named logical scalar. The value is \code{TRUE} when the model
+converged and \code{FALSE} otherwise. The \code{names} attribute holds a short
+description of the outcome: \code{"converged"} on success, \code{"maximum time exceeded"} when the \code{max_time} limit was hit, \code{"maximum iterations exceeded"} when the optimizer exhausted its iteration budget, or the raw
+optimizer error message for any other failure.
 }
 \description{
 Returns \code{TRUE} if the model converged during fitting and \code{FALSE} otherwise.
+The reason for convergence or non-convergence is attached as the \code{names}
+attribute of the return value, so it prints alongside the logical result.
+}
+\seealso{
+\code{emax_nls()}, \code{emax_nls_options()}
 }

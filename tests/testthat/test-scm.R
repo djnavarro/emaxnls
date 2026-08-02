@@ -151,3 +151,34 @@ test_that("emax_scm_history criterion column is NA for base and final model rows
   expect_true(is.na(h$criterion[h$step == "base model"]))
   expect_true(is.na(h$criterion[h$step == "final model"]))
 })
+
+
+# convergence_reason column in SCM history -----------------------------------
+
+test_that("scm history has a convergence_reason column", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list, threshold = .05)
+  h <- fwd$info$history
+  expect_true("convergence_reason" %in% names(h))
+  expect_type(h$convergence_reason, "character")
+})
+
+test_that("convergence_reason is 'converged' for converged models in scm history", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- .emax_scm_forward(mod = mod_0, candidates = cov_list, threshold = .05)
+  skip_if_not_converged(fwd)
+  h <- fwd$info$history
+  converged_rows <- h[h$model_converged, ]
+  expect_true(all(converged_rows$convergence_reason == "converged"))
+})
+
+test_that("emax_scm_history() includes convergence_reason column", {
+  skip_if(!.is_converged(mod_0), "Skip if convergence fails on this architecture")
+
+  fwd <- emax_scm_forward(mod = mod_0, candidates = cov_list, threshold = .05)
+  skip_if_not_converged(fwd)
+  h <- emax_scm_history(fwd)
+  expect_true("convergence_reason" %in% names(h))
+})

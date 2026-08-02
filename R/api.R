@@ -181,14 +181,23 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 #' Check Emax regression model for convergence status
 #'
 #' Returns `TRUE` if the model converged during fitting and `FALSE` otherwise.
+#' The reason for convergence or non-convergence is attached as the `names`
+#' attribute of the return value, so it prints alongside the logical result.
 #'
 #' @param mod An `emaxnls` object
 #'
-#' @returns A logical value
+#' @returns A named logical scalar. The value is `TRUE` when the model
+#' converged and `FALSE` otherwise. The `names` attribute holds a short
+#' description of the outcome: `"converged"` on success, `"maximum time
+#' exceeded"` when the `max_time` limit was hit, `"maximum iterations
+#' exceeded"` when the optimizer exhausted its iteration budget, or the raw
+#' optimizer error message for any other failure.
+#'
+#' @seealso `emax_nls()`, `emax_nls_options()`
 #'
 #' @export
 emax_converged <- function(mod) {
-  .is_converged(mod)
+  structure(.is_converged(mod), names = .convergence_reason(mod))
 }
 
 #' Add or remove a covariate term from an Emax regression

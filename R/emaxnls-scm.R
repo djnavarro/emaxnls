@@ -53,6 +53,7 @@
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
       model_converged = .is_converged(mod),
+      convergence_reason = .convergence_reason(mod),
       term_p_value = NA_real_,
       model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
       model_bic = as.numeric(stats::BIC(mod)),
@@ -70,6 +71,7 @@
       term_tested = NA_character_,
       model_tested = .get_short_formula(mod),
       model_converged = .is_converged(mod),
+      convergence_reason = .convergence_reason(mod),
       term_p_value = NA_real_,
       model_aic = as.numeric(stats::AIC(mod)), # coercion for emaxnls_null cases
       model_bic = as.numeric(stats::BIC(mod)),
@@ -112,7 +114,8 @@
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
       attm <- attm + 1L
       p <- NA_real_
-      converge <- !is.null(.get_nls(candidate_mod))
+      converge <- .is_converged(candidate_mod)
+      converge_reason <- .convergence_reason(candidate_mod)
       if (!quiet) .inform("try add: ", deparse(t))
       if (converge) {  # skip if nls() fails
         if (use_ic) {
@@ -144,6 +147,7 @@
           term_tested = deparse(t),
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
+          convergence_reason = converge_reason,
           term_p_value = p,
           model_aic = as.numeric(stats::AIC(candidate_mod)),
           model_bic = as.numeric(stats::BIC(candidate_mod)),
@@ -194,7 +198,8 @@
     if (!.is_same(mod, candidate_mod)) { # don't compare to self
       attm <- attm + 1L
       p <- NA_real_
-      converge <- !is.null(.get_nls(candidate_mod))
+      converge <- .is_converged(candidate_mod)
+      converge_reason <- .convergence_reason(candidate_mod)
       if (!quiet) .inform("try remove: ", deparse(t))
       if (converge) {  # skip if nls() fails
         if (use_ic) {
@@ -226,6 +231,7 @@
           term_tested = deparse(t),
           model_tested = .get_short_formula(candidate_mod),
           model_converged = converge,
+          convergence_reason = converge_reason,
           term_p_value = p,
           model_aic = as.numeric(stats::AIC(candidate_mod)),
           model_bic = as.numeric(stats::BIC(candidate_mod)),

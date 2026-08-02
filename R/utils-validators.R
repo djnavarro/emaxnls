@@ -148,3 +148,14 @@
 .is_scalar_lgl <- function(x) is.logical(x) & length(x) == 1L
 
 .is_converged <- function(x) is.null(x$env$error)
+
+# Return a short human-readable string describing why the model did or did not
+# converge. Used to populate the `names` attribute of `emax_converged()` and
+# the `convergence_reason` column in the SCM history table.
+.convergence_reason <- function(x) {
+  if (.is_converged(x)) return("converged")
+  msg <- conditionMessage(x$env$error)
+  if (grepl("time limit", msg, ignore.case = TRUE)) return("maximum time exceeded")
+  if (grepl("iteration", msg, ignore.case = TRUE)) return("maximum iterations exceeded")
+  msg
+}
