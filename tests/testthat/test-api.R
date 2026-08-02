@@ -72,3 +72,35 @@ test_that("emax_fun() returns a function", {
 })
 
 
+# emax_converged() returns a named logical -----------------------------------
+
+test_that("emax_converged() returns a logical scalar", {
+  skip_if_not_converged(mod)
+  result <- emax_converged(mod)
+  expect_type(result, "logical")
+  expect_length(result, 1L)
+})
+
+test_that("emax_converged() returns TRUE with name 'converged' for a converged model", {
+  skip_if_not_converged(mod)
+  result <- emax_converged(mod)
+  expect_true(result)
+  expect_equal(names(result), "converged")
+})
+
+test_that("emax_converged() returns FALSE with an informative name for a non-converged model", {
+  # Force non-convergence via an absurdly tight iteration budget
+  failed_mod <- suppressWarnings(emax_nls(
+    structural_model = rsp_1 ~ exp_1,
+    covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
+    data             = emax_df,
+    opts             = emax_nls_options(optim_control = list(maxiter = 1L))
+  ))
+  skip_if(.is_converged(failed_mod), "Model unexpectedly converged in 1 iteration")
+  result <- emax_converged(failed_mod)
+  expect_false(result)
+  expect_false(is.null(names(result)))
+  expect_true(nzchar(names(result)))
+})
+
+

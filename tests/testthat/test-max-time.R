@@ -92,6 +92,7 @@ test_that("emax_nls() treats a timeout as non-convergence", {
   expect_s3_class(mod, "emaxnls")
   expect_false(emax_converged(mod))
   expect_match(conditionMessage(mod$env$error), "time limit", ignore.case = TRUE)
+  expect_equal(names(emax_converged(mod)), "maximum time exceeded")
 })
 
 test_that("emax_logistic() treats a timeout as non-convergence", {
@@ -106,6 +107,7 @@ test_that("emax_logistic() treats a timeout as non-convergence", {
   expect_s3_class(mod, "emaxlogistic")
   expect_false(emax_converged(mod))
   expect_match(conditionMessage(mod$env$error), "time limit", ignore.case = TRUE)
+  expect_equal(names(emax_converged(mod)), "maximum time exceeded")
 })
 
 
