@@ -188,10 +188,25 @@ emax_nls_init <- function(structural_model, covariate_model, data) {
 #'
 #' @returns A named logical scalar. The value is `TRUE` when the model
 #' converged and `FALSE` otherwise. The `names` attribute holds a short
-#' description of the outcome: `"converged"` on success, `"maximum time
-#' exceeded"` when the `max_time` limit was hit, `"maximum iterations
-#' exceeded"` when the optimizer exhausted its iteration budget, or the raw
-#' optimizer error message for any other failure.
+#' description of the outcome:
+#'
+#' - `"converged"`: the optimizer reached a solution successfully.
+#' - `"maximum time exceeded"`: the `max_time` limit set in
+#'   `emax_nls_options()` / `emax_logistic_options()` was hit before the
+#'   optimizer finished.
+#' - `"maximum iterations exceeded"`: the optimizer ran out of iterations.
+#'   This applies to the Gauss-Newton algorithm (when `nls()` reports
+#'   "number of iterations exceeded maximum") and to the Levenberg-Marquardt
+#'   algorithm (when `nlsLM()` reports that the iteration count has reached
+#'   `maxiter`). The iteration budget can be increased via the
+#'   `optim_control` argument of `emax_nls_options()`.
+#' - Raw optimizer message: all other failures return the error message from
+#'   the underlying optimizer directly. Common examples include a singular
+#'   gradient matrix at the initial parameter estimates, the Gauss-Newton
+#'   step factor collapsing below `minFactor`, and Port-algorithm convergence
+#'   codes such as false convergence (code 8) or singular convergence (code 7).
+#'   These messages are algorithm-specific and are passed through unchanged
+#'   because no single label covers them accurately.
 #'
 #' @seealso `emax_nls()`, `emax_nls_options()`
 #'

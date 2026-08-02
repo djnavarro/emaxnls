@@ -12,8 +12,26 @@ emax_converged(mod)
 \value{
 A named logical scalar. The value is \code{TRUE} when the model
 converged and \code{FALSE} otherwise. The \code{names} attribute holds a short
-description of the outcome: \code{"converged"} on success, \code{"maximum time exceeded"} when the \code{max_time} limit was hit, \code{"maximum iterations exceeded"} when the optimizer exhausted its iteration budget, or the raw
-optimizer error message for any other failure.
+description of the outcome:
+\itemize{
+\item \code{"converged"}: the optimizer reached a solution successfully.
+\item \code{"maximum time exceeded"}: the \code{max_time} limit set in
+\code{emax_nls_options()} / \code{emax_logistic_options()} was hit before the
+optimizer finished.
+\item \code{"maximum iterations exceeded"}: the optimizer ran out of iterations.
+This applies to the Gauss-Newton algorithm (when \code{nls()} reports
+"number of iterations exceeded maximum") and to the Levenberg-Marquardt
+algorithm (when \code{nlsLM()} reports that the iteration count has reached
+\code{maxiter}). The iteration budget can be increased via the
+\code{optim_control} argument of \code{emax_nls_options()}.
+\item Raw optimizer message: all other failures return the error message from
+the underlying optimizer directly. Common examples include a singular
+gradient matrix at the initial parameter estimates, the Gauss-Newton
+step factor collapsing below \code{minFactor}, and Port-algorithm convergence
+codes such as false convergence (code 8) or singular convergence (code 7).
+These messages are algorithm-specific and are passed through unchanged
+because no single label covers them accurately.
+}
 }
 \description{
 Returns \code{TRUE} if the model converged during fitting and \code{FALSE} otherwise.
