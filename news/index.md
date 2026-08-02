@@ -23,6 +23,19 @@
 
 ### New features
 
+- [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  and
+  [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  now accept a `criterion` argument (`"p-value"`, `"aic"`, or `"bic"`).
+  When `criterion = "aic"` or `"bic"`, terms are added or removed based
+  on whether they strictly improve the information criterion rather than
+  a p-value threshold, and the `threshold` argument is ignored. The
+  default remains `"p-value"`, preserving existing behavior. The history
+  returned by
+  [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
+  gains a `criterion` column recording which selection rule was applied
+  in each step ([\#68](https://github.com/djnavarro/emaxnls/issues/68)).
+
 - Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic`
   objects work seamlessly with
   [`erplots::er_plot_add_model()`](https://erplots.djnavarro.net/reference/er_plot_add_model.html),

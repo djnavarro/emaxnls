@@ -250,9 +250,9 @@ of what the search did and why. This is the audit log for the run.
 
 history <- emax_scm_history(final_model)
 names(history)
-#>  [1] "iteration"       "attempt"         "step"            "action"         
-#>  [5] "term_tested"     "model_tested"    "model_converged" "term_p_value"   
-#>  [9] "model_aic"       "model_bic"       "model_updated"
+#>  [1] "iteration"       "attempt"         "step"            "criterion"      
+#>  [5] "action"          "term_tested"     "model_tested"    "model_converged"
+#>  [9] "term_p_value"    "model_aic"       "model_bic"       "model_updated"
 ```
 
 The columns are:

@@ -54,7 +54,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-1-1-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1-9000"></a></h3>
-<ul><li>
+<ul><li><p><code><a href="../reference/emax_scm.html">emax_scm_forward()</a></code> and <code><a href="../reference/emax_scm.html">emax_scm_backward()</a></code> now accept a <code>criterion</code> argument (<code>"p-value"</code>, <code>"aic"</code>, or <code>"bic"</code>). When <code>criterion = "aic"</code> or <code>"bic"</code>, terms are added or removed based on whether they strictly improve the information criterion rather than a p-value threshold, and the <code>threshold</code> argument is ignored. The default remains <code>"p-value"</code>, preserving existing behavior. The history returned by <code><a href="../reference/emax_scm.html">emax_scm_history()</a></code> gains a <code>criterion</code> column recording which selection rule was applied in each step (<a href="https://github.com/djnavarro/emaxnls/issues/68" class="external-link">#68</a>).</p></li>
+<li>
 <p>Adds an <code>erplots</code> model interface so that <code>emaxnls</code> and <code>emaxlogistic</code> objects work seamlessly with <code><a href="https://erplots.djnavarro.net/reference/er_plot_add_model.html" class="external-link">erplots::er_plot_add_model()</a></code>, <code>er_plot_add_summary()</code>, <code>er_plot_add_quantiles()</code>, and the VPC pipeline. Three S3 methods are registered lazily at load time (no hard dependency on erplots):</p>
 <ul><li>
 <code>er_predict()</code> returns point predictions and confidence intervals on a user-supplied exposure grid, with predictions on the probability scale for <code>emaxlogistic</code> models.</li>
