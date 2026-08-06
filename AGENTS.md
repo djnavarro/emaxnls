@@ -1,9 +1,5 @@
-# emaxnls — Project Memory
 
-This file is loaded automatically by Posit Assistant at the start of every conversation.
-It captures project context so the assistant can help without needing repeated explanation.
-
----
+# AGENTS.md
 
 ## What this package does
 
@@ -22,12 +18,18 @@ via `back_transform = TRUE`.
 
 The package is on CRAN at version 0.1.1; the development version is 0.1.1.9000.
 It also integrates with the pre-CRAN **erplots** package (GitHub: `djnavarro/erplots`) for
-ggplot2-based visualisation of Emax models (see `erplots::er_plot_add_model()` etc.).  
+ggplot2-based visualisation of Emax models (see `erplots::er_plot_add_model()` etc.).
 Package website: https://emaxnls.djnavarro.net/
 
 ---
 
-## Package structure
+## Architecture reference (current state)
+
+This section documents how the package works *today*. For the design
+rationale behind these choices, rejected alternatives, and a record of
+how the API got here, see [.agents/HISTORY.md](.agents/HISTORY.md).
+
+### Package structure
 
 ```
 R/                      # Source code
@@ -60,9 +62,7 @@ dev/                    # Developer-focused notes (not part of the package)
   # Informal notes to track ongoing investigations, platform quirks, etc.
 ```
 
----
-
-## Key classes
+### Key classes
 
 | Class | Description |
 |-------|-------------|
@@ -78,22 +78,7 @@ When erplots is loaded, models also respond to `erplots::er_predict()`,
 `erplots::er_simulate()`, and `erplots::er_summary()` (registered lazily via `.onLoad()` in
 `R/er-methods.R`; no hard dependency on erplots).
 
-**`sim_resp` addition (feature/er-simulate-sim-resp branch, not yet merged).**
-erplots' `er_vpc_plot()` used to require a bespoke, model-package-specific simulation
-helper rather than going through the shared `er_predict()`/`er_simulate()`/`er_summary()`
-interface -- a design gap on the erplots side, closed by widening erplots' `er_simulate()`
-contract additively: a method may now return an optional `sim_resp` column (a full
-response-scale draw, including observation-level noise) alongside the existing `fit_resp`
-(expected response under parameter uncertainty only). `er_simulate.emaxnls()` now computes
-`sim_resp` too, reusing the same noise models already used by
-`simulate.emaxnls()`/`simulate.emaxlogistic()` (`.emax_resample()`/
-`.emax_logistic_resample()`): `Normal(fit_resp, sigma(model))` for `emaxnls`,
-`Bernoulli(fit_resp)` for `emaxlogistic`. See erplots' `?er_model_interface` for the
-updated contract this satisfies.
-
----
-
-## Naming conventions
+### Naming conventions
 
 - **Public API functions**: no prefix, `snake_case` (e.g., `emax_nls()`, `emax_add_term()`)
 - **Internal/private functions**: dot prefix (e.g., `.emax_nls()`, `.validate_formula()`)
@@ -102,9 +87,7 @@ updated contract this satisfies.
 - **File naming**: `{class}-{concern}.R` for class-specific files (e.g., `emaxnls-methods.R`),
   `utils-{concern}.R` for shared utilities
 
----
-
-## Optimization algorithms
+### Optimization algorithms
 
 Three algorithms are available via `optim_method`:
 
@@ -117,9 +100,7 @@ Three algorithms are available via `optim_method`:
 All fittings support a `max_time` argument (in seconds) to prevent hangs. The default in
 tests is 10 seconds via `test_nls_opts()`.
 
----
-
-## Testing conventions
+### Testing conventions
 
 - Framework: testthat 3.0.0 edition
 - Test helpers live in `tests/testthat/helper-platform.R`
@@ -133,9 +114,7 @@ tests is 10 seconds via `test_nls_opts()`.
 - `test-er-methods.R` gates all tests on `skip_if_not_installed("erplots")` — no erplots
   needed for the base test suite to pass
 
----
-
-## Key dependencies
+### Key dependencies
 
 | Package | Role |
 |---------|------|
@@ -147,9 +126,7 @@ tests is 10 seconds via `test_nls_opts()`.
 | `tibble` | Suggested (optional); package works without it |
 | `erplots` | Suggested (optional, pre-CRAN); enables `er_plot` visualisation pipeline |
 
----
-
-## Data
+### Data
 
 `emax_df` is a built-in synthetic dataset with 400 observations used in examples and tests:
 - Continuous and binary response variables
@@ -157,9 +134,7 @@ tests is 10 seconds via `test_nls_opts()`.
 - Continuous, binary, and categorical covariates
 - Dose groups: 0, 100, 200, 300
 
----
-
-## Formula interface
+### Formula interface
 
 ```r
 # Structural model: response ~ exposure
@@ -236,3 +211,24 @@ edit the roxygen source in `R/` and regenerate with `devtools::document()`.
 
 - Use **freeform imperative mood**: "Add x", "Fix y", "Remove z". No conventional-commit
   prefix required.
+
+---
+
+## Keeping this documentation current
+
+This file (`AGENTS.md`) should stay a lean, current-state reference --
+if a change makes something above inaccurate, update it in place rather
+than appending a note about the change.
+
+Two companion files in `.agents/` (also excluded from the built package
+via `.Rbuildignore`) carry the parts that don't belong here:
+
+- **[.agents/HISTORY.md](.agents/HISTORY.md)** -- a condensed record of
+  completed design decisions and their rationale (what was tried,
+  rejected, and why), for context in future sessions. When you finish a
+  piece of nontrivial design work, add an entry here rather than
+  growing this file with "used to be X, now Y" narrative.
+- **[.agents/PLAN.md](.agents/PLAN.md)** -- scoped-out future work and
+  deferred/open items. When you finish something listed there, move its
+  write-up into `HISTORY.md` and remove it from `PLAN.md` rather than
+  marking it "done" in place.
