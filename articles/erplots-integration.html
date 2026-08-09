@@ -31,16 +31,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/erplots-integration.html">Visualising exposure-response models with erplots</a></li>
-    <li><a class="dropdown-item" href="../articles/fitting-emax-models.html">Fitting Emax models for continuous outcomes</a></li>
-    <li><a class="dropdown-item" href="../articles/fitting-logistic-emax-models.html">Fitting Emax models for binary outcomes</a></li>
-    <li><a class="dropdown-item" href="../articles/simulating-from-emax-models.html">Simulating from Emax models</a></li>
-    <li><a class="dropdown-item" href="../articles/stepwise-covariate-modelling.html">Stepwise covariate modelling</a></li>
-  </ul>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -237,8 +228,9 @@ auto-detects the response type, so passing <code>mod_b</code> (the
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">emax_df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc.html" class="external-link">er_vpc</a></span><span class="op">(</span>exposure <span class="op">=</span> <span class="va">exp_1</span>, response <span class="op">=</span> <span class="va">rsp_2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_observed.html" class="external-link">er_vpc_add_observed</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_simulated.html" class="external-link">er_vpc_add_simulated</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod_b</span>, seed <span class="op">=</span> <span class="fl">7438</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_observed.html" class="external-link">er_vpc_add_observed</a></span><span class="op">(</span>dodge <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_simulated.html" class="external-link">er_vpc_add_simulated</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod_b</span>, seed <span class="op">=</span> <span class="fl">7438</span>,</span>
+<span>                       dodge <span class="op">=</span> <span class="fl">0.01</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="erplots-integration_files/figure-html/vpc-binary-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>For a binary response the default style — mean response rate with a

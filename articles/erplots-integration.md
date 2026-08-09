@@ -202,8 +202,9 @@ is sufficient:
 
 emax_df |>
   er_vpc(exposure = exp_1, response = rsp_2) |>
-  er_vpc_add_observed() |>
-  er_vpc_add_simulated(model = mod_b, seed = 7438) |>
+  er_vpc_add_observed(dodge = -0.01, errorbar_width = 0.0125) |>
+  er_vpc_add_simulated(model = mod_b, seed = 7438,
+                       dodge = 0.01, errorbar_width = 0.0125) |>
   plot()
 ```
 
