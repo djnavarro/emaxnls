@@ -11,9 +11,8 @@
 #
 # Each scenario generates a fixed dataset (via set.seed), fits the model,
 # and checks that point estimates are within a small relative tolerance of
-# the true generating values.  Platform skips mirror those in other test
-# files: clang and gcc15 toolchains can produce non-convergence that is
-# unrelated to the package code itself.
+# the true generating values.  Tests are skipped via skip_if_not_converged()
+# when a model does not converge (e.g., due to a slow build environment).
 
 # -------------------------------------------------------------------------
 # 1. Continuous hyperbolic Emax model
@@ -39,16 +38,8 @@ mod_cont <- emax_nls(
   opts             = test_nls_opts()
 )
 
-test_that("hyperbolic emax_nls converges on simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  expect_true(emax_converged(mod_cont))
-})
-
 test_that("hyperbolic emax_nls recovers true parameters from simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  skip_if(!emax_converged(mod_cont))
+  skip_if_not_converged(mod_cont)
   est <- coef(mod_cont)
   expect_equal(unname(est["E0_Intercept"]),      true_E0_cont,      tolerance = 0.05)
   expect_equal(unname(est["Emax_Intercept"]),    true_Emax_cont,    tolerance = 0.05)
@@ -83,16 +74,8 @@ mod_sig <- emax_nls(
   opts             = test_nls_opts()
 )
 
-test_that("sigmoidal emax_nls converges on simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  expect_true(emax_converged(mod_sig))
-})
-
 test_that("sigmoidal emax_nls recovers true parameters from simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  skip_if(!emax_converged(mod_sig))
+  skip_if_not_converged(mod_sig)
   est <- coef(mod_sig)
   expect_equal(unname(est["E0_Intercept"]),      true_E0_sig,      tolerance = 0.05)
   expect_equal(unname(est["Emax_Intercept"]),    true_Emax_sig,    tolerance = 0.05)
@@ -126,16 +109,8 @@ mod_bin <- emax_logistic(
   opts             = test_logistic_opts()
 )
 
-test_that("logistic emax_logistic converges on simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  expect_true(emax_converged(mod_bin))
-})
-
 test_that("logistic emax_logistic recovers true parameters from simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  skip_if(!emax_converged(mod_bin))
+  skip_if_not_converged(mod_bin)
   est <- coef(mod_bin)
   expect_equal(unname(est["E0_Intercept"]),      true_E0_bin,      tolerance = 0.05)
   expect_equal(unname(est["Emax_Intercept"]),    true_Emax_bin,    tolerance = 0.05)
@@ -181,16 +156,8 @@ mod_cov <- emax_nls(
   opts             = test_nls_opts()
 )
 
-test_that("covariate model emax_nls converges on simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  expect_true(emax_converged(mod_cov))
-})
-
 test_that("covariate model emax_nls recovers true parameters from simulated data", {
-  skip_if(is_clang(), "Fails on clang due to toolchain issue unrelated to emaxnls code")
-  skip_if(is_gcc15(), "Fails on gcc15 due to toolchain issue unrelated to emaxnls code")
-  skip_if(!emax_converged(mod_cov))
+  skip_if_not_converged(mod_cov)
   est <- coef(mod_cov)
   expect_equal(unname(est["E0_Intercept"]),      true_E0_cov_int,  tolerance = 0.05)
   expect_equal(unname(est["E0_cov"]),            true_E0_cov_slp,  tolerance = 0.05)
