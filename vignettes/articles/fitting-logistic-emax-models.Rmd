@@ -24,7 +24,7 @@ library(emaxnls)
 library(tibble)
 library(ggplot2)
 theme_set(theme_bw())
-set.seed(123)
+set.seed(5219)
 ```
 
 This article describes how to fit an Emax regression model to a **binary**
@@ -395,3 +395,8 @@ continuous models:
   intervals.
 - **Continuous outcomes.** For a continuous response, use `emax_nls()`, described
   in its own article.
+- **Visualisation.** Fitted `emaxlogistic` objects work with the same erplots
+  pipeline as continuous models: `emaxlogistic` inherits its `er_predict()`,
+  `er_simulate()`, and `er_summary()` methods from `emaxnls`, so passing one to
+  `er_plot()` just works. See the
+  [erplots integration article](erplots-integration.html).

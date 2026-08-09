@@ -24,7 +24,7 @@ library(emaxnls)
 library(tibble)
 library(ggplot2)
 theme_set(theme_bw())
-set.seed(123)
+set.seed(8134)
 ```
 
 Once a model has been fitted, it is often useful to generate *new* data from it:
@@ -61,7 +61,7 @@ Calling `simulate()` generates one or more replicate datasets. The number of
 replicates is set by `nsim`, and a `seed` can be supplied for reproducibility:
 
 ```{r simulate-1}
-sim1 <- simulate(mod, nsim = 1, seed = 1)
+sim1 <- simulate(mod, nsim = 1, seed = 5683)
 sim1
 ```
 
@@ -110,7 +110,7 @@ Requesting several replicates stacks them, and the sampled parameters vary from
 one replicate to the next while staying constant within a replicate:
 
 ```{r simulate-many}
-sims <- simulate(mod, nsim = 50, seed = 1)
+sims <- simulate(mod, nsim = 50, seed = 5683)
 dim(sims)
 
 # one parameter draw per replicate
@@ -198,7 +198,7 @@ distribution, evaluate the curve over an exposure grid for each draw, and
 summarise the resulting family of curves pointwise.
 
 ```{r custom-sim}
-set.seed(1)
+set.seed(6471)
 n_draws <- 500
 draws <- mvtnorm::rmvnorm(n_draws, mean = coef(mod), sigma = vcov(mod))
 colnames(draws) <- names(coef(mod))
@@ -252,7 +252,7 @@ observation under the sampled parameters, and `val` is a 0/1 outcome drawn from
 $\text{Bernoulli}(\mu)$ rather than a mean plus Gaussian noise:
 
 ```{r binary-sim}
-sim_b <- simulate(mod_b, nsim = 2, seed = 1)
+sim_b <- simulate(mod_b, nsim = 2, seed = 5683)
 head(sim_b)
 
 # simulated responses are binary
@@ -285,3 +285,7 @@ as in the continuous case.
   `predict(..., interval = ...)`, described in the model-fitting articles.
   Reach for `simulate()` and `emax_fun()` when you need replicate datasets or
   bespoke simulation logic.
+- The erplots package builds on `simulate()` to construct **visual predictive
+  checks** (VPCs), comparing simulated response distributions to the observed
+  data bin by bin. The [erplots integration article](erplots-integration.html)
+  shows this workflow end to end.

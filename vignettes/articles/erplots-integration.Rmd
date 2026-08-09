@@ -1,0 +1,212 @@
+---
+title: "Visualising exposure-response models with erplots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualising exposure-response models with erplots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4.5,
+  fig.align = "center",
+  out.width = "100%"
+)
+options(digits = 4)
+```
+
+```{r setup, message = FALSE, warning = FALSE}
+library(emaxnls)
+library(erplots)
+set.seed(2417)
+```
+
+The [erplots](https://erplots.djnavarro.net/) package provides a mini-language
+for building publication-ready exposure-response plots and visual predictive
+checks. It is model-agnostic: any package that implements three generics ---
+`er_predict()`, `er_simulate()`, and `er_summary()` --- can drive the plot
+pipeline. emaxnls registers methods for both `emaxnls` and `emaxlogistic`
+objects. They are picked up automatically when erplots is loaded, so no
+extra configuration is needed beyond `library(erplots)`.
+
+This article assumes familiarity with `emax_nls()` and `emax_logistic()`; if
+you are new to those, start with the
+[continuous](fitting-emax-models.html) and
+[binary](fitting-logistic-emax-models.html) model-fitting articles. For a
+complete treatment of what erplots can do --- theming, custom style builders,
+the full option surface of each layer function --- see the
+[erplots documentation](https://erplots.djnavarro.net/).
+
+## Exposure-response plots for continuous models
+
+We start by fitting a simple `emax_nls()` model on the bundled `emax_df`
+dataset:
+
+```{r fit-continuous}
+mod <- emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
+  data             = emax_df
+)
+```
+
+The erplots pipeline opens with `er_plot()`, which declares the dataset and
+the exposure and response variables. Layers are added with `er_plot_add_*()`
+calls, and the plot is drawn by calling `plot()`:
+
+```{r er-plot-basic}
+emax_df |>
+  er_plot(exp_1, rsp_1) |>
+  er_plot_add_model(mod) |>
+  er_plot_add_quantiles() |>
+  er_plot_add_data() |>
+  plot()
+```
+
+The three layers here are:
+
+- **Model layer** (`er_plot_add_model()`): a credible band for the Emax curve,
+  built by sampling many parameter vectors from the estimated covariance matrix
+  and evaluating the model at each draw.
+- **Quantile layer** (`er_plot_add_quantiles()`): the observed data binned by
+  exposure quantile, with the mean and a confidence interval shown per bin.
+- **Data layer** (`er_plot_add_data()`): the raw observations at their actual
+  exposure-response coordinates.
+
+### The summary layer
+
+`er_plot_add_summary()` annotates the plot with a model summary. For most
+model types the default style headlines the p-value for the primary drug-effect
+term. Emax models have no single privileged coefficient for that role, so the
+right style here is `er_style_summary_coefficients`, which instead shows one
+line per structural parameter:
+
+```{r er-plot-summary}
+emax_df |>
+  er_plot(exp_1, rsp_1) |>
+  er_plot_add_model(mod) |>
+  er_plot_add_summary(model = mod, style = er_style_summary_coefficients) |>
+  er_plot_add_quantiles() |>
+  plot()
+```
+
+### Stratification
+
+Passing a discrete variable to `stratify_by` adds colour across all layers,
+letting you inspect whether the model's predictions track the observed data
+separately within each level of that variable. A model that includes the
+stratification variable as a covariate will produce distinct prediction bands
+per stratum; a model that omits it will produce the same band for all strata
+(which is itself informative --- it means the model is not accounting for
+that grouping).
+
+Here we fit a model with `cat_f` on the baseline and stratify the plot on the
+same variable:
+
+```{r fit-stratified}
+mod_cat <- emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  covariate_model  = list(E0 ~ cat_f, Emax ~ 1, logEC50 ~ 1),
+  data             = emax_df
+)
+
+emax_df |>
+  er_plot(exp_1, rsp_1, stratify_by = cat_f) |>
+  er_plot_add_model(mod_cat) |>
+  er_plot_add_quantiles() |>
+  plot()
+```
+
+## Exposure-response plots for binary models
+
+The pipeline works identically for `emaxlogistic` objects. The `emaxlogistic`
+class inherits its `er_predict()`, `er_simulate()`, and `er_summary()` methods
+from `emaxnls` via S3 inheritance, with internal branches to keep predictions
+on the probability scale and to report `r_squared = NA` in the summary layer
+where it would be meaningless. From the calling code there is nothing extra to
+do:
+
+```{r fit-binary}
+mod_b <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  covariate_model  = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1),
+  data             = emax_df
+)
+
+emax_df |>
+  er_plot(exp_1, rsp_2) |>
+  er_plot_add_model(mod_b) |>
+  er_plot_add_quantiles() |>
+  er_plot_add_data() |>
+  plot()
+```
+
+`er_plot()` auto-detects the binary response from the values of `rsp_2` (all
+in $\{0, 1\}$) and automatically switches to Clopper-Pearson confidence
+intervals for the quantile layer and a jitter-style display for the data layer.
+
+## Visual predictive checks
+
+A **visual predictive check** (VPC) compares what a model predicts against
+what was actually observed, bin by bin across the exposure range, making
+systematic misfit easy to see. The `er_vpc()` mini-language generates VPCs
+from the same `er_predict()` and `er_simulate()` generics.
+
+For a continuous response, the most informative presentation compares observed
+and simulated *quantile distributions* rather than just means. Connected lines
+trace the observed percentiles and shaded ribbons show the corresponding
+simulated percentile ranges:
+
+```{r vpc-continuous}
+emax_df |>
+  er_vpc(exposure = exp_1, response = rsp_1, response_type = "continuous") |>
+  er_vpc_add_observed(style = er_style_vpc_observed_quantile_line) |>
+  er_vpc_add_simulated(
+    model = mod,
+    seed  = 7438,
+    style = er_style_vpc_simulated_quantile_ribbon
+  ) |>
+  plot()
+```
+
+The lines show the 10th, 50th, and 90th percentiles of the observed data in
+each exposure bin; the ribbons show the same percentiles from the simulated
+replicates. A well-fitting model will have its ribbons closely enclosing the
+observed lines; systematic departures --- ribbons consistently above or below
+the lines --- suggest that the model is misspecified in some way.
+
+The VPC works the same way for binary models. `er_plot()` auto-detects the
+response type, so passing `mod_b` (the `emaxlogistic` object fitted above) to
+`er_vpc_add_simulated()` is sufficient:
+
+```{r vpc-binary}
+emax_df |>
+  er_vpc(exposure = exp_1, response = rsp_2) |>
+  er_vpc_add_observed() |>
+  er_vpc_add_simulated(model = mod_b, seed = 7438) |>
+  plot()
+```
+
+For a binary response the default style --- mean response rate with a
+Clopper-Pearson interval, for both the observed and simulated layers --- is
+generally the most appropriate choice, so no custom style functions are needed.
+
+## Where to go next
+
+The erplots documentation covers the full feature set in detail:
+
+- [Plotting continuous responses](https://erplots.djnavarro.net/articles/plot-continuous.html)
+  --- the complete model-layer and quantile-layer options, data overlays, and
+  group panels.
+- [Plotting binary responses](https://erplots.djnavarro.net/articles/plot-binary.html)
+  --- binary-specific display options, the box-jitter data layer, and
+  stratification.
+- [Visual predictive checks](https://erplots.djnavarro.net/articles/plot-vpc.html)
+  --- VPCs by continuous or discrete covariate, stratified panels, and
+  troubleshooting plot legibility.
+- [Theming erplots](https://erplots.djnavarro.net/articles/theming.html)
+  --- axis labels, colour palettes, and the underlying ggplot2 theme.

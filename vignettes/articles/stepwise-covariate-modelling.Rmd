@@ -22,7 +22,7 @@ options(digits = 4)
 ```{r setup, message = FALSE, warning = FALSE}
 library(emaxnls)
 library(tibble)
-set.seed(123)
+set.seed(7062)
 ```
 
 Once you can fit a single Emax model, the next practical question is usually
@@ -102,8 +102,8 @@ they compose naturally with the native pipe:
 
 ```{r scm}
 final_model <- base_model |>
-  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 1) |>
-  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 1)
+  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 4391) |>
+  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 4391)
 ```
 
 A few things are worth unpacking here.
@@ -231,8 +231,8 @@ base_logistic <- emax_logistic(
 )
 
 final_logistic <- base_logistic |>
-  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 1) |>
-  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 1)
+  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 4391) |>
+  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 4391)
 
 final_logistic
 ```
