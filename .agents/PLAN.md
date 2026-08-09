@@ -6,44 +6,22 @@ not a changelog: once an item here is completed, its write-up should
 move to [.agents/HISTORY.md](HISTORY.md) and be removed from this file
 rather than marked "done" in place. Items are grouped by target release.
 
-## Development version (0.1.1.9000)
-
-### Merge `feature/er-simulate-sim-resp`
-
-The `feature/er-simulate-sim-resp` branch widens `er_simulate.emaxnls()`
-and `er_simulate.emaxlogistic()` to return an optional `sim_resp` column
-alongside the existing `fit_resp` column. `sim_resp` is a full
-response-scale draw that includes observation-level noise (not just
-parameter uncertainty), which `er_vpc_add_simulated(model = ...)` in
-erplots requires to build a VPC.
-
-The implementation reuses the same noise models already used by
-`simulate.emaxnls()` / `simulate.emaxlogistic()` (`.emax_resample()` /
-`.emax_logistic_resample()`): `Normal(fit_resp, sigma(model))` for
-`emaxnls`, `Bernoulli(fit_resp)` for `emaxlogistic`. See
-[.agents/HISTORY.md](HISTORY.md) for the design rationale (additive
-extension rather than a new generic). See `?er_model_interface` in
-erplots for the full updated contract.
-
-Once this branch is merged, the next step is a new CRAN release (see
-below).
-
 ## Next CRAN release
 
-### Register `er_predict`/`er_simulate`/`er_summary` S3 methods in NAMESPACE
+### Remove `Remotes: djnavarro/erplots` from DESCRIPTION before CRAN submission
 
-The CRAN 0.1.1 release does not register the `er_predict()`,
-`er_simulate()`, or `er_summary()` S3 methods that erplots relies on.
-They are registered lazily via `.onLoad()` (in `R/er-methods.R`) only
-when erplots is loaded, but they are absent from `NAMESPACE` --
-confirmed by inspecting the installed NAMESPACE from CRAN. erplots works
-around this by requiring `emaxnls >= 0.1.1.9000` in its `DESCRIPTION`,
-forcing r-universe's resolver to use the GitHub dev version instead of
-the CRAN release. This workaround should be removed once a new CRAN
-release ships with the methods properly registered.
+**Blocked on erplots 0.1 reaching CRAN.** emaxnls must not be submitted
+until erplots is available on CRAN.
 
-Check whether the methods need to be in `NAMESPACE` (via
-`S3method(er_predict, emaxnls)` etc., added by roxygen2) or whether the
-`.onLoad()` lazy-registration approach is sufficient for CRAN -- the key
-question is whether CRAN's checks expect registered generics from
-`Suggests` packages to appear in `NAMESPACE`.
+erplots is already listed in `Suggests` in `DESCRIPTION`, and the lazy
+`.onLoad()` registration in `R/er-methods.R` (the `vctrs::s3_register()`
+idiom) is the correct CRAN-compliant approach for S3 methods whose
+generics live in a `Suggests` package -- no NAMESPACE changes are needed.
+The only pre-submission change required in emaxnls is removing the
+`Remotes: djnavarro/erplots` line from `DESCRIPTION` (CRAN does not
+allow `Remotes:` entries pointing to non-CRAN sources).
+
+Once that line is removed and erplots is on CRAN, the erplots-side
+workaround (`Requires: emaxnls (>= 0.1.1.9000)` in erplots'
+`DESCRIPTION`, which forces r-universe to use the GitHub dev version
+of emaxnls) can also be dropped from erplots.

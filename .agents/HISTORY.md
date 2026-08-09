@@ -42,5 +42,4 @@ The implementation reuses the existing noise models from
 `emaxnls`, and `.emax_logistic_resample()` draws from
 `Bernoulli(fit_resp)` for `emaxlogistic`.
 
-This work lives on the `feature/er-simulate-sim-resp` branch pending
-merge; see [.agents/PLAN.md](PLAN.md) for the remaining steps.
+Merged in PR #67.
