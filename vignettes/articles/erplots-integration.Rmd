@@ -102,24 +102,9 @@ separately within each level of that variable. A model that includes the
 stratification variable as a covariate will produce distinct prediction bands
 per stratum; a model that omits it will produce the same band for all strata
 (which is itself informative --- it means the model is not accounting for
-that grouping).
-
-Here we fit a model with `cat_f` on the baseline and stratify the plot on the
-same variable:
-
-```{r fit-stratified}
-mod_cat <- emax_nls(
-  structural_model = rsp_1 ~ exp_1,
-  covariate_model  = list(E0 ~ cat_f, Emax ~ 1, logEC50 ~ 1),
-  data             = emax_df
-)
-
-emax_df |>
-  er_plot(exp_1, rsp_1, stratify_by = cat_f) |>
-  er_plot_add_model(mod_cat) |>
-  er_plot_add_quantiles() |>
-  plot()
-```
+that grouping). The [erplots binary responses article](https://erplots.djnavarro.net/articles/plot-binary.html)
+has a full worked stratification example including how to suppress stratification
+for individual layers with `keep_strata = FALSE`.
 
 ## Exposure-response plots for binary models
 
