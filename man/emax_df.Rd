@@ -29,7 +29,7 @@ Sample simulated data for Emax exposure-response models with covariates.
 }
 \details{
 This simulated dataset is entirely synthetic. It is a generic data set that can be used
-to illustrate Emax modeling. It contains variables corresponding to dose and exposure,
+to illustrate Emax modelling. It contains variables corresponding to dose and exposure,
 and includes both a continuous response variable and a binary response variable. Three
 continuous valued covariates are included, along with two binary covariates.
 

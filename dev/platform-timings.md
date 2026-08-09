@@ -29,11 +29,11 @@ Within the slow runs, it's not all operations — it's specifically **NLS model 
 Examples like `emax_logistic_options` or `emax_df` (which don't fit models) take milliseconds
 even on slow platforms. But anything that calls `nls()` — `fitted`, `logLik`, `coef`,
 `summary`, and especially `emax_scm` — is 200× slower. This is a computational bottleneck
-inside the optimizer, not a package loading or R infrastructure issue.
+inside the optimiser, not a package loading or R infrastructure issue.
 
 ---
 
-## Which optimizer is responsible
+## Which optimiser is responsible
 
 **Evidence points to base R's `nls()`, not `minpack.lm::nls.lm()`.**
 

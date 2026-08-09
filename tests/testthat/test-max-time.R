@@ -70,7 +70,7 @@ test_that("max_time is stored in the fitted emax_logistic model options", {
 # R's setTimeLimit() checking happens at user interrupt check points, which are
 # frequent in R-level code but tied to system timer granularity (~5-10ms). We
 # use a large dataset to push the fit well above the time limit on most
-# hardware. On very fast machines (e.g. Apple Silicon) the optimizer can still
+# hardware. On very fast machines (e.g. Apple Silicon) the optimiser can still
 # converge within 50ms; in that case the test is skipped rather than failed,
 # because the feature works but cannot be exercised reliably at this threshold
 # on that hardware (#71).

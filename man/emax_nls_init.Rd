@@ -4,13 +4,15 @@
 \alias{emax_nls_init}
 \title{Construct an initial guess for the Emax model parameters}
 \usage{
-emax_nls_init(structural_model, covariate_model, data)
+emax_nls_init(structural_model, covariate_model = NULL, data)
 }
 \arguments{
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
-\item{covariate_model}{A list of two-sided formulas, each of specifying a
-covariate model for a structural parameter}
+\item{covariate_model}{A list of two-sided formulas, each specifying a
+covariate model for a structural parameter. When \code{NULL} (the default), an
+intercept-only hyperbolic Emax model is assumed — equivalent to
+\code{list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)}.}
 
 \item{data}{A data frame}
 }
@@ -19,13 +21,13 @@ A data frame
 }
 \description{
 Constructs a data frame of starting values and parameter bounds for the
-Emax NLS optimization, using heuristics derived from the data.
+Emax NLS optimisation, using heuristics derived from the data.
 }
 \details{
 The \code{emax_nls()} function requires that the user specify the initial
 values for the model parameters. Specifically, it expects to be supplied with
 a data frame with columns named \code{parameter}, \code{covariate}, and \code{start}. If a
-bounded optimization method is used (e.g. if the "port" method is used), the
+bounded optimisation method is used (e.g. if the "port" method is used), the
 data frame also needs to have columns named \code{lower} and \code{upper}. The data
 frame should contain one row per parameter. In most cases the user does not
 need to define this manually, because \code{emax_nls_init()} can use heuristics to
@@ -35,8 +37,13 @@ using the appropriate values for the \code{structural_model}, the \code{covariat
 and the \code{data}.
 }
 \examples{
-# use a heuristic to construct sensible start values, and plausible
-# upper and lower bounds within which the estimate is expected to fall 
+# intercept-only hyperbolic Emax (default covariate_model)
+emax_nls_init(
+  structural_model = rsp_1 ~ exp_1,
+  data = emax_df
+)
+
+# with a covariate on E0
 emax_nls_init(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 

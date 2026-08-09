@@ -25,8 +25,8 @@
 * `emax_converged()` now returns a **named** logical scalar. The `names`
   attribute holds a short description of the outcome: `"converged"` on
   success, `"maximum time exceeded"` when the `max_time` limit was hit,
-  `"maximum iterations exceeded"` when the optimizer ran out of iterations,
-  or the raw optimizer error message for any other failure. The value itself
+  `"maximum iterations exceeded"` when the optimiser ran out of iterations,
+  or the raw optimiser error message for any other failure. The value itself
   is still `TRUE`/`FALSE`, so all existing code that checks
   `if (emax_converged(mod))` continues to work without modification.
   The SCM history returned by `emax_scm_history()` gains a new
@@ -38,7 +38,7 @@
   `"bic"`, terms are added or removed based on whether they strictly improve
   the information criterion rather than a p-value threshold, and the
   `threshold` argument is ignored. The default remains `"p-value"`, preserving
-  existing behavior. The history returned by `emax_scm_history()` gains a
+  existing behaviour. The history returned by `emax_scm_history()` gains a
   `criterion` column recording which selection rule was applied in each step
   (#68).
 
@@ -62,7 +62,7 @@
 
 * Adds a `max_time` argument to `emax_nls_options()` and
   `emax_logistic_options()` that sets a maximum elapsed time (in seconds) for
-  model fitting. If the optimizer has not converged within the limit it is
+  model fitting. If the optimiser has not converged within the limit it is
   terminated and the model is treated as non-converged, consistent with any
   other convergence failure. Defaults to `Inf` (no limit). This is particularly
   useful when running many models in an SCM procedure, where a single
@@ -70,7 +70,7 @@
 
 * Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
   reweighted least squares (IRLS), along with `emax_logistic_init()` and
-  `emax_logistic_options()` for initialization and configuration. All standard
+  `emax_logistic_options()` for initialisation and configuration. All standard
   S3 methods (`coef()`, `vcov()`, `confint()`, `residuals()`, `fitted()`,
   `predict()`, `anova()`, `logLik()`, `AIC()`, `BIC()`, `deviance()`,
   `simulate()`) are supported for the new `emaxlogistic` class.
@@ -109,6 +109,11 @@
 
 ## Documentation
 
+* Switches package language from en-US to en-GB for consistency with the
+  broader er* package family (ertte, erglm, erplots). All documentation,
+  roxygen comments, vignettes, and code comments now use UK English
+  spelling throughout (#61).
+
 * Expands the `summary()` documentation to explain the relationship between
   the `p_adjust` and `simultaneous` arguments. The two are independent tools
   for multiplicity — `p_adjust` corrects the hypothesis-test p-values, while
@@ -129,9 +134,9 @@
   `se.fit = TRUE` (#39).
 
 * Fixes crashes in `emax_logistic_init()` and prevents `Inf` parameter bounds
-  arising during initialization (#40).
+  arising during initialisation (#40).
 
-* Hardens `.nls_call()` to avoid cryptic errors when optimization fails, and
+* Hardens `.nls_call()` to avoid cryptic errors when optimisation fails, and
   tightens argument validation in `emax_fun()` (#41).
 
 * Adds input validation for the binary response variable in `emax_logistic()`,
@@ -162,7 +167,7 @@
 
 # emaxnls 0.1.0
 
-Initial CRAN submission. The package provides tools for fitting and analyzing
+Initial CRAN submission. The package provides tools for fitting and analysing
 Emax dose-response models via nonlinear least squares.
 
 ## Model fitting
@@ -171,17 +176,17 @@ Emax dose-response models via nonlinear least squares.
   the hyperbolic (`E0 + Emax * x / (EC50 + x)`) and sigmoidal
   (`E0 + Emax * x^Hill / (EC50^Hill + x^Hill)`) model forms.
 
-* `emax_nls_options()` configures the optimization algorithm and control
+* `emax_nls_options()` configures the optimisation algorithm and control
   parameters. Three algorithms are supported via the `optim_method` argument:
   `"gauss"` (Gauss-Newton, default), `"port"` (bounded nl2sol), and
   `"levenberg"` (Levenberg-Marquardt via `minpack.lm`).
 
 * `emax_nls_init()` generates starting values and parameter bounds
   automatically from the data, including support for categorical covariates.
-  Users can also call it directly to inspect or override the initialization
+  Users can also call it directly to inspect or override the initialisation
   before fitting.
 
-## Covariate modeling
+## Covariate modelling
 
 * Covariates can be added to any structural parameter (E0, Emax, logEC50,
   logHill) via a formula interface, e.g. `emax_nls(rsp ~ dose, data = df, E0 = ~ group + age)`.
@@ -189,7 +194,7 @@ Emax dose-response models via nonlinear least squares.
 * `emax_add_term()` and `emax_remove_term()` update a fitted model by adding
   or removing a single covariate term without refitting from scratch.
 
-## Stepwise covariate modeling (SCM)
+## Stepwise covariate modelling (SCM)
 
 * `emax_scm_forward()` performs forward covariate selection, adding one term
   at a time while the likelihood-ratio test p-value stays below a threshold.
@@ -231,7 +236,7 @@ Emax dose-response models via nonlinear least squares.
   that can be evaluated at arbitrary dose values and parameter vectors.
 
 * `emax_converged()` returns `TRUE` or `FALSE` indicating whether the
-  optimizer converged. All S3 methods handle non-convergent models gracefully
+  optimiser converged. All S3 methods handle non-convergent models gracefully
   by returning an `emaxnls_null` object rather than erroring.
 
 ## Data

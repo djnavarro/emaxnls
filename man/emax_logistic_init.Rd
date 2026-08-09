@@ -4,13 +4,15 @@
 \alias{emax_logistic_init}
 \title{Construct an initial guess for logistic Emax model parameters}
 \usage{
-emax_logistic_init(structural_model, covariate_model, data)
+emax_logistic_init(structural_model, covariate_model = NULL, data)
 }
 \arguments{
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
 \item{covariate_model}{A list of two-sided formulas, each specifying a
-covariate model for a structural parameter}
+covariate model for a structural parameter. When \code{NULL} (the default), an
+intercept-only hyperbolic Emax model is assumed — equivalent to
+\code{list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)}.}
 
 \item{data}{A data frame}
 }
@@ -24,6 +26,13 @@ logistic Emax model, using the same heuristic approach as \code{emax_nls_init()}
 applied to the empirical logit scale rather than the raw response.
 }
 \examples{
+# intercept-only hyperbolic Emax (default covariate_model)
+emax_logistic_init(
+  structural_model = rsp_2 ~ exp_1,
+  data = emax_df
+)
+
+# with a covariate on E0
 emax_logistic_init(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),

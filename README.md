@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # emaxnls
@@ -28,17 +27,13 @@ produce estimates in the binary case.
 
 You can install the latest CRAN release with:
 
-``` r
-install.packages("emaxnls")
-```
+    install.packages("emaxnls")
 
 Alternatively, you can install the development version of emaxnls from
 [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("pak")
-pak::pak("djnavarro/emaxnls")
-```
+    # install.packages("pak")
+    pak::pak("djnavarro/emaxnls")
 
 ## Minimal example
 
@@ -48,80 +43,78 @@ to specify the exposure variable and the response variable, and the
 `covariate_model` argument to specify covariates to be estimated for
 structural parameters (e.g., E0, Emax).
 
-``` r
-library(tibble)
-library(emaxnls)
-set.seed(123)
+    library(tibble)
+    library(emaxnls)
+    set.seed(123)
 
-# a synthetic data set bundled with the package
-emax_df
-#> # A tibble: 400 × 12
-#>       id  dose  exp_1  exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e cat_f
-#>    <int> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <fct>
-#>  1     1   200 12332. 13004. 15.7      1  3.85  5.89  4.31     1     1 grp 1
-#>  2     2   300 18232. 17244. 15.3      1  4.78  7.25  3.73     1     1 grp 1
-#>  3     3     0     0      0   5.65     0  1.22  9.24  2.41     1     1 grp 1
-#>  4     4   200  9394.  8839. 12.5      0  2.68  7.14  3.76     1     1 grp 2
-#>  5     5   200  7088.  9827. 13.2      1  4.27  5.57  9.05     0     1 grp 2
-#>  6     6   300 30402. 28483. 16.8      1  6.09  6.08  4.62     0     1 grp 1
-#>  7     7   300 21679. 17137. 17.4      1  7.5   8.1   2.08     0     1 grp 3
-#>  8     8   100 15506. 13377. 15.9      0  3.65  6.89  3.56     0     1 grp 1
-#>  9     9     0     0      0   7.3      0  4.84  3.77  7.44     0     1 grp 2
-#> 10    10   200  5331.  5251. 12.8      1  4.45  3.42  1.66     1     0 grp 3
-#> # ℹ 390 more rows
+    # a synthetic data set bundled with the package
+    emax_df
+    #> # A tibble: 400 × 12
+    #>       id  dose  exp_1  exp_2 rsp_1 rsp_2 cnt_a cnt_b cnt_c bin_d bin_e cat_f
+    #>    <int> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <fct>
+    #>  1     1   200 12332. 13004. 15.7      1  3.85  5.89  4.31     1     1 grp 1
+    #>  2     2   300 18232. 17244. 15.3      1  4.78  7.25  3.73     1     1 grp 1
+    #>  3     3     0     0      0   5.65     0  1.22  9.24  2.41     1     1 grp 1
+    #>  4     4   200  9394.  8839. 12.5      0  2.68  7.14  3.76     1     1 grp 2
+    #>  5     5   200  7088.  9827. 13.2      1  4.27  5.57  9.05     0     1 grp 2
+    #>  6     6   300 30402. 28483. 16.8      1  6.09  6.08  4.62     0     1 grp 1
+    #>  7     7   300 21679. 17137. 17.4      1  7.5   8.1   2.08     0     1 grp 3
+    #>  8     8   100 15506. 13377. 15.9      0  3.65  6.89  3.56     0     1 grp 1
+    #>  9     9     0     0      0   7.3      0  4.84  3.77  7.44     0     1 grp 2
+    #> 10    10   200  5331.  5251. 12.8      1  4.45  3.42  1.66     1     0 grp 3
+    #> # ℹ 390 more rows
 
-# estimate parameters for an Emax regression with covariates
-mod_c <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
-  covariate_model = list(
-    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
-    Emax ~ 1,    # no covariates on Emax
-    logEC50 ~ 1  # no covariates on logEC50
-  ), 
-  data = emax_df
-)
+    # estimate parameters for an Emax regression with covariates
+    mod_c <- emax_nls(
+      structural_model = rsp_1 ~ exp_1, # specify the response and exposure variables
+      covariate_model = list(
+        E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+        Emax ~ 1,    # no covariates on Emax
+        logEC50 ~ 1  # no covariates on logEC50
+      ), 
+      data = emax_df
+    )
 
-mod_c
-#> Structural model:
-#> 
-#>   Exposure:       exp_1 
-#>   Response:       rsp_1 
-#>   Emax type:      hyperbolic 
-#>   Response type:  continuous
-#> 
-#> Covariate model:
-#> 
-#>   E0:       E0 ~ cnt_a 
-#>   Emax:     Emax ~ 1 
-#>   logEC50:  logEC50 ~ 1 
-#> 
-#> Model fit:
-#> 
-#>   Observations:         400 
-#>   Residual df:          396 
-#>   Residual std. error:  0.5108 
-#>   AIC:                  603.6431 
-#> 
-#> Coefficients (95% CI):
-#> 
-#>   label             estimate std_error lower  upper
-#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
-#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
-#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
-#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
-#> 
-#> Use summary() for hypothesis tests.
+    mod_c
+    #> Structural model:
+    #> 
+    #>   Exposure:       exp_1 
+    #>   Response:       rsp_1 
+    #>   Emax type:      hyperbolic 
+    #>   Response type:  continuous
+    #> 
+    #> Covariate model:
+    #> 
+    #>   E0:       E0 ~ cnt_a 
+    #>   Emax:     Emax ~ 1 
+    #>   logEC50:  logEC50 ~ 1 
+    #> 
+    #> Model fit:
+    #> 
+    #>   Observations:         400 
+    #>   Residual df:          396 
+    #>   Residual std. error:  0.5108 
+    #>   AIC:                  603.6431 
+    #> 
+    #> Coefficients (95% CI):
+    #> 
+    #>   label             estimate std_error lower  upper
+    #> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+    #> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+    #> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+    #> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+    #> 
+    #> Use summary() for hypothesis tests.
 
-# hypothesis tests produced by summary()
-summary(mod_c)
-#> # A tibble: 4 × 7
-#>   label             estimate std_error t_statistic    p_value ci_lower ci_upper
-#>   <chr>                <dbl>     <dbl>       <dbl>      <dbl>    <dbl>    <dbl>
-#> 1 E0_cnt_a             0.486    0.0116        42.1  3.63e-148    0.463    0.509
-#> 2 E0_Intercept         5.05     0.0759        66.6  4.16e-217    4.91     5.20 
-#> 3 Emax_Intercept       9.97     0.112         89.3  2.11e-264    9.75    10.2  
-#> 4 logEC50_Intercept    8.27     0.0394        NA   NA            8.19     8.35
-```
+    # hypothesis tests produced by summary()
+    summary(mod_c)
+    #> # A tibble: 4 × 7
+    #>   label             estimate std_error t_statistic    p_value ci_lower ci_upper
+    #>   <chr>                <dbl>     <dbl>       <dbl>      <dbl>    <dbl>    <dbl>
+    #> 1 E0_cnt_a             0.486    0.0116        42.1  3.63e-148    0.463    0.509
+    #> 2 E0_Intercept         5.05     0.0759        66.6  4.16e-217    4.91     5.20 
+    #> 3 Emax_Intercept       9.97     0.112         89.3  2.11e-264    9.75    10.2  
+    #> 4 logEC50_Intercept    8.27     0.0394        NA   NA            8.19     8.35
 
 ## Logistic Emax regression
 
@@ -131,140 +124,135 @@ this model a logit-link function and binomial family is assumed, and the
 parameters are estimated using an iterative reweighted nonlinear least
 squares procedure.
 
-``` r
-# estimate parameters for a logistic Emax regression with covariates
-mod_b <- emax_logistic(
-  structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
-  covariate_model = list(
-    E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
-    Emax ~ 1,    # no covariates on Emax
-    logEC50 ~ 1  # no covariates on logEC50
-  ), 
-  data = emax_df
-)
+    # estimate parameters for a logistic Emax regression with covariates
+    mod_b <- emax_logistic(
+      structural_model = rsp_2 ~ exp_1, # specify the response and exposure variables
+      covariate_model = list(
+        E0 ~ cnt_a,  # add a covariate on the E0 intercept parameter
+        Emax ~ 1,    # no covariates on Emax
+        logEC50 ~ 1  # no covariates on logEC50
+      ), 
+      data = emax_df
+    )
 
-mod_b
-#> Structural model:
-#> 
-#>   Exposure:       exp_1 
-#>   Response:       rsp_2 
-#>   Emax type:      hyperbolic 
-#>   Response type:  binary (logit link)
-#> 
-#> Covariate model:
-#> 
-#>   E0:       E0 ~ cnt_a 
-#>   Emax:     Emax ~ 1 
-#>   logEC50:  logEC50 ~ 1 
-#> 
-#> Model fit:
-#> 
-#>   Observations:  400 
-#>   Residual df:   396 
-#>   Deviance:      331.4698 
-#>   AIC:           339.4698 
-#> 
-#> Coefficients (95% CI):
-#> 
-#>   label             estimate std_error  lower  upper
-#> 1 E0_cnt_a             0.659    0.0800  0.501  0.816
-#> 2 E0_Intercept        -5.00     0.578  -6.14  -3.87 
-#> 3 Emax_Intercept       8.12     2.27    5.08  17.6  
-#> 4 logEC50_Intercept    9.78     0.518   8.89  11.0  
-#> 
-#> Use summary() for hypothesis tests.
+    mod_b
+    #> Structural model:
+    #> 
+    #>   Exposure:       exp_1 
+    #>   Response:       rsp_2 
+    #>   Emax type:      hyperbolic 
+    #>   Response type:  binary (logit link)
+    #> 
+    #> Covariate model:
+    #> 
+    #>   E0:       E0 ~ cnt_a 
+    #>   Emax:     Emax ~ 1 
+    #>   logEC50:  logEC50 ~ 1 
+    #> 
+    #> Model fit:
+    #> 
+    #>   Observations:  400 
+    #>   Residual df:   396 
+    #>   Deviance:      331.4698 
+    #>   AIC:           339.4698 
+    #> 
+    #> Coefficients (95% CI):
+    #> 
+    #>   label             estimate std_error  lower  upper
+    #> 1 E0_cnt_a             0.659    0.0800  0.501  0.816
+    #> 2 E0_Intercept        -5.00     0.578  -6.14  -3.87 
+    #> 3 Emax_Intercept       8.12     2.27    5.08  17.6  
+    #> 4 logEC50_Intercept    9.78     0.518   8.89  11.0  
+    #> 
+    #> Use summary() for hypothesis tests.
 
-# hypothesis tests produced by summary()
-summary(mod_b)
-#> # A tibble: 4 × 7
-#>   label             estimate std_error z_statistic   p_value ci_lower ci_upper
-#>   <chr>                <dbl>     <dbl>       <dbl>     <dbl>    <dbl>    <dbl>
-#> 1 E0_cnt_a             0.659    0.0800        8.24  1.79e-16    0.501    0.816
-#> 2 E0_Intercept        -5.00     0.578        -8.64  5.43e-18   -6.14    -3.87 
-#> 3 Emax_Intercept       8.12     2.27          3.58  3.45e- 4    5.08    17.6  
-#> 4 logEC50_Intercept    9.78     0.518        NA    NA           8.89    11.0
-```
+    # hypothesis tests produced by summary()
+    summary(mod_b)
+    #> # A tibble: 4 × 7
+    #>   label             estimate std_error z_statistic   p_value ci_lower ci_upper
+    #>   <chr>                <dbl>     <dbl>       <dbl>     <dbl>    <dbl>    <dbl>
+    #> 1 E0_cnt_a             0.659    0.0800        8.24  1.79e-16    0.501    0.816
+    #> 2 E0_Intercept        -5.00     0.578        -8.64  5.43e-18   -6.14    -3.87 
+    #> 3 Emax_Intercept       8.12     2.27          3.58  3.45e- 4    5.08    17.6  
+    #> 4 logEC50_Intercept    9.78     0.518        NA    NA           8.89    11.0
 
-## Stepwise covariate modeling
+## Stepwise covariate modelling
 
-The package supports stepwise covariate modeling via forward addition
+The package supports stepwise covariate modelling via forward addition
 and backward elimination. The `emax_scm_forward()` function supports
 forward addition, the `emax_scm_backward()` function supports backward
 elimination, and the syntax is designed to allow forward-backward
 procedures by piping a base model to `emax_scm_forward()` and then to
 `emax_scm_backward()`.
 
-``` r
-# base model with no covariates
-base_model <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
-  data = emax_df
-)
+    # base model with no covariates
+    base_model <- emax_nls(
+      structural_model = rsp_1 ~ exp_1, 
+      covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+      data = emax_df
+    )
 
-# list of possible consider for E0 and Emax
-covariate_list <- list(
-  E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
-  Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
-)
+    # list of possible consider for E0 and Emax
+    covariate_list <- list(
+      E0 = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e"),
+      Emax = c("cnt_a", "cnt_b", "cnt_c", "bin_d", "bin_e")
+    )
 
-# stepwise covariate modeling with a forward step and a backward step
-final_mod <- base_model |> 
-  emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
-  emax_scm_backward(candidates = covariate_list, threshold = .001) 
+    # stepwise covariate modelling with a forward step and a backward step
+    final_mod <- base_model |> 
+      emax_scm_forward(candidates = covariate_list, threshold = .01) |> 
+      emax_scm_backward(candidates = covariate_list, threshold = .001) 
 
-# extract the complete history of all models tested during the 
-# stepwise covariate modeling procedure
-emax_scm_history(final_mod)
-#> # A tibble: 22 × 11
-#>    iteration attempt step       action term_tested  model_tested model_converged
-#>        <int>   <int> <chr>      <chr>  <chr>        <chr>        <lgl>          
-#>  1         0       0 base model <NA>   <NA>         E0 ~ 1, Ema… TRUE           
-#>  2         1       1 forward    add    E0 ~ cnt_c   E0 ~ 1 + cn… TRUE           
-#>  3         1       2 forward    add    Emax ~ bin_e E0 ~ 1, Ema… TRUE           
-#>  4         1       3 forward    add    E0 ~ cnt_b   E0 ~ 1 + cn… TRUE           
-#>  5         1       4 forward    add    Emax ~ cnt_c E0 ~ 1, Ema… TRUE           
-#>  6         1       5 forward    add    Emax ~ cnt_a E0 ~ 1, Ema… TRUE           
-#>  7         1       6 forward    add    Emax ~ bin_d E0 ~ 1, Ema… TRUE           
-#>  8         1       7 forward    add    E0 ~ cnt_a   E0 ~ 1 + cn… TRUE           
-#>  9         1       8 forward    add    Emax ~ cnt_b E0 ~ 1, Ema… TRUE           
-#> 10         1       9 forward    add    E0 ~ bin_e   E0 ~ 1 + bi… TRUE           
-#> # ℹ 12 more rows
-#> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>,
-#> #   model_updated <lgl>
+    # extract the complete history of all models tested during the 
+    # stepwise covariate modelling procedure
+    emax_scm_history(final_mod)
+    #> # A tibble: 22 × 13
+    #>    iteration attempt step       criterion action term_tested  model_tested   model_converged convergence_reason
+    #>        <int>   <int> <chr>      <chr>     <chr>  <chr>        <chr>          <lgl>           <chr>             
+    #>  1         0       0 base model <NA>      <NA>   <NA>         E0 ~ 1, Emax … TRUE            converged         
+    #>  2         1       1 forward    p-value   add    E0 ~ cnt_c   E0 ~ 1 + cnt_… TRUE            converged         
+    #>  3         1       2 forward    p-value   add    Emax ~ bin_e E0 ~ 1, Emax … TRUE            converged         
+    #>  4         1       3 forward    p-value   add    E0 ~ cnt_b   E0 ~ 1 + cnt_… TRUE            converged         
+    #>  5         1       4 forward    p-value   add    Emax ~ cnt_c E0 ~ 1, Emax … TRUE            converged         
+    #>  6         1       5 forward    p-value   add    Emax ~ cnt_a E0 ~ 1, Emax … TRUE            converged         
+    #>  7         1       6 forward    p-value   add    Emax ~ bin_d E0 ~ 1, Emax … TRUE            converged         
+    #>  8         1       7 forward    p-value   add    E0 ~ cnt_a   E0 ~ 1 + cnt_… TRUE            converged         
+    #>  9         1       8 forward    p-value   add    Emax ~ cnt_b E0 ~ 1, Emax … TRUE            converged         
+    #> 10         1       9 forward    p-value   add    E0 ~ bin_e   E0 ~ 1 + bin_… TRUE            converged         
+    #> # ℹ 12 more rows
+    #> # ℹ 4 more variables: term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
 
-# show the final model
-final_mod
-#> Structural model:
-#> 
-#>   Exposure:       exp_1 
-#>   Response:       rsp_1 
-#>   Emax type:      hyperbolic 
-#>   Response type:  continuous
-#> 
-#> Covariate model:
-#> 
-#>   E0:       E0 ~ 1 + cnt_a 
-#>   Emax:     Emax ~ 1 
-#>   logEC50:  logEC50 ~ 1 
-#> 
-#> Model fit:
-#> 
-#>   Observations:         400 
-#>   Residual df:          396 
-#>   Residual std. error:  0.5108 
-#>   AIC:                  603.6431 
-#> 
-#> Coefficients (95% CI):
-#> 
-#>   label             estimate std_error lower  upper
-#> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
-#> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
-#> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
-#> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
-#> 
-#> Use summary() for hypothesis tests.
-```
+    # show the final model
+    final_mod
+    #> Structural model:
+    #> 
+    #>   Exposure:       exp_1 
+    #>   Response:       rsp_1 
+    #>   Emax type:      hyperbolic 
+    #>   Response type:  continuous
+    #> 
+    #> Covariate model:
+    #> 
+    #>   E0:       E0 ~ 1 + cnt_a 
+    #>   Emax:     Emax ~ 1 
+    #>   logEC50:  logEC50 ~ 1 
+    #> 
+    #> Model fit:
+    #> 
+    #>   Observations:         400 
+    #>   Residual df:          396 
+    #>   Residual std. error:  0.5108 
+    #>   AIC:                  603.6431 
+    #> 
+    #> Coefficients (95% CI):
+    #> 
+    #>   label             estimate std_error lower  upper
+    #> 1 E0_cnt_a             0.486    0.0116 0.463  0.509
+    #> 2 E0_Intercept         5.05     0.0759 4.91   5.20 
+    #> 3 Emax_Intercept       9.97     0.112  9.75  10.2  
+    #> 4 logEC50_Intercept    8.27     0.0394 8.19   8.35 
+    #> 
+    #> Use summary() for hypothesis tests.
 
 ## Simulation
 
@@ -272,22 +260,18 @@ The package also provides tools to assist in model-based simulations,
 using the `simulate()` function. A simple example is shown below. See
 the function documentation for more details.
 
-``` r
-simulate(final_mod, nsim = 1)
-#> # A tibble: 400 × 11
-#>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
-#>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
-#>  1      1      1 14.5  13.9     0.486         5.01           9.95
-#>  2      2      1 15.6  15.5     0.486         5.01           9.95
-#>  3      3      1  5.60  6.15    0.486         5.01           9.95
-#>  4      4      1 13.4  13.3     0.486         5.01           9.95
-#>  5      5      1 13.6  13.0     0.486         5.01           9.95
-#>  6      6      1 16.8  16.4     0.486         5.01           9.95
-#>  7      7      1 17.1  17.5     0.486         5.01           9.95
-#>  8      8      1 14.8  14.6     0.486         5.01           9.95
-#>  9      9      1  7.36  6.69    0.486         5.01           9.95
-#> 10     10      1 13.0  12.7     0.486         5.01           9.95
-#> # ℹ 390 more rows
-#> # ℹ 4 more variables: logEC50_Intercept <dbl>, rsp_1 <dbl>, exp_1 <dbl>,
-#> #   cnt_a <dbl>
-```
+    simulate(final_mod, nsim = 1)
+    #> # A tibble: 400 × 11
+    #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept logEC50_Intercept rsp_1  exp_1 cnt_a
+    #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>             <dbl> <dbl>  <dbl> <dbl>
+    #>  1      1      1 14.5  13.9     0.486         5.01           9.95              8.25 15.7  12332.  3.85
+    #>  2      2      1 15.6  15.5     0.486         5.01           9.95              8.25 15.3  18232.  4.78
+    #>  3      3      1  5.60  6.15    0.486         5.01           9.95              8.25  5.65     0   1.22
+    #>  4      4      1 13.4  13.3     0.486         5.01           9.95              8.25 12.5   9394.  2.68
+    #>  5      5      1 13.6  13.0     0.486         5.01           9.95              8.25 13.2   7088.  4.27
+    #>  6      6      1 16.8  16.4     0.486         5.01           9.95              8.25 16.8  30402.  6.09
+    #>  7      7      1 17.1  17.5     0.486         5.01           9.95              8.25 17.4  21679.  7.5 
+    #>  8      8      1 14.8  14.6     0.486         5.01           9.95              8.25 15.9  15506.  3.65
+    #>  9      9      1  7.36  6.69    0.486         5.01           9.95              8.25  7.3      0   4.84
+    #> 10     10      1 13.0  12.7     0.486         5.01           9.95              8.25 12.8   5331.  4.45
+    #> # ℹ 390 more rows

@@ -4,19 +4,27 @@
 \alias{emax_nls}
 \title{Estimate parameters for an Emax regression model}
 \usage{
-emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
+emax_nls(
+  structural_model,
+  covariate_model = NULL,
+  data,
+  init = NULL,
+  opts = NULL
+)
 }
 \arguments{
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
 \item{covariate_model}{A list of two-sided formulas, each specifying a
-covariate model for a structural parameter}
+covariate model for a structural parameter. When \code{NULL} (the default), an
+intercept-only hyperbolic Emax model is fitted — equivalent to
+\code{list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)}.}
 
 \item{data}{A data frame that includes all relevant variables}
 
 \item{init}{Initial values and bounds for parameters. See \code{emax_nls_init()}}
 
-\item{opts}{Model fitting and optimization options. See \code{emax_nls_options()}}
+\item{opts}{Model fitting and optimisation options. See \code{emax_nls_options()}}
 }
 \value{
 An object of class \code{emaxnls}
@@ -39,10 +47,18 @@ this term a hyperbolic model is fitted. Interaction terms in the covariate
 model are not currently supported.
 
 Starting values are constructed automatically via \code{emax_nls_init()} unless
-the \code{init} argument is supplied manually. Three optimization algorithms are
+the \code{init} argument is supplied manually. Three optimisation algorithms are
 available; see \code{emax_nls_options()} for details.
 }
 \examples{
+# simplest call: hyperbolic Emax with no covariates
+emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
+)
+
+# with a covariate on the baseline parameter
 emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 

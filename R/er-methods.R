@@ -1,7 +1,7 @@
 
 # Interoperability with erplots ------------------------------------------
 #
-# emaxnls has no hard dependency on erplots (a modeling package shouldn't
+# emaxnls has no hard dependency on erplots (a modelling package shouldn't
 # need to pull in ggplot2/patchwork). But if erplots *is* installed and
 # loaded, emaxnls's model objects should work seamlessly with erplots'
 # model-agnostic plotting API, which relies on the
@@ -10,7 +10,7 @@
 #
 # These methods are registered lazily at load time (via `.onLoad()` below),
 # so that neither erplots nor its dependencies need to be installed for
-# emaxnls's modeling functions to work standalone.
+# emaxnls's modelling functions to work standalone.
 #
 # Dispatch note: registering against class "emaxnls" is sufficient for both
 # `emaxnls` and `emaxlogistic` objects, because `emaxlogistic` inherits from

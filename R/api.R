@@ -11,7 +11,7 @@
 #' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_nls_init()`
-#' @param opts Model fitting and optimization options. See `emax_nls_options()`
+#' @param opts Model fitting and optimisation options. See `emax_nls_options()`
 #' 
 #' @details
 #' Pass a two-sided formula to `structural_model` to specify the response and
@@ -27,7 +27,7 @@
 #' model are not currently supported.
 #' 
 #' Starting values are constructed automatically via `emax_nls_init()` unless
-#' the `init` argument is supplied manually. Three optimization algorithms are
+#' the `init` argument is supplied manually. Three optimisation algorithms are
 #' available; see `emax_nls_options()` for details.
 #'  
 #' @returns
@@ -71,22 +71,22 @@ emax_nls <- function(structural_model,
 
 #' Settings used to estimate Emax model
 #'
-#' Constructs a settings object controlling the optimization algorithm and
+#' Constructs a settings object controlling the optimisation algorithm and
 #' other aspects of model fitting for `emax_nls()`. Pass the result to the
 #' `opts` argument of `emax_nls()`.
 #'
 #' @param optim_method Character string specifying the algorithm used to solve 
-#' the nonlinear least squares optimization problem. Supported options are 
+#' the nonlinear least squares optimisation problem. Supported options are 
 #' "gauss" (the default), "port", and "levenberg". See details.
-#' @param optim_control A list of arguments used to control the behavior of 
-#' the optimization algorithm. Allowed values differ depending on which 
+#' @param optim_control A list of arguments used to control the behaviour of 
+#' the optimisation algorithm. Allowed values differ depending on which 
 #' algorithm is used
 #' @param quiet When `quiet=TRUE`, messages are suppressed
 #' @param weights Numeric vector providing the weights for observations. When
 #' specified, weighted least squares is used
 #' @param na.action How should missing values in the data be handled?
 #' @param max_time Maximum elapsed time in seconds allowed for the model fit.
-#' If the optimizer has not converged within this time, it is terminated and
+#' If the optimiser has not converged within this time, it is terminated and
 #' the model is treated as non-converged (the same outcome as any other
 #' convergence failure). Defaults to `Inf` (no time limit).
 #'
@@ -95,7 +95,7 @@ emax_nls <- function(structural_model,
 #' 
 #' - "gauss": Estimate parameters using the Gauss-Newton algorithm. This is 
 #'   equivalent to the using "default" option in `nls()`
-#' - "port": Estimate parameters using bounded optimization with the "nl2sol" 
+#' - "port": Estimate parameters using bounded optimisation with the "nl2sol" 
 #'   algorithm from from the the Port library. Equivalent to "port" in `nls()`
 #' - "levenberg": Estimate parameters using the Levenberg-Marquardt algorithm. 
 #'   This is equivalent to using `nlsLM()` from the "minpack.lm" package.
@@ -105,7 +105,7 @@ emax_nls <- function(structural_model,
 #' testing suggests it does not perform well for these models, and rarely converges.
 #' 
 #' The `optim_control` argument mirrors the corresponding control arguments for 
-#' the respective optimization methods:
+#' the respective optimisation methods:
 #' 
 #' - For "gauss" and "port": the list should match the output of `stats::nls.control()`
 #' - For "levenberg": the list should match the output of `minpack.lm::nls.lm.control()`
@@ -144,7 +144,7 @@ emax_nls_options <- function(optim_method = "gauss",
 #' Construct an initial guess for the Emax model parameters
 #'
 #' Constructs a data frame of starting values and parameter bounds for the
-#' Emax NLS optimization, using heuristics derived from the data.
+#' Emax NLS optimisation, using heuristics derived from the data.
 #'
 #' @param structural_model A two-sided formula of the form response ~ exposure
 #' @param covariate_model A list of two-sided formulas, each specifying a
@@ -158,7 +158,7 @@ emax_nls_options <- function(optim_method = "gauss",
 #' @details The `emax_nls()` function requires that the user specify the initial
 #' values for the model parameters. Specifically, it expects to be supplied with
 #' a data frame with columns named `parameter`, `covariate`, and `start`. If a
-#' bounded optimization method is used (e.g. if the "port" method is used), the
+#' bounded optimisation method is used (e.g. if the "port" method is used), the
 #' data frame also needs to have columns named `lower` and `upper`. The data 
 #' frame should contain one row per parameter. In most cases the user does not
 #' need to define this manually, because `emax_nls_init()` can use heuristics to
@@ -213,18 +213,18 @@ emax_nls_init <- function(structural_model, covariate_model = NULL, data) {
 #' converged and `FALSE` otherwise. The `names` attribute holds a short
 #' description of the outcome:
 #'
-#' - `"converged"`: the optimizer reached a solution successfully.
+#' - `"converged"`: the optimiser reached a solution successfully.
 #' - `"maximum time exceeded"`: the `max_time` limit set in
 #'   `emax_nls_options()` / `emax_logistic_options()` was hit before the
-#'   optimizer finished.
-#' - `"maximum iterations exceeded"`: the optimizer ran out of iterations.
+#'   optimiser finished.
+#' - `"maximum iterations exceeded"`: the optimiser ran out of iterations.
 #'   This applies to the Gauss-Newton algorithm (when `nls()` reports
 #'   "number of iterations exceeded maximum") and to the Levenberg-Marquardt
 #'   algorithm (when `nlsLM()` reports that the iteration count has reached
 #'   `maxiter`). The iteration budget can be increased via the
 #'   `optim_control` argument of `emax_nls_options()`.
-#' - Raw optimizer message: all other failures return the error message from
-#'   the underlying optimizer directly. Common examples include a singular
+#' - Raw optimiser message: all other failures return the error message from
+#'   the underlying optimiser directly. Common examples include a singular
 #'   gradient matrix at the initial parameter estimates, the Gauss-Newton
 #'   step factor collapsing below `minFactor`, and Port-algorithm convergence
 #'   codes such as false convergence (code 8) or singular convergence (code 7).
@@ -248,7 +248,7 @@ emax_converged <- function(mod) {
 #'
 #' @details
 #' These functions are not typically called directly; they underpin the
-#' stepwise covariate modeling procedures that are very commonly used when
+#' stepwise covariate modelling procedures that are very commonly used when
 #' building Emax regressions.
 #' 
 #' @seealso `emax_nls()`, [emax_scm]
@@ -281,9 +281,9 @@ emax_remove_term <- function(mod, formula) {
   .emax_remove_term(mod = mod, formula = formula)
 }
 
-#' Stepwise covariate modeling for Emax regression
+#' Stepwise covariate modelling for Emax regression
 #'
-#' Performs stepwise covariate modeling by forward addition
+#' Performs stepwise covariate modelling by forward addition
 #' (`emax_scm_forward()`), backward elimination (`emax_scm_backward()`), or
 #' both in sequence. Use `emax_scm_history()` to retrieve the history of all
 #' models tested during the procedure.
@@ -454,7 +454,7 @@ emax_scm_history <- function(mod) {
 #' parameterized on the logit scale — `logit(p) = E0 + Emax * x / (x + EC50)`
 #' — but `emax_fun()` applies the inverse-logit transformation before
 #' returning, so predictions are on the probability scale. This is consistent
-#' with the default behavior of `fitted()` and `predict()` for `emaxlogistic`
+#' with the default behaviour of `fitted()` and `predict()` for `emaxlogistic`
 #' objects. If you need the linear predictor (logit scale) directly, use
 #' `fitted(object, type = "link")` or `predict(object, type = "link")`.
 #'
@@ -520,7 +520,7 @@ emax_fun <- function(mod, ...) {
 #' `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 #' @param data A data frame that includes all relevant variables
 #' @param init Initial values and bounds for parameters. See `emax_logistic_init()`
-#' @param opts Model fitting and optimization options. See `emax_logistic_options()`
+#' @param opts Model fitting and optimisation options. See `emax_logistic_options()`
 #'
 #' @details
 #' The structural Emax model is placed on the log-odds (logit) scale:
@@ -580,7 +580,7 @@ emax_logistic <- function(structural_model,
 
 #' Settings used to estimate a logistic Emax model
 #'
-#' Constructs a settings object controlling the NLS optimizer and IRLS
+#' Constructs a settings object controlling the NLS optimiser and IRLS
 #' convergence for `emax_logistic()`. Pass the result to the `opts` argument
 #' of `emax_logistic()`.
 #'
@@ -588,14 +588,14 @@ emax_logistic <- function(structural_model,
 #' weighted NLS step within each IRLS iteration. Supported options are 
 #' `"gauss"` (default), `"port"`, and `"levenberg"`. See `emax_nls_options()` 
 #' for details on each.
-#' @param optim_control A list of arguments controlling the NLS optimizer.
+#' @param optim_control A list of arguments controlling the NLS optimiser.
 #' @param quiet When `TRUE`, convergence warnings are suppressed.
 #' @param na.action How should missing values in the data be handled?
 #' @param max_iter Maximum number of IRLS outer iterations (default 25).
 #' @param tol Convergence tolerance: IRLS stops when the change in binomial
 #' deviance between successive iterations falls below `tol` (default 1e-6).
 #' @param max_time Maximum elapsed time in seconds allowed for the entire model
-#' fit (including all IRLS iterations). If the optimizer has not converged
+#' fit (including all IRLS iterations). If the optimiser has not converged
 #' within this time, it is terminated and the model is treated as
 #' non-converged. Defaults to `Inf` (no time limit).
 #'

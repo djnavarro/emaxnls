@@ -6,8 +6,8 @@ Authors@R:
            comment = c(ORCID = "0000-0001-7648-6578"))
 Description: Provides estimation and covariate selection tools for Emax
     regression models using nonlinear least squares methods. Supported
-    optimization algorithms are Gauss-Newton, Levenberg-Marquardt, and 
-    the port library for bounded optimization. The package also provides 
+    optimisation algorithms are Gauss-Newton, Levenberg-Marquardt, and
+    the port library for bounded optimisation. The package also provides
     tools to assist in simulation work using Emax regression.
 License: MIT + file LICENSE
 URL: https://github.com/djnavarro/emaxnls, https://emaxnls.djnavarro.net/
@@ -33,5 +33,5 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Language: en-US
+Language: en-GB
 Config/roxygen2/version: 8.0.0
