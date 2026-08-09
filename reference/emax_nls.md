@@ -8,7 +8,13 @@ instead.
 ## Usage
 
 ``` r
-emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
+emax_nls(
+  structural_model,
+  covariate_model = NULL,
+  data,
+  init = NULL,
+  opts = NULL
+)
 ```
 
 ## Arguments
@@ -20,7 +26,9 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 - covariate_model:
 
   A list of two-sided formulas, each specifying a covariate model for a
-  structural parameter
+  structural parameter. When `NULL` (the default), an intercept-only
+  hyperbolic Emax model is fitted — equivalent to
+  `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 
 - data:
 
@@ -33,7 +41,7 @@ emax_nls(structural_model, covariate_model, data, init = NULL, opts = NULL)
 
 - opts:
 
-  Model fitting and optimization options. See
+  Model fitting and optimisation options. See
   [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
 
 ## Value
@@ -57,7 +65,7 @@ covariate model are not currently supported.
 
 Starting values are constructed automatically via
 [`emax_nls_init()`](https://emaxnls.djnavarro.net/reference/emax_nls_init.md)
-unless the `init` argument is supplied manually. Three optimization
+unless the `init` argument is supplied manually. Three optimisation
 algorithms are available; see
 [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
 for details.
@@ -70,6 +78,42 @@ for details.
 ## Examples
 
 ``` r
+# simplest call: hyperbolic Emax with no covariates
+emax_nls(
+  structural_model = rsp_1 ~ exp_1,
+  data = emax_df,
+  opts = emax_nls_options(max_time = 10)
+)
+#> Structural model:
+#> 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_1 
+#>   Emax type:      hyperbolic 
+#>   Response type:  continuous
+#> 
+#> Covariate model:
+#> 
+#>   E0:       E0 ~ 1 
+#>   Emax:     Emax ~ 1 
+#>   logEC50:  logEC50 ~ 1 
+#> 
+#> Model fit:
+#> 
+#>   Observations:         400 
+#>   Residual df:          397 
+#>   Residual std. error:  1.1927 
+#>   AIC:                  1281.131 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower upper
+#> 1 E0_Intercept          7.42    0.119   7.19  7.66
+#> 2 Emax_Intercept        9.86    0.251   9.37 10.4 
+#> 3 logEC50_Intercept     8.16    0.0931  7.97  8.35
+#> 
+#> Use summary() for hypothesis tests.
+
+# with a covariate on the baseline parameter
 emax_nls(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 

@@ -1,6 +1,6 @@
-# Stepwise covariate modeling for Emax regression
+# Stepwise covariate modelling for Emax regression
 
-Performs stepwise covariate modeling by forward addition
+Performs stepwise covariate modelling by forward addition
 (`emax_scm_forward()`), backward elimination (`emax_scm_backward()`), or
 both in sequence. Use `emax_scm_history()` to retrieve the history of
 all models tested during the procedure.
@@ -99,8 +99,7 @@ returned object. Use `emax_scm_history()` to extract this record.
 
 ``` r
 base_model <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  structural_model = rsp_1 ~ exp_1,
   data = emax_df,
   opts = emax_nls_options(max_time = 10)
 )
@@ -238,11 +237,10 @@ emax_scm_history(final_bic)
 #> #   term_p_value <dbl>, model_aic <dbl>, model_bic <dbl>, model_updated <lgl>
 
 # example using binary outcomes
-base_model_logistic <- emax_nls(
-  structural_model = rsp_2 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+base_model_logistic <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
   data = emax_df,
-  opts = emax_nls_options(max_time = 10)
+  opts = emax_logistic_options(max_time = 10)
 )
 forward_model_logistic <- emax_scm_forward(
   mod = base_model_logistic,
@@ -261,7 +259,7 @@ final_model_logistic
 #>   Exposure:       exp_1 
 #>   Response:       rsp_2 
 #>   Emax type:      hyperbolic 
-#>   Response type:  continuous
+#>   Response type:  binary (logit link)
 #> 
 #> Covariate model:
 #> 
@@ -271,19 +269,19 @@ final_model_logistic
 #> 
 #> Model fit:
 #> 
-#>   Observations:         400 
-#>   Residual df:          395 
-#>   Residual std. error:  0.3696 
-#>   AIC:                  345.9516 
+#>   Observations:  400 
+#>   Residual df:   395 
+#>   Deviance:      316.0186 
+#>   AIC:           326.0186 
 #> 
 #> Coefficients (95% CI):
 #> 
-#>   label             estimate std_error   lower  upper
-#> 1 E0_cnt_a            0.0932   0.00836  0.0767  0.110
-#> 2 E0_bin_d            0.145    0.0373   0.0713  0.218
-#> 3 E0_Intercept       -0.293    0.0566  -0.404  -0.182
-#> 4 Emax_Intercept      0.930    0.145    0.707   1.29 
-#> 5 logEC50_Intercept   9.27     0.381    8.60   10.0  
+#>   label             estimate std_error  lower  upper
+#> 1 E0_cnt_a             0.693    0.0817  0.532  0.853
+#> 2 E0_bin_d             1.11     0.289   0.543  1.68 
+#> 3 E0_Intercept        -5.69     0.624  -6.91  -4.46 
+#> 4 Emax_Intercept       7.99     2.15    5.09  16.2  
+#> 5 logEC50_Intercept    9.75     0.504   8.89  10.9  
 #> 
 #> Use summary() for hypothesis tests.
 

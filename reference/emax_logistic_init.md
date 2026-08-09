@@ -8,7 +8,7 @@ applied to the empirical logit scale rather than the raw response.
 ## Usage
 
 ``` r
-emax_logistic_init(structural_model, covariate_model, data)
+emax_logistic_init(structural_model, covariate_model = NULL, data)
 ```
 
 ## Arguments
@@ -20,7 +20,9 @@ emax_logistic_init(structural_model, covariate_model, data)
 - covariate_model:
 
   A list of two-sided formulas, each specifying a covariate model for a
-  structural parameter
+  structural parameter. When `NULL` (the default), an intercept-only
+  hyperbolic Emax model is assumed — equivalent to
+  `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 
 - data:
 
@@ -39,6 +41,19 @@ and `upper`
 ## Examples
 
 ``` r
+# intercept-only hyperbolic Emax (default covariate_model)
+emax_logistic_init(
+  structural_model = rsp_2 ~ exp_1,
+  data = emax_df
+)
+#> # A tibble: 3 × 5
+#>   parameter covariate start  lower upper
+#>   <chr>     <chr>     <dbl>  <dbl> <dbl>
+#> 1 E0        Intercept -6.56 -48.8   35.7
+#> 2 Emax      Intercept 19.6  -22.7   61.8
+#> 3 logEC50   Intercept  8.91   7.07  10.8
+
+# with a covariate on E0
 emax_logistic_init(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),

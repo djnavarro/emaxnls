@@ -1,6 +1,6 @@
 # Settings used to estimate Emax model
 
-Constructs a settings object controlling the optimization algorithm and
+Constructs a settings object controlling the optimisation algorithm and
 other aspects of model fitting for
 [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md).
 Pass the result to the `opts` argument of
@@ -24,12 +24,12 @@ emax_nls_options(
 - optim_method:
 
   Character string specifying the algorithm used to solve the nonlinear
-  least squares optimization problem. Supported options are "gauss" (the
+  least squares optimisation problem. Supported options are "gauss" (the
   default), "port", and "levenberg". See details.
 
 - optim_control:
 
-  A list of arguments used to control the behavior of the optimization
+  A list of arguments used to control the behaviour of the optimisation
   algorithm. Allowed values differ depending on which algorithm is used
 
 - quiet:
@@ -48,7 +48,7 @@ emax_nls_options(
 - max_time:
 
   Maximum elapsed time in seconds allowed for the model fit. If the
-  optimizer has not converged within this time, it is terminated and the
+  optimiser has not converged within this time, it is terminated and the
   model is treated as non-converged (the same outcome as any other
   convergence failure). Defaults to `Inf` (no time limit).
 
@@ -64,7 +64,7 @@ At present there are three supported values for `optim_method`:
   equivalent to the using "default" option in
   [`nls()`](https://rdrr.io/r/stats/nls.html)
 
-- "port": Estimate parameters using bounded optimization with the
+- "port": Estimate parameters using bounded optimisation with the
   "nl2sol" algorithm from from the the Port library. Equivalent to
   "port" in [`nls()`](https://rdrr.io/r/stats/nls.html)
 
@@ -80,7 +80,7 @@ for Emax regression. Informal testing suggests it does not perform well
 for these models, and rarely converges.
 
 The `optim_control` argument mirrors the corresponding control arguments
-for the respective optimization methods:
+for the respective optimisation methods:
 
 - For "gauss" and "port": the list should match the output of
   [`stats::nls.control()`](https://rdrr.io/r/stats/nls.control.html)
@@ -136,7 +136,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5563e66d01d8>
+#> <bytecode: 0x55c712e4a1d8>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -186,7 +186,7 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5563e66d01d8>
+#> <bytecode: 0x55c712e4a1d8>
 #> <environment: namespace:stats>
 #> 
 #> $max_time

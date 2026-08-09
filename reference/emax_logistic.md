@@ -11,7 +11,7 @@ instead.
 ``` r
 emax_logistic(
   structural_model,
-  covariate_model,
+  covariate_model = NULL,
   data,
   init = NULL,
   opts = NULL
@@ -27,7 +27,9 @@ emax_logistic(
 - covariate_model:
 
   A list of two-sided formulas, each specifying a covariate model for a
-  structural parameter
+  structural parameter. When `NULL` (the default), an intercept-only
+  hyperbolic Emax model is fitted — equivalent to
+  `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 
 - data:
 
@@ -40,7 +42,7 @@ emax_logistic(
 
 - opts:
 
-  Model fitting and optimization options. See
+  Model fitting and optimisation options. See
   [`emax_logistic_options()`](https://emaxnls.djnavarro.net/reference/emax_logistic_options.md)
 
 ## Value
@@ -77,6 +79,42 @@ in `structural_model` must be a binary (0/1) numeric vector.
 ## Examples
 
 ``` r
+# simplest call: hyperbolic Emax with no covariates
+emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
+)
+#> Structural model:
+#> 
+#>   Exposure:       exp_1 
+#>   Response:       rsp_2 
+#>   Emax type:      hyperbolic 
+#>   Response type:  binary (logit link)
+#> 
+#> Covariate model:
+#> 
+#>   E0:       E0 ~ 1 
+#>   Emax:     Emax ~ 1 
+#>   logEC50:  logEC50 ~ 1 
+#> 
+#> Model fit:
+#> 
+#>   Observations:  400 
+#>   Residual df:   397 
+#>   Deviance:      438.4336 
+#>   AIC:           444.4336 
+#> 
+#> Coefficients (95% CI):
+#> 
+#>   label             estimate std_error lower  upper
+#> 1 E0_Intercept         -1.21     0.231 -1.67 -0.756
+#> 2 Emax_Intercept        5.46     1.58   3.36 14.0  
+#> 3 logEC50_Intercept     9.63     0.573  8.56 11.2  
+#> 
+#> Use summary() for hypothesis tests.
+
+# with a covariate on the baseline parameter
 emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),

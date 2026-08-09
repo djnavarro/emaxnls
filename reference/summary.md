@@ -124,7 +124,7 @@ retained. To work with the EC50 on the concentration scale, use
 ### Simultaneous intervals
 
 When `simultaneous = TRUE`, a single critical value is derived from the
-joint multivariate normal distribution of the standardized parameter
+joint multivariate normal distribution of the standardised parameter
 estimates. The resulting intervals have simultaneous coverage at
 `conf_level` and will be wider than the individual (pointwise)
 intervals.

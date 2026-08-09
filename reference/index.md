@@ -29,7 +29,7 @@ Stepwise covariate modeling for Emax regression models
 - [`emax_scm_forward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_backward()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
   [`emax_scm_history()`](https://emaxnls.djnavarro.net/reference/emax_scm.md)
-  : Stepwise covariate modeling for Emax regression
+  : Stepwise covariate modelling for Emax regression
 
 ## Methods for Emax regression objects
 

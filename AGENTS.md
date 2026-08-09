@@ -117,7 +117,7 @@ dependency on erplots).
 - **File naming**: `{class}-{concern}.R` for class-specific files (e.g.,
   `emaxnls-methods.R`), `utils-{concern}.R` for shared utilities
 
-### Optimization algorithms
+### Optimisation algorithms
 
 Three algorithms are available via `optim_method`:
 
@@ -195,9 +195,10 @@ emax_nls(
   pkgdown build, rhub
 - Spell checking via `spelling` (custom words in `inst/WORDLIST`)
 - README generated from `README.Rmd`
-- **Use US English spelling** in all code comments, roxygen
-  documentation, vignettes, and other prose (e.g. “behavior” not
-  “behaviour”, “color” not “colour”, “modeling” not “modelling”)
+- **Use UK English spelling** in all code comments, roxygen
+  documentation, vignettes, and other prose (e.g. “behaviour” not
+  “behavior”, “colour” not “color”, “modelling” not “modeling”,
+  “optimisation” not “optimization”)
 - **Code style by context**: the package itself has minimal
   dependencies, so `@examples` blocks and any other code embedded in
   roxygen documentation must use base R only — no tidyverse. Articles in

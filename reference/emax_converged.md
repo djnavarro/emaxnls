@@ -23,15 +23,15 @@ A named logical scalar. The value is `TRUE` when the model converged and
 `FALSE` otherwise. The `names` attribute holds a short description of
 the outcome:
 
-- `"converged"`: the optimizer reached a solution successfully.
+- `"converged"`: the optimiser reached a solution successfully.
 
 - `"maximum time exceeded"`: the `max_time` limit set in
   [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
   /
   [`emax_logistic_options()`](https://emaxnls.djnavarro.net/reference/emax_logistic_options.md)
-  was hit before the optimizer finished.
+  was hit before the optimiser finished.
 
-- `"maximum iterations exceeded"`: the optimizer ran out of iterations.
+- `"maximum iterations exceeded"`: the optimiser ran out of iterations.
   This applies to the Gauss-Newton algorithm (when
   [`nls()`](https://rdrr.io/r/stats/nls.html) reports "number of
   iterations exceeded maximum") and to the Levenberg-Marquardt algorithm
@@ -40,8 +40,8 @@ the outcome:
   `optim_control` argument of
   [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md).
 
-- Raw optimizer message: all other failures return the error message
-  from the underlying optimizer directly. Common examples include a
+- Raw optimiser message: all other failures return the error message
+  from the underlying optimiser directly. Common examples include a
   singular gradient matrix at the initial parameter estimates, the
   Gauss-Newton step factor collapsing below `minFactor`, and
   Port-algorithm convergence codes such as false convergence (code 8) or

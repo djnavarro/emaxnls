@@ -28,7 +28,7 @@ An object of class `emaxnls`
 ## Details
 
 These functions are not typically called directly; they underpin the
-stepwise covariate modeling procedures that are very commonly used when
+stepwise covariate modelling procedures that are very commonly used when
 building Emax regressions.
 
 ## See also

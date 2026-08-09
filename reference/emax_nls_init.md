@@ -1,12 +1,12 @@
 # Construct an initial guess for the Emax model parameters
 
 Constructs a data frame of starting values and parameter bounds for the
-Emax NLS optimization, using heuristics derived from the data.
+Emax NLS optimisation, using heuristics derived from the data.
 
 ## Usage
 
 ``` r
-emax_nls_init(structural_model, covariate_model, data)
+emax_nls_init(structural_model, covariate_model = NULL, data)
 ```
 
 ## Arguments
@@ -17,8 +17,10 @@ emax_nls_init(structural_model, covariate_model, data)
 
 - covariate_model:
 
-  A list of two-sided formulas, each of specifying a covariate model for
-  a structural parameter
+  A list of two-sided formulas, each specifying a covariate model for a
+  structural parameter. When `NULL` (the default), an intercept-only
+  hyperbolic Emax model is assumed — equivalent to
+  `list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)`.
 
 - data:
 
@@ -34,7 +36,7 @@ The [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md)
 function requires that the user specify the initial values for the model
 parameters. Specifically, it expects to be supplied with a data frame
 with columns named `parameter`, `covariate`, and `start`. If a bounded
-optimization method is used (e.g. if the "port" method is used), the
+optimisation method is used (e.g. if the "port" method is used), the
 data frame also needs to have columns named `lower` and `upper`. The
 data frame should contain one row per parameter. In most cases the user
 does not need to define this manually, because `emax_nls_init()` can use
@@ -53,8 +55,19 @@ and the `data`.
 ## Examples
 
 ``` r
-# use a heuristic to construct sensible start values, and plausible
-# upper and lower bounds within which the estimate is expected to fall 
+# intercept-only hyperbolic Emax (default covariate_model)
+emax_nls_init(
+  structural_model = rsp_1 ~ exp_1,
+  data = emax_df
+)
+#> # A tibble: 3 × 5
+#>   parameter covariate start  lower upper
+#>   <chr>     <chr>     <dbl>  <dbl> <dbl>
+#> 1 E0        Intercept  9.73  0.528  18.9
+#> 2 Emax      Intercept  7.74 -1.47   16.9
+#> 3 logEC50   Intercept  8.69  6.63   10.8
+
+# with a covariate on E0
 emax_nls_init(
   structural_model = rsp_1 ~ exp_1, 
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1), 

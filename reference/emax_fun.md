@@ -47,7 +47,7 @@ outcome variable). For `emaxlogistic` objects the structural Emax model
 is parameterized on the logit scale —
 `logit(p) = E0 + Emax * x / (x + EC50)` — but `emax_fun()` applies the
 inverse-logit transformation before returning, so predictions are on the
-probability scale. This is consistent with the default behavior of
+probability scale. This is consistent with the default behaviour of
 [`fitted()`](https://emaxnls.djnavarro.net/reference/fitted.md) and
 [`predict()`](https://emaxnls.djnavarro.net/reference/predict.md) for
 `emaxlogistic` objects. If you need the linear predictor (logit scale)

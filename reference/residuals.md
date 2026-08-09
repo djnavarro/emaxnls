@@ -38,7 +38,7 @@ A numeric vector of residuals
 
 Pearson residuals are the raw residuals divided by
 `sqrt(mu * (1 - mu))`, the estimated standard deviation of a Bernoulli
-observation, giving a standardized measure of discrepancy. Deviance
+observation, giving a standardised measure of discrepancy. Deviance
 residuals are the signed square root of each observation's contribution
 to the total binomial deviance; their sum of squares equals the model
 deviance returned by

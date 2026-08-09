@@ -1,6 +1,6 @@
 # Settings used to estimate a logistic Emax model
 
-Constructs a settings object controlling the NLS optimizer and IRLS
+Constructs a settings object controlling the NLS optimiser and IRLS
 convergence for
 [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md).
 Pass the result to the `opts` argument of
@@ -32,7 +32,7 @@ emax_logistic_options(
 
 - optim_control:
 
-  A list of arguments controlling the NLS optimizer.
+  A list of arguments controlling the NLS optimiser.
 
 - quiet:
 
@@ -54,7 +54,7 @@ emax_logistic_options(
 - max_time:
 
   Maximum elapsed time in seconds allowed for the entire model fit
-  (including all IRLS iterations). If the optimizer has not converged
+  (including all IRLS iterations). If the optimiser has not converged
   within this time, it is terminated and the model is treated as
   non-converged. Defaults to `Inf` (no time limit).
 
@@ -107,7 +107,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5563e66d01d8>
+#> <bytecode: 0x55c712e4a1d8>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
@@ -157,7 +157,7 @@ emax_logistic_options(max_iter = 50)
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x5563e66d01d8>
+#> <bytecode: 0x55c712e4a1d8>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
