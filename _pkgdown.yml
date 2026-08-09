@@ -1,6 +1,15 @@
 url: https://emaxnls.djnavarro.net/
 template:
   package: waeponwifestre
+
+articles:
+- title: Articles
+  contents:
+  - fitting-emax-models
+  - fitting-logistic-emax-models
+  - simulating-from-emax-models
+  - stepwise-covariate-modelling
+  - erplots-integration
   
 reference:
 - title: Emax regression
