@@ -155,14 +155,14 @@
 #
 # Two failure modes get a clean label:
 #   - elapsed time limit hit (setTimeLimit): "maximum time exceeded"
-#   - optimizer iteration budget exhausted:  "maximum iterations exceeded"
+#   - optimiser iteration budget exhausted:  "maximum iterations exceeded"
 #     (matches Gauss-Newton "number of iterations exceeded maximum of X" and
 #      Levenberg-Marquardt "Number of iterations has reached 'maxiter'")
 #
 # All other failures -- including singular gradient, step factor collapsed
 # below minFactor (Gauss-Newton), Port false/singular convergence codes 7-8,
 # Port function-evaluation limit (code 9), and Levenberg-Marquardt tolerance
-# failures -- fall through to the raw optimizer condition message, which is
+# failures -- fall through to the raw optimiser condition message, which is
 # the most informative thing to return in those cases.
 .convergence_reason <- function(x) {
   if (.is_converged(x)) return("converged")

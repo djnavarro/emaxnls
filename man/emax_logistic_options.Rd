@@ -20,7 +20,7 @@ weighted NLS step within each IRLS iteration. Supported options are
 \code{"gauss"} (default), \code{"port"}, and \code{"levenberg"}. See \code{emax_nls_options()}
 for details on each.}
 
-\item{optim_control}{A list of arguments controlling the NLS optimizer.}
+\item{optim_control}{A list of arguments controlling the NLS optimiser.}
 
 \item{quiet}{When \code{TRUE}, convergence warnings are suppressed.}
 
@@ -32,7 +32,7 @@ for details on each.}
 deviance between successive iterations falls below \code{tol} (default 1e-6).}
 
 \item{max_time}{Maximum elapsed time in seconds allowed for the entire model
-fit (including all IRLS iterations). If the optimizer has not converged
+fit (including all IRLS iterations). If the optimiser has not converged
 within this time, it is terminated and the model is treated as
 non-converged. Defaults to \code{Inf} (no time limit).}
 }
@@ -40,7 +40,7 @@ non-converged. Defaults to \code{Inf} (no time limit).}
 A list of settings
 }
 \description{
-Constructs a settings object controlling the NLS optimizer and IRLS
+Constructs a settings object controlling the NLS optimiser and IRLS
 convergence for \code{emax_logistic()}. Pass the result to the \code{opts} argument
 of \code{emax_logistic()}.
 }

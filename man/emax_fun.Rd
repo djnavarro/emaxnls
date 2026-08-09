@@ -40,7 +40,7 @@ variable). For \code{emaxlogistic} objects the structural Emax model is
 parameterized on the logit scale — \code{logit(p) = E0 + Emax * x / (x + EC50)}
 — but \code{emax_fun()} applies the inverse-logit transformation before
 returning, so predictions are on the probability scale. This is consistent
-with the default behavior of \code{fitted()} and \code{predict()} for \code{emaxlogistic}
+with the default behaviour of \code{fitted()} and \code{predict()} for \code{emaxlogistic}
 objects. If you need the linear predictor (logit scale) directly, use
 \code{fitted(object, type = "link")} or \code{predict(object, type = "link")}.
 }

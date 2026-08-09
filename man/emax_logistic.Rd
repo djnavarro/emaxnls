@@ -6,7 +6,7 @@
 \usage{
 emax_logistic(
   structural_model,
-  covariate_model,
+  covariate_model = NULL,
   data,
   init = NULL,
   opts = NULL
@@ -16,13 +16,15 @@ emax_logistic(
 \item{structural_model}{A two-sided formula of the form response ~ exposure}
 
 \item{covariate_model}{A list of two-sided formulas, each specifying a
-covariate model for a structural parameter}
+covariate model for a structural parameter. When \code{NULL} (the default), an
+intercept-only hyperbolic Emax model is fitted — equivalent to
+\code{list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1)}.}
 
 \item{data}{A data frame that includes all relevant variables}
 
 \item{init}{Initial values and bounds for parameters. See \code{emax_logistic_init()}}
 
-\item{opts}{Model fitting and optimization options. See \code{emax_logistic_options()}}
+\item{opts}{Model fitting and optimisation options. See \code{emax_logistic_options()}}
 }
 \value{
 An object of class \code{emaxlogistic} (which also inherits from \code{emaxnls})
@@ -50,6 +52,14 @@ including support for sigmoidal models via a \code{logHill} term. The response v
 in \code{structural_model} must be a binary (0/1) numeric vector.
 }
 \examples{
+# simplest call: hyperbolic Emax with no covariates
+emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
+  data = emax_df,
+  opts = emax_logistic_options(max_time = 10)
+)
+
+# with a covariate on the baseline parameter
 emax_logistic(
   structural_model = rsp_2 ~ exp_1,
   covariate_model = list(E0 ~ cnt_a, Emax ~ 1, logEC50 ~ 1),

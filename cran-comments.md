@@ -1,4 +1,4 @@
-This is a resubmission of a new package designed to support emax regression models in R, commonly used in pharmacometric modeling (version updated from 0.1 to 0.1.1). The resubmission addresses the primary concern with the original submission, namely that the Description field in DESCRIPTION was not sufficiently detailed. In the revised version I've briefly outlined the core functionality of the package, attempting to be concise while also documenting the key features. 
+This is a resubmission of a new package designed to support emax regression models in R, commonly used in pharmacometric modelling (version updated from 0.1 to 0.1.1). The resubmission addresses the primary concern with the original submission, namely that the Description field in DESCRIPTION was not sufficiently detailed. In the revised version I've briefly outlined the core functionality of the package, attempting to be concise while also documenting the key features. 
 
 I have also taken the opportunity to improve documentation and the unit tests in the resubmission.
 

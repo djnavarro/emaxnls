@@ -5,7 +5,7 @@
 \alias{emax_scm_forward}
 \alias{emax_scm_backward}
 \alias{emax_scm_history}
-\title{Stepwise covariate modeling for Emax regression}
+\title{Stepwise covariate modelling for Emax regression}
 \usage{
 emax_scm_forward(
   mod,
@@ -42,7 +42,7 @@ emax_scm_history(mod)
 An object of class \code{emaxnls}
 }
 \description{
-Performs stepwise covariate modeling by forward addition
+Performs stepwise covariate modelling by forward addition
 (\code{emax_scm_forward()}), backward elimination (\code{emax_scm_backward()}), or
 both in sequence. Use \code{emax_scm_history()} to retrieve the history of all
 models tested during the procedure.
@@ -82,8 +82,7 @@ object. Use \code{emax_scm_history()} to extract this record.
 }
 \examples{
 base_model <- emax_nls(
-  structural_model = rsp_1 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+  structural_model = rsp_1 ~ exp_1,
   data = emax_df,
   opts = emax_nls_options(max_time = 10)
 )
@@ -129,11 +128,10 @@ final_bic <- emax_scm_backward(
 emax_scm_history(final_bic)
 
 # example using binary outcomes
-base_model_logistic <- emax_nls(
-  structural_model = rsp_2 ~ exp_1, 
-  covariate_model = list(E0 ~ 1, Emax ~ 1, logEC50 ~ 1), 
+base_model_logistic <- emax_logistic(
+  structural_model = rsp_2 ~ exp_1,
   data = emax_df,
-  opts = emax_nls_options(max_time = 10)
+  opts = emax_logistic_options(max_time = 10)
 )
 forward_model_logistic <- emax_scm_forward(
   mod = base_model_logistic,

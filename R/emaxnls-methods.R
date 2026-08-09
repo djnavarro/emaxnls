@@ -125,7 +125,7 @@ vcov.emaxnls <- function(object, ...) {
 #' @details
 #' Pearson residuals are the raw residuals divided by `sqrt(mu * (1 - mu))`,
 #' the estimated standard deviation of a Bernoulli observation, giving a
-#' standardized measure of discrepancy. Deviance residuals are the signed
+#' standardised measure of discrepancy. Deviance residuals are the signed
 #' square root of each observation's contribution to the total binomial
 #' deviance; their sum of squares equals the model deviance returned by
 #' `deviance()`.
@@ -687,7 +687,7 @@ fitted.emaxnls <- function(object, ...) {
 #' returned instead.
 #'
 #' When `simultaneous = TRUE`, a single critical value is derived from the
-#' joint multivariate normal distribution of the standardized parameter
+#' joint multivariate normal distribution of the standardised parameter
 #' estimates (via [mvtnorm::qmvnorm()]). The resulting intervals have
 #' simultaneous coverage at `level` across all parameters and will be wider
 #' than the individual (pointwise) intervals. This matches the intervals
@@ -699,7 +699,7 @@ fitted.emaxnls <- function(object, ...) {
 #' the `log` prefix from their row names.
 #'
 #' @returns A matrix (or vector) with columns giving lower and upper confidence limits
-#'   for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in %
+#'   for each parameter. These will be labelled as (1-level)/2 and 1 - (1-level)/2 in %
 #'   (by default 2.5% and 97.5%).
 #'
 #' @examples

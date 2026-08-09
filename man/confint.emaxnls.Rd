@@ -32,7 +32,7 @@ to \code{FALSE}.}
 }
 \value{
 A matrix (or vector) with columns giving lower and upper confidence limits
-for each parameter. These will be labeled as (1-level)/2 and 1 - (1-level)/2 in \%
+for each parameter. These will be labelled as (1-level)/2 and 1 - (1-level)/2 in \%
 (by default 2.5\% and 97.5\%).
 }
 \description{
@@ -50,7 +50,7 @@ occur for sigmoidal models), a warning is issued and Wald intervals are
 returned instead.
 
 When \code{simultaneous = TRUE}, a single critical value is derived from the
-joint multivariate normal distribution of the standardized parameter
+joint multivariate normal distribution of the standardised parameter
 estimates (via \code{\link[mvtnorm:qmvnorm]{mvtnorm::qmvnorm()}}). The resulting intervals have
 simultaneous coverage at \code{level} across all parameters and will be wider
 than the individual (pointwise) intervals. This matches the intervals
