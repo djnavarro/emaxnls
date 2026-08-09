@@ -141,6 +141,7 @@ emax_df |>
   er_plot_add_model(mod_b) |>
   er_plot_add_quantiles() |>
   er_plot_add_data() |>
+  er_plot_add_groups(group_by = exp_1) |>
   plot()
 ```
 
@@ -151,6 +152,19 @@ auto-detects the binary response from the values of `rsp_2` (all in
 $`\{0, 1\}`$) and automatically switches to Clopper-Pearson confidence
 intervals for the quantile layer and a jitter-style display for the data
 layer.
+
+[`er_plot_add_groups()`](https://erplots.djnavarro.net/reference/er_plot_add_groups.html)
+introduces the **group layer**, which is structurally distinct from the
+other layers. Rather than overlaying content within the main panel, it
+appends a separate panel below the plot showing the marginal
+distribution of the exposure variable. Unlike the model, summary,
+quantile, and data layers — which are singletons, so a second call
+replaces the first — the group layer is *additive*: each
+[`er_plot_add_groups()`](https://erplots.djnavarro.net/reference/er_plot_add_groups.html)
+call adds one new panel, and you can stack several to display different
+groupings. This makes it easy to see where observations are concentrated
+along the exposure axis and to judge whether the quantile bins are
+adequately covering the data.
 
 ## Visual predictive checks
 
@@ -202,9 +216,9 @@ is sufficient:
 
 emax_df |>
   er_vpc(exposure = exp_1, response = rsp_2) |>
-  er_vpc_add_observed(dodge = -0.01, errorbar_width = 0.0125) |>
+  er_vpc_add_observed(dodge = -0.005, errorbar_width = 0.0125) |>
   er_vpc_add_simulated(model = mod_b, seed = 7438,
-                       dodge = 0.01, errorbar_width = 0.0125) |>
+                       dodge = 0.005, errorbar_width = 0.0125) |>
   plot()
 ```
 

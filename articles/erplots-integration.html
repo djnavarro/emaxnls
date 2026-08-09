@@ -184,6 +184,7 @@ is nothing extra to do:</p>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_plot_add_model.html" class="external-link">er_plot_add_model</a></span><span class="op">(</span><span class="va">mod_b</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_plot_add_quantiles.html" class="external-link">er_plot_add_quantiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_plot_add_data.html" class="external-link">er_plot_add_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_plot_add_groups.html" class="external-link">er_plot_add_groups</a></span><span class="op">(</span>group_by <span class="op">=</span> <span class="va">exp_1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="erplots-integration_files/figure-html/fit-binary-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p><code><a href="https://erplots.djnavarro.net/reference/er_plot.html" class="external-link">er_plot()</a></code> auto-detects the binary response from the
@@ -191,6 +192,17 @@ values of <code>rsp_2</code> (all in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0, 1\}</annotation></semantics></math>)
 and automatically switches to Clopper-Pearson confidence intervals for
 the quantile layer and a jitter-style display for the data layer.</p>
+<p><code><a href="https://erplots.djnavarro.net/reference/er_plot_add_groups.html" class="external-link">er_plot_add_groups()</a></code> introduces the <strong>group
+layer</strong>, which is structurally distinct from the other layers.
+Rather than overlaying content within the main panel, it appends a
+separate panel below the plot showing the marginal distribution of the
+exposure variable. Unlike the model, summary, quantile, and data layers
+— which are singletons, so a second call replaces the first — the group
+layer is <em>additive</em>: each <code><a href="https://erplots.djnavarro.net/reference/er_plot_add_groups.html" class="external-link">er_plot_add_groups()</a></code> call
+adds one new panel, and you can stack several to display different
+groupings. This makes it easy to see where observations are concentrated
+along the exposure axis and to judge whether the quantile bins are
+adequately covering the data.</p>
 </div>
 <div class="section level2">
 <h2 id="visual-predictive-checks">Visual predictive checks<a class="anchor" aria-label="anchor" href="#visual-predictive-checks"></a>
@@ -228,9 +240,9 @@ auto-detects the response type, so passing <code>mod_b</code> (the
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">emax_df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc.html" class="external-link">er_vpc</a></span><span class="op">(</span>exposure <span class="op">=</span> <span class="va">exp_1</span>, response <span class="op">=</span> <span class="va">rsp_2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_observed.html" class="external-link">er_vpc_add_observed</a></span><span class="op">(</span>dodge <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_observed.html" class="external-link">er_vpc_add_observed</a></span><span class="op">(</span>dodge <span class="op">=</span> <span class="op">-</span><span class="fl">0.005</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://erplots.djnavarro.net/reference/er_vpc_add_simulated.html" class="external-link">er_vpc_add_simulated</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod_b</span>, seed <span class="op">=</span> <span class="fl">7438</span>,</span>
-<span>                       dodge <span class="op">=</span> <span class="fl">0.01</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                       dodge <span class="op">=</span> <span class="fl">0.005</span>, errorbar_width <span class="op">=</span> <span class="fl">0.0125</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="erplots-integration_files/figure-html/vpc-binary-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>For a binary response the default style — mean response rate with a
