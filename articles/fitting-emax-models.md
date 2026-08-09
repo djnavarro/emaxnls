@@ -6,7 +6,7 @@ library(emaxnls)
 library(tibble)
 library(ggplot2)
 theme_set(theme_bw())
-set.seed(123)
+set.seed(3847)
 ```
 
 This article walks through the process of fitting an Emax regression
@@ -275,7 +275,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55f6b0ce72e8>
+#> <bytecode: 0x55e79ea782e8>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -612,3 +612,10 @@ continuous-outcome Emax model. From here you might look at:
   which places the Emax model on the logit scale and estimates it by
   iterative reweighted least squares. It is described in its own
   article.
+- **Visualisation.** When erplots is installed, a fitted model can be
+  passed directly to
+  [`er_plot()`](https://erplots.djnavarro.net/reference/er_plot.html) to
+  build exposure-response plots with a model band, observed quantile
+  summaries, and raw data overlays. The [erplots integration
+  article](https://emaxnls.djnavarro.net/articles/erplots-integration.md)
+  covers the full pipeline, including visual predictive checks.

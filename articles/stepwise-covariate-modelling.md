@@ -4,7 +4,7 @@
 
 library(emaxnls)
 library(tibble)
-set.seed(123)
+set.seed(7062)
 ```
 
 Once you can fit a single Emax model, the next practical question is
@@ -157,8 +157,8 @@ native pipe:
 ``` r
 
 final_model <- base_model |>
-  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 1) |>
-  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 1)
+  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 4391) |>
+  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 4391)
 #> Warning: `nls()` did not converge
 ```
 
@@ -290,25 +290,25 @@ print(
 #>    iteration step        action term_tested term_p_value model_aic model_updated
 #>        <int> <chr>       <chr>  <chr>              <dbl>     <dbl> <lgl>        
 #>  1         0 base model  NA     NA            NA             1281. NA           
-#>  2         1 forward     add    Emax ~ bin…    3.39e-  1     1282. FALSE        
-#>  3         1 forward     add    E0 ~ bin_d     3.82e-  1     1282. FALSE        
-#>  4         1 forward     add    Emax ~ cnt…    1.31e-  1     1281. FALSE        
-#>  5         1 forward     add    E0 ~ cnt_a     3.74e-148      604. TRUE         
-#>  6         1 forward     add    E0 ~ cnt_b     8.93e-  1     1283. FALSE        
-#>  7         1 forward     add    E0 ~ bin_e     2.78e-  1     1282. FALSE        
-#>  8         1 forward     add    E0 ~ cnt_c     6.36e-  1     1283. FALSE        
-#>  9         1 forward     add    Emax ~ bin…    2.13e-  1     1282. FALSE        
-#> 10         1 forward     add    Emax ~ cnt…    2.24e- 73      951. FALSE        
-#> 11         1 forward     add    Emax ~ cnt…    8.46e-  1     1283. FALSE        
-#> 12         2 forward     add    E0 ~ cnt_c     6.07e-  1      605. FALSE        
-#> 13         2 forward     add    E0 ~ bin_e     9.48e-  1      606. FALSE        
-#> 14         2 forward     add    Emax ~ cnt…    7.32e-  1      606. FALSE        
-#> 15         2 forward     add    E0 ~ cnt_b     9.93e-  1      606. FALSE        
-#> 16         2 forward     add    Emax ~ cnt…    4.92e-  1      605. FALSE        
-#> 17         2 forward     add    Emax ~ bin…   NA               NA  FALSE        
-#> 18         2 forward     add    Emax ~ bin…    9.40e-  1      606. FALSE        
-#> 19         2 forward     add    E0 ~ bin_d     5.39e-  1      605. FALSE        
-#> 20         2 forward     add    Emax ~ cnt…    6.09e-  1      605. FALSE        
+#>  2         1 forward     add    E0 ~ bin_e     2.78e-  1     1282. FALSE        
+#>  3         1 forward     add    Emax ~ bin…    2.13e-  1     1282. FALSE        
+#>  4         1 forward     add    Emax ~ bin…    3.39e-  1     1282. FALSE        
+#>  5         1 forward     add    E0 ~ cnt_c     6.36e-  1     1283. FALSE        
+#>  6         1 forward     add    E0 ~ bin_d     3.82e-  1     1282. FALSE        
+#>  7         1 forward     add    Emax ~ cnt…    8.46e-  1     1283. FALSE        
+#>  8         1 forward     add    E0 ~ cnt_b     8.93e-  1     1283. FALSE        
+#>  9         1 forward     add    Emax ~ cnt…    1.31e-  1     1281. FALSE        
+#> 10         1 forward     add    E0 ~ cnt_a     3.74e-148      604. TRUE         
+#> 11         1 forward     add    Emax ~ cnt…    2.24e- 73      951. FALSE        
+#> 12         2 forward     add    Emax ~ cnt…    6.09e-  1      605. FALSE        
+#> 13         2 forward     add    E0 ~ cnt_c     6.07e-  1      605. FALSE        
+#> 14         2 forward     add    E0 ~ bin_d     5.39e-  1      605. FALSE        
+#> 15         2 forward     add    E0 ~ bin_e     9.48e-  1      606. FALSE        
+#> 16         2 forward     add    Emax ~ bin…    9.40e-  1      606. FALSE        
+#> 17         2 forward     add    Emax ~ cnt…    7.32e-  1      606. FALSE        
+#> 18         2 forward     add    E0 ~ cnt_b     9.93e-  1      606. FALSE        
+#> 19         2 forward     add    Emax ~ cnt…    4.92e-  1      605. FALSE        
+#> 20         2 forward     add    Emax ~ bin…   NA               NA  FALSE        
 #> 21         3 backward    remove E0 ~ cnt_a     3.74e-148     1281. FALSE        
 #> 22         4 final model NA     NA            NA              604. NA
 ```
@@ -381,8 +381,8 @@ base_logistic <- emax_logistic(
 )
 
 final_logistic <- base_logistic |>
-  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 1) |>
-  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 1)
+  emax_scm_forward(candidates = candidates, threshold = 0.01, seed = 4391) |>
+  emax_scm_backward(candidates = candidates, threshold = 0.001, seed = 4391)
 
 final_logistic
 #> Structural model:

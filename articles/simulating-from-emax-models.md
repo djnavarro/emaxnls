@@ -6,7 +6,7 @@ library(emaxnls)
 library(tibble)
 library(ggplot2)
 theme_set(theme_bw())
-set.seed(123)
+set.seed(8134)
 ```
 
 Once a model has been fitted, it is often useful to generate *new* data
@@ -52,21 +52,21 @@ set by `nsim`, and a `seed` can be supplied for reproducibility:
 
 ``` r
 
-sim1 <- simulate(mod, nsim = 1, seed = 1)
+sim1 <- simulate(mod, nsim = 1, seed = 5683)
 sim1
 #> # A tibble: 400 × 11
 #>    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>     <int>  <int> <dbl> <dbl>    <dbl>        <dbl>          <dbl>
-#>  1      1      1 14.4  14.6     0.487         5.10           9.91
-#>  2      2      1 15.5  15.1     0.487         5.10           9.91
-#>  3      3      1  5.69  5.94    0.487         5.10           9.91
-#>  4      4      1 13.3  13.7     0.487         5.10           9.91
-#>  5      5      1 13.5  13.8     0.487         5.10           9.91
-#>  6      6      1 16.8  16.7     0.487         5.10           9.91
-#>  7      7      1 17.1  17.9     0.487         5.10           9.91
-#>  8      8      1 14.7  14.9     0.487         5.10           9.91
-#>  9      9      1  7.45  7.14    0.487         5.10           9.91
-#> 10     10      1 12.9  11.8     0.487         5.10           9.91
+#>  1      1      1 14.5  13.5     0.498         4.99           10.1
+#>  2      2      1 15.6  16.1     0.498         4.99           10.1
+#>  3      3      1  5.59  5.64    0.498         4.99           10.1
+#>  4      4      1 13.4  13.4     0.498         4.99           10.1
+#>  5      5      1 13.5  14.0     0.498         4.99           10.1
+#>  6      6      1 16.9  16.4     0.498         4.99           10.1
+#>  7      7      1 17.2  16.1     0.498         4.99           10.1
+#>  8      8      1 14.8  15.5     0.498         4.99           10.1
+#>  9      9      1  7.40  7.06    0.498         4.99           10.1
+#> 10     10      1 12.9  12.9     0.498         4.99           10.1
 #> # ℹ 390 more rows
 #> # ℹ 4 more variables: logEC50_Intercept <dbl>, rsp_1 <dbl>, exp_1 <dbl>,
 #> #   cnt_a <dbl>
@@ -134,7 +134,7 @@ replicate:
 
 ``` r
 
-sims <- simulate(mod, nsim = 50, seed = 1)
+sims <- simulate(mod, nsim = 50, seed = 5683)
 dim(sims)
 #> [1] 20000    11
 
@@ -143,9 +143,9 @@ unique(sims[sims$sim_id <= 3, c("sim_id", "E0_Intercept", "Emax_Intercept")])
 #> # A tibble: 3 × 3
 #>   sim_id E0_Intercept Emax_Intercept
 #>    <int>        <dbl>          <dbl>
-#> 1      1         5.10           9.91
-#> 2      2         4.99          10.1 
-#> 3      3         5.01          10.1
+#> 1      1         4.99          10.1 
+#> 2      2         5.13           9.97
+#> 3      3         5.00           9.78
 ```
 
 ### A predictive check
@@ -252,7 +252,7 @@ and summarise the resulting family of curves pointwise.
 
 ``` r
 
-set.seed(1)
+set.seed(6471)
 n_draws <- 500
 draws <- mvtnorm::rmvnorm(n_draws, mean = coef(mod), sigma = vcov(mod))
 colnames(draws) <- names(coef(mod))
@@ -316,17 +316,17 @@ $`\text{Bernoulli}(\mu)`$ rather than a mean plus Gaussian noise:
 
 ``` r
 
-sim_b <- simulate(mod_b, nsim = 2, seed = 1)
+sim_b <- simulate(mod_b, nsim = 2, seed = 5683)
 head(sim_b)
 #> # A tibble: 6 × 11
 #>   dat_id sim_id     mu   val E0_cnt_a E0_Intercept Emax_Intercept
 #>    <int>  <int>  <dbl> <dbl>    <dbl>        <dbl>          <dbl>
-#> 1      1      1 0.632      0    0.623        -4.61           6.93
-#> 2      2      1 0.857      0    0.623        -4.61           6.93
-#> 3      3      1 0.0209     0    0.623        -4.61           6.93
-#> 4      4      1 0.349      0    0.623        -4.61           6.93
-#> 5      5      1 0.489      0    0.623        -4.61           6.93
-#> 6      6      1 0.970      1    0.623        -4.61           6.93
+#> 1      1      1 0.621      0    0.761        -5.43           11.3
+#> 2      2      1 0.895      1    0.761        -5.43           11.3
+#> 3      3      1 0.0109     0    0.761        -5.43           11.3
+#> 4      4      1 0.278      0    0.761        -5.43           11.3
+#> 5      5      1 0.440      1    0.761        -5.43           11.3
+#> 6      6      1 0.989      1    0.761        -5.43           11.3
 #> # ℹ 4 more variables: logEC50_Intercept <dbl>, rsp_2 <dbl>, exp_1 <dbl>,
 #> #   cnt_a <dbl>
 
@@ -375,3 +375,10 @@ carries over exactly as in the continuous case.
   and
   [`emax_fun()`](https://emaxnls.djnavarro.net/reference/emax_fun.md)
   when you need replicate datasets or bespoke simulation logic.
+- The erplots package builds on
+  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md) to
+  construct **visual predictive checks** (VPCs), comparing simulated
+  response distributions to the observed data bin by bin. The [erplots
+  integration
+  article](https://emaxnls.djnavarro.net/articles/erplots-integration.md)
+  shows this workflow end to end.

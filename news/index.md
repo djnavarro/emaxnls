@@ -66,19 +66,22 @@
 - Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic`
   objects work seamlessly with
   [`erplots::er_plot_add_model()`](https://erplots.djnavarro.net/reference/er_plot_add_model.html),
-  `er_plot_add_summary()`, `er_plot_add_quantiles()`, and the VPC
-  pipeline. Three S3 methods are registered lazily at load time (no hard
-  dependency on erplots):
+  [`er_plot_add_summary()`](https://erplots.djnavarro.net/reference/er_plot_add_summary.html),
+  [`er_plot_add_quantiles()`](https://erplots.djnavarro.net/reference/er_plot_add_quantiles.html),
+  and the VPC pipeline. Three S3 methods are registered lazily at load
+  time (no hard dependency on erplots):
 
-  - `er_predict()` returns point predictions and confidence intervals on
-    a user-supplied exposure grid, with predictions on the probability
+  - [`er_predict()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns point predictions and confidence intervals on a
+    user-supplied exposure grid, with predictions on the probability
     scale for `emaxlogistic` models.
-  - `er_simulate()` returns `nsim` mean-curve draws reflecting parameter
-    uncertainty only (no residual noise), suitable for spaghetti/ribbon
-    plots.
-  - `er_summary()` returns a coefficient table and a model-level glance
-    row; `p_value` is always `NULL` because Emax models have no single
-    privileged parameter.
+  - [`er_simulate()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns `nsim` mean-curve draws reflecting parameter uncertainty
+    only (no residual noise), suitable for spaghetti/ribbon plots.
+  - [`er_summary()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns a coefficient table and a model-level glance row; `p_value`
+    is always `NULL` because Emax models have no single privileged
+    parameter.
 
   Covariates present in the model but absent from the exposure grid
   passed by erplots are filled in automatically with reference values

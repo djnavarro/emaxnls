@@ -34,7 +34,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/fitting-emax-models.html">Fitting Emax models for continuous outcomes</a></li>
+<li><a class="dropdown-item" href="../articles/erplots-integration.html">Visualising exposure-response models with erplots</a></li>
+    <li><a class="dropdown-item" href="../articles/fitting-emax-models.html">Fitting Emax models for continuous outcomes</a></li>
     <li><a class="dropdown-item" href="../articles/fitting-logistic-emax-models.html">Fitting Emax models for binary outcomes</a></li>
     <li><a class="dropdown-item" href="../articles/simulating-from-emax-models.html">Simulating from Emax models</a></li>
     <li><a class="dropdown-item" href="../articles/stepwise-covariate-modelling.html">Stepwise covariate modelling</a></li>
@@ -82,7 +83,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">8134</span><span class="op">)</span></span></code></pre></div>
 <p>Once a model has been fitted, it is often useful to generate
 <em>new</em> data from it: for predictive checks, for simulation-based
 intervals, or as the input to some downstream analysis. The package
@@ -119,21 +120,21 @@ it needs to be installed.</p>
 datasets. The number of replicates is set by <code>nsim</code>, and a
 <code>seed</code> can be supplied for reproducibility:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod</span>, nsim <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod</span>, nsim <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">5683</span><span class="op">)</span></span>
 <span><span class="va">sim1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 400 × 11</span></span></span>
 <span><span class="co">#&gt;    dat_id sim_id    mu   val E0_cnt_a E0_Intercept Emax_Intercept</span></span>
 <span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1      1 14.4  14.6     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      2      1 15.5  15.1     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      3      1  5.69  5.94    0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      4      1 13.3  13.7     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      5      1 13.5  13.8     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      6      1 16.8  16.7     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      7      1 17.1  17.9     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      8      1 14.7  14.9     0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      9      1  7.45  7.14    0.487         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     10      1 12.9  11.8     0.487         5.10           9.91</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1      1 14.5  13.5     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      2      1 15.6  16.1     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      3      1  5.59  5.64    0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      4      1 13.4  13.4     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      5      1 13.5  14.0     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      6      1 16.9  16.4     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      7      1 17.2  16.1     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      8      1 14.8  15.5     0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      9      1  7.40  7.06    0.498         4.99           10.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     10      1 12.9  12.9     0.498         4.99           10.1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 390 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: logEC50_Intercept &lt;dbl&gt;, rsp_1 &lt;dbl&gt;, exp_1 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   cnt_a &lt;dbl&gt;</span></span></span></code></pre></div>
@@ -206,7 +207,7 @@ or plot by exposure and covariates.</li>
 vary from one replicate to the next while staying constant within a
 replicate:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">5683</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 20000    11</span></span>
 <span></span>
@@ -215,9 +216,9 @@ replicate:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   sim_id E0_Intercept Emax_Intercept</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1         5.10           9.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2         4.99          10.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3         5.01          10.1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1         4.99          10.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2         5.13           9.97</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3         5.00           9.78</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="a-predictive-check">A predictive check<a class="anchor" aria-label="anchor" href="#a-predictive-check"></a>
@@ -300,7 +301,7 @@ performs internally.</p>
 sampling distribution, evaluate the curve over an exposure grid for each
 draw, and summarise the resulting family of curves pointwise.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">6471</span><span class="op">)</span></span>
 <span><span class="va">n_draws</span> <span class="op">&lt;-</span> <span class="fl">500</span></span>
 <span><span class="va">draws</span> <span class="op">&lt;-</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span><span class="va">n_draws</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">draws</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">)</span></span>
@@ -356,17 +357,17 @@ parameters, and <code>val</code> is a 0/1 outcome drawn from
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Bernoulli</mtext><mo stretchy="false" form="prefix">(</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{Bernoulli}(\mu)</annotation></semantics></math>
 rather than a mean plus Gaussian noise:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod_b</span>, nsim <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sim_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="va">mod_b</span>, nsim <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">5683</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_b</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
 <span><span class="co">#&gt;   dat_id sim_id     mu   val E0_cnt_a E0_Intercept Emax_Intercept</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1      1 0.632      0    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2      1 0.857      0    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3      1 0.020<span style="text-decoration: underline;">9</span>     0    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>      4      1 0.349      0    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>      5      1 0.489      0    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>      6      1 0.970      1    0.623        -<span style="color: #BB0000;">4.61</span>           6.93</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1      1 0.621      0    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2      1 0.895      1    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3      1 0.010<span style="text-decoration: underline;">9</span>     0    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>      4      1 0.278      0    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>      5      1 0.440      1    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>      6      1 0.989      1    0.761        -<span style="color: #BB0000;">5.43</span>           11.3</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: logEC50_Intercept &lt;dbl&gt;, rsp_2 &lt;dbl&gt;, exp_1 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   cnt_a &lt;dbl&gt;</span></span></span>
 <span></span>
@@ -404,6 +405,10 @@ observation, prefer <code>predict(..., interval = ...)</code>, described
 in the model-fitting articles. Reach for <code><a href="../reference/simulate.html">simulate()</a></code> and
 <code><a href="../reference/emax_fun.html">emax_fun()</a></code> when you need replicate datasets or bespoke
 simulation logic.</li>
+<li>The erplots package builds on <code><a href="../reference/simulate.html">simulate()</a></code> to construct
+<strong>visual predictive checks</strong> (VPCs), comparing simulated
+response distributions to the observed data bin by bin. The <a href="erplots-integration.html">erplots integration article</a> shows
+this workflow end to end.</li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

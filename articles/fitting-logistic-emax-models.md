@@ -6,7 +6,7 @@ library(emaxnls)
 library(tibble)
 library(ggplot2)
 theme_set(theme_bw())
-set.seed(123)
+set.seed(5219)
 ```
 
 This article describes how to fit an Emax regression model to a
@@ -200,7 +200,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55ff1a77e2e8>
+#> <bytecode: 0x5619072962e8>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
@@ -553,3 +553,13 @@ continuous models:
 - **Continuous outcomes.** For a continuous response, use
   [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md),
   described in its own article.
+- **Visualisation.** Fitted `emaxlogistic` objects work with the same
+  erplots pipeline as continuous models: `emaxlogistic` inherits its
+  [`er_predict()`](https://erplots.djnavarro.net/reference/er_model_interface.html),
+  [`er_simulate()`](https://erplots.djnavarro.net/reference/er_model_interface.html),
+  and
+  [`er_summary()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+  methods from `emaxnls`, so passing one to
+  [`er_plot()`](https://erplots.djnavarro.net/reference/er_plot.html)
+  just works. See the [erplots integration
+  article](https://emaxnls.djnavarro.net/articles/erplots-integration.md).

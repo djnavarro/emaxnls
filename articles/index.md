@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Visualising exposure-response models with
+  erplots](https://emaxnls.djnavarro.net/articles/erplots-integration.md):
 - [Fitting Emax models for continuous
   outcomes](https://emaxnls.djnavarro.net/articles/fitting-emax-models.md):
 - [Fitting Emax models for binary
