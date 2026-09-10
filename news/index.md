@@ -2,26 +2,60 @@
 
 ## emaxnls 0.1.1.9000
 
-### Bug fixes
-
-- [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
-  and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
-  now degrade gracefully on platforms where the `mvtnorm` shared object
-  is installed but fails to link at runtime (observed on some
-  clang-based Rhub builders). A warning is issued and the computation
-  continues using base-R fallbacks: Cholesky-based multivariate normal
-  sampling for
-  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md),
-  and a Bonferroni-corrected normal quantile for simultaneous confidence
-  intervals. The fallback intervals are conservative but valid
-  ([\#52](https://github.com/djnavarro/emaxnls/issues/52)).
-
-- The tibble package is now listed under `Suggests` rather than
-  `Imports`, making it a genuine optional dependency. All package
-  functionality works with or without tibble installed
-  ([\#24](https://github.com/djnavarro/emaxnls/issues/24)).
-
 ### New features
+
+- Adds
+  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+  for fitting binary-outcome Emax models using iterative reweighted
+  least squares (IRLS), along with
+  [`emax_logistic_init()`](https://emaxnls.djnavarro.net/reference/emax_logistic_init.md)
+  and
+  [`emax_logistic_options()`](https://emaxnls.djnavarro.net/reference/emax_logistic_options.md)
+  for initialisation and configuration. All standard S3 methods
+  ([`coef()`](https://rdrr.io/r/stats/coef.html),
+  [`vcov()`](https://rdrr.io/r/stats/vcov.html),
+  [`confint()`](https://rdrr.io/r/stats/confint.html),
+  [`residuals()`](https://emaxnls.djnavarro.net/reference/residuals.md),
+  [`fitted()`](https://emaxnls.djnavarro.net/reference/fitted.md),
+  [`predict()`](https://emaxnls.djnavarro.net/reference/predict.md),
+  [`anova()`](https://emaxnls.djnavarro.net/reference/anova.md),
+  [`logLik()`](https://emaxnls.djnavarro.net/reference/logLik.md),
+  [`AIC()`](https://emaxnls.djnavarro.net/reference/AIC.md),
+  [`BIC()`](https://rdrr.io/r/stats/AIC.html),
+  [`deviance()`](https://emaxnls.djnavarro.net/reference/deviance.md),
+  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md))
+  are supported for the new `emaxlogistic` class
+  ([\#22](https://github.com/djnavarro/emaxnls/issues/22)).
+
+- Adds input validation for the binary response variable in
+  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md),
+  with informative errors for non-binary or out-of-range values
+  ([\#42](https://github.com/djnavarro/emaxnls/issues/42)).
+
+- Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic`
+  objects work seamlessly with
+  [`erplots::er_plot_add_model()`](https://erplots.djnavarro.net/reference/er_plot_add_model.html),
+  [`er_plot_add_summary()`](https://erplots.djnavarro.net/reference/er_plot_add_summary.html),
+  [`er_plot_add_quantiles()`](https://erplots.djnavarro.net/reference/er_plot_add_quantiles.html),
+  and the VPC pipeline. Three S3 methods are registered lazily at load
+  time (no hard dependency on erplots):
+
+  - [`er_predict()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns point predictions and confidence intervals on a
+    user-supplied exposure grid, with predictions on the probability
+    scale for `emaxlogistic` models.
+  - [`er_simulate()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns `nsim` mean-curve draws reflecting parameter uncertainty
+    only (no residual noise), suitable for spaghetti/ribbon plots.
+  - [`er_summary()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
+    returns a coefficient table and a model-level glance row; `p_value`
+    is always `NULL` because Emax models have no single privileged
+    parameter.
+
+  Covariates present in the model but absent from the exposure grid
+  passed by erplots are filled in automatically with reference values
+  (numeric: column mean; factor/character: first factor level)
+  ([\#65](https://github.com/djnavarro/emaxnls/issues/65)).
 
 - [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md),
   [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md),
@@ -63,31 +97,6 @@
   gains a `criterion` column recording which selection rule was applied
   in each step ([\#68](https://github.com/djnavarro/emaxnls/issues/68)).
 
-- Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic`
-  objects work seamlessly with
-  [`erplots::er_plot_add_model()`](https://erplots.djnavarro.net/reference/er_plot_add_model.html),
-  [`er_plot_add_summary()`](https://erplots.djnavarro.net/reference/er_plot_add_summary.html),
-  [`er_plot_add_quantiles()`](https://erplots.djnavarro.net/reference/er_plot_add_quantiles.html),
-  and the VPC pipeline. Three S3 methods are registered lazily at load
-  time (no hard dependency on erplots):
-
-  - [`er_predict()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
-    returns point predictions and confidence intervals on a
-    user-supplied exposure grid, with predictions on the probability
-    scale for `emaxlogistic` models.
-  - [`er_simulate()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
-    returns `nsim` mean-curve draws reflecting parameter uncertainty
-    only (no residual noise), suitable for spaghetti/ribbon plots.
-  - [`er_summary()`](https://erplots.djnavarro.net/reference/er_model_interface.html)
-    returns a coefficient table and a model-level glance row; `p_value`
-    is always `NULL` because Emax models have no single privileged
-    parameter.
-
-  Covariates present in the model but absent from the exposure grid
-  passed by erplots are filled in automatically with reference values
-  (numeric: column mean; factor/character: first factor level)
-  ([\#65](https://github.com/djnavarro/emaxnls/issues/65)).
-
 - Adds a `max_time` argument to
   [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md)
   and
@@ -100,28 +109,6 @@
   where a single pathological fit can otherwise stall the entire
   covariate search
   ([\#16](https://github.com/djnavarro/emaxnls/issues/16)).
-
-- Adds
-  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
-  for fitting binary-outcome Emax models using iterative reweighted
-  least squares (IRLS), along with
-  [`emax_logistic_init()`](https://emaxnls.djnavarro.net/reference/emax_logistic_init.md)
-  and
-  [`emax_logistic_options()`](https://emaxnls.djnavarro.net/reference/emax_logistic_options.md)
-  for initialisation and configuration. All standard S3 methods
-  ([`coef()`](https://rdrr.io/r/stats/coef.html),
-  [`vcov()`](https://rdrr.io/r/stats/vcov.html),
-  [`confint()`](https://rdrr.io/r/stats/confint.html),
-  [`residuals()`](https://emaxnls.djnavarro.net/reference/residuals.md),
-  [`fitted()`](https://emaxnls.djnavarro.net/reference/fitted.md),
-  [`predict()`](https://emaxnls.djnavarro.net/reference/predict.md),
-  [`anova()`](https://emaxnls.djnavarro.net/reference/anova.md),
-  [`logLik()`](https://emaxnls.djnavarro.net/reference/logLik.md),
-  [`AIC()`](https://emaxnls.djnavarro.net/reference/AIC.md),
-  [`BIC()`](https://rdrr.io/r/stats/AIC.html),
-  [`deviance()`](https://emaxnls.djnavarro.net/reference/deviance.md),
-  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md))
-  are supported for the new `emaxlogistic` class.
 
 - Redesigns
   [`print()`](https://emaxnls.djnavarro.net/reference/print.md) and
@@ -162,34 +149,32 @@
 
   - `summary(back_transform = TRUE)` now also sets the test statistic to
     `NA` for back-transformed parameters, consistent with the standard
-    error already being `NA` on the back-transformed scale.
+    error already being `NA` on the back-transformed scale
+    ([\#45](https://github.com/djnavarro/emaxnls/issues/45)).
 
 - [`confint()`](https://rdrr.io/r/stats/confint.html) now falls back to
   Wald intervals with a warning if profile likelihood computation fails
-  (which can occur for sigmoidal models).
-
-### Documentation
-
-- Switches package language from en-US to en-GB for consistency with the
-  broader er\* package family (ertte, erglm, erplots). All
-  documentation, roxygen comments, vignettes, and code comments now use
-  UK English spelling throughout
-  ([\#61](https://github.com/djnavarro/emaxnls/issues/61)).
-
-- Expands the
-  [`summary()`](https://emaxnls.djnavarro.net/reference/summary.md)
-  documentation to explain the relationship between the `p_adjust` and
-  `simultaneous` arguments. The two are independent tools for
-  multiplicity — `p_adjust` corrects the hypothesis-test p-values, while
-  `simultaneous` widens the confidence intervals — and they use
-  different machinery, so their reject/retain decisions need not agree.
-  The new “Multiplicity: p-value adjustment versus simultaneous
-  intervals” section spells out what each argument changes, why the
-  adjusted p-values and the simultaneous intervals may disagree, and
-  which tool to reach for
-  ([\#47](https://github.com/djnavarro/emaxnls/issues/47)).
+  (which can occur for sigmoidal models)
+  ([\#45](https://github.com/djnavarro/emaxnls/issues/45)).
 
 ### Bug fixes
+
+- [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md)
+  and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
+  now degrade gracefully on platforms where the `mvtnorm` shared object
+  is installed but fails to link at runtime (observed on some
+  clang-based Rhub builders). A warning is issued and the computation
+  continues using base-R fallbacks: Cholesky-based multivariate normal
+  sampling for
+  [`simulate()`](https://emaxnls.djnavarro.net/reference/simulate.md),
+  and a Bonferroni-corrected normal quantile for simultaneous confidence
+  intervals. The fallback intervals are conservative but valid
+  ([\#52](https://github.com/djnavarro/emaxnls/issues/52)).
+
+- The tibble package is now listed under `Suggests` rather than
+  `Imports`, making it a genuine optional dependency. All package
+  functionality works with or without tibble installed
+  ([\#24](https://github.com/djnavarro/emaxnls/issues/24)).
 
 - Fixes [`AIC()`](https://emaxnls.djnavarro.net/reference/AIC.md) and
   [`BIC()`](https://rdrr.io/r/stats/AIC.html) when called with multiple
@@ -212,21 +197,18 @@
   and prevents `Inf` parameter bounds arising during initialisation
   ([\#40](https://github.com/djnavarro/emaxnls/issues/40)).
 
-- Hardens `.nls_call()` to avoid cryptic errors when optimisation fails,
-  and tightens argument validation in
+- Improves error messages when the underlying optimiser fails during
+  [`emax_nls()`](https://emaxnls.djnavarro.net/reference/emax_nls.md) or
+  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md)
+  fitting, and tightens argument validation in
   [`emax_fun()`](https://emaxnls.djnavarro.net/reference/emax_fun.md)
   ([\#41](https://github.com/djnavarro/emaxnls/issues/41)).
-
-- Adds input validation for the binary response variable in
-  [`emax_logistic()`](https://emaxnls.djnavarro.net/reference/emax_logistic.md),
-  with informative errors for non-binary or out-of-range values
-  ([\#42](https://github.com/djnavarro/emaxnls/issues/42)).
 
 - Fixes validator error messages to reference public API parameter names
   rather than internal names
   ([\#43](https://github.com/djnavarro/emaxnls/issues/43)).
 
-- Fixes `NaN` produced by `.binomial_deviance()` when predicted
+- Fixes `NaN` deviance values for `emaxlogistic` models when predicted
   probabilities are exactly 0 or 1 (boundary cases)
   ([\#44](https://github.com/djnavarro/emaxnls/issues/44)).
 
@@ -239,6 +221,27 @@
   intervals that match those reported by
   `summary(object, simultaneous = TRUE)`
   ([\#46](https://github.com/djnavarro/emaxnls/issues/46)).
+
+### Documentation
+
+- Switches package language from en-US to en-GB for consistency with the
+  broader er\* package family (ertte, erglm, erplots). All
+  documentation, roxygen comments, vignettes, and code comments now use
+  UK English spelling throughout
+  ([\#61](https://github.com/djnavarro/emaxnls/issues/61)).
+
+- Expands the
+  [`summary()`](https://emaxnls.djnavarro.net/reference/summary.md)
+  documentation to explain the relationship between the `p_adjust` and
+  `simultaneous` arguments. The two are independent tools for
+  multiplicity — `p_adjust` corrects the hypothesis-test p-values, while
+  `simultaneous` widens the confidence intervals — and they use
+  different machinery, so their reject/retain decisions need not agree.
+  The new “Multiplicity: p-value adjustment versus simultaneous
+  intervals” section spells out what each argument changes, why the
+  adjusted p-values and the simultaneous intervals may disagree, and
+  which tool to reach for
+  ([\#47](https://github.com/djnavarro/emaxnls/issues/47)).
 
 ## emaxnls 0.1.1
 
