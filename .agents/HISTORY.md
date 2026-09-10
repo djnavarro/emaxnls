@@ -43,3 +43,37 @@ The implementation reuses the existing noise models from
 `Bernoulli(fit_resp)` for `emaxlogistic`.
 
 Merged in PR #67.
+
+## Adapting the `write-roxygen-docs` and `write-news-entries` skills from sessioncheck
+
+Two skills (`.agents/skills/write-roxygen-docs/SKILL.md` and
+`.agents/skills/write-news-entries/SKILL.md`) were carried over from the
+`sessioncheck` package and needed customisation for `emaxnls` before being
+linked from `AGENTS.md`. Both skills' guidance is general (what belongs in
+`@description` vs `@details`, keeping documentation user-facing, NEWS.md
+scoping rules) but illustrated the rules with sessioncheck-specific
+examples: the `check_*()` function family, the `sessioncheck_status`/
+`sessioncheck_sessioncheck` classes, and a `check_working_directory()` NEWS
+example.
+
+Rather than rewriting the guidance itself, only the illustrative examples
+were swapped for emaxnls equivalents: the paired continuous/binary function
+families (`emax_nls()`/`emax_logistic()`, `emax_nls_init()`/
+`emax_logistic_init()`, `emax_nls_options()`/`emax_logistic_options()`)
+stand in for the `check_*()` family, `@returns` examples now say "An object
+of class `emaxnls`" (matching the package's actual convention rather than
+sessioncheck's "invisibly returns a status object"), and the NEWS.md
+example was replaced with the real `max_time` argument addition to
+`emax_nls_options()`/`emax_logistic_options()`.
+
+One substantive correction was needed rather than a pure find-and-replace:
+the `write-news-entries` skill described unreleased changes as living under
+a `# sessioncheck (development version)` heading, but emaxnls's `NEWS.md`
+uses a different convention -- the top heading simply carries the current
+`.9000`-suffixed development version from `DESCRIPTION` (e.g.
+`# emaxnls 0.1.1.9000`), with no separate "(development version)" label.
+The skill was corrected to describe this pattern rather than assuming
+sessioncheck's.
+
+Both skills are now linked from `AGENTS.md` under "Roxygen documentation"
+and a new "NEWS.md" subsection, both within "Assistant preferences".
