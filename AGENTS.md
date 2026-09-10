@@ -250,6 +250,18 @@ edit them directly; edit the roxygen source in `R/` and regenerate with
   cross-referencing.
 - Markdown formatting is enabled; use it (backticks, bold, etc.) in
   roxygen prose.
+- See the
+  [write-roxygen-docs](https://emaxnls.djnavarro.net/.agents/skills/write-roxygen-docs/SKILL.md)
+  skill for detailed guidance on writing and reviewing roxygen2 comments
+  (what goes in `@details` vs `@description`, calibrating detail,
+  keeping documentation user-facing, etc.).
+
+### NEWS.md
+
+- See the
+  [write-news-entries](https://emaxnls.djnavarro.net/.agents/skills/write-news-entries/SKILL.md)
+  skill for guidance on adding, updating, or reviewing `NEWS.md`
+  entries.
 
 ### Commit messages
 
