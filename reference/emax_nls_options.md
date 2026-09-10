@@ -140,7 +140,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55645cb817c0>
+#> <bytecode: 0x563a154467c0>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -190,7 +190,7 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x55645cb817c0>
+#> <bytecode: 0x563a154467c0>
 #> <environment: namespace:stats>
 #> 
 #> $max_time

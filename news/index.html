@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">emaxnls</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,9 +40,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1.9000" id="emaxnls-0119000">emaxnls 0.1.1.9000<a class="anchor" aria-label="anchor" href="#emaxnls-0119000"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="emaxnls-020">emaxnls 0.2.0<a class="anchor" aria-label="anchor" href="#emaxnls-020"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-1-1-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1-9000"></a></h3>
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li><p>Adds <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code> for fitting binary-outcome Emax models using iterative reweighted least squares (IRLS), along with <code><a href="../reference/emax_logistic_init.html">emax_logistic_init()</a></code> and <code><a href="../reference/emax_logistic_options.html">emax_logistic_options()</a></code> for initialisation and configuration. All standard S3 methods (<code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code>, <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code>, <code><a href="../reference/residuals.html">residuals()</a></code>, <code><a href="../reference/fitted.html">fitted()</a></code>, <code><a href="../reference/predict.html">predict()</a></code>, <code><a href="../reference/anova.html">anova()</a></code>, <code><a href="../reference/logLik.html">logLik()</a></code>, <code><a href="../reference/AIC.html">AIC()</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>, <code><a href="../reference/deviance.html">deviance()</a></code>, <code><a href="../reference/simulate.html">simulate()</a></code>) are supported for the new <code>emaxlogistic</code> class (<a href="https://github.com/djnavarro/emaxnls/issues/22" class="external-link">#22</a>).</p></li>
 <li><p>Adds input validation for the binary response variable in <code><a href="../reference/emax_logistic.html">emax_logistic()</a></code>, with informative errors for non-binary or out-of-range values (<a href="https://github.com/djnavarro/emaxnls/issues/42" class="external-link">#42</a>).</p></li>
 <li>
@@ -76,7 +76,7 @@
 <li><p><code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> now falls back to Wald intervals with a warning if profile likelihood computation fails (which can occur for sigmoidal models) (<a href="https://github.com/djnavarro/emaxnls/issues/45" class="external-link">#45</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-1-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1-9000"></a></h3>
+<h3 id="bug-fixes-0-2-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
 <ul><li><p><code><a href="../reference/simulate.html">simulate()</a></code> and <code>confint(simultaneous = TRUE)</code> / <code>summary(simultaneous = TRUE)</code> now degrade gracefully on platforms where the <code>mvtnorm</code> shared object is installed but fails to link at runtime (observed on some clang-based Rhub builders). A warning is issued and the computation continues using base-R fallbacks: Cholesky-based multivariate normal sampling for <code><a href="../reference/simulate.html">simulate()</a></code>, and a Bonferroni-corrected normal quantile for simultaneous confidence intervals. The fallback intervals are conservative but valid (<a href="https://github.com/djnavarro/emaxnls/issues/52" class="external-link">#52</a>).</p></li>
 <li><p>The tibble package is now listed under <code>Suggests</code> rather than <code>Imports</code>, making it a genuine optional dependency. All package functionality works with or without tibble installed (<a href="https://github.com/djnavarro/emaxnls/issues/24" class="external-link">#24</a>).</p></li>
 <li><p>Fixes <code><a href="../reference/AIC.html">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> when called with multiple model arguments (<a href="https://github.com/djnavarro/emaxnls/issues/37" class="external-link">#37</a>).</p></li>
@@ -89,7 +89,7 @@
 <li><p><code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> now accepts a <code>simultaneous</code> argument, mirroring <code><a href="../reference/summary.html">summary()</a></code>. Previously <code>confint(object, simultaneous = TRUE)</code> silently ignored the argument (swallowed by <code>...</code>) and returned pointwise intervals. Setting <code>simultaneous = TRUE</code> now returns simultaneous (joint) Wald intervals that match those reported by <code>summary(object, simultaneous = TRUE)</code> (<a href="https://github.com/djnavarro/emaxnls/issues/46" class="external-link">#46</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-0-1-1-9000">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-1-9000"></a></h3>
+<h3 id="documentation-0-2-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0"></a></h3>
 <ul><li><p>Switches package language from en-US to en-GB for consistency with the broader er* package family (ertte, erglm, erplots). All documentation, roxygen comments, vignettes, and code comments now use UK English spelling throughout (<a href="https://github.com/djnavarro/emaxnls/issues/61" class="external-link">#61</a>).</p></li>
 <li><p>Expands the <code><a href="../reference/summary.html">summary()</a></code> documentation to explain the relationship between the <code>p_adjust</code> and <code>simultaneous</code> arguments. The two are independent tools for multiplicity — <code>p_adjust</code> corrects the hypothesis-test p-values, while <code>simultaneous</code> widens the confidence intervals — and they use different machinery, so their reject/retain decisions need not agree. The new “Multiplicity: p-value adjustment versus simultaneous intervals” section spells out what each argument changes, why the adjusted p-values and the simultaneous intervals may disagree, and which tool to reach for (<a href="https://github.com/djnavarro/emaxnls/issues/47" class="external-link">#47</a>).</p></li>
 </ul></div>

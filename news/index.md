@@ -1,6 +1,6 @@
 # Changelog
 
-## emaxnls 0.1.1.9000
+## emaxnls 0.2.0
 
 ### New features
 
