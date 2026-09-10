@@ -43,8 +43,8 @@ An object of class \code{emaxnls}
 }
 \description{
 Performs stepwise covariate modelling by forward addition
-(\code{emax_scm_forward()}), backward elimination (\code{emax_scm_backward()}), or
-both in sequence. Use \code{emax_scm_history()} to retrieve the history of all
+(\code{\link[=emax_scm_forward]{emax_scm_forward()}}), backward elimination (\code{\link[=emax_scm_backward]{emax_scm_backward()}}), or
+both in sequence. Use \code{\link[=emax_scm_history]{emax_scm_history()}} to retrieve the history of all
 models tested during the procedure.
 }
 \details{
@@ -68,7 +68,7 @@ yielding the lowest AIC is chosen.
 When \code{criterion} is \code{"aic"} or \code{"bic"}, the \code{threshold} argument has no
 effect and is ignored.
 
-The history returned by \code{emax_scm_history()} always records AIC and BIC for
+The history returned by \code{\link[=emax_scm_history]{emax_scm_history()}} always records AIC and BIC for
 every model tested (columns \code{model_aic} and \code{model_bic}), regardless of
 which criterion was used for selection. The \code{criterion} column records which
 criterion drove each forward or backward step.
@@ -78,7 +78,7 @@ the procedure. It is currently experimental and may be removed in future
 releases.
 
 Every model tested during the procedure is stored internally in the returned
-object. Use \code{emax_scm_history()} to extract this record.
+object. Use \code{\link[=emax_scm_history]{emax_scm_history()}} to extract this record.
 }
 \examples{
 base_model <- emax_nls(
@@ -150,5 +150,5 @@ emax_scm_history(final_model_logistic)
 
 }
 \seealso{
-\code{emax_nls()}
+\code{\link[=emax_nls]{emax_nls()}}
 }

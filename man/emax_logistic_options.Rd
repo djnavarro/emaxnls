@@ -17,14 +17,17 @@ emax_logistic_options(
 \arguments{
 \item{optim_method}{Character string specifying the algorithm used for the
 weighted NLS step within each IRLS iteration. Supported options are
-\code{"gauss"} (default), \code{"port"}, and \code{"levenberg"}. See \code{emax_nls_options()}
+\code{"gauss"} (default), \code{"port"}, and \code{"levenberg"}. See \code{\link[=emax_nls_options]{emax_nls_options()}}
 for details on each.}
 
-\item{optim_control}{A list of arguments controlling the NLS optimiser.}
+\item{optim_control}{A list of arguments controlling the NLS optimiser.
+The default is \code{optim_control = NULL}, which uses the default settings
+for the relevant optimisation function.}
 
 \item{quiet}{When \code{TRUE}, convergence warnings are suppressed.}
 
-\item{na.action}{How should missing values in the data be handled?}
+\item{na.action}{How should missing values in the data be handled? The
+default is \code{na.action = getOption("na.action")}.}
 
 \item{max_iter}{Maximum number of IRLS outer iterations (default 25).}
 
@@ -41,8 +44,8 @@ A list of settings
 }
 \description{
 Constructs a settings object controlling the NLS optimiser and IRLS
-convergence for \code{emax_logistic()}. Pass the result to the \code{opts} argument
-of \code{emax_logistic()}.
+convergence for \code{\link[=emax_logistic]{emax_logistic()}}. Pass the result to the \code{opts} argument
+of \code{\link[=emax_logistic]{emax_logistic()}}.
 }
 \examples{
 # default options
@@ -53,5 +56,5 @@ emax_logistic_options(max_iter = 50)
 
 }
 \seealso{
-\code{emax_logistic()}, \code{emax_logistic_init()}
+\code{\link[=emax_logistic]{emax_logistic()}}, \code{\link[=emax_logistic_init]{emax_logistic_init()}}
 }

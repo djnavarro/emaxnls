@@ -20,14 +20,17 @@ the nonlinear least squares optimisation problem. Supported options are
 
 \item{optim_control}{A list of arguments used to control the behaviour of
 the optimisation algorithm. Allowed values differ depending on which
-algorithm is used}
+algorithm is used. The default is \code{optim_control = NULL}, which uses the
+default settings for the relevant optimisation function; see details.}
 
 \item{quiet}{When \code{quiet=TRUE}, messages are suppressed}
 
 \item{weights}{Numeric vector providing the weights for observations. When
-specified, weighted least squares is used}
+specified, weighted least squares is used. The default is \code{weights = NULL}
+(unweighted least squares).}
 
-\item{na.action}{How should missing values in the data be handled?}
+\item{na.action}{How should missing values in the data be handled? The
+default is \code{na.action = getOption("na.action")}.}
 
 \item{max_time}{Maximum elapsed time in seconds allowed for the model fit.
 If the optimiser has not converged within this time, it is terminated and
@@ -39,29 +42,29 @@ A list of settings
 }
 \description{
 Constructs a settings object controlling the optimisation algorithm and
-other aspects of model fitting for \code{emax_nls()}. Pass the result to the
-\code{opts} argument of \code{emax_nls()}.
+other aspects of model fitting for \code{\link[=emax_nls]{emax_nls()}}. Pass the result to the
+\code{opts} argument of \code{\link[=emax_nls]{emax_nls()}}.
 }
 \details{
 At present there are three supported values for \code{optim_method}:
 \itemize{
 \item "gauss": Estimate parameters using the Gauss-Newton algorithm. This is
-equivalent to the using "default" option in \code{nls()}
+equivalent to the using "default" option in \code{\link[stats:nls]{stats::nls()}}
 \item "port": Estimate parameters using bounded optimisation with the "nl2sol"
-algorithm from from the the Port library. Equivalent to "port" in \code{nls()}
+algorithm from from the the Port library. Equivalent to "port" in \code{\link[stats:nls]{stats::nls()}}
 \item "levenberg": Estimate parameters using the Levenberg-Marquardt algorithm.
-This is equivalent to using \code{nlsLM()} from the "minpack.lm" package.
+This is equivalent to using \code{\link[minpack.lm:nlsLM]{minpack.lm::nlsLM()}} from the "minpack.lm" package.
 }
 
 Note that the Golub-Pereyra algorithm for partially linear least-squares (i.e. the
-"plinear" option in \code{nls()}) is not currently supported for Emax regression. Informal
+"plinear" option in \code{\link[stats:nls]{stats::nls()}}) is not currently supported for Emax regression. Informal
 testing suggests it does not perform well for these models, and rarely converges.
 
 The \code{optim_control} argument mirrors the corresponding control arguments for
 the respective optimisation methods:
 \itemize{
-\item For "gauss" and "port": the list should match the output of \code{stats::nls.control()}
-\item For "levenberg": the list should match the output of \code{minpack.lm::nls.lm.control()}
+\item For "gauss" and "port": the list should match the output of \code{\link[stats:nls.control]{stats::nls.control()}}
+\item For "levenberg": the list should match the output of \code{\link[minpack.lm:nls.lm.control]{minpack.lm::nls.lm.control()}}
 }
 
 If \code{optim_control = NULL}, the default settings are used for the relevant function.
@@ -76,5 +79,5 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 
 }
 \seealso{
-\code{emax_nls()}, \code{emax_nls_init()}
+\code{\link[=emax_nls]{emax_nls()}}, \code{\link[=emax_nls_init]{emax_nls_init()}}
 }

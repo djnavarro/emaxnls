@@ -9,7 +9,8 @@
 \arguments{
 \item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
-\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
+\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be
+back-transformed to original scale? The default is \code{back_transform = FALSE}.}
 
 \item{...}{Ignored}
 }

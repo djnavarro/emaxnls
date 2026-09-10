@@ -21,7 +21,8 @@
 
 \item{...}{Optionally, more fitted model objects}
 
-\item{k}{Penalty per parameter in the AIC}
+\item{k}{Penalty per parameter in the AIC. The default is \code{k = 2}. Ignored
+for \code{BIC()}, which always uses \code{log(n)}.}
 }
 \value{
 If just one object is provided, a numeric value with the corresponding AIC (or BIC).

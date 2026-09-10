@@ -38,5 +38,5 @@ if (emax_converged(mod_1)) emax_remove_term(mod_1, E0 ~ cnt_a)
 
 }
 \seealso{
-\code{emax_nls()}, \link{emax_scm}
+\code{\link[=emax_nls]{emax_nls()}}, \link{emax_scm}
 }

@@ -35,14 +35,15 @@ If \code{newdata} is missing the fitted values at the original data points are r
 probabilities; \code{"link"} returns the linear predictor on the logit scale. Ignored
 for \code{emaxnls} objects.}
 
-\item{se.fit}{A switch indicating if standard errors are required.}
+\item{se.fit}{A switch indicating if standard errors are required. The
+default is \code{se.fit = FALSE}.}
 
 \item{interval}{A character string indicating if prediction intervals or a confidence
-interval on the mean responses are to be calculated. Can be \code{"none"}, \code{"confidence"},
-or \code{"prediction"}.}
+interval on the mean responses are to be calculated. Can be \code{"none"} (the default),
+\code{"confidence"}, or \code{"prediction"}.}
 
 \item{level}{A numeric scalar between 0 and 1 giving the confidence level for the
-intervals (if any) to be calculated.}
+intervals (if any) to be calculated. The default is \code{level = 0.95}.}
 
 \item{...}{Ignored}
 }

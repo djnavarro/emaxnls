@@ -22,7 +22,7 @@ A data frame with columns \code{parameter}, \code{covariate}, \code{start},
 }
 \description{
 Constructs a data frame of starting values and parameter bounds for the
-logistic Emax model, using the same heuristic approach as \code{emax_nls_init()}
+logistic Emax model, using the same heuristic approach as \code{\link[=emax_nls_init]{emax_nls_init()}}
 applied to the empirical logit scale rather than the raw response.
 }
 \examples{
@@ -41,5 +41,5 @@ emax_logistic_init(
 
 }
 \seealso{
-\code{emax_logistic()}, \code{emax_logistic_options()}
+\code{\link[=emax_logistic]{emax_logistic()}}, \code{\link[=emax_logistic_options]{emax_logistic_options()}}
 }

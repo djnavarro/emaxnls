@@ -21,7 +21,8 @@ print.emaxnls_null <- function(x, ...) {
 #' default, which is the scale on which they are estimated.
 #'
 #' @param object An `emaxnls` or `emaxlogistic` object
-#' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
+#' @param back_transform Should log-scaled parameters (logEC50, logHill) be
+#' back-transformed to original scale? The default is `back_transform = FALSE`.
 #' @param ... Ignored
 #'
 #' @details
@@ -165,8 +166,9 @@ residuals.emaxnls <- function(object, ...) {
 #' bootstrapping downstream analyses.
 #'
 #' @param object An `emaxnls` or `emaxlogistic` object
-#' @param nsim Number of replicates
-#' @param seed Used to set RNG seed
+#' @param nsim Number of replicates. The default is `nsim = 1`.
+#' @param seed Used to set RNG seed. The default is `seed = NULL`, which does
+#' not set the seed.
 #' @param ... Ignored
 #'
 #' @details
@@ -264,7 +266,8 @@ logLik.emaxnls <- function(object, REML = FALSE, ...) {
 #'
 #' @param object An `emaxnls` or `emaxlogistic` object
 #' @param ... Optionally, more fitted model objects
-#' @param k Penalty per parameter in the AIC
+#' @param k Penalty per parameter in the AIC. The default is `k = 2`. Ignored
+#' for `BIC()`, which always uses `log(n)`.
 #'
 #' @details
 #' AIC applies a penalty of `2 * k` to minus twice the log-likelihood, where
@@ -671,8 +674,9 @@ fitted.emaxnls <- function(object, ...) {
 #' @param parm A specification of which parameters are to be given confidence intervals,
 #'   either a vector of numbers or a vector of names. If `parm = NULL`, all parameters
 #'   are considered.
-#' @param level The confidence level required
-#' @param back_transform Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?
+#' @param level The confidence level required. The default is `level = 0.95`.
+#' @param back_transform Should log-scaled parameters (logEC50, logHill) be
+#' back-transformed to original scale? The default is `back_transform = FALSE`.
 #' @param simultaneous If `TRUE`, return simultaneous (joint) Wald confidence
 #'   intervals rather than the default profile likelihood intervals. Defaults
 #'   to `FALSE`.
@@ -782,12 +786,13 @@ confint.emaxnls <- function(object, parm = NULL, level = 0.95, back_transform = 
 #' @param type For `emaxlogistic` objects: `"response"` (default) returns predicted
 #'   probabilities; `"link"` returns the linear predictor on the logit scale. Ignored
 #'   for `emaxnls` objects.
-#' @param se.fit A switch indicating if standard errors are required.
+#' @param se.fit A switch indicating if standard errors are required. The
+#'   default is `se.fit = FALSE`.
 #' @param interval A character string indicating if prediction intervals or a confidence
-#'   interval on the mean responses are to be calculated. Can be `"none"`, `"confidence"`,
-#'   or `"prediction"`.
+#'   interval on the mean responses are to be calculated. Can be `"none"` (the default),
+#'   `"confidence"`, or `"prediction"`.
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for the
-#'   intervals (if any) to be calculated.
+#'   intervals (if any) to be calculated. The default is `level = 0.95`.
 #' @param ... Ignored
 #'
 #' @details

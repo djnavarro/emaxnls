@@ -22,16 +22,16 @@ intercept-only hyperbolic Emax model is fitted — equivalent to
 
 \item{data}{A data frame that includes all relevant variables}
 
-\item{init}{Initial values and bounds for parameters. See \code{emax_nls_init()}}
+\item{init}{Initial values and bounds for parameters. See \code{\link[=emax_nls_init]{emax_nls_init()}}}
 
-\item{opts}{Model fitting and optimisation options. See \code{emax_nls_options()}}
+\item{opts}{Model fitting and optimisation options. See \code{\link[=emax_nls_options]{emax_nls_options()}}}
 }
 \value{
 An object of class \code{emaxnls}
 }
 \description{
 Fits an Emax regression model for a continuous response variable using
-nonlinear least squares. For binary outcomes, use \code{emax_logistic()} instead.
+nonlinear least squares. For binary outcomes, use \code{\link[=emax_logistic]{emax_logistic()}} instead.
 }
 \details{
 Pass a two-sided formula to \code{structural_model} to specify the response and
@@ -46,9 +46,9 @@ formula for \code{logHill} in \code{covariate_model}, e.g. \code{logHill ~ 1}. W
 this term a hyperbolic model is fitted. Interaction terms in the covariate
 model are not currently supported.
 
-Starting values are constructed automatically via \code{emax_nls_init()} unless
+Starting values are constructed automatically via \code{\link[=emax_nls_init]{emax_nls_init()}} unless
 the \code{init} argument is supplied manually. Three optimisation algorithms are
-available; see \code{emax_nls_options()} for details.
+available; see \code{\link[=emax_nls_options]{emax_nls_options()}} for details.
 }
 \examples{
 # simplest call: hyperbolic Emax with no covariates
@@ -68,5 +68,5 @@ emax_nls(
  
 }
 \seealso{
-\code{emax_nls_options()}, \code{emax_nls_init()}
+\code{\link[=emax_nls_options]{emax_nls_options()}}, \code{\link[=emax_nls_init]{emax_nls_init()}}
 }

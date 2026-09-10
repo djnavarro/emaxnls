@@ -20,9 +20,10 @@
 either a vector of numbers or a vector of names. If \code{parm = NULL}, all parameters
 are considered.}
 
-\item{level}{The confidence level required}
+\item{level}{The confidence level required. The default is \code{level = 0.95}.}
 
-\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be back-transformed to original scale?}
+\item{back_transform}{Should log-scaled parameters (logEC50, logHill) be
+back-transformed to original scale? The default is \code{back_transform = FALSE}.}
 
 \item{simultaneous}{If \code{TRUE}, return simultaneous (joint) Wald confidence
 intervals rather than the default profile likelihood intervals. Defaults

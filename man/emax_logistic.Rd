@@ -22,9 +22,9 @@ intercept-only hyperbolic Emax model is fitted — equivalent to
 
 \item{data}{A data frame that includes all relevant variables}
 
-\item{init}{Initial values and bounds for parameters. See \code{emax_logistic_init()}}
+\item{init}{Initial values and bounds for parameters. See \code{\link[=emax_logistic_init]{emax_logistic_init()}}}
 
-\item{opts}{Model fitting and optimisation options. See \code{emax_logistic_options()}}
+\item{opts}{Model fitting and optimisation options. See \code{\link[=emax_logistic_options]{emax_logistic_options()}}}
 }
 \value{
 An object of class \code{emaxlogistic} (which also inherits from \code{emaxnls})
@@ -32,7 +32,7 @@ An object of class \code{emaxlogistic} (which also inherits from \code{emaxnls})
 \description{
 Fits a logistic Emax regression model for a binary response variable using
 iterative reweighted least squares (IRLS). For continuous outcomes, use
-\code{emax_nls()} instead.
+\code{\link[=emax_nls]{emax_nls()}} instead.
 }
 \details{
 The structural Emax model is placed on the log-odds (logit) scale:
@@ -46,7 +46,7 @@ iteration a weighted NLS problem is solved using working weights and a working
 response derived from the current parameter estimates. This is equivalent to
 Fisher scoring and produces maximum likelihood estimates at convergence.
 
-The interface mirrors the \code{emax_nls()} function for continuous response models:
+The interface mirrors the \code{\link[=emax_nls]{emax_nls()}} function for continuous response models:
 the \code{structural_model} and \code{covariate_model} arguments have the same specification,
 including support for sigmoidal models via a \code{logHill} term. The response variable
 in \code{structural_model} must be a binary (0/1) numeric vector.
@@ -69,5 +69,5 @@ emax_logistic(
 
 }
 \seealso{
-\code{emax_logistic_options()}, \code{emax_logistic_init()}, \code{emax_nls()}
+\code{\link[=emax_logistic_options]{emax_logistic_options()}}, \code{\link[=emax_logistic_init]{emax_logistic_init()}}, \code{\link[=emax_nls]{emax_nls()}}
 }

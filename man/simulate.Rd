@@ -13,9 +13,10 @@
 \arguments{
 \item{object}{An \code{emaxnls} or \code{emaxlogistic} object}
 
-\item{nsim}{Number of replicates}
+\item{nsim}{Number of replicates. The default is \code{nsim = 1}.}
 
-\item{seed}{Used to set RNG seed}
+\item{seed}{Used to set RNG seed. The default is \code{seed = NULL}, which does
+not set the seed.}
 
 \item{...}{Ignored}
 }
