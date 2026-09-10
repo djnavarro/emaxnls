@@ -1,18 +1,34 @@
 # emaxnls 0.1.1.9000
 
-## Bug fixes
-
-* `simulate()` and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
-  now degrade gracefully on platforms where the `mvtnorm` shared object is
-  installed but fails to link at runtime (observed on some clang-based Rhub
-  builders). A warning is issued and the computation continues using base-R
-  fallbacks: Cholesky-based multivariate normal sampling for `simulate()`, and
-  a Bonferroni-corrected normal quantile for simultaneous confidence intervals.
-  The fallback intervals are conservative but valid (#52).
-
-* The tibble package is now listed under `Suggests` rather than `Imports`, making it a genuine optional dependency. All package functionality works with or without tibble installed (#24).
-
 ## New features
+
+* Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
+  reweighted least squares (IRLS), along with `emax_logistic_init()` and
+  `emax_logistic_options()` for initialisation and configuration. All standard
+  S3 methods (`coef()`, `vcov()`, `confint()`, `residuals()`, `fitted()`,
+  `predict()`, `anova()`, `logLik()`, `AIC()`, `BIC()`, `deviance()`,
+  `simulate()`) are supported for the new `emaxlogistic` class (#22).
+
+* Adds input validation for the binary response variable in `emax_logistic()`,
+  with informative errors for non-binary or out-of-range values (#42).
+
+* Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic` objects
+  work seamlessly with `erplots::er_plot_add_model()`, `er_plot_add_summary()`,
+  `er_plot_add_quantiles()`, and the VPC pipeline. Three S3 methods are
+  registered lazily at load time (no hard dependency on erplots):
+
+  - `er_predict()` returns point predictions and confidence intervals on a
+    user-supplied exposure grid, with predictions on the probability scale for
+    `emaxlogistic` models.
+  - `er_simulate()` returns `nsim` mean-curve draws reflecting parameter
+    uncertainty only (no residual noise), suitable for spaghetti/ribbon plots.
+  - `er_summary()` returns a coefficient table and a model-level glance row;
+    `p_value` is always `NULL` because Emax models have no single privileged
+    parameter.
+
+  Covariates present in the model but absent from the exposure grid passed by
+  erplots are filled in automatically with reference values (numeric: column
+  mean; factor/character: first factor level) (#65).
 
 * `emax_nls()`, `emax_logistic()`, `emax_nls_init()`, and `emax_logistic_init()`
   now have `covariate_model = NULL` as a default. When `covariate_model` is
@@ -42,24 +58,6 @@
   `criterion` column recording which selection rule was applied in each step
   (#68).
 
-* Adds an `erplots` model interface so that `emaxnls` and `emaxlogistic` objects
-  work seamlessly with `erplots::er_plot_add_model()`, `er_plot_add_summary()`,
-  `er_plot_add_quantiles()`, and the VPC pipeline. Three S3 methods are
-  registered lazily at load time (no hard dependency on erplots):
-
-  - `er_predict()` returns point predictions and confidence intervals on a
-    user-supplied exposure grid, with predictions on the probability scale for
-    `emaxlogistic` models.
-  - `er_simulate()` returns `nsim` mean-curve draws reflecting parameter
-    uncertainty only (no residual noise), suitable for spaghetti/ribbon plots.
-  - `er_summary()` returns a coefficient table and a model-level glance row;
-    `p_value` is always `NULL` because Emax models have no single privileged
-    parameter.
-
-  Covariates present in the model but absent from the exposure grid passed by
-  erplots are filled in automatically with reference values (numeric: column
-  mean; factor/character: first factor level) (#65).
-
 * Adds a `max_time` argument to `emax_nls_options()` and
   `emax_logistic_options()` that sets a maximum elapsed time (in seconds) for
   model fitting. If the optimiser has not converged within the limit it is
@@ -67,13 +65,6 @@
   other convergence failure. Defaults to `Inf` (no limit). This is particularly
   useful when running many models in an SCM procedure, where a single
   pathological fit can otherwise stall the entire covariate search (#16).
-
-* Adds `emax_logistic()` for fitting binary-outcome Emax models using iterative
-  reweighted least squares (IRLS), along with `emax_logistic_init()` and
-  `emax_logistic_options()` for initialisation and configuration. All standard
-  S3 methods (`coef()`, `vcov()`, `confint()`, `residuals()`, `fitted()`,
-  `predict()`, `anova()`, `logLik()`, `AIC()`, `BIC()`, `deviance()`,
-  `simulate()`) are supported for the new `emaxlogistic` class.
 
 * Redesigns `print()` and `summary()` methods for `emaxnls` and `emaxlogistic`
   objects:
@@ -102,10 +93,51 @@
 
   - `summary(back_transform = TRUE)` now also sets the test statistic to `NA`
     for back-transformed parameters, consistent with the standard error already
-    being `NA` on the back-transformed scale.
+    being `NA` on the back-transformed scale (#45).
 
 * `confint()` now falls back to Wald intervals with a warning if profile
-  likelihood computation fails (which can occur for sigmoidal models).
+  likelihood computation fails (which can occur for sigmoidal models) (#45).
+
+## Bug fixes
+
+* `simulate()` and `confint(simultaneous = TRUE)` / `summary(simultaneous = TRUE)`
+  now degrade gracefully on platforms where the `mvtnorm` shared object is
+  installed but fails to link at runtime (observed on some clang-based Rhub
+  builders). A warning is issued and the computation continues using base-R
+  fallbacks: Cholesky-based multivariate normal sampling for `simulate()`, and
+  a Bonferroni-corrected normal quantile for simultaneous confidence intervals.
+  The fallback intervals are conservative but valid (#52).
+
+* The tibble package is now listed under `Suggests` rather than `Imports`,
+  making it a genuine optional dependency. All package functionality works
+  with or without tibble installed (#24).
+
+* Fixes `AIC()` and `BIC()` when called with multiple model arguments (#37).
+
+* Fixes `na.action` parameter not being passed through correctly in
+  `emax_nls()` and `emax_logistic()` (#38).
+
+* Fixes `predict()` omitting `residual.scale` from the return value when
+  `se.fit = TRUE` (#39).
+
+* Fixes crashes in `emax_logistic_init()` and prevents `Inf` parameter bounds
+  arising during initialisation (#40).
+
+* Improves error messages when the underlying optimiser fails during
+  `emax_nls()` or `emax_logistic()` fitting, and tightens argument validation
+  in `emax_fun()` (#41).
+
+* Fixes validator error messages to reference public API parameter names rather
+  than internal names (#43).
+
+* Fixes `NaN` deviance values for `emaxlogistic` models when predicted
+  probabilities are exactly 0 or 1 (boundary cases) (#44).
+
+* `confint()` now accepts a `simultaneous` argument, mirroring `summary()`.
+  Previously `confint(object, simultaneous = TRUE)` silently ignored the
+  argument (swallowed by `...`) and returned pointwise intervals. Setting
+  `simultaneous = TRUE` now returns simultaneous (joint) Wald intervals that
+  match those reported by `summary(object, simultaneous = TRUE)` (#46).
 
 ## Documentation
 
@@ -122,37 +154,6 @@
   "Multiplicity: p-value adjustment versus simultaneous intervals" section
   spells out what each argument changes, why the adjusted p-values and the
   simultaneous intervals may disagree, and which tool to reach for (#47).
-
-## Bug fixes
-
-* Fixes `AIC()` and `BIC()` when called with multiple model arguments (#37).
-
-* Fixes `na.action` parameter not being passed through correctly in
-  `emax_nls()` and `emax_logistic()` (#38).
-
-* Fixes `predict()` omitting `residual.scale` from the return value when
-  `se.fit = TRUE` (#39).
-
-* Fixes crashes in `emax_logistic_init()` and prevents `Inf` parameter bounds
-  arising during initialisation (#40).
-
-* Hardens `.nls_call()` to avoid cryptic errors when optimisation fails, and
-  tightens argument validation in `emax_fun()` (#41).
-
-* Adds input validation for the binary response variable in `emax_logistic()`,
-  with informative errors for non-binary or out-of-range values (#42).
-
-* Fixes validator error messages to reference public API parameter names rather
-  than internal names (#43).
-
-* Fixes `NaN` produced by `.binomial_deviance()` when predicted probabilities
-  are exactly 0 or 1 (boundary cases) (#44).
-
-* `confint()` now accepts a `simultaneous` argument, mirroring `summary()`.
-  Previously `confint(object, simultaneous = TRUE)` silently ignored the
-  argument (swallowed by `...`) and returned pointwise intervals. Setting
-  `simultaneous = TRUE` now returns simultaneous (joint) Wald intervals that
-  match those reported by `summary(object, simultaneous = TRUE)` (#46).
 
 
 # emaxnls 0.1.1
