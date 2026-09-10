@@ -30,7 +30,9 @@ emax_nls_options(
 - optim_control:
 
   A list of arguments used to control the behaviour of the optimisation
-  algorithm. Allowed values differ depending on which algorithm is used
+  algorithm. Allowed values differ depending on which algorithm is used.
+  The default is `optim_control = NULL`, which uses the default settings
+  for the relevant optimisation function; see details.
 
 - quiet:
 
@@ -39,11 +41,13 @@ emax_nls_options(
 - weights:
 
   Numeric vector providing the weights for observations. When specified,
-  weighted least squares is used
+  weighted least squares is used. The default is `weights = NULL`
+  (unweighted least squares).
 
 - na.action:
 
-  How should missing values in the data be handled?
+  How should missing values in the data be handled? The default is
+  `na.action = getOption("na.action")`.
 
 - max_time:
 
@@ -62,22 +66,22 @@ At present there are three supported values for `optim_method`:
 
 - "gauss": Estimate parameters using the Gauss-Newton algorithm. This is
   equivalent to the using "default" option in
-  [`nls()`](https://rdrr.io/r/stats/nls.html)
+  [`stats::nls()`](https://rdrr.io/r/stats/nls.html)
 
 - "port": Estimate parameters using bounded optimisation with the
   "nl2sol" algorithm from from the the Port library. Equivalent to
-  "port" in [`nls()`](https://rdrr.io/r/stats/nls.html)
+  "port" in [`stats::nls()`](https://rdrr.io/r/stats/nls.html)
 
 - "levenberg": Estimate parameters using the Levenberg-Marquardt
   algorithm. This is equivalent to using
-  [`nlsLM()`](https://rdrr.io/pkg/minpack.lm/man/nlsLM.html) from the
-  "minpack.lm" package.
+  [`minpack.lm::nlsLM()`](https://rdrr.io/pkg/minpack.lm/man/nlsLM.html)
+  from the "minpack.lm" package.
 
 Note that the Golub-Pereyra algorithm for partially linear least-squares
 (i.e. the "plinear" option in
-[`nls()`](https://rdrr.io/r/stats/nls.html)) is not currently supported
-for Emax regression. Informal testing suggests it does not perform well
-for these models, and rarely converges.
+[`stats::nls()`](https://rdrr.io/r/stats/nls.html)) is not currently
+supported for Emax regression. Informal testing suggests it does not
+perform well for these models, and rarely converges.
 
 The `optim_control` argument mirrors the corresponding control arguments
 for the respective optimisation methods:
@@ -136,7 +140,7 @@ emax_nls_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x56245acea720>
+#> <bytecode: 0x55817bcfc720>
 #> <environment: namespace:stats>
 #> 
 #> $max_time
@@ -186,7 +190,7 @@ if (require("minpack.lm", quietly = TRUE)) emax_nls_options(optim_method = "leve
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x56245acea720>
+#> <bytecode: 0x55817bcfc720>
 #> <environment: namespace:stats>
 #> 
 #> $max_time

@@ -23,11 +23,12 @@ simulate(object, nsim = 1, seed = NULL, ...)
 
 - nsim:
 
-  Number of replicates
+  Number of replicates. The default is `nsim = 1`.
 
 - seed:
 
-  Used to set RNG seed
+  Used to set RNG seed. The default is `seed = NULL`, which does not set
+  the seed.
 
 - ...:
 

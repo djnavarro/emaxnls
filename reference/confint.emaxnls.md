@@ -33,12 +33,12 @@ confint(
 
 - level:
 
-  The confidence level required
+  The confidence level required. The default is `level = 0.95`.
 
 - back_transform:
 
   Should log-scaled parameters (logEC50, logHill) be back-transformed to
-  original scale?
+  original scale? The default is `back_transform = FALSE`.
 
 - simultaneous:
 

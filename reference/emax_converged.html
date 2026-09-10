@@ -72,9 +72,9 @@ description of the outcome:</p><ul><li><p><code>"converged"</code>: the optimise
 <code><a href="emax_nls_options.html">emax_nls_options()</a></code> / <code><a href="emax_logistic_options.html">emax_logistic_options()</a></code> was hit before the
 optimiser finished.</p></li>
 <li><p><code>"maximum iterations exceeded"</code>: the optimiser ran out of iterations.
-This applies to the Gauss-Newton algorithm (when <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls()</a></code> reports
+This applies to the Gauss-Newton algorithm (when <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">stats::nls()</a></code> reports
 "number of iterations exceeded maximum") and to the Levenberg-Marquardt
-algorithm (when <code>nlsLM()</code> reports that the iteration count has reached
+algorithm (when <code><a href="https://rdrr.io/pkg/minpack.lm/man/nlsLM.html" class="external-link">minpack.lm::nlsLM()</a></code> reports that the iteration count has reached
 <code>maxiter</code>). The iteration budget can be increased via the
 <code>optim_control</code> argument of <code><a href="emax_nls_options.html">emax_nls_options()</a></code>.</p></li>
 <li><p>Raw optimiser message: all other failures return the error message from

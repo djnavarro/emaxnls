@@ -50,18 +50,19 @@ predict(
 
 - se.fit:
 
-  A switch indicating if standard errors are required.
+  A switch indicating if standard errors are required. The default is
+  `se.fit = FALSE`.
 
 - interval:
 
   A character string indicating if prediction intervals or a confidence
-  interval on the mean responses are to be calculated. Can be `"none"`,
-  `"confidence"`, or `"prediction"`.
+  interval on the mean responses are to be calculated. Can be `"none"`
+  (the default), `"confidence"`, or `"prediction"`.
 
 - level:
 
   A numeric scalar between 0 and 1 giving the confidence level for the
-  intervals (if any) to be calculated.
+  intervals (if any) to be calculated. The default is `level = 0.95`.
 
 - ...:
 

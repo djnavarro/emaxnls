@@ -20,7 +20,7 @@ coef(object, back_transform = FALSE, ...)
 - back_transform:
 
   Should log-scaled parameters (logEC50, logHill) be back-transformed to
-  original scale?
+  original scale? The default is `back_transform = FALSE`.
 
 - ...:
 

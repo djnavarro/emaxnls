@@ -32,7 +32,9 @@ emax_logistic_options(
 
 - optim_control:
 
-  A list of arguments controlling the NLS optimiser.
+  A list of arguments controlling the NLS optimiser. The default is
+  `optim_control = NULL`, which uses the default settings for the
+  relevant optimisation function.
 
 - quiet:
 
@@ -40,7 +42,8 @@ emax_logistic_options(
 
 - na.action:
 
-  How should missing values in the data be handled?
+  How should missing values in the data be handled? The default is
+  `na.action = getOption("na.action")`.
 
 - max_iter:
 
@@ -107,7 +110,7 @@ emax_logistic_options()
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x56245acea720>
+#> <bytecode: 0x55817bcfc720>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter
@@ -157,7 +160,7 @@ emax_logistic_options(max_iter = 50)
 #> $na.action
 #> function (object, ...) 
 #> UseMethod("na.omit")
-#> <bytecode: 0x56245acea720>
+#> <bytecode: 0x55817bcfc720>
 #> <environment: namespace:stats>
 #> 
 #> $max_iter

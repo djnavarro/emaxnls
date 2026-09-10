@@ -33,11 +33,12 @@ the outcome:
 
 - `"maximum iterations exceeded"`: the optimiser ran out of iterations.
   This applies to the Gauss-Newton algorithm (when
-  [`nls()`](https://rdrr.io/r/stats/nls.html) reports "number of
+  [`stats::nls()`](https://rdrr.io/r/stats/nls.html) reports "number of
   iterations exceeded maximum") and to the Levenberg-Marquardt algorithm
-  (when `nlsLM()` reports that the iteration count has reached
-  `maxiter`). The iteration budget can be increased via the
-  `optim_control` argument of
+  (when
+  [`minpack.lm::nlsLM()`](https://rdrr.io/pkg/minpack.lm/man/nlsLM.html)
+  reports that the iteration count has reached `maxiter`). The iteration
+  budget can be increased via the `optim_control` argument of
   [`emax_nls_options()`](https://emaxnls.djnavarro.net/reference/emax_nls_options.md).
 
 - Raw optimiser message: all other failures return the error message

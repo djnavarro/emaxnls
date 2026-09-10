@@ -189,7 +189,7 @@ emax_nls(
 
 ## Development workflow
 
-- Documentation generated with roxygen2 (version 8.0.0, markdown
+- Documentation generated with roxygen2 (version 8.1.0, markdown
   enabled)
 - CI/CD via GitHub Actions: R CMD check, test coverage (Codecov),
   pkgdown build, rhub

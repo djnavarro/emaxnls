@@ -33,7 +33,9 @@ BIC(object, ...)
 
 - k:
 
-  Penalty per parameter in the AIC
+  Penalty per parameter in the AIC. The default is `k = 2`. Ignored for
+  [`BIC()`](https://rdrr.io/r/stats/AIC.html), which always uses
+  `log(n)`.
 
 ## Value
 
