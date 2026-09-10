@@ -1,23 +1,19 @@
-This is a resubmission of a new package designed to support emax regression models in R, commonly used in pharmacometric modelling (version updated from 0.1 to 0.1.1). The resubmission addresses the primary concern with the original submission, namely that the Description field in DESCRIPTION was not sufficiently detailed. In the revised version I've briefly outlined the core functionality of the package, attempting to be concise while also documenting the key features. 
-
-I have also taken the opportunity to improve documentation and the unit tests in the resubmission.
+This is a submission of emaxnls version 0.2.0 (updated from 0.1.1).
 
 Kind regards
 Danielle Navarro
 
 ## Local R CMD check results
 
-Maintainer: ‘Danielle Navarro <djnavarro@protonmail.com>’
-  
-New submission
+Maintainer: 'Danielle Navarro <djnavarro@protonmail.com>'
 
-0 errors ✔ | 0 warnings ✔ | 1 note ✖
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-## Rhub tests 
+## Rhub tests
 
-Checked on the following architectures: 
+Checked on the following architectures:
 
-linux, m1-san, macos, macos-arm64, windows, atlas, c23, clang-asan, clang-ubsan, clang16, clang17, clang18, clang19, clang20, clang21, clang22, donttest, gcc-asan, gcc13, gcc14, gcc15, gcc16, intel, lto, mkl, nold, noremap, nosuggests, ubuntu-clang, ubuntu-gcc12, ubuntu-next, ubuntu-release, valgrind, vnu
+*(to be filled in before submission)*
 
 ## CRAN infrastructure tests
 
@@ -26,4 +22,4 @@ linux, m1-san, macos, macos-arm64, windows, atlas, c23, clang-asan, clang-ubsan,
 - `devtools::check_win_oldrelease()`
 - `devtools::check_mac_release()`
 
-In each case the logs show only the "new submission" note, and queries about the spelling. Regarding the word "Emax", the spelling is correct, including capitalization: it is the standard way the model is referred to in the pharmacometric literature. The other two spelling notes are the names "Levenberg" and "Marquardt", both of which are correct.
+*(results to be filled in before submission)*

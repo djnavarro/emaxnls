@@ -11,11 +11,16 @@
 .quiet_fn <- function(.f) {
   function(...) {
     warnings <- character()
+    # `<<-` here updates `warnings` in the enclosing `.quiet_fn()` call frame
+    # (a closure accumulator), not the global environment; cranlint's `<<-`
+    # heuristic cannot distinguish the two and flags this as a false
+    # positive.
     wHandler <- function(w) {
       warnings <<- c(warnings, conditionMessage(w))
       invokeRestart("muffleWarning")
     }
     messages <- character()
+    # Same closure-accumulator pattern as `wHandler()` above.
     mHandler <- function(m) {
       messages <<- c(messages, conditionMessage(m))
       invokeRestart("muffleMessage")
