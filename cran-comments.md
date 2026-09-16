@@ -45,9 +45,17 @@ rather than rhub's macOS runners.
 - `devtools::check_win_oldrelease()`: OK, no errors/warnings/notes.
 - `devtools::check_mac_release()` (macOS 4.6.1, arm64/M1): OK, no errors/warnings/notes.
 
-All four checks report the same single INFO, which is expected and not
-a concern: `Package suggested but not available for checking: 'erplots'`
-(erplots is pre-CRAN and only used optionally via `Suggests`).
+All four checks were re-run after erplots' initial CRAN acceptance to
+confirm a transient issue had cleared: at first, all four reported the
+same INFO, `Package suggested but not available for checking:
+'erplots'`, because erplots (published to CRAN 2026-09-09) had not yet
+had binaries built for every platform. On re-run, the three win-builder
+checks no longer show the INFO now that erplots' Windows binaries are
+published; `check_mac_release()` still shows it because erplots'
+`r-release-macosx-arm64` binary specifically remains unbuilt on CRAN.
+This is expected and not a concern, since erplots is only used
+optionally via `Suggests` and the INFO is purely about CRAN's binary
+build queue for a different package, not a defect in emaxnls.
 
 These clean results on CRAN's own Windows and macOS build machines
 corroborate that the macOS failures observed on rhub (noted above) are
