@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/djnavarro/emaxnls/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/djnavarro/emaxnls/blob/v0.2.0/DESCRIPTION)
 
 Navarro D (2026). *emaxnls: Nonlinear Least Squares Estimation for Emax
 Regression Models*. R package version 0.2.0,
